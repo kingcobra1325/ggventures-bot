@@ -42,7 +42,7 @@ except:
 
 
 # ----- SPIDERS ------- #
-from ggventures.spiders.US_AUkogodSB import UsAukogodsbSpider
+from ggventures.spiders.usa_0001 import usa0001spider
 
 ## ------------- Global Vars --------------- ##
 cwd = os.path.dirname(os.path.realpath(__file__))
