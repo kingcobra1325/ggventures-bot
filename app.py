@@ -39,6 +39,8 @@ except:
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 
+
+
 # ----- SPIDERS ------- #
 from ggventures.spiders.US_AUkogodSB import UsAukogodsbSpider
 
@@ -65,3 +67,8 @@ if environ.get('DEPLOYED'):
 else:
     GOOGLE_CHROME_BIN = 'C:\Pysourcecodes\chromium\chrome.exe'
     CHROMEDRIVER_PATH = 'C:\Pysourcecodes\chromium\chromedriver'
+
+
+########## MAIN START ############
+if __name__ == '__main__':
+    print('HOLY SHIT')
