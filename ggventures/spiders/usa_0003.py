@@ -21,11 +21,11 @@ class Usa0003Spider(scrapy.Spider):
         driver = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
         Getter = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
         driver.get(response)
-        height = driver.get_window_size()['height']
+        height = driver.execute_script("return document.body.scrollHeight")
 
 
-        for i in range(1,height,int(height/3)):
-            last_height = driver.execute_script("window.scrollBy(0, {0});".format(i))
+        for i in range(1,height,int(height/5)):
+            driver.execute_script("window.scrollBy(0, {0});".format(i))
             sleep(0.5)
 
         EventLinks = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'em-card_text')]/h3/a")))
@@ -34,7 +34,7 @@ class Usa0003Spider(scrapy.Spider):
             Getter.get(i.get_attribute('href'))
             
             RawEventName = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class, 'em-header-card_title')]")))
-            RawEventDesc = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class, 'em-about_info')]/a")))
+            RawEventDesc = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class, 'em-about_description')]/p")))
             RawEventLocation = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class, 'em-about_location')]/p")))
             RawEventDate = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//p[contains(@class, 'em-date')]")))
 

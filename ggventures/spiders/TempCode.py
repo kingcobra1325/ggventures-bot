@@ -4,8 +4,10 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
 
-link = "https://calendar.auburn.edu/calendar"
+link = "https://wpcarey.asu.edu/calendarofevents"
 
 
 options = webdriver.ChromeOptions()
@@ -14,7 +16,6 @@ options.add_argument(f'user-agent={user_agent}')
 options.add_argument('--headless')
 options.add_argument('--log-level 3') 
 driver = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
-Getter = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
 driver.get(link)
 height = driver.execute_script("return document.body.scrollHeight")
 
@@ -23,20 +24,22 @@ for i in range(1,height,int(height/5)):
     driver.execute_script("window.scrollBy(0, {0});".format(i))
     sleep(0.5)
 
-EventLinks = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'em-card_text')]/h3/a")))
 
-for i in EventLinks:
-    Getter.get(i.get_attribute('href'))
-    
-    RawEventName = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class, 'em-header-card_title')]")))
-    RawEventDesc = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class, 'em-about_description')]/p")))
-    RawEventLocation = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class, 'em-about_location')]/p")))
-    RawEventDate = WebDriverWait(Getter, 10).until(EC.presence_of_element_located((By.XPATH,"//p[contains(@class, 'em-date')]")))
+RawEventName = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'col-sm-10')]/h3")))
+RawEventDesc = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'col-sm-10')]/p[contains(@class, 'info')]")))
+RawEventDateM = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'date-badge full-date')]/span[contains(@class, 'month')]")))
+RawEventDateD = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'date-badge full-date')]//span[contains(@class, 'date-display-single')]")))
 
-    print(RawEventName.text)
-    print(RawEventDesc.text)
-    print(RawEventLocation.text)
-    print(RawEventDate.text)
+
+EventName = list()
+EventDesc = list()
+EventDate = list()
+
+for i in range(len(RawEventName)):
+    EventName.append(RawEventName[i].text)
+    EventDesc.append(RawEventDesc[i].text)
+    EventDate.append(RawEventDateM[i].text+' '+ RawEventDateD[i].text)
     
-Getter.close()
-driver.close()
+    print(EventName)
+    print(EventDesc)
+    print(EventDate)
