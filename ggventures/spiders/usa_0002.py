@@ -9,11 +9,16 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Usa0002Spider(scrapy.Spider):
     name = 'usa-0002'
-    allowed_domains = ['https://wpcarey.asu.edu/']
+    allowed_domains = ['https://wpcarey.asu.edu/calendarofevents']
     start_urls = ['http://https://wpcarey.asu.edu//']
 
     def parse(self, response):
-        driver = webdriver.Chrome(executable_path='C:\Chromium\chromedriver')
+        options = webdriver.ChromeOptions()
+        user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+        options.add_argument(f'user-agent={user_agent}')
+        options.add_argument('--headless')
+        options.add_argument('--log-level 3') 
+        driver = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
         driver.get(response)
         height = driver.get_window_size()['height']
 
