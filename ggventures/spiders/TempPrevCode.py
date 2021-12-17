@@ -21,10 +21,9 @@ def tryXPATH(driver,isList,isFirst,tempPath,hasAttrib = None):
         print(e)
         #logger.error()
         return ''
-            
 
-logolink = "https://wpcarey.asu.edu/calendarofevents"
-link = "https://wpcarey.asu.edu/calendarofevents"
+
+link = "https://calendar.auburn.edu/calendar"
 
 options = webdriver.ChromeOptions()
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
@@ -33,12 +32,10 @@ options.add_argument('--headless')
 options.add_argument('--log-level 3') 
 driver = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
 getter = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
-driver.get(logolink)
+driver.get(link)
 height = driver.execute_script("return document.body.scrollHeight")
 
-logo = tryXPATH(driver,False,True,"//img[contains(@class, 'vert')]",'src')
-
-driver.get(link)
+logo = tryXPATH(driver,False,True,"//img[contains(@alt, 'Auburn University homepage') and contains(@class, 'hidden-print')]",'src')
 
 for i in range(1,height,int(height/5)):
     driver.execute_script("window.scrollBy(0, {0});".format(i))
@@ -54,29 +51,26 @@ event_desc = list()
 for i in EventLinks:
     getter.get(i.get_attribute('href'))
     
-    RawEventName = tryXPATH(getter,False,True,"//div/h1")
+    RawEventName = tryXPATH(getter,False,True,"//h1[contains(@class ,'em-header-card_title')]")
     
-    RawEventDesc = tryXPATH(getter,True,False,"//div[starts-with(@class, 'g-group')]")
-    if len(RawEventDesc) == 0:
-        RawEventDesc = tryXPATH(getter,True,False,"//div[starts-with(@class, 'view-content')]/div/p")
-    DescString = ''
-    for i in RawEventDesc:
-        DescString += i.text
+    RawEventDesc = tryXPATH(getter,False,False,"//div[starts-with(@class, 'em-content_about')]")
     
-    RawEventDate = tryXPATH(getter,False,False,"//div[contains(@class,'view-content')]/div/p")
+    RawEventDate = tryXPATH(getter,False,False,"//p[contains(@class, 'em-date')]")
     
-    RawEventTime = tryXPATH(getter,False,False,"//div[contains(@class,'view-content')]/div/p/br")
+    #Some Events have time embedded in Date
+    #RawEventTime = tryXPATH(getter,False,False,"//div[contains(@class,'view-content')]/div/p/br")
     
     event_name.append(RawEventName)
-    event_desc.append(DescString)
+    event_desc.append(RawEventDesc)
     event_date.append(RawEventDate)
-    event_time.append(RawEventTime)
+    #event_time.append(RawEventTime)
 
-university_name = tryXPATH(driver,False,False,"//div[contains(@class, 'navbar-container')]/a")
 
-driver.get('https://www.asu.edu/about/contact')
+university_contact_info = tryXPATH(driver,False,True,"//div[contains(@class, 'col-xs-6')]")
 
-university_contact_info = tryXPATH(driver,False,True,"//div[contains(@class, 'formatted-text')]/p[1]")+ tryXPATH(driver,False,True,"//div[contains(@class, 'formatted-text')]/p[2]")
+driver.get('https://www.auburn.edu/')
+
+university_name = tryXPATH(driver,False,True,"//title",'textContent')
 
 for i in range(len(EventLinks)):
     print(university_name)
@@ -85,4 +79,6 @@ for i in range(len(EventLinks)):
     print(event_name[i])
     print(event_desc[i])
     print(event_date[i])
-    print(event_time[i])
+    #print(event_time[i])
+
+
