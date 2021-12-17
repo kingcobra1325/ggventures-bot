@@ -1,58 +1,75 @@
 import scrapy
-
+# from scrapy import Selector
 from time import sleep
 
-from selenium import webdriver
+from binaries import Load_Driver, logger
+
+from scrapy.loader import ItemLoader
+
+from ggventures.items import GgventuresItem
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class Usa0001Spider(scrapy.Spider):
     name = 'usa-0001'
-    allowed_domains = ['https://kogod.american.edu/events?hsLang=en']
-    start_urls = ['http://https://kogod.american.edu//']
+    index = 0
+    country = 'US'
+    # allowed_domains = ['https://kogod.american.edu/']
+    start_urls = ['https://kogod.american.edu/events?hsLang=en']
+
+
+    def __init__(self):
+        self.driver = Load_Driver()
 
     def parse(self, response):
-        logolink = 'https://www.american.edu/'
+        self.driver.get(response.url)
+        height = self.driver.execute_script("return document.body.scrollHeight")
 
-        options = webdriver.ChromeOptions()
-        user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
-        options.add_argument(f'user-agent={user_agent}')
-        options.add_argument('--headless')
-        options.add_argument('--log-level 3') 
-        driver = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
-        driver.get(logolink)
-        height = driver.execute_script("return document.body.scrollHeight")
-
+        for i in range(1,height,int(height/5)):
+            self.driver.execute_script("window.scrollBy(0, {0});".format(i))
+            sleep(0.5)
 
         logo = (WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@alt, 'American University Homepage')]")))).get_attribute('src')
 
-        driver.get(response)
+        RawEventName = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'events__title')]")))
+        RawEventDesc = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'event__content')]/p")))
+        RawEventDate = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//article//div[contains(@class, 'events-carousel__date')]")))
 
-        for i in range(1,height,int(height/5)):
-            driver.execute_script("window.scrollBy(0, {0});".format(i))
-            sleep(0.5)
-            
-            
-        RawEventName = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'events__title')]")))
-        RawEventDesc = driver.find_elements(By.XPATH,"//div[contains(@class, 'event__content')]/p")
-        RawEventDate = driver.find_elements(By.XPATH,"//article//div[contains(@class, 'events-carousel__date')]")
-        RawEventTime = driver.find_elements(By.XPATH, "//div[contains(@class, 'events-carousel__time')]")
 
         university_name = driver.find_element(By.XPATH,"//div[contains(@class, 'header__main')]/a").text
         university_contact_info = driver.find_element(By.XPATH,"//div[contains(@class, 'hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module')]/ul[contains(@class, 'footer__list')]").text
 
-        event_name = list()
-        event_date = list()
-        event_time = list()
-        event_desc = list()
 
+
+        EventName = list()
+        EventDesc = list()
+        EventDate = list()
 
         for i in range(len(RawEventName)):
-            #university_name
-            #university_contact_info
-            #logo
-            event_name.append(RawEventName[i].text)
-            event_desc.append(RawEventDesc[i].text)
-            event_date.append(RawEventDate[i].text.replace('\n',' '))
-            event_time.append(RawEventTime[i].text)
+            data = ItemLoader(item = GgventuresItem(), selector = i)
+            data.add_value('university_name',university_name)
+            data.add_value('university_contact_info',university_contact_info)
+            data.add_value('logo',logo)
+            # data['event_name']
+            # data['event_date']
+            # data['event_time']
+            # data['event_link']
+            # data['event_desc']
+            # data['startups_name']
+            # data['startups_link']
+            # data['startups_contact_info']
+            data.add_value('event_name', RawEventName[i].text)
+            data.add_value('event_desc', RawEventDesc[i].text)
+            data.add_value('event_date', RawEventDate[i].text.replace('\n',' '))
+            yield data.load_item()
+
+        self.driver.quit()
+            # logger.info(f"Fetching Event Date: {RawEventDate[i].text.replace('\n',' ')}")
+
+
+        # raw_page = Selector(text=response.page_source)
+        # data = GgventuresItem()
+        # data['event_name'] = response.xpath("//div[contains(@class, 'events__title')]")
+        # logger.info(f"Fetching Event Name: {data['event_name']}")
