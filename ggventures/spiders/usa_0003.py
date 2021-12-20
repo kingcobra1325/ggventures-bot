@@ -13,10 +13,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-class Usa0002Spider(scrapy.Spider):
-    name = 'usa-0002'
+class Usa0003Spider(scrapy.Spider):
+    name = 'usa-0003'
     country = 'US'
-    start_urls = ['https://wpcarey.asu.edu/calendarofevents']
+    start_urls = ['https://calendar.auburn.edu/calendar']
     
     def __init__(self):
         self.driver = Load_Driver()
@@ -31,28 +31,24 @@ class Usa0002Spider(scrapy.Spider):
         
         self.driver.get(response.url)
 
-        logo = (WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@class, 'vert')]")))).get_attribute('src')
+        logo = (WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@class, 'hidden-print')]")))).get_attribute('src')
         
-        university_name = self.driver.find_element(By.XPATH,"//div[contains(@class, 'navbar-container')]/a").text
+        university_name = self.driver.find_element(By.XPATH,"//header/h1").get_attribute('textContent')
         
-        self.driver.get('https://wpcarey.asu.edu/about/contact')
+        university_contact_info = (WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class, 'col-xs-6')]")))).text 
         
-        university_contact_info = (WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH,"(//div[contains(@class,'panel-body')])[2]/div[1]")))).text 
-        
-        self.driver.get(response.url)
-            
-        EventLinks = WebDriverWait(self.driver, 60).until(EC.presence_of_all_elements_located((By.XPATH,"//h3/a")))
+        EventLinks = WebDriverWait(self.driver, 60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class,'em-card_text')]/h3/a")))
 
         for i in EventLinks:       
             self.getter.get(i.get_attribute('href'))
             
-            RawEventName = (WebDriverWait(self.getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div/h1")))).text
+            RawEventName = (WebDriverWait(self.getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'em-header-card_text')]/h1")))).text
             
-            RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'view-content')]").text
+            RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'em-content_about')]").text
             
-            RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'view-content')]/div/p").text.split('\n')[0]  
+            RawEventDate = self.getter.find_element(By.XPATH,"//p[contains(@class,'em-date')]").text 
             
-            RawEventTime = self.getter.find_element(By.XPATH, "//div[contains(@class,'view-content')]/div/p").text.split('\n')[1]
+            RawEventTime = self.getter.find_element(By.XPATH, "//p[contains(@class,'em-date')]").text
             
             event_name.append(RawEventName)
             event_desc.append(RawEventDesc)
