@@ -39,8 +39,8 @@ class GgventuresPipeline:
         pass
 
     def process_item(self, item, spider):
-        print(f"PIPELINE: Currently processing {spider.name} scraped data:")
-        print(f"{item}")
+        logger.info(f"PIPELINE: Currently processing {spider.name} scraped data:")
+        logger.info(f"{item}")
         df_all, spreadsheet = Google_Sheets()
         df = df_all
         worksheet = spreadsheet.worksheet(spider.country)
@@ -59,9 +59,25 @@ class GgventuresPipeline:
                     "Logo" : item.get("logo"),
                     "SpiderName" : spider.name
         }
-        df.loc[df.shape[0]] = data
         # GET EXISTING DF from WORKSHEET
         prev_df = get_as_dataframe(worksheet)
+        logger.info(prev_df)
+        df = prev_df.copy()
+        df.dropna(how='all',inplace=True)
+        # CHECK IF EVENT NAME IS ALREADY IN THE SHEET
+        # if not prev_df.empty:
+        #     if prev_df[prev_df['column_name'] == some_value]:
+        #         logger.info(f'Event: {item.get("event_name")} already exist in the data sheet!')
+        #     else:
+        #         logger.info(f'Event: {item.get("event_name")} already exist in the data sheet!')
+        #         prev_df.loc[prev_df.shape[0]] = data
+        # else:
+        #     logger.info(f'Dataframe is empty. Creating a Blank Sheet')
+        #     prev_df = df
+        df.loc[df.shape[0]] = data
+        df.sort_values(by=["Last Updated"], ascending=False)
+        df.drop_duplicates(keep='last')
+
         # CHECK DUPLICATES AND ADD NEW DATA
         # df_diff = remove_dup(df,prev_df)
         # df.append(df_diff)
