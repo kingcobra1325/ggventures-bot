@@ -33,7 +33,9 @@ from binaries import logger
 # ----- SPIDERS ------- #
 # from ggventures.spiders.usa_0001 import Usa0001Spider
 spider_list = [
-                    "usa-0001"
+                    'usa-0001',
+                    # 'usa-0002'
+                    'usa-0003'
               ]
 
 ## ------------- Global Vars --------------- ##
