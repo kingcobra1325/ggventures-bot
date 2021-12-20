@@ -7,7 +7,7 @@ if __name__ == '__main__':
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.common.exceptions import NoSuchElementException
         
-    link = "https://www.baylor.edu/business/news/index.php?id=86163%27"
+    link = "https://www.babson.edu/about/news-events/babson-events/"
 
     event_name = list()
     event_date = list()
@@ -24,6 +24,6 @@ if __name__ == '__main__':
     driver.get(link)
     height = driver.execute_script("return document.body.scrollHeight")
     
-    FirstElement = (WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@id, 'copyright')]/p")))).text.split('\n')[1]
+    FirstElement = WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH,"//li[contains(@class, 'event-item snippet event clearfix')]")))
     # TestElement = FirstElement.find_elements(By.XPATH,".//span[contains(@class,'datelisting')]")
-    print(FirstElement)
+    print(TestElement)
