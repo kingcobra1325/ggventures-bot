@@ -75,8 +75,8 @@ class GgventuresPipeline:
         #     logger.info(f'Dataframe is empty. Creating a Blank Sheet')
         #     prev_df = df
         df.loc[df.shape[0]] = data
-        df.sort_values(by=["Last Updated"], ascending=False)
-        df.drop_duplicates(keep='last')
+        # df.sort_values(by=["Last Updated"], ascending=False)
+        # df.drop_duplicates(keep='last')
 
         # CHECK DUPLICATES AND ADD NEW DATA
         # df_diff = remove_dup(df,prev_df)
