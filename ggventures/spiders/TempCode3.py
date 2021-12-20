@@ -28,7 +28,7 @@ link = "https://calendar.auburn.edu/calendar"
 options = webdriver.ChromeOptions()
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
 options.add_argument(f'user-agent={user_agent}')
-options.add_argument('--headless')
+# options.add_argument('--headless')
 options.add_argument('--log-level 3') 
 driver = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
 getter = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
@@ -64,7 +64,6 @@ for i in EventLinks:
     event_desc.append(RawEventDesc)
     event_date.append(RawEventDate)
     #event_time.append(RawEventTime)
-
 
 university_contact_info = tryXPATH(driver,False,True,"//div[contains(@class, 'col-xs-6')]")
 

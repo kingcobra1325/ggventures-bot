@@ -22,6 +22,7 @@ class Usa0001Spider(scrapy.Spider):
 
     def __init__(self):
         self.driver = Load_Driver()
+        self.getter = Load_Driver()
 
     def parse(self, response):
         self.driver.get(response.url)
@@ -31,15 +32,15 @@ class Usa0001Spider(scrapy.Spider):
             self.driver.execute_script("window.scrollBy(0, {0});".format(i))
             sleep(0.5)
 
-        logo = (WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@alt, 'American University Homepage')]")))).get_attribute('src')
+        logo = (WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@alt, 'American University Homepage')]")))).get_attribute('src')
 
         RawEventName = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'events__title')]")))
         RawEventDesc = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'event__content')]/p")))
         RawEventDate = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH,"//article//div[contains(@class, 'events-carousel__date')]")))
 
 
-        university_name = driver.find_element(By.XPATH,"//div[contains(@class, 'header__main')]/a").text
-        university_contact_info = driver.find_element(By.XPATH,"//div[contains(@class, 'hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module')]/ul[contains(@class, 'footer__list')]").text
+        university_name = self.driver.find_element(By.XPATH,"//div[contains(@class, 'header__main')]/a").text
+        university_contact_info = self.driver.find_element(By.XPATH,"//div[contains(@class, 'hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module')]/ul[contains(@class, 'footer__list')]").text
 
 
 

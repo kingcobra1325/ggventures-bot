@@ -15,6 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Usa0005Spider(scrapy.Spider):
     name = 'usa-0005'
+    country = 'US'
     allowed_domains = ['https://zicklin.baruch.cuny.edu/']
     start_urls = ['http://https://zicklin.baruch.cuny.edu//']
 
