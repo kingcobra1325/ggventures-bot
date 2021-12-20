@@ -33,10 +33,10 @@ from binaries import logger
 # ----- SPIDERS ------- #
 # from ggventures.spiders.usa_0001 import Usa0001Spider
 spider_list = [
-                    'usa-0001',
+                    'usa-0006',
                     # 'usa-0002'
-                    'usa-0003'
-              ]
+                    # 'usa-0003'
+              ] 
 
 ## ------------- Global Vars --------------- ##
 cwd = os.path.dirname(os.path.realpath(__file__))

@@ -1,616 +1,496 @@
 INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-000INFO: Func-<module> : Line-70 : END of BOT
-ine-43 : {'event_date': ['Monday, Dec. 20, 2021 at 12pm-2pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Auburn Arena\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '250 Beard-Eaves Court Auburn, Alabama 36849\n'
-                'https://auburntigers.com/calendar.aspx?id=20059\n'
-                "Auburn Women's Basketball vs Kennesaw State\n"
-                'TV: SECN+\n'
-                'Radio: WQSI 93.9 FM\n'
-                'Streaming Audio: auburntigers.com/showcase?Live=1742\n'
-                'Tickets: '
-                'auburntigers.evenue.net/cgi-bin/ncom...mp;locale=en_US&siteId=ev_auburn\n'
-                'auburntigers.com/calendar.aspx?id=20059'],
- 'event_name': ["Auburn Women's Basketball vs Kennesaw State"],
- 'event_time': ['Monday, Dec. 20, 2021 at 12pm-2pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+ine-43 : {'event_date': ['December 1, 2021'],
+ 'event_desc': ['DESCRIPTION\n'
+                'Information Session for prospective ProSales students\n'
+                'Read More »'],
+ 'event_name': ['ProSales: Info Session'],
+ 'event_time': ['4:00 - 5:00 pm'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Wednesday, Dec. 22, 2021 at 5pm-7pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Auburn Arena\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '250 Beard-Eaves Court Auburn, Alabama 36849\n'
-                'https://auburntigers.com/calendar.aspx?id=20020\n'
-                "Auburn Men's Basketball vs Murray State - Home For The "
-                'Holidays Game\n'
-                'TV: SEC Network\n'
-                'Radio: Auburn Sports Network\n'
-                'Streaming Audio: auburntigers.com/showcase?Live=1713\n'
-                'auburntigers.com/calendar.aspx?id=20020'],
- 'event_name': ["Auburn Men's Basketball vs Murray State - Home For The "
-                'Holidays Game'],
- 'event_time': ['Wednesday, Dec. 22, 2021 at 5pm-7pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 3, 2021'],
+ 'event_desc': ['DESCRIPTION\n'
+                'https://baylor.zoom.us/my/prosales PW = ProSales Companies '
+                'meet Baylor ProSales students, who share their personal '
+                'ProSales experiences in the ProSales curriculum, internal and '
+                'external sales competitions, professional development events, '
+                'and the collaborative culture that permeates the program.\n'
+                'Read More »'],
+ 'event_name': ['Explore ProSales Event'],
+ 'event_time': ['10:00 am - 12:00 pm'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Wednesday, Dec. 29, 2021 at 6pm-8pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Auburn Arena\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '250 Beard-Eaves Court Auburn, Alabama 36849\n'
-                'https://auburntigers.com/calendar.aspx?id=20107\n'
-                "Auburn Men's Basketball vs LSU\n"
-                'TV: ESPNU\n'
-                'Streaming Audio: auburntigers.com/showcase?Live=1760\n'
-                'auburntigers.com/calendar.aspx?id=20107'],
- 'event_name': ["Auburn Men's Basketball vs LSU"],
- 'event_time': ['Wednesday, Dec. 29, 2021 at 6pm-8pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 8, 2021'],
+ 'event_name': ['Last Class Day'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Thursday, Dec. 30, 2021 at 7pm-9pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Auburn Arena\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '250 Beard-Eaves Court Auburn, Alabama 36849\n'
-                'https://auburntigers.com/calendar.aspx?id=20082\n'
-                "Auburn Women's Basketball vs Kentucky\n"
-                'TV: SECN+\n'
-                'Radio: WQSI 93.9 FM\n'
-                'Streaming Audio: auburntigers.com/showcase?Live=1744\n'
-                'Tickets: '
-                'auburntigers.evenue.net/cgi-bin/ncom...mp;locale=en_US&siteId=ev_auburn\n'
-                'auburntigers.com/calendar.aspx?id=20082'],
- 'event_name': ["Auburn Women's Basketball vs Kentucky"],
- 'event_time': ['Thursday, Dec. 30, 2021 at 7pm-9pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 9, 2021'],
+ 'event_desc': ['DESCRIPTION\n'
+                'Directions: Drive down Washington Ave., take a left after the '
+                'Texas Life building and park in parking garage before 11th '
+                'St.'],
+ 'event_name': ['ProSales: Christmas Party'],
+ 'event_time': ['6:00 - 8:00 pm'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Monday, Jan. 3, 2022 at 7:30pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Jay and Susie Gogue Performing Arts Center, Woltosz Theatre\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '910 South College Street Auburn, Alabama 36849\n'
-                'https://goguecenter.auburn.edu/fiddler-on-the-roof/ #augpac'],
- 'event_name': ['Fiddler on the Roof'],
- 'event_time': ['Monday, Jan. 3, 2022 at 7:30pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 9-10, 2021'],
+ 'event_name': ['Study Days'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Monday, Jan. 3, 2022 at 7:30pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Jay and Susie Gogue Performing Arts Center, Woltosz Theatre\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '910 South College Street Auburn, Alabama 36849\n'
-                'https://goguecenter.auburn.edu/fiddler-on-the-roof/ #augpac'],
- 'event_name': ['Fiddler on the Roof'],
- 'event_time': ['Monday, Jan. 3, 2022 at 7:30pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 11-16, 2021'],
+ 'event_desc': ['DESCRIPTION\nno exams on Sunday 12/12'],
+ 'event_name': ['Final Exams'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Saturday, Jan. 8, 2022 at 10am-1pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'James E. Martin Aquatic Center\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '664 Biggio Drive Auburn, Alabama 36849\n'
-                'https://auburntigers.com/calendar.aspx?id=19989\n'
-                'Auburn Swimming & Diving vs Georgia Tech\n'
-                'auburntigers.com/calendar.aspx?id=19989'],
- 'event_name': ['Auburn Swimming & Diving vs Georgia Tech'],
- 'event_time': ['Saturday, Jan. 8, 2022 at 10am-1pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 17, 2021'],
+ 'event_name': ['Administrative Checks/Commencement Preparation'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Saturday, Jan. 8, 2022 at 7pm-9pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Auburn Arena\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '250 Beard-Eaves Court Auburn, Alabama 36849\n'
-                'https://auburntigers.com/calendar.aspx?id=20109\n'
-                "Auburn Men's Basketball vs Florida\n"
-                'TV: ESPN2/U\n'
-                'Streaming Audio: auburntigers.com/showcase?Live=1762\n'
-                'auburntigers.com/calendar.aspx?id=20109'],
- 'event_name': ["Auburn Men's Basketball vs Florida"],
- 'event_time': ['Saturday, Jan. 8, 2022 at 7pm-9pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 17, 2021'],
+ 'event_name': ['Grades due at 12:00noon for graduating students and at '
+                '5:00p.m. for all other students'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Sunday, Jan. 9, 2022 at 4pm-6pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Auburn Arena\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '250 Beard-Eaves Court Auburn, Alabama 36849\n'
-                'https://auburntigers.com/calendar.aspx?id=20085\n'
-                "Auburn Women's Basketball vs LSU\n"
-                'TV: SEC Network\n'
-                'Radio: WQSI 93.9 FM\n'
-                'Streaming Audio: auburntigers.com/showcase?Live=1747\n'
-                'Tickets: '
-                'auburntigers.evenue.net/cgi-bin/ncom...mp;locale=en_US&siteId=ev_auburn\n'
-                'auburntigers.com/calendar.aspx?id=20085'],
- 'event_name': ["Auburn Women's Basketball vs LSU"],
- 'event_time': ['Sunday, Jan. 9, 2022 at 4pm-6pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 18, 2021'],
+ 'event_name': ['Commencement'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Thursday, Jan. 13, 2022 at 11am-11:45am'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Foy Hall, 242\n'
-                'Free Event\n'
-                'Add To Calendar\n'
-                '282 Thach Concourse Auburn University, Alabama 36849\n'
-                'The first step in the advising process is to attend a Study '
-                'Abroad 101 session. These 30-minute group sessions provide an '
-                'overview of the entire study abroad process. You will learn '
-                'how to choose the right program, begin an application, get '
-                'credits pre-approved before departure, search for funding, '
-                'and more. \n'
-                ' '],
- 'event_name': ['Study Abroad 101'],
- 'event_time': ['Thursday, Jan. 13, 2022 at 11am-11:45am'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['December 27, 2021'],
+ 'event_name': ['Wintermester classes begin'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Thursday, Jan. 13, 2022 at 11am-11:45am'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Foy Hall, 242\n'
-                'Free Event\n'
-                'Add To Calendar\n'
-                '282 Thach Concourse Auburn University, Alabama 36849\n'
-                'The first step in the advising process is to attend a Study '
-                'Abroad 101 session. These 30-minute group sessions provide an '
-                'overview of the entire study abroad process. You will learn '
-                'how to choose the right program, begin an application, get '
-                'credits pre-approved before departure, search for funding, '
-                'and more. \n'
-                ' '],
- 'event_name': ['Study Abroad 101'],
- 'event_time': ['Thursday, Jan. 13, 2022 at 11am-11:45am'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['Dec. 27, 2021 - Jan. 14, 2022'],
+ 'event_name': ['Wintermester (December 27-January 14)'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Thursday, Jan. 13, 2022 at 11am-11:45am'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Foy Hall, 242\n'
-                'Free Event\n'
-                'Add To Calendar\n'
-                '282 Thach Concourse Auburn University, Alabama 36849\n'
-                'The first step in the advising process is to attend a Study '
-                'Abroad 101 session. These 30-minute group sessions provide an '
-                'overview of the entire study abroad process. You will learn '
-                'how to choose the right program, begin an application, get '
-                'credits pre-approved before departure, search for funding, '
-                'and more. \n'
-                ' '],
- 'event_name': ['Study Abroad 101'],
- 'event_time': ['Thursday, Jan. 13, 2022 at 11am-11:45am'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 1, 2022'],
+ 'event_name': ["New Year's Holiday (Wintermester students)"],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Friday, Jan. 14, 2022 at 4pm-5pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Melton Student Center, Meeting Rooms\n'
-                'View Map\n'
-                'Free Event\n'
-                'Add To Calendar\n'
-                '255 Heisman Drive Auburn, Alabama 36849\n'
-                'A Friday Social Hour hosted by ISO! Come by for free food, '
-                'socializing and entertainment. All of the food for our weekly '
-                'Social Hours represent the host country for the week!'],
- 'event_name': ['International Student Organization Social Hours'],
- 'event_time': ['Friday, Jan. 14, 2022 at 4pm-5pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['Dec. 27, 2021 - Jan. 14, 2022'],
+ 'event_name': ['Wintermester (December 27-January 14)'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Saturday, Jan. 15, 2022'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Yarbrough Tennis Center\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '777 South Yarbrough Farms Boulevard Auburn, Alabama 36832\n'
-                'https://auburntigers.com/calendar.aspx?id=19961\n'
-                "Auburn Men's Tennis vs University of North Alabama\n"
-                'auburntigers.com/calendar.aspx?id=19961'],
- 'event_name': ["Auburn Men's Tennis vs University of North Alabama"],
- 'event_time': ['Saturday, Jan. 15, 2022'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 14, 2022'],
+ 'event_name': ['Wintermester classes end/examinations'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Saturday, Jan. 15, 2022'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Yarbrough Tennis Center\n'
-                'View Map\n'
-                'Add To Calendar\n'
-                '777 South Yarbrough Farms Boulevard Auburn, Alabama 36832\n'
-                'https://auburntigers.com/calendar.aspx?id=19933\n'
-                "Auburn Men's Tennis vs University of North Alabama\n"
-                'auburntigers.com/calendar.aspx?id=19933'],
- 'event_name': ["Auburn Men's Tennis vs University of North Alabama"],
- 'event_time': ['Saturday, Jan. 15, 2022'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 17, 2022'],
+ 'event_name': ['Martin Luther King, Jr. Day - University Holiday'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Monday, Jan. 17, 2022 at 6:30pm-8pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Beard-Eaves-Memorial Coliseum\n'
-                'View Map\n'
-                'Free Event\n'
-                'Add To Calendar\n'
-                '650 Biggio Drive Auburn, Alabama 36849\n'
-                'Fencing practice for fun and fitness, including learning '
-                'techniques, conditioning and practice bouts.'],
- 'event_name': ['Fencing Club Practice'],
- 'event_time': ['Monday, Jan. 17, 2022 at 6:30pm-8pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 18, 2022'],
+ 'event_name': ['First Class Day'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0003 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Tuesday, Jan. 18, 2022 at 6pm-7pm'],
- 'event_desc': ['ABOUT THIS EVENT\n'
-                'Free Event\n'
-                'Add To Calendar\n'
-                "Are you ready to turn your New Year's resolutions into "
-                'promises? Join Emerge at Auburn for a virtual experience with '
-                "Alex Sheen, founder of 'because I said I would.' Enjoy an "
-                'engaging workshop on the importance of keeping promises and '
-                'learn how your commitment can create positive change. This '
-                'event is open to all Auburn University students as part of '
-                'the Emerge at Auburn speaker series. RSVP for the event and '
-                'access the virtual webinar at aub.ie/emergepresents. \n'
-                'For questions or to learn more about Emerge at Auburn, '
-                'contact lead@auburn.edu.'],
- 'event_name': ['Welcome Week | Emerge presents Alex Sheen'],
- 'event_time': ['Tuesday, Jan. 18, 2022 at 6pm-7pm'],
- 'logo': ['https://cdn.auburn.edu/2016/_assets/images/auburn-logo-horizontal.svg'],
- 'university_contact_info': ['Contact\n'
-                             'Auburn University\n'
-                             'Auburn, Alabama 36849\n'
-                             '(334) 844-4000\n'
-                             'Website Feedback\n'
-                             'Webmaster'],
- 'university_name': ['Auburn University Homepage']}
-INFO: Func-process_item : Line-64 :       Last Updated  Event Name  Event Date  Event Time  Event Link  ...  Startup Contact Info(s)  University Name  University Contact Info  Logo  SpiderName
-0              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-2              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-3              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-4              NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-...            ...         ...         ...         ...         ...  ...                      ...              ...                      ...   ...         ...
-998            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-999            NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1000           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1001           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
-1002           NaN         NaN         NaN         NaN         NaN  ...                      NaN              NaN                      NaN   NaN         NaN
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 19, 2022'],
+ 'event_desc': ['DESCRIPTION\nRead More »'],
+ 'event_name': ['Application Deadline for Spring 2022 McLane Scholars Program'],
+ 'event_time': ['6:00 pm'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
 
 [1003 rows x 13 columns]
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 20, 2022'],
+ 'event_desc': ['LOCATION\nTBA'],
+ 'event_name': ['Accounting Student Recruiting Meeting/Dress for Success'],
+ 'event_time': ['5:00 - 6:00 pm'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
+
+[1003 rows x 13 columns]
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 27, 2022'],
+ 'event_desc': ['DESCRIPTION\n'
+                'Baylor students engage in a live role play competition with '
+                'business executives to demonstrate and refine selling '
+                'techniques.\n'
+                'Read More »'],
+ 'event_name': ['ProSales: Baylor Business Selling Outside'],
+ 'event_time': ['10:00 am - 7:00 pm'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
+
+[1003 rows x 13 columns]
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 27-28, 2022'],
+ 'event_name': ['Accounting Virtual Presentation Days'],
+ 'event_time': ['All Day'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
+0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
+...                      ...                            ...  ...                                                ...        ...
+998                      NaN                            NaN  ...                                                NaN        NaN
+999                      NaN                            NaN  ...                                                NaN        NaN
+1000                     NaN                            NaN  ...                                                NaN        NaN
+1001                     NaN                            NaN  ...                                                NaN        NaN
+1002                     NaN                            NaN  ...                                                NaN        NaN
+
+[1003 rows x 13 columns]
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 28, 2022'],
+ 'event_desc': ['DESCRIPTION\nRead More »'],
+ 'event_name': ['ProSales: Advisory Board Meeting'],
+ 'event_time': ['8:00 - 10:30 am'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 28, 2022'],
+ 'event_desc': ['DESCRIPTION\n'
+                'Our Top Gun Training programs are professional development '
+                'events which strengthen relationships between ProSales '
+                'students and corporate partners.\n'
+                'Read More »'],
+ 'event_name': ['ProSales: Top Gun'],
+ 'event_time': ['11:30 am - 4:00 pm'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
+INFO: Func-process_item : Line-43 : {'event_date': ['January 31, 2022'],
+ 'event_desc': ['DESCRIPTION\n'
+                'https://www.baylor.edu/alumni/magazine/2001/index.php?id=981650'],
+ 'event_name': ['Confessions of an Entrepreneur with Omari and Abby Head of '
+                'Head Hospitalities (Cheddar Box, Mac House, Pops Lemonade)'],
+ 'event_time': ['2:00 - 3:00 pm'],
+ 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
+ 'university_contact_info': ['Baylor University Waco, Texas 76798 '
+                             '1-800-BAYLOR-U'],
+ 'university_name': ['Baylor Business - Hankamer School of Business']}

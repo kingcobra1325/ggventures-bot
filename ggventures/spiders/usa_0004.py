@@ -22,8 +22,6 @@ class Usa0004Spider(scrapy.Spider):
         self.driver = Load_Driver()
 
     def parse(self, response):
-        
-        height = self.driver.execute_script("return document.body.scrollHeight")
 
         event_name = list()
         event_date = list()
@@ -41,14 +39,21 @@ class Usa0004Spider(scrapy.Spider):
             
 
         for i in range(3):
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//li[contains(@class, 'event-item snippet event clearfix')]")))
-            for o in EventLinks:
-                event_name.append(o.find_element(By.XPATH,".//div[contains(@class, 'event-info')]/header").text.strip())
-                event_desc.append(o.find_element(By.XPATH, ".//div[starts-with(@class, 'image')]").get_attribute('textContent').strip())
-                event_date.append(o.find_element(By.XPATH, ".//div[contains(@class, 'event-date-box')]").text.strip())
-                event_time.append(o.find_element(By.XPATH, ".//p[contains(@class, 'categories_trigger ajax-load-link')]").text.strip())
-            Next_Link = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@class, 'next-search-link')]")))).get_attribute('href')
-            self.driver.get(Next_Link)
+            while True:
+                EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//li[contains(@class, 'event-item snippet event clearfix')]")))
+                
+                for o in EventLinks:
+                    event_name.append(o.find_element(By.XPATH,".//div[contains(@class, 'event-info')]/header").text.strip())
+                    event_desc.append(o.find_element(By.XPATH, ".//div[starts-with(@class, 'image')]").get_attribute('textContent').strip())
+                    event_date.append(o.find_element(By.XPATH, ".//div[contains(@class, 'event-date-box')]").text.strip())
+                    event_time.append(o.find_element(By.XPATH, ".//p[contains(@class, 'categories_trigger ajax-load-link')]").text.strip())
+                Next_Month = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@class, 'next-search-link')]")))).get_attribute('href')
+                try:
+                    self.driver.get(self.driver.find_element(By.XPATH,"//a[contains(@title, 'Page ›')]").get_attribute('href'))
+                except:
+                    break
+                    
+            self.driver.get(Next_Month)
             
         for i in range(len(event_name)):
             data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -61,7 +66,6 @@ class Usa0004Spider(scrapy.Spider):
             data.add_value('event_time', event_time[i])
             yield data.load_item()
         self.driver.quit()
-        self.getter.quit()
             # data.add_value('logo',logo)
             # data.add_value('event_time',event_time)
             # data.add_value('event_link',event_link)
