@@ -1,6 +1,10 @@
 import time, os, sys, logging
 from os import environ
-
+# try:
+#     import redis
+# except:
+#     os.system(f"{sys.executable} -m pip install redis")
+#     import redis
 try:
     import gspread
 except:
@@ -42,10 +46,24 @@ file_handler.setFormatter(logging.Formatter(FORMAT))
 logger.addHandler(file_handler)
 logger.addHandler(logging.StreamHandler())
 
+## ----------------------- GOOGLE CLOUD JSON ----------------------------- ##
+
+# if environ.get('DEPLOYED'):
+#     REDISCLOUD_URL = environ.get('REDISCLOUD_URL')
+# else:
+#     REDISCLOUD_URL = 'redis://default:sNQgQWOAwviZIfQtDywwXgMOFomnYR9n@redis-18599.c278.us-east-1-4.ec2.cloud.redislabs.com:18599'
+#
+# def redis_conn():
+#     r = redis.Redis(host=REDISCLOUD_URL, port=6379)
+
+
 ################################# DATAFRAME ###################################################
 
 df = pd.DataFrame(columns=["Last Updated", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
-                                "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo"])
+                                "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
+
+def remove_dup(df1,df2):
+    return pd.concat([df1,df2]).drop_duplicates(keep=False)
 
 ######################### GOOGLE API #############################################
 
