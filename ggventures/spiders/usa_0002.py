@@ -16,7 +16,6 @@ from selenium.webdriver.support import expected_conditions as EC
 class Usa0002Spider(scrapy.Spider):
     name = 'usa-0002'
     country = 'US'
-    # allowed_domains = ['https://wpcarey.asu.edu/calendarofevents']
     start_urls = ['https://wpcarey.asu.edu/calendarofevents']
     
     def __init__(self):
@@ -60,9 +59,6 @@ class Usa0002Spider(scrapy.Spider):
             event_date.append(RawEventDate)
             event_time.append(RawEventTime)
             print(event_time,"+"*100)
-        
-        self.driver.quit()
-        self.getter.quit()
 
         for i in range(len(event_name)):
             data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -74,6 +70,8 @@ class Usa0002Spider(scrapy.Spider):
             data.add_value('event_date', event_date[i])
             data.add_value('event_time', event_time[i])
             yield data.load_item()
+        self.driver.quit()
+        self.getter.quit()
             # data.add_value('logo',logo)
             # data.add_value('event_time',event_time)
             # data.add_value('event_link',event_link)

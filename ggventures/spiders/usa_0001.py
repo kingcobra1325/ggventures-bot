@@ -1,6 +1,5 @@
 import scrapy
 # from scrapy import Selector
-from time import sleep
 
 from binaries import Load_Driver, logger, WebScroller
 
@@ -34,9 +33,7 @@ class Usa0001Spider(scrapy.Spider):
         RawEventName = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class, 'events__title')]")))
         RawEventDesc = self.driver.find_elements(By.XPATH,"//div[contains(@class, 'event__content')]/p")
         RawEventDate = self.driver.find_elements(By.XPATH,"//article//div[contains(@class, 'events-carousel__date')]")
-        RawEventTime = self.driver.find_elements(By.XPATH,"//div[contains(@class,'events-carousel__time')]")
-        
-        self.driver.quit()
+        RawEventTime = self.driver.find_elements(By.XPATH,"//div[contains(@class,'events-carousel__time')]") 
 
         for i in range(len(RawEventName)):
             data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -53,6 +50,7 @@ class Usa0001Spider(scrapy.Spider):
             data.add_value('event_date', RawEventDate[i].text.replace('\n',' '))
             data.add_value('event_time', RawEventTime[i].get_attribute('textContent').strip())
             yield data.load_item()
+        self.driver.quit()
 
             # logger.info(f"Fetching Event Date: {RawEventDate[i].text.replace('\n',' ')}")
 
