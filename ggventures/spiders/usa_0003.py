@@ -31,7 +31,7 @@ class Usa0003Spider(scrapy.Spider):
         
         self.driver.get(response.url)
 
-        logo = (WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@class, 'hidden-print')]")))).get_attribute('src')
+        logo = (WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@class, 'hidden-print')]")))).get_attribute('src')
         
         university_name = self.driver.find_element(By.XPATH,"//header/h1").get_attribute('textContent')
         
@@ -42,7 +42,7 @@ class Usa0003Spider(scrapy.Spider):
         for i in EventLinks:       
             self.getter.get(i.get_attribute('href'))
             
-            RawEventName = (WebDriverWait(self.getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'em-header-card_text')]/h1")))).text
+            RawEventName = (WebDriverWait(self.getter, 60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'em-header-card_text')]/h1")))).text
             
             RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'em-content_about')]").text
             
