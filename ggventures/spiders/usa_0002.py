@@ -47,17 +47,16 @@ class Usa0002Spider(scrapy.Spider):
             self.getter.get(i.get_attribute('href'))
             
             RawEventName = (WebDriverWait(self.getter, 60).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class,'listing-hero-title')]")))).text
-            
-            print(RawEventName,"+"*100)
+
             RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'structured-content-rich-text structured-content__module l-align-left l-mar-vert-6 l-sm-mar-vert-4 text-body-medium')]").text
             
             try:
-                RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'js-date-time-first-line')]").text
+                RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-details hide-small')]//p[contains(@class,'js-date-time-first-line')]").text
             except:
                 RawEventDate = None
                 
             try:
-                RawEventTime = self.getter.find_element(By.XPATH, "//div[contains(@class,'js-date-time-second-linet')]").text
+                RawEventTime = self.getter.find_element(By.XPATH, "//div[contains(@class,'event-details hide-small')]//p[contains(@class,'js-date-time-second-line')]").text
             except:
                 RawEventTime = None
             

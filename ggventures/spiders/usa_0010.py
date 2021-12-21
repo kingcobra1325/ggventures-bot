@@ -12,6 +12,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+import re
+
 class Usa0010Spider(scrapy.Spider):
     name = 'usa-0010'
     start_urls = ['https://www.bradley.edu/academic/colleges/fcba']
