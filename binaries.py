@@ -62,8 +62,6 @@ logger.addHandler(logging.StreamHandler())
 df = pd.DataFrame(columns=["Last Updated", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
 
-def remove_dup(df1,df2):
-    return pd.concat([df1,df2]).drop_duplicates(keep=False)
 
 ######################### GOOGLE API #############################################
 
@@ -93,6 +91,8 @@ formatter = BasicFormatter(
     header_text_color=Color(1,1,1),
     decimal_format='#,##0.00'
 )
+
+
 def Google_Sheets():
     gc = gspread.service_account_from_dict(BOT_KEYS)
     return df, gc.open_by_key(SPREADSHEET_ID)
@@ -105,26 +105,35 @@ if environ.get('DEPLOYED'):
     GOOGLE_CHROME_BIN = environ.get('GOOGLE_CHROME_BIN')
     CHROMEDRIVER_PATH = environ.get('CHROMEDRIVER_PATH')
 else:
-    # GOOGLE_CHROME_BIN = 'C:\Pysourcecodes\chromium\chrome.exe'
-    CHROMEDRIVER_PATH = 'C:\Chromium\chromedriver'
-    # CHROMEDRIVER_PATH = 'C:\Pysourcecodes\chromium\chromedriver'
+    GOOGLE_CHROME_BIN = 'C:\Pysourcecodes\chromium\chrome.exe'
+    CHROMEDRIVER_PATH = 'C:\Pysourcecodes\chromium\chromedriver'
 
 options = Options()
 # ------------- DRIVER OPTIONS --------------- #
 options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
-# options.add_argument('--headless')
-# options.add_argument('--disable-gpu')
-# options.add_argument('--disable-dev-shm-usage')
+options.add_argument('--headless')
+options.add_argument('--disable-gpu')
+options.add_argument('--disable-dev-shm-usage')
 options.add_argument("--log-level=3")
-# options.binary_location = GOOGLE_CHROME_BIN
+options.binary_location = GOOGLE_CHROME_BIN
 options.add_argument('--no-sandbox')
 
 # DRIVER VAR
 def Load_Driver():
     return webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=options)
+# default_driver.quit()
+
+
+####################################### FUNCTIONS #########################################
 
 def WebScroller(driver,height):
     for i in range(0,height,int(height/10)):
         driver.execute_script("window.scrollBy(0, {0});".format(i))
         time.sleep(0.5)
-# default_driver.quit()
+
+def GetValueByIndex(list,index):
+    try:
+        return list[index]
+    except (KeyError,TypeError) as e:
+        logger.info(f"Error {e}: Unable to get value from index")
+        return ''

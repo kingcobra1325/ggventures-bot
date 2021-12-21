@@ -3,7 +3,11 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 from datetime import datetime, timezone
-
+try:
+    import pandas as pd
+except:
+    os.system(f"{sys.executable} -m pip install pandas")
+    import pandas as pd
 try:
     import openpyxl
     from openpyxl.utils import get_column_letter
@@ -20,11 +24,15 @@ except:
     from gspread_dataframe import get_as_dataframe, set_with_dataframe
 try:
     from gspread_formatting.dataframe import format_with_dataframe
+    from gspread_formatting import *
+    # from gspread_formatting import batch_updater
 except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
+    # from gspread_formatting import batch_updater
+    from gspread_formatting import *
     from gspread_formatting.dataframe import format_with_dataframe
 
-from binaries import logger, Google_Sheets, remove_dup, formatter
+from binaries import logger, Google_Sheets, formatter, GetValueByIndex
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
@@ -45,43 +53,33 @@ class GgventuresPipeline:
         df = df_all
         worksheet = spreadsheet.worksheet(spider.country)
         data = {
-                    "Last Updated" : datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p'),
-                    "Event Name" : item.get("event_name"),
-                    "Event Date" : item.get("event_date"),
-                    "Event Time" : item.get("event_time"),
-                    "Event Link" : item.get("event_link"),
-                    "Event Description" : item.get("event_desc"),
-                    "Startup Name(s)" : item.get("startups_name"),
-                    "Startup Link(s)" : item.get("startups_link"),
-                    "Startup Contact Info(s)" : item.get("startups_contact_info"),
-                    "University Name" : item.get("university_name"),
-                    "University Contact Info" : item.get("university_contact_info"),
-                    "Logo" : item.get("logo"),
+                    # "Last Updated" : datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p'),
+                    "Last Updated" : datetime.utcnow(),
+                    "Event Name" : GetValueByIndex(item.get("event_name"),0),
+                    "Event Date" : GetValueByIndex(item.get("event_date"),0),
+                    "Event Time" : GetValueByIndex(item.get("event_time"),0),
+                    "Event Link" : GetValueByIndex(item.get("event_link"),0),
+                    "Event Description" : GetValueByIndex(item.get("event_desc"),0),
+                    "Startup Name(s)" : GetValueByIndex(item.get("startups_name"),0),
+                    "Startup Link(s)" : GetValueByIndex(item.get("startups_link"),0),
+                    "Startup Contact Info(s)" : GetValueByIndex(item.get("startups_contact_info"),0),
+                    "University Name" : GetValueByIndex(item.get("university_name"),0),
+                    "University Contact Info" : GetValueByIndex(item.get("university_contact_info"),0),
+                    "Logo" : GetValueByIndex(item.get("logo"),0),
                     "SpiderName" : spider.name
         }
         # GET EXISTING DF from WORKSHEET
         prev_df = get_as_dataframe(worksheet)
-        logger.info(prev_df)
         df = prev_df.copy()
+        # REMOVE EMPTY ROWS
         df.dropna(how='all',inplace=True)
-        # CHECK IF EVENT NAME IS ALREADY IN THE SHEET
-        # if not prev_df.empty:
-        #     if prev_df[prev_df['column_name'] == some_value]:
-        #         logger.info(f'Event: {item.get("event_name")} already exist in the data sheet!')
-        #     else:
-        #         logger.info(f'Event: {item.get("event_name")} already exist in the data sheet!')
-        #         prev_df.loc[prev_df.shape[0]] = data
-        # else:
-        #     logger.info(f'Dataframe is empty. Creating a Blank Sheet')
-        #     prev_df = df
+        # ADD ITEM TO DF
         df.loc[df.shape[0]] = data
-        df.sort_values(by=["Last Updated"], ascending=False)
-        df.drop_duplicates(keep='last')
+        # SORT ITEMS BY DATE AND REMOVE DUPLICATES
+        df["Last Updated"] = df["Last Updated"].astype('datetime64[ns]')
+        df.sort_values(by='Last Updated', ascending = False, inplace=True)
+        df.drop_duplicates(subset=['Event Name'],inplace=True)
 
-        # CHECK DUPLICATES AND ADD NEW DATA
-        # df_diff = remove_dup(df,prev_df)
-        # df.append(df_diff)
-        # LOAD DATA INTO GOOGLE SHEETS
         set_with_dataframe(worksheet, df)
-        format_with_dataframe(worksheet, df, formatter, include_column_header=True)
+        # format_with_dataframe(worksheet, df, formatter, include_column_header=True)
         return item
