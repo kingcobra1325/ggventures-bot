@@ -13,58 +13,52 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class Usa0005Spider(scrapy.Spider):
-    name = 'usa-0005'
-    country = 'US'
-    start_urls = ['https://zicklin.baruch.cuny.edu/events/']
+class Usa0008Spider(scrapy.Spider):
+    name = 'usa-0008'
+    start_urls = ['https://www.bc.edu/']
 
     def __init__(self):
         self.driver = Load_Driver()
         self.getter = Load_Driver()
         self.start_time = round(time.time())
         self.scrape_time = None
-        
+
     def parse(self, response):
         try:
+            self.driver.get(response.url)
+            
             event_name = list()
             event_date = list()
             event_time = list()
             event_desc = list()
-            
-            self.driver.get('https://zicklin.baruch.cuny.edu/')
-            
-            logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'zk-print-logo')]/img[contains(@id,'dtlogo')]")))).get_attribute('src')
-            
-            university_name = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//title")))).get_attribute('textContent')
 
-            university_contact_info = self.driver.find_element(By.XPATH,"//a[contains(@class ,'phone')]").text
+            logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@id,'mainLogo')]/a/img")))).get_attribute('src')
+            
+            university_name = self.driver.find_element(By.XPATH , "//title").get_attribute('textContent')
+            
+            self.driver.get("https://www.bc.edu/content/bc-web/schools/carroll-school/about/contact.html")
+            
+            GetLast = self.driver.find_elements(By.XPATH, "//div[contains(@class,'responsive-columns section')]//div[contains(@class,'clearfix')]/div")
+            university_contact_info = GetLast[len(GetLast)-1].text
+            
+            self.driver.get("http://events.bc.edu/")
+
+            EventLinks = self.driver.find_elements(By.XPATH, "//div[contains(@class,'item_content_medium')]/div/h3/a")
+            for i in EventLinks:
+                self.getter.get(i.get_attribute('href'))
+                    
+                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'box_content vevent grid_8')]/h1")))).text
                 
-            
-            self.driver.get(response.url)
-            
-            while True:
-                EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@class,'tribe-event-url news-listing-title')]")))
-
-                for i in EventLinks:
-                    self.getter.get(i.get_attribute('href'))
-                    
-                    RawEventName = self.getter.find_element(By.XPATH,"//h1[contains(@class,'tribe-events-single-event-title')]").text
-                    
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class, 'tribe-events-single-event-description tribe-events-content')]/p[1]").text
-                    
-                    RawEventDate = self.getter.find_element(By.XPATH,"//abbr[contains(@class,'tribe-events-abbr tribe-events-start-date published dtstart')]").text
-                    
-                    RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'tribe-events-abbr tribe-events-start-time published dtstart')]").text
-                    
-                    event_name.append(RawEventName)
-                    event_desc.append(RawEventDesc)
-                    event_date.append(RawEventDate)
-                    event_time.append(RawEventTime)
-                try:
-                    newLink = self.driver.find_element(By.XPATH,"//a[contains(@rel, 'next')]").get_attribute('href')
-                    self.driver.get(newLink)
-                except NoSuchElementException:
-                    break 
+                RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'description')]").text
+                
+                RawEventDate = self.getter.find_element(By.XPATH,"//p[contains(@class,'dateright')]").text
+                
+                RawEventTime = self.getter.find_element(By.XPATH,"//p[contains(@class,'dateright')]").text
+                
+                event_name.append(RawEventName)
+                event_desc.append(RawEventDesc)
+                event_date.append(RawEventDate)
+                event_time.append(RawEventTime)
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
