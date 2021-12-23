@@ -33,6 +33,7 @@ except:
     from gspread_formatting.dataframe import format_with_dataframe
 
 from binaries import logger, Google_Sheets, formatter, GetValueByIndex
+from bot_email import missing_info_email, error_email
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
@@ -47,39 +48,43 @@ class GgventuresPipeline:
         pass
 
     def process_item(self, item, spider):
-        logger.info(f"PIPELINE: Currently processing {spider.name} scraped data:")
-        logger.info(f"{item}")
-        df_all, spreadsheet = Google_Sheets()
-        df = df_all
-        worksheet = spreadsheet.worksheet(spider.country)
-        data = {
-                    # "Last Updated" : datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p'),
-                    "Last Updated" : datetime.utcnow(),
-                    "Event Name" : GetValueByIndex(item.get("event_name"),0),
-                    "Event Date" : GetValueByIndex(item.get("event_date"),0),
-                    "Event Time" : GetValueByIndex(item.get("event_time"),0),
-                    "Event Link" : GetValueByIndex(item.get("event_link"),0),
-                    "Event Description" : GetValueByIndex(item.get("event_desc"),0),
-                    "Startup Name(s)" : GetValueByIndex(item.get("startups_name"),0),
-                    "Startup Link(s)" : GetValueByIndex(item.get("startups_link"),0),
-                    "Startup Contact Info(s)" : GetValueByIndex(item.get("startups_contact_info"),0),
-                    "University Name" : GetValueByIndex(item.get("university_name"),0),
-                    "University Contact Info" : GetValueByIndex(item.get("university_contact_info"),0),
-                    "Logo" : GetValueByIndex(item.get("logo"),0),
-                    "SpiderName" : spider.name
-        }
-        # GET EXISTING DF from WORKSHEET
-        prev_df = get_as_dataframe(worksheet)
-        df = prev_df.copy()
-        # REMOVE EMPTY ROWS
-        df.dropna(how='all',inplace=True)
-        # ADD ITEM TO DF
-        df.loc[df.shape[0]] = data
-        # SORT ITEMS BY DATE AND REMOVE DUPLICATES
-        df["Last Updated"] = df["Last Updated"].astype('datetime64[ns]')
-        df.sort_values(by='Last Updated', ascending = False, inplace=True)
-        df.drop_duplicates(subset=['Event Name'],inplace=True)
+        try:
+            logger.info(f"PIPELINE: Currently processing {spider.name} scraped data:")
+            logger.info(f"{item}")
+            df_all, spreadsheet = Google_Sheets()
+            df = df_all
+            worksheet = spreadsheet.worksheet(spider.country)
+            data = {
+                        # "Last Updated" : datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p'),
+                        "Last Updated" : datetime.utcnow(),
+                        "Event Name" : GetValueByIndex(item.get("event_name"),0),
+                        "Event Date" : GetValueByIndex(item.get("event_date"),0),
+                        "Event Time" : GetValueByIndex(item.get("event_time"),0),
+                        "Event Link" : GetValueByIndex(item.get("event_link"),0),
+                        "Event Description" : GetValueByIndex(item.get("event_desc"),0),
+                        "Startup Name(s)" : GetValueByIndex(item.get("startups_name"),0),
+                        "Startup Link(s)" : GetValueByIndex(item.get("startups_link"),0),
+                        "Startup Contact Info(s)" : GetValueByIndex(item.get("startups_contact_info"),0),
+                        "University Name" : GetValueByIndex(item.get("university_name"),0),
+                        "University Contact Info" : GetValueByIndex(item.get("university_contact_info"),0),
+                        "Logo" : GetValueByIndex(item.get("logo"),0),
+                        "SpiderName" : spider.name
+            }
+            # GET EXISTING DF from WORKSHEET
+            prev_df = get_as_dataframe(worksheet)
+            df = prev_df.copy()
+            # REMOVE EMPTY ROWS
+            df.dropna(how='all',inplace=True)
+            # ADD ITEM TO DF
+            df.loc[df.shape[0]] = data
+            # SORT ITEMS BY DATE AND REMOVE DUPLICATES
+            df["Last Updated"] = df["Last Updated"].astype('datetime64[ns]')
+            df.sort_values(by='Last Updated', ascending = False, inplace=True)
+            df.drop_duplicates(subset=['Event Name'],inplace=True)
 
-        set_with_dataframe(worksheet, df)
-        # format_with_dataframe(worksheet, df, formatter, include_column_header=True)
-        return item
+            set_with_dataframe(worksheet, df)
+            # format_with_dataframe(worksheet, df, formatter, include_column_header=True)
+            return item
+        except Exception as e:
+            logger.error(f"Experienced error on the Pipeline --> {e}. Sending Error Email Notification")
+            error_email(spider.name,e)

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import time, os, sys, logging
 from os import environ
 # try:
@@ -5,11 +6,6 @@ from os import environ
 # except:
 #     os.system(f"{sys.executable} -m pip install redis")
 #     import redis
-try:
-    import gspread
-except:
-    os.system(f"{sys.executable} -m pip install gspread")
-    import gspread
 try:
     import gspread
 except:
@@ -33,6 +29,15 @@ except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting.dataframe import BasicFormatter, Color
 
+try:
+    import sib_api_v3_sdk
+    from sib_api_v3_sdk.rest import ApiException
+except:
+    os.system(f"{sys.executable} -m pip install sib_api_v3_sdk")
+    import sib_api_v3_sdk
+    from sib_api_v3_sdk.rest import ApiException
+from pprint import pprint
+
 
 ## -------------------- LOGGER SETUP ----------------------- ##
 cwd = os.path.dirname(os.path.realpath(__file__))
@@ -46,15 +51,20 @@ file_handler.setFormatter(logging.Formatter(FORMAT))
 logger.addHandler(file_handler)
 logger.addHandler(logging.StreamHandler())
 
-## ----------------------- GOOGLE CLOUD JSON ----------------------------- ##
+## ----------------------- EMAIL API KEY ----------------------------- ##
 
-# if environ.get('DEPLOYED'):
-#     REDISCLOUD_URL = environ.get('REDISCLOUD_URL')
-# else:
-#     REDISCLOUD_URL = 'redis://default:sNQgQWOAwviZIfQtDywwXgMOFomnYR9n@redis-18599.c278.us-east-1-4.ec2.cloud.redislabs.com:18599'
-#
-# def redis_conn():
-#     r = redis.Redis(host=REDISCLOUD_URL, port=6379)
+if environ.get('DEPLOYED'):
+    # BOT_EMAIL_API_KEY = environ.get('EMAIL_API_KEY')
+    SMTP_SERVER = environ.get('SMTP_SERVER')
+    SMTP_PORT = environ.get('SMTP_PORT')
+    SMTP_EMAIL = environ.get('SMTP_EMAIL')
+    SMTP_KEY = environ.get('SMTP_KEY')
+else:
+    # BOT_EMAIL_API_KEY = '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'
+    SMTP_SERVER = 'smtp-relay.sendinblue.com'
+    SMTP_PORT = '587'
+    SMTP_EMAIL = 'goldengooseventures.developer@gmail.com'
+    SMTP_KEY = 'zdFnEt7j56JgbOR0'
 
 
 ################################# DATAFRAME ###################################################
@@ -137,3 +147,30 @@ def GetValueByIndex(list,index):
     except (KeyError,TypeError) as e:
         logger.info(f"Error {e}: Unable to get value from index")
         return ''
+
+
+# --------------- ERROR EXCEPTION ----------------- #
+
+# def exception_handler(errmsg="", e="",start_time):
+#     """
+#     Handle the Error Occur in the program
+#     :param errmsg: Error message
+#     :param e: error object
+#     :return: Update Logs and Exit Program
+#     """
+#     print(f"\n\n{'-'*51}")
+#     if type(e).__name__ == "KeyboardInterrupt":
+#         end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (
+#                 time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
+#         logger.debug(f"Golden Goose Ventures BOT Failed. | Time Taken = {end_time}")
+#         logger.error("Program aborted by the user.")
+#     else:
+#         end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
+#         logger.error(f"{errmsg + str(e)}")
+#         logger.debug(f"Golden Goose Ventures BOT Failed. | Time Taken = {end_time}")
+#     # logger.debug("\nExiting Program in 30 Seconds or You can close window ...")
+#     # try:
+#     #     time.sleep(30)
+#     # except KeyboardInterrupt:
+#     #     pass
+#     sys.exit(1)
