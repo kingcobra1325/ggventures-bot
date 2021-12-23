@@ -1,496 +1,72 @@
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-000INFO: Func-<module> : Line-70 : END of BOT
-ine-43 : {'event_date': ['December 1, 2021'],
- 'event_desc': ['DESCRIPTION\n'
-                'Information Session for prospective ProSales students\n'
-                'Read More »'],
- 'event_name': ['ProSales: Info Session'],
- 'event_time': ['4:00 - 5:00 pm'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 3, 2021'],
- 'event_desc': ['DESCRIPTION\n'
-                'https://baylor.zoom.us/my/prosales PW = ProSales Companies '
-                'meet Baylor ProSales students, who share their personal '
-                'ProSales experiences in the ProSales curriculum, internal and '
-                'external sales competitions, professional development events, '
-                'and the collaborative culture that permeates the program.\n'
-                'Read More »'],
- 'event_name': ['Explore ProSales Event'],
- 'event_time': ['10:00 am - 12:00 pm'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 8, 2021'],
- 'event_name': ['Last Class Day'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 9, 2021'],
- 'event_desc': ['DESCRIPTION\n'
-                'Directions: Drive down Washington Ave., take a left after the '
-                'Texas Life building and park in parking garage before 11th '
-                'St.'],
- 'event_name': ['ProSales: Christmas Party'],
- 'event_time': ['6:00 - 8:00 pm'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 9-10, 2021'],
- 'event_name': ['Study Days'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 11-16, 2021'],
- 'event_desc': ['DESCRIPTION\nno exams on Sunday 12/12'],
- 'event_name': ['Final Exams'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 17, 2021'],
- 'event_name': ['Administrative Checks/Commencement Preparation'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 17, 2021'],
- 'event_name': ['Grades due at 12:00noon for graduating students and at '
-                '5:00p.m. for all other students'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 18, 2021'],
- 'event_name': ['Commencement'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['December 27, 2021'],
- 'event_name': ['Wintermester classes begin'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Dec. 27, 2021 - Jan. 14, 2022'],
- 'event_name': ['Wintermester (December 27-January 14)'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 1, 2022'],
- 'event_name': ["New Year's Holiday (Wintermester students)"],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['Dec. 27, 2021 - Jan. 14, 2022'],
- 'event_name': ['Wintermester (December 27-January 14)'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 14, 2022'],
- 'event_name': ['Wintermester classes end/examinations'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 17, 2022'],
- 'event_name': ['Martin Luther King, Jr. Day - University Holiday'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 18, 2022'],
- 'event_name': ['First Class Day'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 19, 2022'],
- 'event_desc': ['DESCRIPTION\nRead More »'],
- 'event_name': ['Application Deadline for Spring 2022 McLane Scholars Program'],
- 'event_time': ['6:00 pm'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 20, 2022'],
- 'event_desc': ['LOCATION\nTBA'],
- 'event_name': ['Accounting Student Recruiting Meeting/Dress for Success'],
- 'event_time': ['5:00 - 6:00 pm'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 27, 2022'],
- 'event_desc': ['DESCRIPTION\n'
-                'Baylor students engage in a live role play competition with '
-                'business executives to demonstrate and refine selling '
-                'techniques.\n'
-                'Read More »'],
- 'event_name': ['ProSales: Baylor Business Selling Outside'],
- 'event_time': ['10:00 am - 7:00 pm'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 27-28, 2022'],
- 'event_name': ['Accounting Virtual Presentation Days'],
- 'event_time': ['All Day'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-64 :                 Last Updated                     Event Name  ...                                               Logo SpiderName
-0     12-20-2021 11:24:28 AM     ['ProSales: Info Session']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-1     12-20-2021 11:24:31 AM     ['Explore ProSales Event']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-2     12-20-2021 11:24:34 AM             ['Last Class Day']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-3     12-20-2021 11:24:37 AM  ['ProSales: Christmas Party']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-4     12-20-2021 11:24:40 AM                 ['Study Days']  ...  ['https://www.baylor.edu/business/images_3/new...   usa-0006
-...                      ...                            ...  ...                                                ...        ...
-998                      NaN                            NaN  ...                                                NaN        NaN
-999                      NaN                            NaN  ...                                                NaN        NaN
-1000                     NaN                            NaN  ...                                                NaN        NaN
-1001                     NaN                            NaN  ...                                                NaN        NaN
-1002                     NaN                            NaN  ...                                                NaN        NaN
-
-[1003 rows x 13 columns]
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 28, 2022'],
- 'event_desc': ['DESCRIPTION\nRead More »'],
- 'event_name': ['ProSales: Advisory Board Meeting'],
- 'event_time': ['8:00 - 10:30 am'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 28, 2022'],
- 'event_desc': ['DESCRIPTION\n'
-                'Our Top Gun Training programs are professional development '
-                'events which strengthen relationships between ProSales '
-                'students and corporate partners.\n'
-                'Read More »'],
- 'event_name': ['ProSales: Top Gun'],
- 'event_time': ['11:30 am - 4:00 pm'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
-INFO: Func-process_item : Line-42 : PIPELINE: Currently processing usa-0006 scraped data:
-INFO: Func-process_item : Line-43 : {'event_date': ['January 31, 2022'],
- 'event_desc': ['DESCRIPTION\n'
-                'https://www.baylor.edu/alumni/magazine/2001/index.php?id=981650'],
- 'event_name': ['Confessions of an Entrepreneur with Omari and Abby Head of '
-                'Head Hospitalities (Cheddar Box, Mac House, Pops Lemonade)'],
- 'event_time': ['2:00 - 3:00 pm'],
- 'logo': ['https://www.baylor.edu/business/images_3/newLogoWeb.png'],
- 'university_contact_info': ['Baylor University Waco, Texas 76798 '
-                             '1-800-BAYLOR-U'],
- 'university_name': ['Baylor Business - Hankamer School of Business']}
+INFO: Func-process_item : Line-50 : PIPELINE: Currently processing usa-000INFO: Func-<module> : Line-70 : END of BOT
+ine-51 : {'event_desc': [''],
+ 'event_name': [''],
+ 'logo': ['https://www.asu.edu/asuthemes/5.0/assets/arizona-state-university-logo-vertical.png'],
+ 'university_contact_info': ['Graduate programs\n'
+                             'wpcareymasters@asu.edu\n'
+                             '480-965-3332\n'
+                             'Map\n'
+                             '450 E. Lemon Street, MCRD 350\n'
+                             'P.O. Box 874906\n'
+                             'Tempe, AZ 85287-4906'],
+ 'university_name': ['W. P. Carey School of Business']}
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-50 : PIPELINE: Currently processing usa-0002 scraped data:
+INFO: Func-process_item : Line-51 : {'event_desc': [''],
+ 'event_name': [''],
+ 'logo': ['https://www.asu.edu/asuthemes/5.0/assets/arizona-state-university-logo-vertical.png'],
+ 'university_contact_info': ['Graduate programs\n'
+                             'wpcareymasters@asu.edu\n'
+                             '480-965-3332\n'
+                             'Map\n'
+                             '450 E. Lemon Street, MCRD 350\n'
+                             'P.O. Box 874906\n'
+                             'Tempe, AZ 85287-4906'],
+ 'university_name': ['W. P. Carey School of Business']}
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-50 : PIPELINE: Currently processing usa-0002 scraped data:
+INFO: Func-process_item : Line-51 : {'event_desc': [''],
+ 'event_name': [''],
+ 'logo': ['https://www.asu.edu/asuthemes/5.0/assets/arizona-state-university-logo-vertical.png'],
+ 'university_contact_info': ['Graduate programs\n'
+                             'wpcareymasters@asu.edu\n'
+                             '480-965-3332\n'
+                             'Map\n'
+                             '450 E. Lemon Street, MCRD 350\n'
+                             'P.O. Box 874906\n'
+                             'Tempe, AZ 85287-4906'],
+ 'university_name': ['W. P. Carey School of Business']}
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-50 : PIPELINE: Currently processing usa-0002 scraped data:
+INFO: Func-process_item : Line-51 : {'event_desc': [''],
+ 'event_name': [''],
+ 'logo': ['https://www.asu.edu/asuthemes/5.0/assets/arizona-state-university-logo-vertical.png'],
+ 'university_contact_info': ['Graduate programs\n'
+                             'wpcareymasters@asu.edu\n'
+                             '480-965-3332\n'
+                             'Map\n'
+                             '450 E. Lemon Street, MCRD 350\n'
+                             'P.O. Box 874906\n'
+                             'Tempe, AZ 85287-4906'],
+ 'university_name': ['W. P. Carey School of Business']}
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index

@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class Usa0002Spider(scrapy.Spider):
     name = 'usa-0002'
     country = 'US'
-    start_urls = ['https://wpcarey.asu.edu/calendarofevents']
+    start_urls = ['https://www.eventbrite.com/o/w-p-carey-school-of-business-at-arizona-state-university-11043978456']
     
     def __init__(self):
         self.driver = Load_Driver()
@@ -29,9 +29,9 @@ class Usa0002Spider(scrapy.Spider):
         event_time = list()
         event_desc = list()
         
-        self.driver.get(response.url)
+        self.driver.get("https://wpcarey.asu.edu/")
 
-        logo = (WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@class, 'vert')]")))).get_attribute('src')
+        logo = (WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@class, 'vert')]")))).get_attribute('src')
         
         university_name = self.driver.find_element(By.XPATH,"//div[contains(@class, 'navbar-container')]/a").text
         
@@ -41,18 +41,24 @@ class Usa0002Spider(scrapy.Spider):
         
         self.driver.get(response.url)
             
-        EventLinks = WebDriverWait(self.driver, 60).until(EC.presence_of_all_elements_located((By.XPATH,"//h3/a")))
+        EventLinks = WebDriverWait(self.driver, 60).until(EC.presence_of_all_elements_located((By.XPATH,"(//div[contains(@class,'eds-show-up-mn organizer-profile__event-renderer__grid')])[1]//div[contains(@class,'eds-event-card--consumer')]//a[contains(@tabindex, '0')]")))
 
         for i in EventLinks:       
             self.getter.get(i.get_attribute('href'))
             
-            RawEventName = (WebDriverWait(self.getter, 10).until(EC.presence_of_element_located((By.XPATH,"//div/h1")))).text
+            RawEventName = (WebDriverWait(self.getter, 60).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class,'listing-hero-title')]")))).text
+
+            RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'structured-content-rich-text structured-content__module l-align-left l-mar-vert-6 l-sm-mar-vert-4 text-body-medium')]").text
             
-            RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'view-content')]").text
-            
-            RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'view-content')]/div/p").text.split('\n')[0]  
-            
-            RawEventTime = self.getter.find_element(By.XPATH, "//div[contains(@class,'view-content')]/div/p").text.split('\n')[1]
+            try:
+                RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-details hide-small')]//p[contains(@class,'js-date-time-first-line')]").text
+            except:
+                RawEventDate = None
+                
+            try:
+                RawEventTime = self.getter.find_element(By.XPATH, "//div[contains(@class,'event-details hide-small')]//p[contains(@class,'js-date-time-second-line')]").text
+            except:
+                RawEventTime = None
             
             event_name.append(RawEventName)
             event_desc.append(RawEventDesc)
