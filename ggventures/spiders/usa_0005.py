@@ -31,6 +31,8 @@ class Usa0005Spider(scrapy.Spider):
             event_date = list()
             event_time = list()
             event_desc = list()
+            event_link = list()
+            
             
             self.driver.get('https://zicklin.baruch.cuny.edu/')
             
@@ -61,6 +63,7 @@ class Usa0005Spider(scrapy.Spider):
                     event_desc.append(RawEventDesc)
                     event_date.append(RawEventDate)
                     event_time.append(RawEventTime)
+                    event_link.append(i.get_attribute('href'))
                 try:
                     newLink = self.driver.find_element(By.XPATH,"//a[contains(@rel, 'next')]").get_attribute('href')
                     self.driver.get(newLink)
@@ -76,6 +79,7 @@ class Usa0005Spider(scrapy.Spider):
                 data.add_value('event_desc', event_desc[i])
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
+                # data.add_value('event_link', event_link[i])
                 yield data.load_item()
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")

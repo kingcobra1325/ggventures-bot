@@ -32,6 +32,7 @@ class Usa0010Spider(scrapy.Spider):
             event_date = list()
             event_time = list()
             event_desc = list()
+            event_link = list()
 
             #cannot find logo in website but it appears in fb
             # logo = (WebDriv   erWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'brand')]/a")))).value_of_css_property('background')
@@ -58,11 +59,12 @@ class Usa0010Spider(scrapy.Spider):
                 except:
                     RawEventTime = None
 
-                    
                 event_name.append(RawEventName)
                 event_desc.append(RawEventDesc)
                 event_date.append(RawEventDate)
                 event_time.append(RawEventTime)
+                event_link.append(i.get_attribute('href'))
+                
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -73,6 +75,7 @@ class Usa0010Spider(scrapy.Spider):
                 data.add_value('event_desc', event_desc[i])
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
+                # data.add_value('event_link', event_link[i])
                 yield data.load_item()
             
         except Exception as e:

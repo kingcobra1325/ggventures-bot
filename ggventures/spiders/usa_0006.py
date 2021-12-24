@@ -33,6 +33,7 @@ class Usa0006Spider(scrapy.Spider):
             event_date = list()
             event_time = list()
             event_desc = list()
+            event_link = list()
 
             logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@class ,'logo')]")))).value_of_css_property('background')
             logo = re.findall(r'''\"(\S+)\"''',logo)[0]
@@ -66,6 +67,7 @@ class Usa0006Spider(scrapy.Spider):
                         event_time.append(self.driver.find_element(By.XPATH, "//tr[1]/td[4]").text)
                     except:
                         event_time.append('All Day')
+                    event_link.append(self.driver.current_url)
                     #Some events don't have time and element position changes depends on the event
                     self.driver.close()
                     self.driver.switch_to.window(self.driver.window_handles[0])
@@ -80,6 +82,7 @@ class Usa0006Spider(scrapy.Spider):
                 data.add_value('event_desc', event_desc[i])
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
+                # data.add_value('event_link', event_link[i])
                 yield data.load_item()
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
