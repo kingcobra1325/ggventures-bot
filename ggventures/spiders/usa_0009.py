@@ -22,6 +22,8 @@ class Usa0009Spider(scrapy.Spider):
     def __init__(self):
         self.driver = Load_Driver()
         self.getter = Load_Driver()
+        self.start_time = round(time.time())
+        self.scrape_time = None
 
     def parse(self, response):
         try:
@@ -50,6 +52,7 @@ class Usa0009Spider(scrapy.Spider):
                 RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'description')]").text
                 
                 RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'dateSummary')]").text
+                
                 
                 RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'dateSummary')]").text
                 

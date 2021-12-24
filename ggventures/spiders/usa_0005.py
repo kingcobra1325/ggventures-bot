@@ -12,6 +12,7 @@ from ggventures.items import GgventuresItem
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 
 class Usa0005Spider(scrapy.Spider):
     name = 'usa-0005'
