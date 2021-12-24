@@ -35,7 +35,7 @@ def missing_info_email(spider="Default Spider", university_name="Default Univers
                   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 </head>
                 <body style="background-color:black;color:white">
-                <h1 style="text-align:center">Missing Information - {university_name}</h1>
+                <h1 style="text-align:center;color:white">Missing Information - {university_name}</h1>
                 <h4 style="color:white">The Spider: {spider} failed to scrape multiple information from {university_name}
                 <p>Missing Information: </p>
                 {unpack}
@@ -79,7 +79,7 @@ def error_email(spider="Default Spider",error="Default Error"):
                   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 </head>
                 <body style="background-color:black;color:white">
-                <h1 style="text-align:center">Spider experienced an Error!</h1>
+                <h1 style="text-align:center;color:white">Spider experienced an Error!</h1>
                 <h4 style="color:white">The Spider: {spider} experienced an error while running
                 <p>Error Details: </p>
                 {error}

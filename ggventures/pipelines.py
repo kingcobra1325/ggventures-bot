@@ -90,7 +90,7 @@ class GgventuresPipeline:
             # SORT ITEMS BY DATE AND REMOVE DUPLICATES
             df["Last Updated"] = df["Last Updated"].astype('datetime64[ns]')
             df.sort_values(by='Last Updated', ascending = False, inplace=True)
-            df.drop_duplicates(subset=['Event Name'],inplace=True)
+            df.drop_duplicates(subset=['Event Name','Event Date'],inplace=True)
             # WRITE DF TO GOOGGLE SHEETS
             while True:
                 try:
