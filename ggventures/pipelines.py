@@ -3,6 +3,8 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 from datetime import datetime, timezone
+from time import sleep
+
 try:
     import pandas as pd
 except:
@@ -32,7 +34,7 @@ except:
     from gspread_formatting import *
     from gspread_formatting.dataframe import format_with_dataframe
 
-from binaries import logger, Google_Sheets, formatter, GetValueByIndex
+from binaries import logger, Google_Sheets, formatter, GetValueByIndex, gs_APIError
 from bot_email import missing_info_email, error_email
 
 # useful for handling different item types with a single interface
@@ -71,7 +73,15 @@ class GgventuresPipeline:
                         "SpiderName" : spider.name
             }
             # GET EXISTING DF from WORKSHEET
-            prev_df = get_as_dataframe(worksheet)
+            while True:
+                try:
+                    prev_df = get_as_dataframe(worksheet)
+                    break
+                except gs_APIError as e:
+                    logger.error(f"Error processing GSpread API Request --> {e}. Sending Error Email Notification")
+                    error_email(spider.name,e)
+                    logger.debug(f"Waiting for 60 seconds before retrying request")
+                    sleep(60)
             df = prev_df.copy()
             # REMOVE EMPTY ROWS
             df.dropna(how='all',inplace=True)
@@ -81,8 +91,16 @@ class GgventuresPipeline:
             df["Last Updated"] = df["Last Updated"].astype('datetime64[ns]')
             df.sort_values(by='Last Updated', ascending = False, inplace=True)
             df.drop_duplicates(subset=['Event Name'],inplace=True)
-
-            set_with_dataframe(worksheet, df)
+            # WRITE DF TO GOOGGLE SHEETS
+            while True:
+                try:
+                    prev_df = set_with_dataframe(worksheet, df)
+                    break
+                except gs_APIError as e:
+                    logger.error(f"Error processing GSpread API Request --> {e}. Sending Error Email Notification")
+                    error_email(spider.name,e)
+                    logger.debug(f"Waiting for 60 seconds before retrying request")
+                    sleep(60)
             # format_with_dataframe(worksheet, df, formatter, include_column_header=True)
             return item
         except Exception as e:

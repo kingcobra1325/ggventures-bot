@@ -8,6 +8,9 @@ import time, os, sys
 
 from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY
 
+client_recipients = []
+dev_recipients = ['goldengooseventures.developer@gmail.com', 'kingcobra1325@gmail.com','joachim.cobar@gmail.com']
+
 
 def missing_info_email(spider="Default Spider", university_name="Default University", missing_info=['missing','info'], web_link="www.google.com"):
     try:
@@ -23,7 +26,7 @@ def missing_info_email(spider="Default Spider", university_name="Default Univers
 
             msg = MIMEMultipart('alternative')
             msg['Subject'] = f'GGV BOT Missing Information - {spider}'
-            msg['To'] = 'goldengooseventures.developer@gmail.com'
+            msg['To'] = ", ".join(dev_recipients)
             msg['From'] = 'goldengooseventures.developer@gmail.com'
 
             # EMAIL CONTENT
@@ -36,7 +39,7 @@ def missing_info_email(spider="Default Spider", university_name="Default Univers
             </head>
             <body style="background-color:black;color:white">
             <h1 style="text-align:center">Missing Information - {university_name}</h1>
-            <h4>The Spider: {spider} failed to scrape multiple information from {university_name}
+            <h4 style="color:white">The Spider: {spider} failed to scrape multiple information from {university_name}
             <p>Missing Information: </p>
             {unpack}
             <br>
@@ -66,7 +69,7 @@ def error_email(spider="Default Spider",error="Default Error"):
 
             msg = MIMEMultipart('alternative')
             msg['Subject'] = f'GGV BOT ERROR - {spider}'
-            msg['To'] = 'goldengooseventures.developer@gmail.com'
+            msg['To'] = ", ".join(dev_recipients)
             msg['From'] = 'goldengooseventures.developer@gmail.com'
 
             # EMAIL CONTENT
@@ -79,7 +82,7 @@ def error_email(spider="Default Spider",error="Default Error"):
             </head>
             <body style="background-color:black;color:white">
             <h1 style="text-align:center">Spider experienced an Error!</h1>
-            <h4>The Spider: {spider} experienced an error while running
+            <h4 style="color:white">The Spider: {spider} experienced an error while running
             <p>Error Details: </p>
             {error}
             <br>
@@ -99,7 +102,7 @@ def error_email(spider="Default Spider",error="Default Error"):
         logger.error("Exception when calling Email Bot->: %s\n" % e)
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
     # send_test_email()
-    # error_email()
+    error_email()
     # missing_info_email()

@@ -8,9 +8,11 @@ from os import environ
 #     import redis
 try:
     import gspread
+    from gspread.exceptions import APIError as gs_APIError
 except:
     os.system(f"{sys.executable} -m pip install gspread")
     import gspread
+    from gspread.exceptions import APIError as gs_APIError
 try:
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
@@ -29,13 +31,13 @@ except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting.dataframe import BasicFormatter, Color
 
-try:
-    import sib_api_v3_sdk
-    from sib_api_v3_sdk.rest import ApiException
-except:
-    os.system(f"{sys.executable} -m pip install sib_api_v3_sdk")
-    import sib_api_v3_sdk
-    from sib_api_v3_sdk.rest import ApiException
+# try:
+#     import sib_api_v3_sdk
+#     from sib_api_v3_sdk.rest import ApiException
+# except:
+#     os.system(f"{sys.executable} -m pip install sib_api_v3_sdk")
+#     import sib_api_v3_sdk
+#     from sib_api_v3_sdk.rest import ApiException
 from pprint import pprint
 
 
@@ -106,7 +108,6 @@ formatter = BasicFormatter(
 def Google_Sheets():
     gc = gspread.service_account_from_dict(BOT_KEYS)
     return df, gc.open_by_key(SPREADSHEET_ID)
-
 
 ############################## SELENIUM #########################################
 
