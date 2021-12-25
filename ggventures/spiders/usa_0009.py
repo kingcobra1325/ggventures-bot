@@ -22,6 +22,8 @@ class Usa0009Spider(scrapy.Spider):
     def __init__(self):
         self.driver = Load_Driver()
         self.getter = Load_Driver()
+        self.start_time = round(time.time())
+        self.scrape_time = None
 
     def parse(self, response):
         try:
@@ -31,6 +33,7 @@ class Usa0009Spider(scrapy.Spider):
             event_date = list()
             event_time = list()
             event_desc = list()
+            event_link = list()
 
             logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'brand')]/a")))).value_of_css_property('background')
             logo = re.findall(r'''\"(\S+)\"''',logo)[0]
@@ -51,12 +54,14 @@ class Usa0009Spider(scrapy.Spider):
                 
                 RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'dateSummary')]").text
                 
+                
                 RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'dateSummary')]").text
                 
                 event_name.append(RawEventName)
                 event_desc.append(RawEventDesc)
                 event_date.append(RawEventDate)
                 event_time.append(RawEventTime)
+                event_link.append(i.get_attribute('href'))
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -67,6 +72,7 @@ class Usa0009Spider(scrapy.Spider):
                 data.add_value('event_desc', event_desc[i])
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
+                # data.add_value('event_link', event_link[i])
                 yield data.load_item()
             
         except Exception as e:

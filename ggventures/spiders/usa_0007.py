@@ -32,6 +32,7 @@ class Usa0007Spider(scrapy.Spider):
             event_date = list()
             event_time = list()
             event_desc = list()
+            event_link = list()
 
             logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@id,'logo')]//img[contains(@alt, 'Bentley University')]")))).get_attribute('src')
             
@@ -55,6 +56,7 @@ class Usa0007Spider(scrapy.Spider):
                 event_desc.append(RawEventDesc)
                 event_date.append(RawEventDate)
                 event_time.append(RawEventTime)
+                event_link.appenD(i.get_attribute('href'))
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -65,6 +67,7 @@ class Usa0007Spider(scrapy.Spider):
                 data.add_value('event_desc', event_desc[i])
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
+                # data.add_value('event_link', event_link[i])
                 yield data.load_item()
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
