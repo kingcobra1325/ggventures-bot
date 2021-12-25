@@ -14,6 +14,12 @@ except:
     import gspread
     from gspread.exceptions import APIError as gs_APIError
 try:
+    from eventbrite import Eventbrite
+except:
+    os.system(f"{sys.executable} -m pip install eventbrite")
+    from eventbrite import Eventbrite
+
+try:
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
 except:
@@ -68,6 +74,21 @@ else:
     SMTP_EMAIL = 'goldengooseventures.developer@gmail.com'
     SMTP_KEY = 'zdFnEt7j56JgbOR0'
 
+## -------------------- EVENTBRITE ---------------------------------- ##
+
+if environ.get('DEPLOYED'):
+    EB_API_KEY = environ.get('EB_API_KEY')
+    EB_CLIENT_SECRET = environ.get('EB_CLIENT_SECRET')
+    EB_PRIVATE_TOKEN = environ.get('EB_PRIVATE_TOKEN')
+    EB_PUBLIC_TOKEN = environ.get('EB_PUBLIC_TOKEN')
+else:
+    EB_API_KEY = 'FZ3N5FJX7CBHPQ5BV6'
+    EB_CLIENT_SECRET = 'QQXGTE6QDA55I6BC2JEGLR2WJW525T7ACWRAHQEHMPCWASCPLY'
+    EB_PRIVATE_TOKEN = 'PRMPUINSBIOQFJYEDFSR'
+    EB_PUBLIC_TOKEN = 'NIUZTJJG4HQTETQ5IRQG'
+
+def EventBrite_API():
+    return Eventbrite(EB_PRIVATE_TOKEN)
 
 ################################# DATAFRAME ###################################################
 
