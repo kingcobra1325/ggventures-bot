@@ -19,7 +19,7 @@ class Usa0013Spider(scrapy.Spider):
     country = 'US'
     start_urls = ['https://www.csulb.edu/']
 
-    def __init__(self, response):
+    def __init__(self):
         self.driver = Load_Driver()
         self.getter = Load_Driver()
         self.start_time = round(time.time())
@@ -38,38 +38,35 @@ class Usa0013Spider(scrapy.Spider):
             # logo = (WebDriv   erWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'brand')]/a")))).value_of_css_property('background')
             # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
             
-            university_name = self.driver.find_element(By.XPATH , "//div[contains(@class,'content')]//img").get_attribute('alt')
+            university_name = self.driver.find_element(By.XPATH , "//div[contains(@class,'content')]//img").get_attribute('textContent')
             
-            university_contact_info = self.driver.find_element(By.XPATH, "//div[contains(@class,'tel')]").text
+            university_contact_info = self.driver.find_element(By.XPATH, "//div[contains(@class,'row row-padding-sm')]//div[contains(@class,'col-md-8')]").get_attribute('textContent')
             
-            self.driver.get("http://specialevents.csulb.edu/mastercalendar/MasterCalendar.aspx")
+            self.driver.get("https://www.bradley.edu/calendar/")
 
-            
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class,'items-scroller')]/div")))
+            while True:
+                EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@class,'tribe-event-url news-listing-title')]")))
 
-            for i in EventLinks:
-                i.click()
-                
-                EventPopUp = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class,'six columns scroller-text')]/h1")))
-                
-                EventPopUp.click()
-                
-                RawEventName = self.getter.find_element(By.XPATH,"//h1[contains(@class,'tribe-events-single-event-title')]").text
-                
-                RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class, 'tribe-events-single-event-description tribe-events-content')]/p[1]").text
-                
-                RawEventDate = self.getter.find_element(By.XPATH,"//abbr[contains(@class,'tribe-events-abbr tribe-events-start-date published dtstart')]").text
-                
-                RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'tribe-events-abbr tribe-events-start-time published dtstart')]").text
-                
-                event_name.append(RawEventName)
-                event_desc.append(RawEventDesc)
-                event_date.append(RawEventDate)
-                event_time.append(RawEventTime)
-
-                newLink = self.driver.find_element(By.XPATH,"//a[contains(@rel, 'next')]").get_attribute('href')
-                self.driver.get(newLink)
- 
+                for i in EventLinks:
+                    self.getter.get(i.get_attribute('href'))
+                    
+                    RawEventName = self.getter.find_element(By.XPATH,"//h1[contains(@class,'tribe-events-single-event-title')]").text
+                    
+                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class, 'tribe-events-single-event-description tribe-events-content')]/p[1]").text
+                    
+                    RawEventDate = self.getter.find_element(By.XPATH,"//abbr[contains(@class,'tribe-events-abbr tribe-events-start-date published dtstart')]").text
+                    
+                    RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'tribe-events-abbr tribe-events-start-time published dtstart')]").text
+                    
+                    event_name.append(RawEventName)
+                    event_desc.append(RawEventDesc)
+                    event_date.append(RawEventDate)
+                    event_time.append(RawEventTime)
+                try:
+                    newLink = self.driver.find_element(By.XPATH,"//a[contains(@rel, 'next')]").get_attribute('href')
+                    self.driver.get(newLink)
+                except NoSuchElementException:
+                    break 
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)

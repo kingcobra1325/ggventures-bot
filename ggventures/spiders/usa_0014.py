@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class Usa0014Spider(scrapy.Spider):
     name = 'usa_0014'
     country = 'US'
-    start_urls = ['https://www.cmu.edu/tepper//']
+    start_urls = ['https://www.cmu.edu/tepper/news/events/index.html']
 
     def __init__(self):
         self.driver = Load_Driver()
@@ -26,35 +26,42 @@ class Usa0014Spider(scrapy.Spider):
         
     def parse(self, response):
         try:
-            self.driver.get(response.url)
-            
             event_name = list()
             event_date = list()
             event_time = list()
             event_desc = list()
+            event_link = list()
+            
+            height = self.driver.execute_script("return document.body.scrollHeight")
 
-            #cannot find logo in website but it appears in fb
-            # logo = (WebDriv   erWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'brand')]/a")))).value_of_css_property('background')
-            # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
+            self.driver.get("https://www.cmu.edu/tepper/")
+
+            logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@alt,'Tepper School')]")))).get_attribute('href')
             
             university_name = self.driver.find_element(By.XPATH , "//title").get_attribute('textContent')
             
-            university_contact_info = self.driver.find_element(By.XPATH, "//div[contains(@class,'row row-padding-sm')]//div[contains(@class,'col-md-8')]").get_attribute('textContent')
+            self.driver.get("https://www.cmu.edu/tepper/contact-us.html")
             
-            self.driver.get("https://www.bradley.edu/calendar/")
+            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'grid column2  grey  boxes  js-list')]/div/p[1]")))).text
+            
+            self.driver.get(response.url)
+            
+            WebScroller(self.driver,height)
+            
+            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//span[contains(@class,'ng-scope')]/a")))
+            
 
-            EventLinks = self.driver.find_elements(By.XPATH, "//h3/a")
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
                     
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'col-md-5')]//a")))).text
+                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//span[contains(@ng-bind-html,'event.content.summary.text')]")))).text
                 
-                RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'col-md-7')]").text
+                RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@ng-bind-html,'fe.safeDesc')]").text
                 
-                RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'col-md-5')]/p[2]").text
+                RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'d-when eventDetail__when')]").text
                 
                 try:
-                    RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'col-md-5')]//p[3]").text
+                    RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'d-when eventDetail__when')]").text
                 except:
                     RawEventTime = None
 
@@ -63,16 +70,19 @@ class Usa0014Spider(scrapy.Spider):
                 event_desc.append(RawEventDesc)
                 event_date.append(RawEventDate)
                 event_time.append(RawEventTime)
+                event_link.append(i.get_attribute('href'))
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
                 data.add_value('university_name',university_name)
                 data.add_value('university_contact_info',university_contact_info)
-                # data.add_value('logo',logo)
+                data.add_value('logo',logo)
                 data.add_value('event_name', event_name[i])
                 data.add_value('event_desc', event_desc[i])
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
+                data.add_value('event_link', event_link[i])
+                
                 yield data.load_item()
             
         except Exception as e:
