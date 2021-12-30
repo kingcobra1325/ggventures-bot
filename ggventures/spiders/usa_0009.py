@@ -72,7 +72,7 @@ class Usa0009Spider(scrapy.Spider):
                 data.add_value('event_desc', event_desc[i])
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
-                # data.add_value('event_link', event_link[i])
+                data.add_value('event_link', event_link[i])
                 yield data.load_item()
             
         except Exception as e:
