@@ -21,11 +21,13 @@ except:
 
 try:
     from selenium import webdriver
-    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.options import Options as ChromeOptions
+    from selenium.webdriver.firefox.options import Options as FirefoxOptions
 except:
     os.system(f"{sys.executable} -m pip install selenium")
     from selenium import webdriver
-    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.options import ChromeOptions
+    from selenium.webdriver.firefox.options import FirefoxOptions
 try:
     import pandas as pd
 except:
@@ -132,28 +134,59 @@ def Google_Sheets():
 
 ############################## SELENIUM #########################################
 
+##### -------------------------- CHROMEDRIVER ------------------------------####
 # ------------- BINARY INIT ----------------- #
 if environ.get('DEPLOYED'):
     GOOGLE_CHROME_BIN = environ.get('GOOGLE_CHROME_BIN')
     CHROMEDRIVER_PATH = environ.get('CHROMEDRIVER_PATH')
 else:
-    GOOGLE_CHROME_BIN = 'C:\Pysourcecodes\chromium\chrome.exe'
-    CHROMEDRIVER_PATH = 'C:\Pysourcecodes\chromium\chromedriver'
-
-options = Options()
-# ------------- DRIVER OPTIONS --------------- #
-options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
-options.add_argument('--headless')
-options.add_argument('--disable-gpu')
-options.add_argument('--disable-dev-shm-usage')
-options.add_argument("--log-level=3")
-options.binary_location = GOOGLE_CHROME_BIN
-options.add_argument('--no-sandbox')
+    GOOGLE_CHROME_BIN = 'C:\\Pysourcecodes\\chromium\\chrome.exe'
+    CHROMEDRIVER_PATH = 'C:\\Pysourcecodes\\chromium\\chromedriver'
 
 # DRIVER VAR
 def Load_Driver():
+    options = ChromeOptions()
+    # ------------- DRIVER OPTIONS --------------- #
+    options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
+    # options.add_argument('--headless')
+    # options.add_argument('--disable-gpu')
+    # options.add_argument('--disable-dev-shm-usage')
+    # options.add_argument("--log-level=3")
+    # options.add_argument("--lang=en-US")
+    options.binary_location = GOOGLE_CHROME_BIN
+    # options.add_argument('--no-sandbox')
+    prefs = {
+                'intl.accept_languages' : 'en-US'
+            }
+    options.add_experimental_option("prefs",prefs)
+
     return webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=options)
 # default_driver.quit()
+
+#### ------------------------- FIREFOX --------------------------------------####
+
+# ------------- BINARY INIT ----------------- #
+if environ.get('DEPLOYED'):
+    FIRE_FOX_BIN = environ.get('FIRE_FOX_BIN')
+    GECKODRIVER_PATH = environ.get('GECKODRIVER_PATH')
+else:
+    FIRE_FOX_BIN = 'C:\\Pysourcecodes\\Firefox\\firefox.exe'
+    GECKODRIVER_PATH = 'C:\\Pysourcecodes\\Firefox\\geckodriver'
+
+def Load_FF_Driver():
+    # ------------- DRIVER OPTIONS --------------- #
+    options = FirefoxOptions()
+    # ------------- DRIVER OPTIONS --------------- #
+    # options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
+    # options.add_argument('--headless')
+    # options.add_argument('--disable-gpu')
+    # options.add_argument('--disable-dev-shm-usage')
+    # options.add_argument("--log-level=3")
+    # options.add_argument("--lang=en-US")
+    options.binary_location = FIRE_FOX_BIN
+    # options.add_argument('--no-sandbox')
+
+    return webdriver.Chrome(executable_path=GECKODRIVER_PATH,options=options)
 
 
 ####################################### FUNCTIONS #########################################
