@@ -17,7 +17,7 @@ from selenium.common.exceptions import NoSuchElementException
 class Usa0013Spider(scrapy.Spider):
     name = 'usa_0013'
     country = 'US'
-    start_urls = ['https://www.csulb.edu/']
+    start_urls = ['http://specialevents.csulb.edu/MasterCalendar/MasterCalendar.aspx?utm_source=website&utm_medium=homepage&utm_content=menulink&utm_campaign=JumboMenu']
 
     def __init__(self):
         self.driver = Load_Driver()
@@ -27,22 +27,20 @@ class Usa0013Spider(scrapy.Spider):
     
     def parse(self, response):
         try:
-            self.driver.get(response.url)
+            self.driver.get("https://www.csulb.edu/explore")
             
             event_name = list()
             event_date = list()
             event_time = list()
             event_desc = list()
 
-            #cannot find logo in website but it appears in fb
-            # logo = (WebDriv   erWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'brand')]/a")))).value_of_css_property('background')
-            # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
-            
+            logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'content')]//img")))).get_attribute('src')
+
             university_name = self.driver.find_element(By.XPATH , "//div[contains(@class,'content')]//img").get_attribute('textContent')
             
-            university_contact_info = self.driver.find_element(By.XPATH, "//div[contains(@class,'row row-padding-sm')]//div[contains(@class,'col-md-8')]").get_attribute('textContent')
+            university_contact_info = self.driver.find_element(By.XPATH, "//div[contains(@class,'tel')]").text
             
-            self.driver.get("https://www.bradley.edu/calendar/")
+            self.driver.get(response.url)
 
             while True:
                 EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@class,'tribe-event-url news-listing-title')]")))
