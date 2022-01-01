@@ -1,5 +1,5 @@
 from __future__ import print_function
-import time, os, sys, logging
+import time, os, sys, logging, json
 from os import environ
 # try:
 #     import redis
@@ -33,6 +33,13 @@ try:
 except:
     os.system(f"{sys.executable} -m pip install pandas")
     import pandas as pd
+try:
+    import dropbox
+    from dropbox.exceptions import ApiError
+except:
+    os.system(f"{sys.executable} -m pip install dropbox")
+    import dropbox
+    from dropbox.exceptions import ApiError
 try:
     from gspread_formatting.dataframe import BasicFormatter, Color
 except:
@@ -70,6 +77,7 @@ if environ.get('DEPLOYED'):
     SMTP_EMAIL = environ.get('SMTP_EMAIL')
     SMTP_KEY = environ.get('SMTP_KEY')
 else:
+    # DEVELOPER TOKEN
     # BOT_EMAIL_API_KEY = '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'
     SMTP_SERVER = 'smtp-relay.sendinblue.com'
     SMTP_PORT = '587'
@@ -84,6 +92,7 @@ if environ.get('DEPLOYED'):
     EB_PRIVATE_TOKEN = environ.get('EB_PRIVATE_TOKEN')
     EB_PUBLIC_TOKEN = environ.get('EB_PUBLIC_TOKEN')
 else:
+    # DEVELOPER TOKEN
     EB_API_KEY = 'FZ3N5FJX7CBHPQ5BV6'
     EB_CLIENT_SECRET = 'QQXGTE6QDA55I6BC2JEGLR2WJW525T7ACWRAHQEHMPCWASCPLY'
     EB_PRIVATE_TOKEN = 'PRMPUINSBIOQFJYEDFSR'
@@ -108,6 +117,7 @@ SPREADSHEET_ID = '1I_ITHd6vn7x0Qil1wiX98G_t8dkcicBf1r-9Dik7GUY'
 if environ.get('DEPLOYED'):
     BOT_KEYS = environ.get('BOT_KEYS')
 else:
+    # DEVELOPER VARS
     BOT_KEYS = {
       "type": "service_account",
       "project_id": "ggventures",
@@ -140,6 +150,7 @@ if environ.get('DEPLOYED'):
     GOOGLE_CHROME_BIN = environ.get('GOOGLE_CHROME_BIN')
     CHROMEDRIVER_PATH = environ.get('CHROMEDRIVER_PATH')
 else:
+    # DEVELOPER VARS
     GOOGLE_CHROME_BIN = 'C:\\Pysourcecodes\\chromium\\chrome.exe'
     CHROMEDRIVER_PATH = 'C:\\Pysourcecodes\\chromium\\chromedriver'
 
@@ -148,11 +159,11 @@ def Load_Driver():
     options = ChromeOptions()
     # ------------- DRIVER OPTIONS --------------- #
     options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
-    # options.add_argument('--headless')
-    # options.add_argument('--disable-gpu')
-    # options.add_argument('--disable-dev-shm-usage')
-    # options.add_argument("--log-level=3")
-    # options.add_argument("--lang=en-US")
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--log-level=3")
+    options.add_argument("--lang=en-US")
     options.binary_location = GOOGLE_CHROME_BIN
     # options.add_argument('--no-sandbox')
     prefs = {
@@ -170,6 +181,7 @@ if environ.get('DEPLOYED'):
     FIRE_FOX_BIN = environ.get('FIRE_FOX_BIN')
     GECKODRIVER_PATH = environ.get('GECKODRIVER_PATH')
 else:
+    # DEVELOPER VARS
     FIRE_FOX_BIN = 'C:\\Pysourcecodes\\Firefox\\firefox.exe'
     GECKODRIVER_PATH = 'C:\\Pysourcecodes\\Firefox\\geckodriver'
 
@@ -177,16 +189,64 @@ def Load_FF_Driver():
     # ------------- DRIVER OPTIONS --------------- #
     options = FirefoxOptions()
     # ------------- DRIVER OPTIONS --------------- #
-    # options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
-    # options.add_argument('--headless')
-    # options.add_argument('--disable-gpu')
-    # options.add_argument('--disable-dev-shm-usage')
-    # options.add_argument("--log-level=3")
-    # options.add_argument("--lang=en-US")
+    options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--log-level=3")
+    options.add_argument("--lang=en-US")
     options.binary_location = FIRE_FOX_BIN
     # options.add_argument('--no-sandbox')
 
     return webdriver.Chrome(executable_path=GECKODRIVER_PATH,options=options)
+
+####################################### DROPBOX ###########################################
+
+# ------------- BINARY INIT ----------------- #
+if environ.get('DEPLOYED'):
+    DROPBOX_TOKEN = environ.get('DROPBOX_TOKEN')
+else:
+    # DEVELOPER TOKEN
+    # DROPBOX_TOKEN = "zu4qdcxiutlxerm"
+    DROPBOX_TOKEN = '87eVygKutx8AAAAAAAAAAdm1QXEJPIKBKiDndoKSeGGRq5WKKZ7dNA9_3r8Ic4Mg'
+    # DROPBOX_TOKEN = 'ujw9jgy3f4hkn3l'
+
+# API Access for Modules
+def DropBox_Upload(json_file):
+    return dropbox.Dropbox(DROPBOX_TOKEN)
+
+# API Access for Main APP
+def DropBox_INIT():
+    dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+    try:
+        # Download DROPBOX File
+        downloaded = dbx.files_download_to_file('bot_json.json','/bot_json.json')
+        return json.loads(open('bot_json.json').read())
+    except (ApiError,AttributeError):
+        while True:
+            logger.error('Bot JSON not found!...')
+            # Delete Local File Copy
+            try:
+                os.remove('bot_json.json')
+                logger.error('Deleting Local Copy...')
+            except FileNotFoundError:
+                pass
+            # Create local EMPTY File
+            with open('bot_json.json', 'w') as data:
+                json_data = {
+                                'PENDING_SPIDERS' : [],
+                                'PAGE_SOURCES' : {}
+                            }
+                json.dump(json_data, data)
+                logger.debug('Creating Blank Copy...')
+            # Upload EMPTY Copy to the DROPBOX API
+            with open('bot_json.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
+                logger.debug('Uploading Blank Copy...')
+            break
+        return json_data
+
+
 
 
 ####################################### FUNCTIONS #########################################

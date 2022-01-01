@@ -15,7 +15,7 @@ except:
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
-from binaries import logger
+from binaries import logger, DropBox_INIT
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 
@@ -33,10 +33,21 @@ from binaries import logger
 # ----- SPIDERS ------- #
 # from ggventures.spiders.usa_0001 import Usa0001Spider
 spider_list = [
-                    'usa-0006',
-                    # 'usa-0002'
-                    # 'usa-0003'
-              ] 
+                    # 'usa-0001',
+                    # 'usa-0002',
+                    # 'usa-0003',
+                    # 'usa-0004',
+                    # 'usa-0005',
+                    # 'usa-0006',
+                    # 'usa-0007',
+                    # 'usa-0008',
+                    # 'usa-0009',
+                    # 'usa-0010',
+                    # 'usa-0011',
+                    'usa_0012'
+
+
+              ]
 
 ## ------------- Global Vars --------------- ##
 cwd = os.path.dirname(os.path.realpath(__file__))
@@ -59,12 +70,44 @@ td = datetime.now().strftime('%m-%d-%Y')
 #                 'usa-0001'
 #                 ]
 
+def exception_handler(errmsg="", e=""):
+    """
+    Handle the Error Occur in the program
+    :param errmsg: Error message
+    :param e: error object
+    :return: Update Logs and Exit Program
+    """
+    print(f"\n\n{'-'*51}")
+    if type(e).__name__ == "KeyboardInterrupt":
+        end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (
+                time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
+        logger.debug(f"Golden Goose Ventures BOT Failed. | Time Taken = {end_time}")
+        logger.error("Program aborted by the user.")
+    else:
+        end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
+        logger.error(f"{errmsg + str(e)}")
+        logger.debug(f"Golden Goose Ventures BOT Failed. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")
+    # logger.debug("\nExiting Program in 30 Seconds or You can close window ...")
+    # try:
+    #     time.sleep(30)
+    # except KeyboardInterrupt:
+    #     pass
+    sys.exit(1)
+
 ########## MAIN START ############
 if __name__ == '__main__':
-    logger.info('Start Golden Goose Ventures Scraping Bot')
-    # while True:
-    for spider in spider_list:
-        # spider = 'usa-0001'
-        os.system(f"scrapy crawl {spider}")
-    # process.start()
-    logger.info("END of BOT")
+    try:
+        logger.info('Start Golden Goose Ventures Scraping Bot\n')
+        logger.debug(f'Fetching current progress on Dropbox BOT_JSON file...\n')
+        status = DropBox_INIT()
+        logger.info(status)
+        # while True:
+        for spider in spider_list:
+            # spider = 'usa-0001
+            logger.info(f"IN PROGRESS: Crawling with {spider}....")
+            os.system(f"scrapy crawl {spider}")
+        # process.start()
+        end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
+        logger.debug(f"Golden Goose Ventures BOT Finished successfully. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")
+    except Exception as e:
+        exception_handler("ERROR: ", e)
