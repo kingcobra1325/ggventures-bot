@@ -3,7 +3,7 @@ import scrapy, time
 
 from bot_email import missing_info_email, error_email
 
-from binaries import Load_Driver, logger, WebScroller
+from binaries import Load_Driver, Load_FF_Driver, logger, WebScroller
 
 from scrapy.loader import ItemLoader
 
@@ -17,45 +17,49 @@ from selenium.common.exceptions import NoSuchElementException
 class Usa0013Spider(scrapy.Spider):
     name = 'usa_0013'
     country = 'US'
-    start_urls = ['http://specialevents.csulb.edu/MasterCalendar/MasterCalendar.aspx?utm_source=website&utm_medium=homepage&utm_content=menulink&utm_campaign=JumboMenu']
+    start_urls = ['https://www.csulb.edu/']
 
     def __init__(self):
-        self.driver = Load_Driver()
-        self.getter = Load_Driver()
+        # self.driver = Load_Driver()
+        self.driver = Load_FF_Driver()
+        # self.getter = Load_Driver()
+        self.getter = Load_FF_Driver()
         self.start_time = round(time.time())
         self.scrape_time = None
-    
+
     def parse(self, response):
         try:
-            self.driver.get("https://www.csulb.edu/explore")
-            
+            self.driver.get(response.url)
+
             event_name = list()
             event_date = list()
             event_time = list()
             event_desc = list()
 
-            logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'content')]//img")))).get_attribute('src')
+            #cannot find logo in website but it appears in fb
+            # logo = (WebDriv   erWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'brand')]/a")))).value_of_css_property('background')
+            # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
 
             university_name = self.driver.find_element(By.XPATH , "//div[contains(@class,'content')]//img").get_attribute('textContent')
-            
-            university_contact_info = self.driver.find_element(By.XPATH, "//div[contains(@class,'tel')]").text
-            
-            self.driver.get(response.url)
+
+            university_contact_info = self.driver.find_element(By.XPATH, "//div[contains(@class,'row row-padding-sm')]//div[contains(@class,'col-md-8')]").get_attribute('textContent')
+
+            self.driver.get("https://www.bradley.edu/calendar/")
 
             while True:
                 EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@class,'tribe-event-url news-listing-title')]")))
 
                 for i in EventLinks:
                     self.getter.get(i.get_attribute('href'))
-                    
+
                     RawEventName = self.getter.find_element(By.XPATH,"//h1[contains(@class,'tribe-events-single-event-title')]").text
-                    
+
                     RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class, 'tribe-events-single-event-description tribe-events-content')]/p[1]").text
-                    
+
                     RawEventDate = self.getter.find_element(By.XPATH,"//abbr[contains(@class,'tribe-events-abbr tribe-events-start-date published dtstart')]").text
-                    
+
                     RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'tribe-events-abbr tribe-events-start-time published dtstart')]").text
-                    
+
                     event_name.append(RawEventName)
                     event_desc.append(RawEventDesc)
                     event_date.append(RawEventDate)
@@ -64,7 +68,7 @@ class Usa0013Spider(scrapy.Spider):
                     newLink = self.driver.find_element(By.XPATH,"//a[contains(@rel, 'next')]").get_attribute('href')
                     self.driver.get(newLink)
                 except NoSuchElementException:
-                    break 
+                    break
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -76,10 +80,10 @@ class Usa0013Spider(scrapy.Spider):
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
                 yield data.load_item()
-            
+
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)    
+            error_email(self.name,e)
     def closed(self, reason):
         try:
             self.driver.quit()
