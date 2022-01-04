@@ -17,13 +17,14 @@ class Usa0017Spider(scrapy.Spider):
     name = 'usa_0017'
     country = 'US'
     start_urls = ["https://calendar.clemson.edu/search/events?event_types%5B%5D=11849"]
+    handle_httpstatus_list = [403]
 
     def __init__(self):
         self.driver = Load_Driver()
         self.getter = Load_Driver()
         self.start_time = round(time.time())
         self.scrape_time = None
-        
+
     def parse(self, response):
         try:
             event_name = list()
@@ -33,39 +34,40 @@ class Usa0017Spider(scrapy.Spider):
             event_link = list()
 
             self.driver.get("https://www.clemson.edu/business/index.html")
-            
-            # logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@class,'cgu-logo')]")))).value_of_css_property('background-image')
-            
-            university_name = self.driver.find_element(By.XPATH , "//title").get_attribute('textContent')
-            
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@class,'phone')]")))).text
-            
-            self.driver.get(response.url)           
 
-            
+            # logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@class,'cgu-logo')]")))).value_of_css_property('background-image')
+            logo = 'https://www.clemson.edu/brand/resources/logos/wordmark-paw/orange-purple.png'
+
+            university_name = self.driver.find_element(By.XPATH , "//title").get_attribute('textContent')
+
+            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@class,'phone')]")))).text
+
+            self.driver.get(response.url)
+
+
             EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class,'item event_item vevent')]/a")))
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
-                    
+
                 RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class,'summary')]")))).text
-                
+
                 RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'description')]").text
-                
+
                 RawEventDate = self.getter.find_element(By.XPATH,"//p[contains(@class,'dateright')]").text
-                
+
                 try:
                     RawEventTime = self.getter.find_element(By.XPATH,"//p[contains(@class,'dateright')]").text
                 except:
                     RawEventTime = None
 
-                    
+
                 event_name.append(RawEventName)
                 event_desc.append(RawEventDesc)
                 event_date.append(RawEventDate)
                 event_time.append(RawEventTime)
                 event_link.append(i.get_attribute('href'))
-                
-                
+
+
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -77,12 +79,12 @@ class Usa0017Spider(scrapy.Spider):
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
                 data.add_value('event_link', event_link[i])
-                
+
                 yield data.load_item()
-            
+
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)    
+            error_email(self.name,e)
     def closed(self, reason):
         try:
             self.driver.quit()
