@@ -17,6 +17,7 @@ class Usa0033Spider(scrapy.Spider):
     name = 'usa_0033'
     country = 'US'
     start_urls = ["https://calendar.gsu.edu/calendar?event_types%5B%5D=83442"]
+    handle_httpstatus_list = [403]
 
     def __init__(self):
         self.driver = Load_Driver()
@@ -40,7 +41,7 @@ class Usa0033Spider(scrapy.Spider):
   
             university_contact_info = (WebDriverWait(self.driver,60).until(EC.element_to_be_clickable((By.XPATH,"//div[contains(@class,'wpb_column vc_column_container vc_col-sm-12 vc_col-md-3')]")))).text
             
-            # self.driver.get(response.url)           
+            self.driver.get(response.url)           
             
             EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//h3[@class='summary']/a")))
             
