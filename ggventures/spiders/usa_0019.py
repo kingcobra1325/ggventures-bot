@@ -1,7 +1,7 @@
 import scrapy, time
 # from scrapy import Selector
 
-from bot_email import missing_info_email, error_email
+from bot_email import missing_info_email, error_email, unique_event
 
 from binaries import Load_Driver, logger, WebScroller
 
@@ -68,7 +68,9 @@ class Usa0019Spider(scrapy.Spider):
 
                     yield data.load_item()
                 else:
-                    logger.debug(f"Link: {i.get_attribute('href')} is located outside the Website. Skipping.....")
+                    logger.debug(f"Link: {i.get_attribute('href')} is a Unique Event. Sending Emails.....")
+                    unique_event(self.name,university_name,i.get_attribute('href'))
+                    logger.debug("Skipping............")
 
 
         except Exception as e:

@@ -53,6 +53,48 @@ def website_changed(spider="Default Spider", university_name="Default University
     except Exception as e:
         logger.error("Exception when calling Email Bot->: %s\n" % e)
 
+def unique_event(spider="Default Spider", university_name="Default University", href='default.link'):
+    try:
+        # EMAIL INIT
+        for recipient in dev_recipients:
+            with smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT)) as mail:
+                mail.ehlo()
+                mail.starttls()
+                mail.login(SMTP_EMAIL,SMTP_KEY)
+
+                msg = MIMEMultipart('alternative')
+                msg['Subject'] = f'GGV BOT Unique Event - {spider}'
+                msg['To'] = recipient
+                msg['From'] = 'goldengooseventures.developer@gmail.com'
+
+                # EMAIL CONTENT
+                html = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                <html xmlns="http://www.w3.org/1999/xhtml">
+                 <head>
+                  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                  <title>Unique Event Detected on {spider} - {university_name}</title>
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                </head>
+                <body style="background-color:black;color:white">
+                <h1 style="text-align:center;color:white">Unique Event - {university_name}</h1>
+                <h4 style="color:white">The Spider: {spider} has found a Unique Event on the {university_name} website
+                <br>
+                <p>Please check the link of the Event for more details</p>
+                <p>Link: {href}</p>
+                <br>
+                </h4>
+                <h5 style="text-align:center">Email Timestamp: {datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p')}</h5>
+                </body>
+                </html>"""
+
+                msg.attach(MIMEText(html,'html'))
+
+                mail.sendmail(msg['From'], msg['To'], msg.as_string())
+                logger.debug(f'Unique Event Detected Email from {spider} successfully sent to {msg["To"]}')
+
+    except Exception as e:
+        logger.error("Exception when calling Email Bot->: %s\n" % e)
+
 def missing_info_email(spider="Default Spider", university_name="Default University", missing_info=['missing','info'], web_link="www.google.com"):
     try:
         # EMAIL INIT
@@ -141,8 +183,9 @@ def error_email(spider="Default Spider",error="Default Error"):
         logger.error("Exception when calling Email Bot->: %s\n" % e)
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+#     unique_event()
     # send_test_email()
     # error_email()
     # missing_info_email()
-    website_changed()
+    # website_changed()

@@ -1,7 +1,7 @@
 import scrapy, time
 # from scrapy import Selector
 
-from bot_email import missing_info_email, error_email
+from bot_email import missing_info_email, error_email, unique_event
 
 from binaries import Load_Driver, logger, WebScroller
 
@@ -23,7 +23,7 @@ class Usa0022Spider(scrapy.Spider):
         self.getter = Load_Driver()
         self.start_time = round(time.time())
         self.scrape_time = None
-        
+
     def parse(self, response):
         try:
             event_name = list()
@@ -33,42 +33,46 @@ class Usa0022Spider(scrapy.Spider):
             event_link = list()
 
             self.driver.get("https://www.tuck.dartmouth.edu/")
-            
+
             logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@id,'logo')]")))).value_of_css_property('background-image')
-            
+
             university_name = self.driver.find_element(By.XPATH , "//title").get_attribute('textContent')
-            
+
             self.driver.get("https://tuck.dartmouth.edu/contact")
-            
+
             university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//h4[contains(text(),'Events and Facilities')]/following-sibling::p")))).text
-            
-            self.driver.get(response.url)           
-            
+
+            self.driver.get(response.url)
+
             EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@class,'brick')]")))
-            
+
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
-                    
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'row title')]")))).text
-                
-                RawEventDesc = self.getter.find_elements(By.XPATH,"//div[contains(@class,'description')]")
-                RawEventString = ''
-                for i in RawEventDesc:
-                    RawEventString += i.text
-                
-                RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'date')]").text
-                
-                try:
-                    RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'date')]").text
-                except:
-                    RawEventTime = None
+                if 'www.tuck.dartmouth.edu' in self.getter.current_url:
 
-                    
-                event_name.append(RawEventName)
-                event_desc.append(RawEventString)
-                event_date.append(RawEventDate)
-                event_time.append(RawEventTime)
-                event_link.append(i.get_attribute('href'))          
+                    RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1")))).text
+
+                    RawEventDesc = '\n'.join([x.text for x in self.getter.find_elements(By.XPATH,"//span[contains(text(),'Description:')]//parent::p//following-sibling::p")])
+
+
+                    RawEventDate = self.getter.find_element(By.XPATH,"//span[contains(text(),'Date:')]/parent::p").text
+
+                    try:
+                        RawEventTime = self.getter.find_element(By.XPATH,"//span[contains(text(),'Time:')]/parent::p").text
+                    except:
+                        RawEventTime = None
+
+
+                    event_name.append(RawEventName)
+                    event_desc.append(RawEventDesc)
+                    event_date.append(RawEventDate)
+                    event_time.append(RawEventTime)
+                    event_link.append(i.get_attribute('href'))
+                else:
+                    logger.debug(f"Link: {i.get_attribute('href')} is a Unique Event. Sending Emails.....")
+                    unique_event(self.name,university_name,i.get_attribute('href'))
+                    logger.debug("Skipping............")
+
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -80,12 +84,12 @@ class Usa0022Spider(scrapy.Spider):
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
                 data.add_value('event_link', event_link[i])
-                
+
                 yield data.load_item()
-            
+
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)    
+            error_email(self.name,e)
     def closed(self, reason):
         try:
             self.driver.quit()
