@@ -18,14 +18,15 @@ import re
 class Usa0042Spider(scrapy.Spider):
     name = 'usa_0042'
     country = 'US'
-    start_urls = ["https://cba.k-state.edu/about/events/"]
+    # start_urls = ["https://cba.k-state.edu/about/events/"]
+    start_urls = ["https://events.k-state.edu/"]
 
     def __init__(self):
         self.driver = Load_Driver()
         self.getter = Load_Driver()
         self.start_time = round(time.time())
         self.scrape_time = None
-        
+
     def parse(self, response):
         try:
             event_name = list()
@@ -34,43 +35,43 @@ class Usa0042Spider(scrapy.Spider):
             event_desc = list()
             event_link = list()
 
-            self.driver.get("https://www.loyola.edu/sellinger-business")
-            
-            logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[@id='loyola_logo']")))).value_of_css_property("background")
-            logo = re.findall(r'''\"(\S+)\"''',logo)[0]
-            
-            university_name = "Loyola College in Maryland,Joseph A. Sellinger School of Business and Management"
-  
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[@class='global-footer__address-container']")))).text
-            
-            self.driver.get(response.url)           
-            
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='event__title']/a")))
+            self.driver.get("https://www.k-state.edu/directories/offices.html#C")
+
+            logo = 'https://media-exp1.licdn.com/dms/image/C4E0BAQFratlQA4h_IA/company-logo_200_200/0/1586899915908?e=2159024400&v=beta&t=hoQVnKG8XCmj47YQwkEX6iZVIoG8XWTbb2lu0lRxOEc'
+            # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
+
+            university_name = "Kansas State University, College of Business Administration"
+
+            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//b[contains(text(),'Business Admini')]/parent::a/parent::li")))).text
+
+            self.driver.get(response.url)
+
+            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class,'item_content_medium')]//h3//a")))
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
-                    
+
                 RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[@class='summary']")))).text
 
                 try:
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[@class='description']").text 
+                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[@class='description']").text
                 except:
                     RawEventDesc = None
-                
+
                 RawEventDate = self.getter.find_element(By.XPATH,"//p[@class='dateright']").text
-                
+
                 try:
-                    RawEventTime = self.getter.find_element(By.XPATH,"//p[@class='dateright']").text 
+                    RawEventTime = self.getter.find_element(By.XPATH,"//p[@class='dateright']").text
                 except:
                     RawEventTime = None
 
-                    
+
                 event_name.append(RawEventName)
                 event_desc.append(RawEventDesc)
                 event_date.append(RawEventDate)
                 event_time.append(RawEventTime)
-                event_link.append(i.get_attribute('href'))     
-                   
-            
+                event_link.append(i.get_attribute('href'))
+
+
 
             for i in range(len(event_name)):
                 data = ItemLoader(item = GgventuresItem(), selector = i)
@@ -82,12 +83,12 @@ class Usa0042Spider(scrapy.Spider):
                 data.add_value('event_date', event_date[i])
                 data.add_value('event_time', event_time[i])
                 data.add_value('event_link', event_link[i])
-                
+
                 yield data.load_item()
-            
+
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)    
+            error_email(self.name,e)
     def closed(self, reason):
         try:
             self.driver.quit()

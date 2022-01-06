@@ -73,15 +73,22 @@ class GgventuresPipeline:
                         "SpiderName" : spider.name
             }
             # GET EXISTING DF from WORKSHEET
+            retry = 0
+            retry_max = 9
             while True:
                 try:
                     prev_df = get_as_dataframe(worksheet)
                     break
                 except gs_APIError as e:
-                    logger.error(f"Error processing GSpread API Request --> {e}. Sending Error Email Notification")
-                    error_email(spider.name,e)
-                    logger.debug(f"Waiting for 60 seconds before retrying request")
-                    sleep(60)
+                    if retry >= retry_max:
+                        logger.error(f"Error processing GSpread API Request --> {e}. Retries Exceeding more than {retry_max} attempts. Sending Error Email Notification")
+                        error_email(spider.name,e)
+                        retry = 0
+                    else:
+                        logger.error(f"Error processing GSpread API Request --> {e}.")
+                        retry+=1
+                    logger.debug(f"Waiting for 90 seconds before retrying request")
+                    sleep(90)
             df = prev_df.copy()
             # REMOVE EMPTY ROWS
             df.dropna(how='all',inplace=True)
