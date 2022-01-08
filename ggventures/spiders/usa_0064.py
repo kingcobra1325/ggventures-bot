@@ -17,6 +17,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 class Usa0064Spider(scrapy.Spider):
     name = 'usa_0064'
+    country = 'US'
     # allowed_domains = ['https://business.sdsu.edu/']
     start_urls = ['https://business.sdsu.edu//']
 
