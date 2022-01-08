@@ -99,15 +99,22 @@ class GgventuresPipeline:
             df.sort_values(by='Last Updated', ascending = False, inplace=True)
             df.drop_duplicates(subset=['Event Name','Event Date'],inplace=True)
             # WRITE DF TO GOOGGLE SHEETS
+            retry = 0
+            retry_max = 9
             while True:
                 try:
                     prev_df = set_with_dataframe(worksheet, df)
                     break
                 except gs_APIError as e:
-                    logger.error(f"Error processing GSpread API Request --> {e}. Sending Error Email Notification")
-                    error_email(spider.name,e)
-                    logger.debug(f"Waiting for 60 seconds before retrying request")
-                    sleep(60)
+                    if retry >= retry_max:
+                        logger.error(f"Error processing GSpread API Request --> {e}. Sending Error Email Notification")
+                        error_email(spider.name,e)
+                        retry = 0
+                    else:
+                        logger.error(f"Error processing GSpread API Request --> {e}.")
+                        retry+=1
+                    logger.debug(f"Waiting for 90 seconds before retrying request")
+                    sleep(90)
             # format_with_dataframe(worksheet, df, formatter, include_column_header=True)
             return item
         except Exception as e:
