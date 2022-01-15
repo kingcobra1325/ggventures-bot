@@ -68,6 +68,10 @@ file_handler.setFormatter(logging.Formatter(FORMAT))
 logger.addHandler(file_handler)
 logger.addHandler(logging.StreamHandler())
 
+# ------ SETTINGS -------- #
+
+GOOGLE_API_RATE_LIMIT_EMAIL = False
+
 ## ----------------------- EMAIL API KEY ----------------------------- ##
 
 if environ.get('DEPLOYED'):
@@ -162,14 +166,15 @@ def Load_Driver():
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-dev-shm-usage')
-    options.add_argument("--log-level=3")
+    # options.add_argument("--log-level=3")
     options.add_argument("--lang=en-US")
     options.binary_location = GOOGLE_CHROME_BIN
-    # options.add_argument('--no-sandbox')
+    options.add_argument('--no-sandbox')
     prefs = {
                 'intl.accept_languages' : 'en-US'
             }
     options.add_experimental_option("prefs",prefs)
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
     return webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=options)
 # default_driver.quit()
@@ -190,6 +195,7 @@ def Load_FF_Driver():
     options = FirefoxOptions()
     # ------------- DRIVER OPTIONS --------------- #
     options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
+    # options.add_argument(f'user-agent=Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0')
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-dev-shm-usage')
@@ -251,10 +257,10 @@ def DropBox_INIT():
 
 ####################################### FUNCTIONS #########################################
 
-def WebScroller(driver,height):
+def WebScroller(driver,height=10):
     for i in range(0,height,int(height/10)):
         driver.execute_script("window.scrollBy(0, {0});".format(i))
-        time.sleep(0.5)
+        time.sleep(0.1)
 
 def GetValueByIndex(list,index):
     try:

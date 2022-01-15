@@ -1,5 +1,6 @@
 # Define your item pipelines here
 #
+import os,sys
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 from datetime import datetime, timezone
@@ -34,7 +35,7 @@ except:
     from gspread_formatting import *
     from gspread_formatting.dataframe import format_with_dataframe
 
-from binaries import logger, Google_Sheets, formatter, GetValueByIndex, gs_APIError
+from binaries import logger, Google_Sheets, formatter, GetValueByIndex, gs_APIError, GOOGLE_API_RATE_LIMIT_EMAIL
 from bot_email import missing_info_email, error_email
 
 # useful for handling different item types with a single interface
@@ -81,9 +82,13 @@ class GgventuresPipeline:
                     break
                 except gs_APIError as e:
                     if retry >= retry_max:
-                        logger.error(f"Error processing GSpread API Request --> {e}. Retries Exceeding more than {retry_max} attempts. Sending Error Email Notification")
-                        error_email(spider.name,e)
-                        retry = 0
+                        if GOOGLE_API_RATE_LIMIT_EMAIL:
+                            logger.error(f"Error processing GSpread API Request --> {e}. Retries Exceeding more than {retry_max} attempts. Sending Error Email Notification")
+                            error_email(spider.name,e)
+                            retry = 0
+                        else:
+                            logger.error(f"Error processing GSpread API Request --> {e}.")
+                            retry = 0
                     else:
                         logger.error(f"Error processing GSpread API Request --> {e}.")
                         retry+=1
@@ -107,9 +112,13 @@ class GgventuresPipeline:
                     break
                 except gs_APIError as e:
                     if retry >= retry_max:
-                        logger.error(f"Error processing GSpread API Request --> {e}. Sending Error Email Notification")
-                        error_email(spider.name,e)
-                        retry = 0
+                        if GOOGLE_API_RATE_LIMIT_EMAIL:
+                            logger.error(f"Error processing GSpread API Request --> {e}. Sending Error Email Notification")
+                            error_email(spider.name,e)
+                            retry = 0
+                        else:
+                            logger.error(f"Error processing GSpread API Request --> {e}.")
+                            retry = 0
                     else:
                         logger.error(f"Error processing GSpread API Request --> {e}.")
                         retry+=1

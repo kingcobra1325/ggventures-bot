@@ -5,13 +5,21 @@ import time, os, sys, json, re
 start_time = round(time.time())
 
 from datetime import datetime, timezone, timedelta
+from spider_list import Load_Spiders
 from os import environ
 
+# --------------- INSTALL MISSING DEPENDENCIES ----------------- #
 try:
     import schedule
 except:
     os.system(f"{sys.executable} -m pip install schedule")
     import schedule
+try:
+    import tabulate
+except:
+    os.system(f"{sys.executable} -m pip install tabulate")
+    import tabulate
+
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
@@ -30,24 +38,6 @@ from binaries import logger, DropBox_INIT
 #     import scrapy
 #     from scrapy.crawler import CrawlerProcess
 
-# ----- SPIDERS ------- #
-# from ggventures.spiders.usa_0001 import Usa0001Spider
-spider_list = [
-                    # 'usa-0001',
-                    # 'usa-0002',
-                    # 'usa-0003',
-                    # 'usa-0004',
-                    # 'usa-0005',
-                    # 'usa-0006',
-                    # 'usa-0007',
-                    # 'usa-0008',
-                    # 'usa-0009',
-                    # 'usa-0010',
-                    # 'usa-0011',
-                    'usa_0012'
-
-
-              ]
 
 ## ------------- Global Vars --------------- ##
 cwd = os.path.dirname(os.path.realpath(__file__))
@@ -65,10 +55,8 @@ td = datetime.now().strftime('%m-%d-%Y')
 #                         })
 
 ## ---------------------- LOAD SPIDERS -------------------------- ##
-# process.crawl(Usa0001Spider)
-# spider_list = [
-#                 'usa-0001'
-#                 ]
+
+spider_list = Load_Spiders()
 
 def exception_handler(errmsg="", e=""):
     """
