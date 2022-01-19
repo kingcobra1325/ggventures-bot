@@ -35,7 +35,7 @@ except:
     from gspread_formatting import *
     from gspread_formatting.dataframe import format_with_dataframe
 
-from binaries import logger, Google_Sheets, formatter, GetValueByIndex, gs_APIError, GOOGLE_API_RATE_LIMIT_EMAIL
+from binaries import logger, Google_Sheets, formatter, GetValueByIndex, gs_APIError, gs_NoWS, GOOGLE_API_RATE_LIMIT_EMAIL, Create_Default_Sheet
 from bot_email import missing_info_email, error_email
 
 # useful for handling different item types with a single interface
@@ -56,7 +56,20 @@ class GgventuresPipeline:
             logger.info(f"{item}")
             df_all, spreadsheet = Google_Sheets()
             df = df_all
-            worksheet = spreadsheet.worksheet(spider.country)
+            while True:
+                try:
+                    try:
+                        worksheet = spreadsheet.worksheet(spider.country)
+                    except gs_NoWS as e:
+                        logger.debug(f"Worksheet Not Found for -----> {spider.country}. Error: {e}")
+                        logger.debug(f"Creating Worksheet {spider.country}")
+                        worksheet = Create_Default_Sheet(spreadsheet,spider.country)
+                    break
+                except gs_APIError as e:
+                    logger.error(f"Error processing GSpread API Request --> {e}.")
+                    logger.debug(f"Waiting for 90 seconds before retrying request")
+                    sleep(90)
+
             data = {
                         # "Last Updated" : datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p'),
                         "Last Updated" : datetime.utcnow(),
@@ -108,6 +121,10 @@ class GgventuresPipeline:
             retry_max = 9
             while True:
                 try:
+                    try:
+                        pass
+                    except gs_NoSS as e:
+                        logger.debug(f"Error: {e} ---> Worksheet ")
                     prev_df = set_with_dataframe(worksheet, df)
                     break
                 except gs_APIError as e:

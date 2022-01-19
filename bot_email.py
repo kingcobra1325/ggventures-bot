@@ -6,10 +6,10 @@ import smtplib
 
 import time, os, sys
 
-from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY
+from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, developer_emails
 
 client_recipients = []
-dev_recipients = ['goldengooseventures.developer@gmail.com', 'kingcobra1325@gmail.com','joachim.cobar@gmail.com']
+dev_recipients = developer_emails
 
 
 def website_changed(spider="Default Spider", university_name="Default University"):

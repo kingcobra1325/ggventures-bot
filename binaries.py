@@ -9,10 +9,12 @@ from os import environ
 try:
     import gspread
     from gspread.exceptions import APIError as gs_APIError
+    from gspread.exceptions import WorksheetNotFound as gs_NoWS
 except:
     os.system(f"{sys.executable} -m pip install gspread")
     import gspread
     from gspread.exceptions import APIError as gs_APIError
+    from gspread.exceptions import WorksheetNotFound as gs_NoWS
 try:
     from eventbrite import Eventbrite
 except:
@@ -45,6 +47,11 @@ try:
 except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting.dataframe import BasicFormatter, Color
+try:
+    from gspread_dataframe import get_as_dataframe, set_with_dataframe
+except:
+    os.system(f"{sys.executable} -m pip install gspread_dataframe")
+    from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
 # try:
 #     import sib_api_v3_sdk
@@ -71,6 +78,15 @@ logger.addHandler(logging.StreamHandler())
 # ------ SETTINGS -------- #
 
 GOOGLE_API_RATE_LIMIT_EMAIL = False
+
+# -------- DEVELOPER / CLIENT VARS ---------- #
+
+developer_bot_email = ['ggventures-dev@ggventures.iam.gserviceaccount.com']
+developer_emails = [
+                            'goldengooseventures.developer@gmail.com',
+                            'kingcobra1325@gmail.com',
+                            'joachim.cobar@gmail.com'
+                    ]
 
 ## ----------------------- EMAIL API KEY ----------------------------- ##
 
@@ -141,6 +157,29 @@ formatter = BasicFormatter(
     decimal_format='#,##0.00'
 )
 
+def Create_Default_Sheet(spreadsheet,SpiderName):
+    worksheet = spreadsheet.add_worksheet(title=SpiderName, rows="5000", cols="13")
+    worksheet.format('A1:M1', {
+                                "backgroundColor": {
+                                                      "red": 0.0,
+                                                      "green": 0.0,
+                                                      "blue": 0.0
+                                                    },
+                                "horizontalAlignment": "CENTER",
+                                'textFormat': {
+                                                "foregroundColor": {
+                                                                        "red": 1.0,
+                                                                        "green": 1.0,
+                                                                        "blue": 1.0
+                                                                      },
+                                                'bold': True
+                                                }
+                                })
+    worksheet.format('A:M',{"wrapStrategy":"WRAP"})
+    worksheet.freeze(rows=1)
+    worksheet.add_protected_range('A1:M1',developer_bot_email)
+    set_with_dataframe(worksheet, df)
+    return worksheet
 
 def Google_Sheets():
     gc = gspread.service_account_from_dict(BOT_KEYS)
