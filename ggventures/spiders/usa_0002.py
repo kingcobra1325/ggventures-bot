@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class Usa0002Spider(scrapy.Spider):
-    name = 'usa-0002'
+    name = 'usa_0002'
     country = 'US'
     start_urls = ['https://www.eventbrite.com/o/w-p-carey-school-of-business-at-arizona-state-university-11043978456']
     eventbrite_id = 11043978456
@@ -30,16 +30,17 @@ class Usa0002Spider(scrapy.Spider):
 
     def parse(self, response):
         try:
+            self.driver.get("https://wpcarey.asu.edu/")
             # EVENTBRITE API - ORGANIZATION REQUEST
             raw_org = self.eventbrite_api.get_organizers(self.eventbrite_id)
 
             university_name = raw_org['name']
-            logo = raw_org['logo']
-
-            self.driver.get("https://wpcarey.asu.edu/")
-
-            if not logo:
+            if raw_org['logo']:
+                logo = raw_org['logo']['url']
+            else:
                 logo = (WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@class, 'vert')]")))).get_attribute('src')
+
+
 
             # university_name = self.driver.find_element(By.XPATH,"//div[contains(@class, 'navbar-container')]/a").text
 
