@@ -14,6 +14,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+
+
 class Usa0020Spider(scrapy.Spider):
     name = 'usa_0020'
     country = 'US'
@@ -23,26 +26,25 @@ class Usa0020Spider(scrapy.Spider):
     def __init__(self):
         self.driver = Load_Driver()
         self.eventbrite_api = EventBrite_API()
-        # self.getter = Load_Driver()
+        self.getter = Load_Driver()
         self.start_time = round(time.time())
         self.scrape_time = None
 
-        
+
     def parse(self, response):
         try:
+            self.driver.get("https://www.johnson.cornell.edu/")
             # EVENTBRITE API - ORGANIZATION REQUEST
             raw_org = self.eventbrite_api.get_organizers(self.eventbrite_id)
 
             university_name = raw_org['name']
-            logo = raw_org['logo']
-
-            self.driver.get("https://www.johnson.cornell.edu/")
-
-            if not logo:
+            if raw_org['logo']:
+                logo = raw_org['logo']['url']
+            else:
                 logo = (WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@class,'site-header__logo')]")))).get_attribute('src')
 
             university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "(//div[contains(@class,'textwidget')])[5]")))).text
-            
+
             # EVENTBRITE API - EVENT LIST REQUEST
             raw_event = self.eventbrite_api.get_organizer_events(self.eventbrite_id)
             last_page = int(raw_event['pagination']['page_count'])
@@ -62,6 +64,113 @@ class Usa0020Spider(scrapy.Spider):
                     data.add_value('event_link', event['url'])
                     # data.add_value('event_time', event_time[i])
                     yield data.load_item()
+
+            self.driver.get(response.url)
+
+            EventLinks = WebDriverWait(self.driver,20).until(EC.presence_of_all_elements_located((By.XPATH,"//h2[contains(@class,'rssfeed-event__title')]/a")))
+
+            for i in EventLinks:
+
+                data = ItemLoader(item = GgventuresItem(), selector = i)
+
+                link = i.get_attribute('href')
+                self.getter.get(link)
+
+                if 'wdbcs.secure.force.com' in self.getter.current_url:
+
+                    logger.info(f"Currently scraping --> {self.getter.current_url}")
+
+                    if WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).text == 'Schedule Your Appointment':
+                        logger.debug("Event Invalid. Skipping current event....")
+                        continue
+
+                    # WebDriverWait(self.getter,20).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,"//iframe[contains(@title,'Event Detail - Enhanced')]")))
+
+                    # self.getter.switch_to.frame(self.getter.find_element(By.XPATH,"//iframe[contains(@title,'Event Detail - Enhanced')]"))
+
+                    data.add_value('university_name',university_name)
+                    data.add_value('university_contact_info',university_contact_info)
+                    data.add_value('logo',logo)
+                    data.add_value('event_name', WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).text)
+                    # data.add_value('event_name', self.getter.find_element(By.XPATH,".//span[contains(@class,'event-title')]").text)
+                    # data.add_value('event_desc', '\n'.join([x.text for x in WebDriverWait(self.getter,60).until(EC.presence_of_all_elements_located((By.XPATH, "//div[contains(@id,'event_detail_rightcol')]//div[contains(@class,'detail_block')]")))]))
+                    data.add_value('event_desc', self.getter.find_element(By.XPATH,"//h2[contains(text(),'Event Details')]/parent::div/following-sibling::div").text)
+                    data.add_value('event_date', self.getter.find_element(By.XPATH,"//div[contains(@class,'evt_event_details_grid')]//div[contains(@class,'text_content')]").text)
+                    data.add_value('event_time', self.getter.find_element(By.XPATH,"//div[contains(@class,'evt_event_details_grid')]//div[contains(@class,'text_content')]").text)
+                    # try:
+                    #     data.add_value('event_date', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-single')]").text)
+                    #     data.add_value('event_time', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-single')]").text)
+                    # except NoSuchElementException as e:
+                    #     logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
+                    #     data.add_value('event_date', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-range')]").text)
+                    #     data.add_value('event_time', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-range')]").text)
+                    # data.add_value('event_link', link)
+                    # try:
+                    #     event_phone = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h3[contains(text(),'Phone')]/following-sibling::p"))).text
+                    # except TimeoutException as e:
+                    #     logger.debug(f"Element cannot be located --> {e}")
+                    #     event_phone = ''
+
+                    # try:
+                    #     event_email = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//p[contains(@class,'contact')]"))).text
+                    # except TimeoutException as e:
+                    #     logger.debug(f"Element cannot be located --> {e}")
+                    #     event_email = ''
+                    #
+                    #
+                    # data.add_value('startups_contact_info', event_email)
+                    data.add_value('event_link', link)
+
+                    yield data.load_item()
+
+                elif 'johnson.campusgroups.com' in self.getter.current_url:
+
+                    logger.info(f"Currently scraping --> {self.getter.current_url}")
+
+                    # WebDriverWait(self.getter,20).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,"//iframe[contains(@title,'Event Detail - Enhanced')]")))
+
+                    # self.getter.switch_to.frame(self.getter.find_element(By.XPATH,"//iframe[contains(@title,'Event Detail - Enhanced')]"))
+
+                    data.add_value('university_name',university_name)
+                    data.add_value('university_contact_info',university_contact_info)
+                    data.add_value('logo',logo)
+                    data.add_value('event_name', WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).text)
+                    # data.add_value('event_name', self.getter.find_element(By.XPATH,".//span[contains(@class,'event-title')]").text)
+                    # data.add_value('event_desc', '\n'.join([x.text for x in WebDriverWait(self.getter,60).until(EC.presence_of_all_elements_located((By.XPATH, "//div[contains(@id,'event_detail_rightcol')]//div[contains(@class,'detail_block')]")))]))
+                    try:
+                        data.add_value('event_desc', self.getter.find_element(By.XPATH,"//h2[contains(text(),'Event Details')]/parent::div/following-sibling::div").text.replace('Details',''))
+                    except (TimeoutException,NoSuchElementException) as e:
+                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
+                        data.add_value('event_desc', self.getter.find_element(By.XPATH,"//div[contains(@id,'event_details')]").text.replace('Details',''))
+                    data.add_value('event_date', self.getter.find_element(By.XPATH,"//a[contains(text(),'Add to Calendar')]/preceding-sibling::p[2]").text)
+                    data.add_value('event_time', self.getter.find_element(By.XPATH,"//a[contains(text(),'Add to Calendar')]/preceding-sibling::p[1]").text)
+                    # try:
+                    #     data.add_value('event_date', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-single')]").text)
+                    #     data.add_value('event_time', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-single')]").text)
+                    # except NoSuchElementException as e:
+                    #     logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
+                    #     data.add_value('event_date', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-range')]").text)
+                    #     data.add_value('event_time', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-range')]").text)
+                    # data.add_value('event_link', link)
+                    # try:
+                    #     event_phone = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h3[contains(text(),'Phone')]/following-sibling::p"))).text
+                    # except TimeoutException as e:
+                    #     logger.debug(f"Element cannot be located --> {e}")
+                    #     event_phone = ''
+
+                    # try:
+                    #     event_email = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//p[contains(@class,'contact')]"))).text
+                    # except TimeoutException as e:
+                    #     logger.debug(f"Element cannot be located --> {e}")
+                    #     event_email = ''
+                    #
+                    #
+                    # data.add_value('startups_contact_info', event_email)
+                    data.add_value('event_link', link)
+
+                    yield data.load_item()
+
+
 
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
