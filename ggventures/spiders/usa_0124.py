@@ -1,7 +1,7 @@
 import scrapy, time
 # from scrapy import Selector
 
-from bot_email import missing_info_email, error_email, website_changed
+from bot_email import missing_info_email, error_email
 
 from binaries import Load_Driver, logger, WebScroller
 

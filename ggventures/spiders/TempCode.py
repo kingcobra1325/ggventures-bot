@@ -16,21 +16,26 @@ if __name__ == '__main__':
     event_desc = list()
 
     options = webdriver.ChromeOptions()
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
-    options.add_argument(f'user-agent={user_agent}')
+    # user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+    # options.add_argument(f'user-agent={user_agent}')
+    # options.add_experimental_option('excludeSwitches', ['enable-logging'])
     # options.add_argument('--headless')
     options.add_argument('--log-level 3') 
     driver = webdriver.Chrome(executable_path='C:\Chromium97\chromedriver',options=options)
     # getter = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
     # getter2 = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
     
-    link = "https://www.business.msstate.edu/events/2021/12/martin-luther-king-jr-holiday-mississippi-state-university-closed"
+    link = "https://daniels.du.edu/events/"
         
     driver.get(link)
+    driver.maximize_window()
+    EventLinks = WebDriverWait(driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='twMonthEventContainer']//a")))
+    for i in EventLinks:
+        driver.get(i.get_attribute('href'))
+        
+    sleep(100)
+
     
-    RawEventDesc = (WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'summary')]")))).text
-    
-    print(RawEventDesc.text)
 
 
 

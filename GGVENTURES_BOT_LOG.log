@@ -1,72 +1,351 @@
-INFO: Func-process_item : Line-50 : PIPELINE: Currently processing usa-000INFO: Func-<module> : Line-70 : END of BOT
-ine-51 : {'event_desc': [''],
- 'event_name': [''],
- 'logo': ['https://www.asu.edu/asuthemes/5.0/assets/arizona-state-university-logo-vertical.png'],
- 'university_contact_info': ['Graduate programs\n'
-                             'wpcareymasters@asu.edu\n'
-                             '480-965-3332\n'
-                             'Map\n'
-                             '450 E. Lemon Street, MCRD 350\n'
-                             'P.O. Box 874906\n'
-                             'Tempe, AZ 85287-4906'],
- 'university_name': ['W. P. Carey School of Business']}
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-process_item : Line-50 : PIPELINE: Currently processing usa-0002 scraped data:
-INFO: Func-process_item : Line-51 : {'event_desc': [''],
- 'event_name': [''],
- 'logo': ['https://www.asu.edu/asuthemes/5.0/assets/arizona-state-university-logo-vertical.png'],
- 'university_contact_info': ['Graduate programs\n'
-                             'wpcareymasters@asu.edu\n'
-                             '480-965-3332\n'
-                             'Map\n'
-                             '450 E. Lemon Street, MCRD 350\n'
-                             'P.O. Box 874906\n'
-                             'Tempe, AZ 85287-4906'],
- 'university_name': ['W. P. Carey School of Business']}
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-process_item : Line-50 : PIPELINE: Currently processing usa-0002 scraped data:
-INFO: Func-process_item : Line-51 : {'event_desc': [''],
- 'event_name': [''],
- 'logo': ['https://www.asu.edu/asuthemes/5.0/assets/arizona-state-university-logo-vertical.png'],
- 'university_contact_info': ['Graduate programs\n'
-                             'wpcareymasters@asu.edu\n'
-                             '480-965-3332\n'
-                             'Map\n'
-                             '450 E. Lemon Street, MCRD 350\n'
-                             'P.O. Box 874906\n'
-                             'Tempe, AZ 85287-4906'],
- 'university_name': ['W. P. Carey School of Business']}
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-process_item : Line-50 : PIPELINE: Currently processing usa-0002 scraped data:
-INFO: Func-process_item : Line-51 : {'event_desc': [''],
- 'event_name': [''],
- 'logo': ['https://www.asu.edu/asuthemes/5.0/assets/arizona-state-university-logo-vertical.png'],
- 'university_contact_info': ['Graduate programs\n'
-                             'wpcareymasters@asu.edu\n'
-                             '480-965-3332\n'
-                             'Map\n'
-                             '450 E. Lemon Street, MCRD 350\n'
-                             'P.O. Box 874906\n'
-                             'Tempe, AZ 85287-4906'],
- 'university_name': ['W. P. Carey School of Business']}
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
-INFO: Func-GetValueByIndex : Line-139 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-55 : PIPELINE: Currently processing usa_0129 scraped data:
+INFO: Func-process_item : Line-56 : {'event_date': ['THURSDAY JANUARY 20, 2022\n08:30 PM - 09:30 PM EST'],
+ 'event_desc': ['Is there any tax benefit for the education costs incurred in '
+                'obtaining an MBA? IDEBUG: Func-<module> : Line-99 : Golden Goose Ventures BOT Finished successfully. | Time Taken = 1.64 minutes 01-21-2022 12:29:06 AM
+     '– Tax deductibility of an MBA\n'
+                '– Education tax credits\n'
+                '– Student loans and grants\n'
+                'Register Here'],
+ 'event_link': ['https://executivemba.wharton.upenn.edu/events-hq/a1W3a000003sG1aEAE/'],
+ 'event_name': ['Tax Planning for MBA Students'],
+ 'event_time': ['THURSDAY JANUARY 20, 2022\n08:30 PM - 09:30 PM EST'],
+ 'logo': ['https://www.wharton.upenn.edu/wp-content/plugins/martech-chupacabra/includes/images/wharton-logo.svg'],
+ 'university_contact_info': ['General Inquiries\n'
+                             'THE WHARTON SCHOOL\n'
+                             'University of Pennsylvania\n'
+                             '3733 Spruce Street\n'
+                             'Philadelphia, PA 19104.6340\n'
+                             'Phone: +215.898.2575\n'
+                             'Website\n'
+                             'WHARTON SAN FRANCISCO\n'
+                             'University of Pennsylvania\n'
+                             '2 Harrison St., Sixth Floor\n'
+                             'San Francisco, CA 94105\n'
+                             'Phone: +1.415.267.6300\n'
+                             'Website\n'
+                             'PENN WHARTON CHINA CENTER\n'
+                             'World Financial Center\n'
+                             'West Building, 16F\n'
+                             'No. 1 East Third Ring Middle Road\n'
+                             'Chaoyang District\n'
+                             'Beijing, 100020, China\n'
+                             'Phone: +86.10.8587.1740\n'
+                             'Email: chinainfo@wharton.upenn.edu\n'
+                             'Website'],
+ 'university_name': ['University of Pennsylvania,Wharton School']}
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-55 : PIPELINE: Currently processing usa_0129 scraped data:
+INFO: Func-process_item : Line-56 : {'event_date': ['THURSDAY JANUARY 27, 2022\n04:00 PM - 04:30 PM EST'],
+ 'event_desc': ['ONLINE OFFICE HOURS WITH WHARTON EMBA ADMISSION DIRECTORS\n'
+                'Directors of Admission Barbara Craft, San Francisco, and '
+                'Diane Sharp, Philadelphia, are holding open office hours to '
+                'provide the opportunity for you to pop in and ask any '
+                'question you may have about the program, the application '
+                'process, admissions criteria, and more. If you have a quick '
+                'question, pop in and ask.\n'
+                'Open office hours are held twice a month. If you unable to '
+                'attend at this time, please view our events calendar for more '
+                'upcoming sessions.'],
+ 'event_link': ['https://executivemba.wharton.upenn.edu/events-hq/a1W3a000003dIWBEA2/'],
+ 'event_name': ['Online Office Hours'],
+ 'event_time': ['THURSDAY JANUARY 27, 2022\n04:00 PM - 04:30 PM EST'],
+ 'logo': ['https://www.wharton.upenn.edu/wp-content/plugins/martech-chupacabra/includes/images/wharton-logo.svg'],
+ 'university_contact_info': ['General Inquiries\n'
+                             'THE WHARTON SCHOOL\n'
+                             'University of Pennsylvania\n'
+                             '3733 Spruce Street\n'
+                             'Philadelphia, PA 19104.6340\n'
+                             'Phone: +215.898.2575\n'
+                             'Website\n'
+                             'WHARTON SAN FRANCISCO\n'
+                             'University of Pennsylvania\n'
+                             '2 Harrison St., Sixth Floor\n'
+                             'San Francisco, CA 94105\n'
+                             'Phone: +1.415.267.6300\n'
+                             'Website\n'
+                             'PENN WHARTON CHINA CENTER\n'
+                             'World Financial Center\n'
+                             'West Building, 16F\n'
+                             'No. 1 East Third Ring Middle Road\n'
+                             'Chaoyang District\n'
+                             'Beijing, 100020, China\n'
+                             'Phone: +86.10.8587.1740\n'
+                             'Email: chinainfo@wharton.upenn.edu\n'
+                             'Website'],
+ 'university_name': ['University of Pennsylvania,Wharton School']}
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-55 : PIPELINE: Currently processing usa_0129 scraped data:
+INFO: Func-process_item : Line-56 : {'event_date': ['THURSDAY FEBRUARY 3, 2022\n08:30 PM - 09:30 PM EST'],
+ 'event_desc': ['While retirement may look different for each of us, everyone '
+                'has a goal of retiring (or at least making work optional) at '
+                'some point in the future. This workshop will cover '
+                'determining how much you will need in retirement and the 3 '
+                'pillars of retirement security including:\n'
+                '– Social Security – maximizing your benefit\n'
+                '– Employer based plans – Defined Contribution vs. Defined '
+                'Benefit plans, including Simplified Employee Pensions (SEP)\n'
+                '– Traditional IRA vs. Roth IRA and Roth conversions\n'
+                'Register Here'],
+ 'event_link': ['https://executivemba.wharton.upenn.edu/events-hq/a1W3a000003sG1kEAE/'],
+ 'event_name': ['Tools to Build Your Wealth'],
+ 'event_time': ['THURSDAY FEBRUARY 3, 2022\n08:30 PM - 09:30 PM EST'],
+ 'logo': ['https://www.wharton.upenn.edu/wp-content/plugins/martech-chupacabra/includes/images/wharton-logo.svg'],
+ 'university_contact_info': ['General Inquiries\n'
+                             'THE WHARTON SCHOOL\n'
+                             'University of Pennsylvania\n'
+                             '3733 Spruce Street\n'
+                             'Philadelphia, PA 19104.6340\n'
+                             'Phone: +215.898.2575\n'
+                             'Website\n'
+                             'WHARTON SAN FRANCISCO\n'
+                             'University of Pennsylvania\n'
+                             '2 Harrison St., Sixth Floor\n'
+                             'San Francisco, CA 94105\n'
+                             'Phone: +1.415.267.6300\n'
+                             'Website\n'
+                             'PENN WHARTON CHINA CENTER\n'
+                             'World Financial Center\n'
+                             'West Building, 16F\n'
+                             'No. 1 East Third Ring Middle Road\n'
+                             'Chaoyang District\n'
+                             'Beijing, 100020, China\n'
+                             'Phone: +86.10.8587.1740\n'
+                             'Email: chinainfo@wharton.upenn.edu\n'
+                             'Website'],
+ 'university_name': ['University of Pennsylvania,Wharton School']}
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-55 : PIPELINE: Currently processing usa_0129 scraped data:
+INFO: Func-process_item : Line-56 : {'event_date': ['THURSDAY JANUARY 20, 2022\n06:00 PM - 07:00 PM EST'],
+ 'event_desc': ['You have big career goals and academic institutions want '
+                'students like you as a part of their community. In fact, many '
+                'business schools provide pathways for undergraduate students '
+                'to secure a spot in a future MBA classroom. Join admissions '
+                'experts from top programs for this live webinar to learn more '
+                'about deferred MBA Programs and explore if this option is '
+                'right for you.'],
+ 'event_link': ['https://mba.wharton.upenn.edu/events-hq/a1W3a000003sbdYEAQ/'],
+ 'event_name': ['Forté MBA Explore: Deferred MBA Programs'],
+ 'event_time': ['THURSDAY JANUARY 20, 2022\n06:00 PM - 07:00 PM EST'],
+ 'logo': ['https://www.wharton.upenn.edu/wp-content/plugins/martech-chupacabra/includes/images/wharton-logo.svg'],
+ 'university_contact_info': ['General Inquiries\n'
+                             'THE WHARTON SCHOOL\n'
+                             'University of Pennsylvania\n'
+                             '3733 Spruce Street\n'
+                             'Philadelphia, PA 19104.6340\n'
+                             'Phone: +215.898.2575\n'
+                             'Website\n'
+                             'WHARTON SAN FRANCISCO\n'
+                             'University of Pennsylvania\n'
+                             '2 Harrison St., Sixth Floor\n'
+                             'San Francisco, CA 94105\n'
+                             'Phone: +1.415.267.6300\n'
+                             'Website\n'
+                             'PENN WHARTON CHINA CENTER\n'
+                             'World Financial Center\n'
+                             'West Building, 16F\n'
+                             'No. 1 East Third Ring Middle Road\n'
+                             'Chaoyang District\n'
+                             'Beijing, 100020, China\n'
+                             'Phone: +86.10.8587.1740\n'
+                             'Email: chinainfo@wharton.upenn.edu\n'
+                             'Website'],
+ 'university_name': ['University of Pennsylvania,Wharton School']}
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+ERROR: Func-parse : Line-82 : Experienced error on Spider: usa_0129 --> Message: stale element reference: element is not attached to the page document
+  (Session info: headless chrome=84.0.4119.0)
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x002E9443+2724931]
+	Ordinal0 [0x001E8421+1672225]
+	Ordinal0 [0x000D0339+525113]
+	Ordinal0 [0x000D20C5+532677]
+	Ordinal0 [0x000D1FB4+532404]
+	Ordinal0 [0x000D267D+534141]
+	Ordinal0 [0x0008448F+214159]
+	Ordinal0 [0x0007AA9D+174749]
+	Ordinal0 [0x00083D7C+212348]
+	Ordinal0 [0x0007A94B+174411]
+	Ordinal0 [0x00062528+75048]
+	Ordinal0 [0x000635A0+79264]
+	Ordinal0 [0x00063539+79161]
+	Ordinal0 [0x001FD4D7+1758423]
+	GetHandleVerifier [0x00405D96+1050070]
+	GetHandleVerifier [0x00405AE1+1049377]
+	GetHandleVerifier [0x00410927+1093991]
+	GetHandleVerifier [0x00406396+1051606]
+	Ordinal0 [0x001F59D6+1726934]
+	Ordinal0 [0x001FEA4B+1763915]
+	Ordinal0 [0x001FEBB3+1764275]
+	Ordinal0 [0x00214AD5+1854165]
+	BaseThreadInitThunk [0x7780FA29+25]
+	RtlGetAppContainerNamedObjectPath [0x77E47A9E+286]
+	RtlGetAppContainerNamedObjectPath [0x77E47A6E+238]
+	(No symbol) [0x00000000]
+. Sending Error Email Notification
+ERROR: Func-error_email : Line-180 : Error Email from usa_0129 successfully sent to goldengooseventures.developer@gmail.com
+ERROR: Func-error_email : Line-180 : Error Email from usa_0129 successfully sent to kingcobra1325@gmail.com
+ERROR: Func-error_email : Line-180 : Error Email from usa_0129 successfully sent to joachim.cobar@gmail.com
+INFO: Func-process_item : Line-55 : PIPELINE: Currently processing usa_0129 scraped data:
+INFO: Func-process_item : Line-56 : {'event_date': ['FRIDAY JANUARY 21, 2022\n11:00 AM - 12:00 PM EST'],
+ 'event_desc': ['Join five MBA students from the MENA region for a panel '
+                'discussion. Listen to their perspectives on Wharton’s '
+                'community, social life, careers, academics, leadership '
+                'opportunities, and the application process. After the panel, '
+                'students will answer your questions live.\n'
+                'Register Here'],
+ 'event_link': ['https://mba.wharton.upenn.edu/events-hq/a1W3a000003sbgaEAA/'],
+ 'event_name': ['MBA Conversation Series: Students from the Middle East and '
+                'North Africa (MENA)'],
+ 'event_time': ['FRIDAY JANUARY 21, 2022\n11:00 AM - 12:00 PM EST'],
+ 'logo': ['https://www.wharton.upenn.edu/wp-content/plugins/martech-chupacabra/includes/images/wharton-logo.svg'],
+ 'university_contact_info': ['General Inquiries\n'
+                             'THE WHARTON SCHOOL\n'
+                             'University of Pennsylvania\n'
+                             '3733 Spruce Street\n'
+                             'Philadelphia, PA 19104.6340\n'
+                             'Phone: +215.898.2575\n'
+                             'Website\n'
+                             'WHARTON SAN FRANCISCO\n'
+                             'University of Pennsylvania\n'
+                             '2 Harrison St., Sixth Floor\n'
+                             'San Francisco, CA 94105\n'
+                             'Phone: +1.415.267.6300\n'
+                             'Website\n'
+                             'PENN WHARTON CHINA CENTER\n'
+                             'World Financial Center\n'
+                             'West Building, 16F\n'
+                             'No. 1 East Third Ring Middle Road\n'
+                             'Chaoyang District\n'
+                             'Beijing, 100020, China\n'
+                             'Phone: +86.10.8587.1740\n'
+                             'Email: chinainfo@wharton.upenn.edu\n'
+                             'Website'],
+ 'university_name': ['University of Pennsylvania,Wharton School']}
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-55 : PIPELINE: Currently processing usa_0129 scraped data:
+INFO: Func-process_item : Line-56 : {'event_date': ['TUESDAY FEBRUARY 1, 2022\n12:00 PM - 01:00 PM EST'],
+ 'event_desc': ['Join the Lauder admissions team for an hour long webinar to '
+                'learn more about the admissions process for the joint degree '
+                'MBA/MA International Studies program. Time will be allotted '
+                'for Q&A.\n'
+                'Register Here'],
+ 'event_link': ['https://mba.wharton.upenn.edu/events-hq/a1W3a000003shcoEAA/'],
+ 'event_name': ['Lauder Admissions Webinar'],
+ 'event_time': ['TUESDAY FEBRUARY 1, 2022\n12:00 PM - 01:00 PM EST'],
+ 'logo': ['https://www.wharton.upenn.edu/wp-content/plugins/martech-chupacabra/includes/images/wharton-logo.svg'],
+ 'university_contact_info': ['General Inquiries\n'
+                             'THE WHARTON SCHOOL\n'
+                             'University of Pennsylvania\n'
+                             '3733 Spruce Street\n'
+                             'Philadelphia, PA 19104.6340\n'
+                             'Phone: +215.898.2575\n'
+                             'Website\n'
+                             'WHARTON SAN FRANCISCO\n'
+                             'University of Pennsylvania\n'
+                             '2 Harrison St., Sixth Floor\n'
+                             'San Francisco, CA 94105\n'
+                             'Phone: +1.415.267.6300\n'
+                             'Website\n'
+                             'PENN WHARTON CHINA CENTER\n'
+                             'World Financial Center\n'
+                             'West Building, 16F\n'
+                             'No. 1 East Third Ring Middle Road\n'
+                             'Chaoyang District\n'
+                             'Beijing, 100020, China\n'
+                             'Phone: +86.10.8587.1740\n'
+                             'Email: chinainfo@wharton.upenn.edu\n'
+                             'Website'],
+ 'university_name': ['University of Pennsylvania,Wharton School']}
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-55 : PIPELINE: Currently processing usa_0129 scraped data:
+INFO: Func-process_item : Line-56 : {'event_date': ['WEDNESDAY FEBRUARY 9, 2022\n12:00 PM - 01:00 PM EST'],
+ 'event_desc': ['As you prepare your application for the Moelis Advance Access '
+                'Program and other deferred admission programs, we want to '
+                'equip you with all of the information needed to submit with '
+                'confidence. Jake Kohler, Director of the Moelis Advance '
+                'Access Program, will join a panel of other admissions '
+                'officers at top deferred admission MBA programs to provide '
+                'information and answer your questions. The event is hosted '
+                'and moderated by Clear Admit.'],
+ 'event_link': ['https://mba.wharton.upenn.edu/events-hq/a1W3a000003sbdOEAQ/'],
+ 'event_name': ['Clear Admit Event Series: Deferred Enrollment MBA Application '
+                'Insights'],
+ 'event_time': ['WEDNESDAY FEBRUARY 9, 2022\n12:00 PM - 01:00 PM EST'],
+ 'logo': ['https://www.wharton.upenn.edu/wp-content/plugins/martech-chupacabra/includes/images/wharton-logo.svg'],
+ 'university_contact_info': ['General Inquiries\n'
+                             'THE WHARTON SCHOOL\n'
+                             'University of Pennsylvania\n'
+                             '3733 Spruce Street\n'
+                             'Philadelphia, PA 19104.6340\n'
+                             'Phone: +215.898.2575\n'
+                             'Website\n'
+                             'WHARTON SAN FRANCISCO\n'
+                             'University of Pennsylvania\n'
+                             '2 Harrison St., Sixth Floor\n'
+                             'San Francisco, CA 94105\n'
+                             'Phone: +1.415.267.6300\n'
+                             'Website\n'
+                             'PENN WHARTON CHINA CENTER\n'
+                             'World Financial Center\n'
+                             'West Building, 16F\n'
+                             'No. 1 East Third Ring Middle Road\n'
+                             'Chaoyang District\n'
+                             'Beijing, 100020, China\n'
+                             'Phone: +86.10.8587.1740\n'
+                             'Email: chinainfo@wharton.upenn.edu\n'
+                             'Website'],
+ 'university_name': ['University of Pennsylvania,Wharton School']}
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-process_item : Line-55 : PIPELINE: Currently processing usa_0129 scraped data:
+INFO: Func-process_item : Line-56 : {'event_date': ['TUESDAY FEBRUARY 15, 2022\n12:00 PM - 01:00 PM EST'],
+ 'event_desc': ['Join the Lauder admissions team for an hour-long Q&A session '
+                'to learn more about the Lauder Institute’s admissions process '
+                'and how to build a strong application to the joint degree '
+                'MBA/MA International Studies program.\n'
+                'Register Here'],
+ 'event_link': ['https://mba.wharton.upenn.edu/events-hq/a1W3a000003shc4EAA/'],
+ 'event_name': ['Lauder Admissions Q&A Drop-in Sessions'],
+ 'event_time': ['TUESDAY FEBRUARY 15, 2022\n12:00 PM - 01:00 PM EST'],
+ 'logo': ['https://www.wharton.upenn.edu/wp-content/plugins/martech-chupacabra/includes/images/wharton-logo.svg'],
+ 'university_contact_info': ['General Inquiries\n'
+                             'THE WHARTON SCHOOL\n'
+                             'University of Pennsylvania\n'
+                             '3733 Spruce Street\n'
+                             'Philadelphia, PA 19104.6340\n'
+                             'Phone: +215.898.2575\n'
+                             'Website\n'
+                             'WHARTON SAN FRANCISCO\n'
+                             'University of Pennsylvania\n'
+                             '2 Harrison St., Sixth Floor\n'
+                             'San Francisco, CA 94105\n'
+                             'Phone: +1.415.267.6300\n'
+                             'Website\n'
+                             'PENN WHARTON CHINA CENTER\n'
+                             'World Financial Center\n'
+                             'West Building, 16F\n'
+                             'No. 1 East Third Ring Middle Road\n'
+                             'Chaoyang District\n'
+                             'Beijing, 100020, China\n'
+                             'Phone: +86.10.8587.1740\n'
+                             'Email: chinainfo@wharton.upenn.edu\n'
+                             'Website'],
+ 'university_name': ['University of Pennsylvania,Wharton School']}
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+INFO: Func-GetValueByIndex : Line-308 : Error 'NoneType' object is not subscriptable: Unable to get value from index
+DEBUG: Func-closed : Line-89 : Spider: usa_0129 scraping finished due to --> finished
+DEBUG: Func-closed : Line-90 : Elapsed Scraping Time: 1.42 minutes

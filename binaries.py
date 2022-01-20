@@ -194,8 +194,8 @@ if environ.get('DEPLOYED'):
     CHROMEDRIVER_PATH = environ.get('CHROMEDRIVER_PATH')
 else:
     # DEVELOPER VARS
-    GOOGLE_CHROME_BIN = 'C:\\Pysourcecodes\\chromium\\chrome.exe'
-    CHROMEDRIVER_PATH = 'C:\\Pysourcecodes\\chromium\\chromedriver'
+    GOOGLE_CHROME_BIN = 'C:\\chromium\\chrome.exe'
+    CHROMEDRIVER_PATH = 'C:\\chromium\\chromedriver'
 
 # DRIVER VAR
 def Load_Driver():
