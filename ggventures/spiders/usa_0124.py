@@ -1,7 +1,7 @@
 import scrapy, time
 # from scrapy import Selector
 
-from bot_email import missing_info_email, error_email, website_changed
+from bot_email import missing_info_email, error_email
 
 from binaries import Load_Driver, logger, WebScroller
 
@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class Usa0124pider(scrapy.Spider):
+class Usa0124Spider(scrapy.Spider):
     name = 'usa_0124'
     country = 'US'
     # start_urls = ["https://cba.k-state.edu/about/events/"]
