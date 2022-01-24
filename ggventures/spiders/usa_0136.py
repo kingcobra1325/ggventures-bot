@@ -18,7 +18,7 @@ class Usa0136Spider(scrapy.Spider):
     name = 'usa_0136'
     country = 'US'
     # start_urls = ["https://cba.k-state.edu/about/events/"]
-    start_urls = ["https://sc.edu/study/colleges_schools/moore/events/calendar/index.php"]
+    start_urls = ["https://www.marshall.usc.edu/news-events/usc-marshall-events"]
 
     def __init__(self):
         self.driver = Load_Driver()
@@ -28,32 +28,36 @@ class Usa0136Spider(scrapy.Spider):
 
     def parse(self, response):
         try:
-            self.driver.get("https://sc.edu/study/colleges_schools/moore/index.php")
+            self.driver.get("https://www.marshall.usc.edu/")
 
-            logo = "https://sc.edu/study/colleges_schools/moore/images/callout_images/moore_school_logo_standard.jpg"
+            logo = "https://upload.wikimedia.org/wikipedia/commons/f/ff/USC_Marshall_logo.png"
             # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
 
-            university_name = "University of South Carolina,Moore School of Business"
+            university_name = "University of Southern California (USC),Marshall School of Business"
             
-            self.driver.get("https://www.sc.edu/about/contact/")
+            self.driver.get("https://www.marshall.usc.edu/about/contact-us")
             
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//aside[@class='callout  info']")))).text
+            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[@class='table-wrap']")))).text
 
             self.driver.get(response.url)     
             
+            height = self.driver.execute_script("return document.body.scrollHeight")
+            
+            WebScroller(self.driver,height)
+            
             counter = 0
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='twDescription']/a")))
+            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//h4/a")))
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
 
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//span[@class='twEDDescription']")))).text
+                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h2[@class='block-story__title']")))).text
 
                 try:
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//table[@class='twEDContent']").text
+                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'text-content')]").text
                 except:
                     RawEventDesc = None
 
-                RawEventDate = self.getter.find_element(By.XPATH,"//span[@class='twEDStartEndRange']").text 
+                RawEventDate = self.getter.find_element(By.XPATH,"//div[@class='block-story__body']").text 
 
                 try:
                     RawEventTime = RawEventDate
