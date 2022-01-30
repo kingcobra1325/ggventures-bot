@@ -43,10 +43,10 @@ except:
     import dropbox
     from dropbox.exceptions import ApiError
 try:
-    from gspread_formatting.dataframe import BasicFormatter, Color
+    from gspread_formatting import set_column_width
 except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
-    from gspread_formatting.dataframe import BasicFormatter, Color
+    from gspread_formatting import set_column_width
 try:
     from gspread_dataframe import get_as_dataframe, set_with_dataframe
 except:
@@ -151,12 +151,6 @@ else:
       "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ggventures-dev%40ggventures.iam.gserviceaccount.com"
     }
 
-formatter = BasicFormatter(
-    header_background_color=Color(0,0,0),
-    header_text_color=Color(1,1,1),
-    decimal_format='#,##0.00'
-)
-
 def Create_Default_Sheet(spreadsheet,SpiderName):
     worksheet = spreadsheet.add_worksheet(title=SpiderName, rows="5000", cols="13")
     worksheet.format('A1:M1', {
@@ -178,6 +172,10 @@ def Create_Default_Sheet(spreadsheet,SpiderName):
     worksheet.format('A:M',{"wrapStrategy":"WRAP"})
     worksheet.freeze(rows=1)
     worksheet.add_protected_range('A1:M1',developer_bot_email)
+    # Set Event Description COLUMN Size
+    set_column_width(worksheet, 'F', 600)
+    # Set University Contact Info COLUMN Size
+    set_column_width(worksheet, 'K', 350)
     set_with_dataframe(worksheet, df)
     return worksheet
 
@@ -194,8 +192,8 @@ if environ.get('DEPLOYED'):
     CHROMEDRIVER_PATH = environ.get('CHROMEDRIVER_PATH')
 else:
     # DEVELOPER VARS
-    GOOGLE_CHROME_BIN = 'C:\\chromium\\chrome.exe'
-    CHROMEDRIVER_PATH = 'C:\\chromium\\chromedriver'
+    GOOGLE_CHROME_BIN = 'C:\\Pysourcecodes\\chromium\\chrome.exe'
+    CHROMEDRIVER_PATH = 'C:\\Pysourcecodes\\chromium\\chromedriver'
 
 # DRIVER VAR
 def Load_Driver():
@@ -209,11 +207,13 @@ def Load_Driver():
     options.add_argument("--lang=en-US")
     options.binary_location = GOOGLE_CHROME_BIN
     options.add_argument('--no-sandbox')
+    options.add_argument("--enable-features=NetworkServiceInProcess")
     prefs = {
                 'intl.accept_languages' : 'en-US'
             }
     options.add_experimental_option("prefs",prefs)
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
+
 
     return webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=options)
 # default_driver.quit()
@@ -301,12 +301,17 @@ def WebScroller(driver,height=10):
         driver.execute_script("window.scrollBy(0, {0});".format(i))
         time.sleep(0.1)
 
-def GetValueByIndex(list,index):
-    try:
-        return list[index]
-    except (KeyError,TypeError) as e:
-        logger.info(f"Error {e}: Unable to get value from index")
+def UnpackItems(item):
+    if item:
+        try:
+            return "\n".join(item)
+        except (KeyError,TypeError) as e:
+            logger.info(f"Error {e}: Unable to get value from index")
+            return ''
+    else:
         return ''
+
+
 
 
 # --------------- ERROR EXCEPTION ----------------- #

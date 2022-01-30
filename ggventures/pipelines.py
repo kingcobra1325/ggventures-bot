@@ -35,7 +35,7 @@ except:
     from gspread_formatting import *
     from gspread_formatting.dataframe import format_with_dataframe
 
-from binaries import logger, Google_Sheets, formatter, GetValueByIndex, gs_APIError, gs_NoWS, GOOGLE_API_RATE_LIMIT_EMAIL, Create_Default_Sheet
+from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, GOOGLE_API_RATE_LIMIT_EMAIL, Create_Default_Sheet, UnpackItems
 from bot_email import missing_info_email, error_email
 
 # useful for handling different item types with a single interface
@@ -71,19 +71,18 @@ class GgventuresPipeline:
                     sleep(90)
 
             data = {
-                        # "Last Updated" : datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p'),
                         "Last Updated" : datetime.utcnow(),
-                        "Event Name" : GetValueByIndex(item.get("event_name"),0),
-                        "Event Date" : GetValueByIndex(item.get("event_date"),0),
-                        "Event Time" : GetValueByIndex(item.get("event_time"),0),
-                        "Event Link" : GetValueByIndex(item.get("event_link"),0),
-                        "Event Description" : GetValueByIndex(item.get("event_desc"),0),
-                        "Startup Name(s)" : GetValueByIndex(item.get("startups_name"),0),
-                        "Startup Link(s)" : GetValueByIndex(item.get("startups_link"),0),
-                        "Startup Contact Info(s)" : GetValueByIndex(item.get("startups_contact_info"),0),
-                        "University Name" : GetValueByIndex(item.get("university_name"),0),
-                        "University Contact Info" : GetValueByIndex(item.get("university_contact_info"),0),
-                        "Logo" : GetValueByIndex(item.get("logo"),0),
+                        "Event Name" : UnpackItems(item.get("event_name")),
+                        "Event Date" : UnpackItems(item.get("event_date")),
+                        "Event Time" : UnpackItems(item.get("event_time")),
+                        "Event Link" : UnpackItems(item.get("event_link")),
+                        "Event Description" : UnpackItems(item.get("event_desc")),
+                        "Startup Name(s)" : UnpackItems(item.get("startups_name")),
+                        "Startup Link(s)" : UnpackItems(item.get("startups_link")),
+                        "Startup Contact Info(s)" : UnpackItems(item.get("startups_contact_info")),
+                        "University Name" : UnpackItems(item.get("university_name")),
+                        "University Contact Info" : UnpackItems(item.get("university_contact_info")),
+                        "Logo" : UnpackItems(item.get("logo")),
                         "SpiderName" : spider.name
             }
             # GET EXISTING DF from WORKSHEET
@@ -141,7 +140,6 @@ class GgventuresPipeline:
                         retry+=1
                     logger.debug(f"Waiting for 90 seconds before retrying request")
                     sleep(90)
-            # format_with_dataframe(worksheet, df, formatter, include_column_header=True)
             return item
         except Exception as e:
             logger.error(f"Experienced error on the Pipeline --> {e}. Sending Error Email Notification")
