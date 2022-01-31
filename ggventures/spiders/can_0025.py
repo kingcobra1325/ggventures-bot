@@ -189,7 +189,7 @@ class Can0025Spider(scrapy.Spider):
             #         unique_event(self.name,university_name,self.getter.current_url)
             #         logger.debug("Skipping............")
 
-            number_of_months = 1
+            number_of_months = 8
             #
             for scrape_month in range(number_of_months):
 
@@ -301,17 +301,17 @@ class Can0025Spider(scrapy.Spider):
                     logger.debug(f"No available events for this month : {e} ---> Skipping...........")
 
 
-                # try:
-                #     # WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//span[contains(@class,'next-btn')]"))).click()
-                #     next_month = self.driver.find_element(By.XPATH,"//a[contains(@id,'view_by_next')]").get_attribute('href')
-                #     # next_month = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@title,'Go to the next page of the results')]"))).get_attribute('href')
-                #     # WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@class,'next')]"))).click()
-                #     # self.driver.get(next_month)
-                #     self.driver.execute_script(f"""return document.querySelector("[onclick*={next_month.split('(')[1].split(')')[0]}]")""").click()
-                #     # time.sleep(10)
-                # except (TimeoutException,NoSuchElementException) as e:
-                #     logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
-                #     break
+                try:
+                    # WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//span[contains(@class,'next-btn')]"))).click()
+                    # next_month = self.driver.find_element(By.XPATH,"//a[contains(@id,'view_by_next')]").get_attribute('href')
+                    # next_month = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@title,'Go to the next page of the results')]"))).get_attribute('href')
+                    WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@id,'view_by_next')]"))).click()
+                    # self.driver.get(next_month)
+                    # self.driver.execute_script(f"""return document.querySelector("[onclick*={next_month.split('(')[1].split(')')[0]}]")""").click()
+                    # time.sleep(10)
+                except (TimeoutException,NoSuchElementException) as e:
+                    logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
+                    break
 
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
