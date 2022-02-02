@@ -51,7 +51,7 @@ class Usa0150Spider(scrapy.Spider):
                     EventDescXPATH = "//div[@id='description']"
                     EventDateXPATH = "//div[contains(@class,'event-date')]"                                
                 elif 'https://wustl.force.com/' in self.getter.current_url:
-                    EventNameXPATH = "//h1"
+                    EventNameXPATH = "//div[@class='ui-widget']//h1"
                     EventDescXPATH = "//div[@class='descrSection']/.."
                     EventDateXPATH = "(//div[contains(@class,'slds-text-title_bold')])[2]"
 
@@ -62,8 +62,10 @@ class Usa0150Spider(scrapy.Spider):
                 except:
                     RawEventDesc = None
 
-                RawEventDate = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,EventDateXPATH)))).text 
-
+                try:
+                    RawEventDate = self.getter.find_element(By.XPATH,EventDateXPATH).text 
+                except:
+                    RawEventDate = None
                 try:
                     RawEventTime = RawEventDate
                 except:

@@ -1,7 +1,7 @@
 import scrapy, time
 # from scrapy import Selector
 
-from bot_email import missing_info_email, error_email
+from bot_email import missing_info_email, error_email, unique_event
 
 from binaries import Load_Driver, logger, WebScroller
 
@@ -45,27 +45,33 @@ class Usa0039Spider(scrapy.Spider):
             EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='event__title']/a")))
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
-                    
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[@class='summary']")))).text
-
-                try:
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[@class='description']").text 
-                except:
-                    RawEventDesc = None
                 
-                RawEventDate = self.getter.find_element(By.XPATH,"//p[@class='dateright']").text
-                
-                try:
-                    RawEventTime = self.getter.find_element(By.XPATH,"//p[@class='dateright']").text 
-                except:
-                    RawEventTime = None
-
+                if 'https://events.k-state.edu/event/' in self.getter.current_url:
                     
-                event_name.append(RawEventName)
-                event_desc.append(RawEventDesc)
-                event_date.append(RawEventDate)
-                event_time.append(RawEventTime)
-                event_link.append(i.get_attribute('href'))     
+                    RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[@class='summary']")))).text
+
+                    try:
+                        RawEventDesc = self.getter.find_element(By.XPATH,"//div[@class='description']").text 
+                    except:
+                        RawEventDesc = None
+                    
+                    RawEventDate = self.getter.find_element(By.XPATH,"//p[@class='dateright']").text
+                    
+                    try:
+                        RawEventTime = self.getter.find_element(By.XPATH,"//p[@class='dateright']").text 
+                    except:
+                        RawEventTime = None
+
+                        
+                    event_name.append(RawEventName)
+                    event_desc.append(RawEventDesc)
+                    event_date.append(RawEventDate)
+                    event_time.append(RawEventTime)
+                    event_link.append(i.get_attribute('href'))   
+                else:
+                    logger.debug(f"Link: {i.get_attribute('href')} is a Unique Event. Sending Emails.....")
+                    unique_event(self.name,university_name,i.get_attribute('href'))
+                    logger.debug("Skipping............")     
                    
             
 

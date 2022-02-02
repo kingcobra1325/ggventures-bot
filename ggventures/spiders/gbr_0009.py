@@ -55,7 +55,7 @@ class Gbr0009Spider(scrapy.Spider):
                 elif 'https://www.cranfield.ac.uk/' in self.getter.current_url:
                     EventNameXPATH = "//h1"
                     EventDescXPATH = "//div[@class='main-content']"
-                    EventDateXPATH = "//span[text()='Next date:']/../../following-sibling::div"
+                    EventDateXPATH = "//b[text()='Next date:']/..|//span[text()='Next date:']/../../following-sibling::div"
                     EventTimeXPATH = "//b[text()='Time:']/.."
                     EventContactStartXPATH = "//h3[contains(text(),'Get')]/.."
                     

@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
 class Usa0005Spider(scrapy.Spider):
-    name = 'usa-0005'
+    name = 'usa_0005'
     country = 'US'
     start_urls = ['https://zicklin.baruch.cuny.edu/events/']
 
@@ -45,7 +45,7 @@ class Usa0005Spider(scrapy.Spider):
             
             self.driver.get(response.url)
             
-            while True:
+            for o in range(2):
                 EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@class,'tribe-event-url news-listing-title')]")))
 
                 for i in EventLinks:

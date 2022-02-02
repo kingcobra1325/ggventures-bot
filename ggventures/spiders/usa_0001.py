@@ -14,7 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class Usa0001Spider(scrapy.Spider):
-    name = 'usa-0001'
+    name = 'usa_0001'
     country = 'US'
     start_urls = ['https://kogod.american.edu/events?hsLang=en']
 

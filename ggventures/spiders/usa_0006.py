@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import re
 
 class Usa0006Spider(scrapy.Spider):
-    name = 'usa-0006'
+    name = 'usa_0006'
     country = 'US'
     start_urls = ['https://www.baylor.edu/business/news/index.php?id=86163']
     

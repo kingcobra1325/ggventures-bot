@@ -49,15 +49,25 @@ class Usa0136Spider(scrapy.Spider):
             EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//h4/a")))
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
+                
+                if 'https://ticketbud.com/' in self.getter.current_url:
+                    RawEventNameXPATH = "//h1"
+                    RawEventDescXPATH = "//div[@id='event-details']"
+                    RawEventDateXPATH = "//div[@class='date-and-time-details']"
+                elif 'https://www.marshall.usc.edu/event/' in self.getter.current_url:
+                    RawEventNameXPATH = "//h2[@class='block-story__title']"
+                    RawEventDescXPATH = "//div[contains(@class,'text-content')]"
+                    RawEventDateXPATH = "//div[@class='block-story__body']"
+                    
 
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h2[@class='block-story__title']")))).text
+                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,RawEventNameXPATH)))).text
 
                 try:
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'text-content')]").text
+                    RawEventDesc = self.getter.find_element(By.XPATH,RawEventDesc).text
                 except:
                     RawEventDesc = None
 
-                RawEventDate = self.getter.find_element(By.XPATH,"//div[@class='block-story__body']").text 
+                RawEventDate = self.getter.find_element(By.XPATH,RawEventDateXPATH).text 
 
                 try:
                     RawEventTime = RawEventDate

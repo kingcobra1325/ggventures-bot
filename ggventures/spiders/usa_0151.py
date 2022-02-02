@@ -46,24 +46,24 @@ class Usa0151Spider(scrapy.Spider):
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
 
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h2[@itemprop='name']")))).text
+                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[@class='em-header-card_title']")))).text
 
                 try:
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[@itemprop='description']").text
+                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[@class='em-about_description']").text
                 except:
                     RawEventDesc = None
 
-                RawEventDate = self.getter.find_element(By.XPATH,"//section[@class='event-detail-date']").text 
+                RawEventDate = self.getter.find_element(By.XPATH,"//p[@class='em-date']").text 
 
                 try:
                     RawEventTime = RawEventDate
                 except:
                     RawEventTime = None
                     
-                try:
-                    RawStartContactInfo = self.getter.find_element(By.XPATH,"//section[@class='event-detail-contact-person']").text
-                except:
-                    RawStartContactInfo = None
+                # try:
+                #     RawStartContactInfo = self.getter.find_element(By.XPATH,"//section[@class='event-detail-contact-person']").text
+                # except:
+                #     RawStartContactInfo = None
 
                 data = ItemLoader(item = GgventuresItem(), selector = counter)
                 data.add_value('university_name',university_name)

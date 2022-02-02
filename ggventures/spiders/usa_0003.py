@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class Usa0003Spider(scrapy.Spider):
-    name = 'usa-0003'
+    name = 'usa_0003'
     country = 'US'
     start_urls = ['https://calendar.auburn.edu/calendar']
     

@@ -26,46 +26,60 @@ class Usa0019Spider(scrapy.Spider):
 
     def parse(self, response):
         try:
-            # event_name = list()
-            # event_date = list()
-            # event_time = list()
-            # event_desc = list()
-            # event_link = list()
-
-            self.driver.get("https://home.gsb.columbia.edu/")
-
             logo = 'https://yt3.ggpht.com/ytc/AKedOLRfHXTUpy0athnHliRsncdRBUkvMlw1SsBdzTdljg=s900-c-k-c0x00ffffff-no-rj'
 
-            university_name = self.driver.find_element(By.XPATH , "//title").get_attribute('textContent')
+            university_name = "Columbia University,Columbia Business School (CBS)"
 
-            self.driver.get("https://mason.wm.edu/contact/index.php")
+            self.driver.get("https://www8.gsb.columbia.edu/contact")
 
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//table[contains(@summary,'Contact Table')]//tr")))).text
+            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//div[@class='copyright']")))).text
 
             self.driver.get(response.url)
 
-            select = Select(WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//select[contains(@name,'jump_menu')]"))))
-            select.select_by_value('all')
+            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='eventolink']/a")))
 
-            time.sleep(4)
 
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@title,'Expand to View')]")))
-
+            counter = 0
             for i in EventLinks:
                 self.getter.get(i.get_attribute('href'))
 
-                if 'gsb.columbia.edu' in i.get_attribute('href'):
+                if "https://groups.gsb.columbia.edu/" in self.getter.current_url:
+                    
+                    RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[@class='rsvp__event-name']")))).text
+
+                    try:
+                        RawEventDesc = self.getter.find_element(By.XPATH,"//div[@id='event_details']").text
+                    except:
+                        RawEventDesc = None
+
+                    try:
+                        RawEventDate = self.getter.find_element(By.XPATH,"//span[@id='timezone']/../..").text 
+                    except:
+                        RawEventDate = None
+                        
+                    try:
+                        RawEventTime = RawEventDate                  
+                        # RawEventTime = self.getter.find_element(By.XPATH,"//p[@Class='event__time']").text 
+                        # RawEventTime = RawEventDate
+                    except:
+                        RawEventTime = None
+                        
+                    # try:
+                    #     RawStartContactInfo = self.getter.find_element(By.XPATH,"//section[contains(@class,'contact')]").text
+                    # except:
+                    #     RawStartContactInfo = None
 
                     data = ItemLoader(item = GgventuresItem(), selector = i)
                     data.add_value('university_name',university_name)
                     data.add_value('university_contact_info',university_contact_info)
                     data.add_value('logo',logo)
-                    data.add_value('event_name', WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH, "//h1"))).text)
-                    data.add_value('event_desc', self.getter.find_elements(By.XPATH , "//div[contains(@class,'col-md-4_5')]//p")[0].text)
-                    data.add_value('event_date', self.getter.find_elements(By.XPATH , "//div[contains(@class,'col-md-4_5')]//p")[1].text)
-                    data.add_value('event_time', self.getter.find_element(By.XPATH , "//div[contains(@id,'event_details')]").text)
+                    data.add_value('event_name', RawEventName)
+                    data.add_value('event_desc', RawEventDesc)
+                    data.add_value('event_date', RawEventDate)
+                    data.add_value('event_time', RawEventTime)
                     data.add_value('event_link', i.get_attribute('href'))
 
+                    counter+=1
                     yield data.load_item()
                 else:
                     logger.debug(f"Link: {i.get_attribute('href')} is a Unique Event. Sending Emails.....")

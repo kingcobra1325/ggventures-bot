@@ -52,10 +52,12 @@ class Usa0033Spider(scrapy.Spider):
 
                 RawEventDesc = self.getter.find_element(By.XPATH,"//div[@class='description']").text 
 
-                RawEventDate = self.getter.find_element(By.XPATH,"//abbr[@class='dtstart']").text + '-' +self.getter.find_element(By.XPATH,"//abbr[@class='dtend']").text
-                
                 try:
-                    RawEventTime = self.getter.find_element(By.XPATH,"//abbr[@class='dtstart']").text + '-' +self.getter.find_element(By.XPATH,"//abbr[@class='dtend']").text
+                    RawEventDate = self.getter.find_element(By.XPATH,"//p[@class='dateright']").text 
+                except:
+                    RawEventDate = None
+                try:
+                    RawEventTime = RawEventDate
                 except:
                     RawEventTime = None
 

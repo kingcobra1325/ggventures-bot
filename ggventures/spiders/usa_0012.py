@@ -20,7 +20,7 @@ class Usa0012Spider(scrapy.Spider):
 
     def __init__(self):
         self.driver = Load_Driver()
-        # self.getter = Load_Driver()
+        self.getter = Load_Driver()
         self.start_time = round(time.time())
         self.scrape_time = None
 
@@ -36,50 +36,49 @@ class Usa0012Spider(scrapy.Spider):
 
             self.driver.get("https://www.csuchico.edu/cob/events/index.shtml")
 
-            no_events = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//li[contains(text(),'No upcoming')]")))
-            # no_events = self.driver.find_element(By.XPATH, "//li[contains(text(),'No upcoming')]")
+            counter = 0
+            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[@class='title']")))
+            for i in EventLinks:
+                self.getter.get(i.get_attribute('href'))
 
-            if not no_events:
-                logger.debug('Changes to Events on current Spider. Sending emails....')
-                website_changed(self.name,university_name)
-            else:
-                logger.debug('No changes to Events on current Spider. Skipping.....')
+                try:
+                    RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[@class='page-title']")))).text
+                except:
+                    RawEventName = None
+                    
+                try:
+                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'primary-content')]").text
+                except:
+                    RawEventDesc = None
 
+                try:
+                    RawEventDate = self.getter.find_element(By.XPATH,"//strong[@class='announcement-date']").text 
+                except:
+                    RawEventDate = None
+                    
+                try:
+                    RawEventTime = RawEventDate
+                except:
+                    RawEventTime = None
+                    
+                try:
+                    RawStartContactInfo = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'primary-content')]//p//br/..").text
+                except:
+                    RawStartContactInfo = None
 
-            # while True:
-            #     EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@class,'tribe-event-url news-listing-title')]")))
-            #
-            #     for i in EventLinks:
-            #         self.getter.get(i.get_attribute('href'))
-            #
-            #         RawEventName = self.getter.find_element(By.XPATH,"//h1[contains(@class,'tribe-events-single-event-title')]").text
-            #
-            #         RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class, 'tribe-events-single-event-description tribe-events-content')]/p[1]").text
-            #
-            #         RawEventDate = self.getter.find_element(By.XPATH,"//abbr[contains(@class,'tribe-events-abbr tribe-events-start-date published dtstart')]").text
-            #
-            #         RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'tribe-events-abbr tribe-events-start-time published dtstart')]").text
-            #
-            #         event_name.append(RawEventName)
-            #         event_desc.append(RawEventDesc)
-            #         event_date.append(RawEventDate)
-            #         event_time.append(RawEventTime)
-            #     try:
-            #         newLink = self.driver.find_element(By.XPATH,"//a[contains(@rel, 'next')]").get_attribute('href')
-            #         self.driver.get(newLink)
-            #     except NoSuchElementException:
-            #         break
+                data = ItemLoader(item = GgventuresItem(), selector = counter)
+                data.add_value('university_name',university_name)
+                data.add_value('university_contact_info',university_contact_info)
+                data.add_value('logo',logo)
+                data.add_value('event_name', RawEventName)
+                data.add_value('event_desc', RawEventDesc)
+                data.add_value('event_date', RawEventDate)
+                data.add_value('event_time', RawEventTime)
+                data.add_value('event_link', i.get_attribute('href'))
+                data.add_value('startups_contact_info', RawStartContactInfo)
+                counter+=1
 
-            # for i in range(len(event_name)):
-            #     data = ItemLoader(item = GgventuresItem(), selector = i)
-            #     data.add_value('university_name',university_name)
-            #     data.add_value('university_contact_info',university_contact_info)
-            #     # data.add_value('logo',logo)
-            #     data.add_value('event_name', event_name[i])
-            #     data.add_value('event_desc', event_desc[i])
-            #     data.add_value('event_date', event_date[i])
-            #     data.add_value('event_time', event_time[i])
-            #     yield data.load_item()
+                yield data.load_item()
 
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")

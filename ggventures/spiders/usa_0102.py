@@ -53,15 +53,21 @@ class Usa0102Spider(scrapy.Spider):
                 for i in EventLinks:
                     self.getter.get(i.get_attribute('href'))
 
-                    RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class,'event-title')]")))).text
-
+                    try:
+                        RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class,'event-title')]")))).text
+                    except:
+                        RawEventName = None
+                        
                     try:
                         RawEventDesc = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'description')]")))).text
                     except:
                         RawEventDesc = None
 
-                    RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-schedule')]").text
-
+                    try:
+                        RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-schedule')]").text
+                    except:
+                        RawEventDate = None
+                        
                     try:
                         RawEventTime = RawEventDate
                     except:

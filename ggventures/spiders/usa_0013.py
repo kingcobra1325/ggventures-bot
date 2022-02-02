@@ -20,10 +20,10 @@ class Usa0013Spider(scrapy.Spider):
     start_urls = ['https://www.csulb.edu/']
 
     def __init__(self):
-        # self.driver = Load_Driver()
-        self.driver = Load_FF_Driver()
-        # self.getter = Load_Driver()
-        self.getter = Load_FF_Driver()
+        self.driver = Load_Driver()
+        # self.driver = Load_FF_Driver()
+        self.getter = Load_Driver()
+        # self.getter = Load_FF_Driver()
         self.start_time = round(time.time())
         self.scrape_time = None
 
@@ -37,49 +37,59 @@ class Usa0013Spider(scrapy.Spider):
             event_desc = list()
 
             #cannot find logo in website but it appears in fb
-            # logo = (WebDriv   erWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'brand')]/a")))).value_of_css_property('background')
+            logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Long_Beach_State_Athletics_logo.svg/1200px-Long_Beach_State_Athletics_logo.svg.png"
             # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
 
-            university_name = self.driver.find_element(By.XPATH , "//div[contains(@class,'content')]//img").get_attribute('textContent')
+            university_name = "California State University - Long Beach"
 
-            university_contact_info = self.driver.find_element(By.XPATH, "//div[contains(@class,'row row-padding-sm')]//div[contains(@class,'col-md-8')]").get_attribute('textContent')
+            university_contact_info = self.driver.find_element(By.XPATH, "//div[@class='vcard']").text
 
-            self.driver.get("https://www.bradley.edu/calendar/")
+            # self.driver.get(response.url)
 
-            while True:
-                EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@class,'tribe-event-url news-listing-title')]")))
+            counter = 0
+            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@id='block-bean-homepage-events']//div[@class='field-items']//a")))
 
-                for i in EventLinks:
-                    self.getter.get(i.get_attribute('href'))
+            for i in EventLinks:
+                self.getter.get(i.get_attribute('href'))
 
-                    RawEventName = self.getter.find_element(By.XPATH,"//h1[contains(@class,'tribe-events-single-event-title')]").text
+            try:
+                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h2[@itemprop='summary']")))).text
+            except:
+                RawEventName = None
+                
+            try:
+                RawEventDesc = self.getter.find_element(By.XPATH,"//div[@id='eventDescriptionEventDetails']").text
+            except:
+                RawEventDesc = None
 
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class, 'tribe-events-single-event-description tribe-events-content')]/p[1]").text
+            try:
+                RawEventDate = self.getter.find_element(By.XPATH,"//div[@class='info-date']").text 
+            except:
+                RawEventDate = None
+                
+            try:
+                RawEventTime = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'info-time')]").text 
+            except:
+                RawEventTime = None
+                
+            # try:
+            #     RawStartContactInfo = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'primary-content')]//p//br/..").text
+            # except:
+            #     RawStartContactInfo = None
 
-                    RawEventDate = self.getter.find_element(By.XPATH,"//abbr[contains(@class,'tribe-events-abbr tribe-events-start-date published dtstart')]").text
+            data = ItemLoader(item = GgventuresItem(), selector = counter)
+            data.add_value('university_name',university_name)
+            data.add_value('university_contact_info',university_contact_info)
+            data.add_value('logo',logo)
+            data.add_value('event_name', RawEventName)
+            data.add_value('event_desc', RawEventDesc)
+            data.add_value('event_date', RawEventDate)
+            data.add_value('event_time', RawEventTime)
+            data.add_value('event_link', i.get_attribute('href'))
+            # data.add_value('startups_contact_info', RawStartContactInfo)
+            counter+=1
 
-                    RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'tribe-events-abbr tribe-events-start-time published dtstart')]").text
-
-                    event_name.append(RawEventName)
-                    event_desc.append(RawEventDesc)
-                    event_date.append(RawEventDate)
-                    event_time.append(RawEventTime)
-                try:
-                    newLink = self.driver.find_element(By.XPATH,"//a[contains(@rel, 'next')]").get_attribute('href')
-                    self.driver.get(newLink)
-                except NoSuchElementException:
-                    break
-
-            for i in range(len(event_name)):
-                data = ItemLoader(item = GgventuresItem(), selector = i)
-                data.add_value('university_name',university_name)
-                data.add_value('university_contact_info',university_contact_info)
-                # data.add_value('logo',logo)
-                data.add_value('event_name', event_name[i])
-                data.add_value('event_desc', event_desc[i])
-                data.add_value('event_date', event_date[i])
-                data.add_value('event_time', event_time[i])
-                yield data.load_item()
+            yield data.load_item()
 
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")

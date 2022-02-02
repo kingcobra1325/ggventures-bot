@@ -16,7 +16,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 
 class Usa0011Spider(scrapy.Spider):
-    name = 'usa-0011'
+    name = 'usa_0011'
     country = 'US'
     start_urls = ['https://marriott.byu.edu/']
     # start_urls = ['https://marriott.byu.edu/calendar/?id=events']

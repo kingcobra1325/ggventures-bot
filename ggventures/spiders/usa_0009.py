@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 import re
 class Usa0009Spider(scrapy.Spider):
-    name = 'usa-0009'
+    name = 'usa_0009'
     country = 'US'
     start_urls = ['https://www.bu.edu/questrom/calendar/']
 

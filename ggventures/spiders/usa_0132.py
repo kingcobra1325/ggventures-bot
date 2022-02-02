@@ -49,21 +49,24 @@ class Usa0132Spider(scrapy.Spider):
                 RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[@class='page-header']")))).text
 
                 try:
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'post_content')]").text
+                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'structured')]//div[starts-with(@class,'col-sm-12')]").text
                 except:
                     RawEventDesc = None
 
-                RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'et_pb_module et_pb_blurb et_pb_blurb_0_tb_body')]").text + '\n' + self.getter.find_element(By.XPATH,"//div[contains(@class,'et_pb_module et_pb_blurb et_pb_blurb_1_tb_body')]").text
-
+                try:
+                    RawEventDate = self.getter.find_element(By.XPATH,"//h2[starts-with(@class,'text-align-center')]").text
+                except:
+                    RawEventDate = None
+                    
                 try:
                     RawEventTime = RawEventDate
                 except:
                     RawEventTime = None
                     
-                try:
-                    RawStartContactInfo = self.getter.find_element(By.XPATH,"//div[contains(@class,'et_pb_module et_pb_blurb et_pb_blurb_5_tb_body')]").text
-                except:
-                    RawStartContactInfo = None
+                # try:
+                #     RawStartContactInfo = self.getter.find_element(By.XPATH,"//div[contains(@class,'et_pb_module et_pb_blurb et_pb_blurb_5_tb_body')]").text
+                # except:
+                #     RawStartContactInfo = None
 
                 data = ItemLoader(item = GgventuresItem(), selector = counter)
                 data.add_value('university_name',university_name)
@@ -74,7 +77,7 @@ class Usa0132Spider(scrapy.Spider):
                 data.add_value('event_date', RawEventDate)
                 data.add_value('event_time', RawEventTime)
                 data.add_value('event_link', i.get_attribute('href'))
-                data.add_value('startups_contact_info', RawStartContactInfo)
+                # data.add_value('startups_contact_info', RawStartContactInfo)
                 counter+=1
 
                 yield data.load_item()
