@@ -25,17 +25,9 @@ try:
 except:
     os.system(f"{sys.executable} -m pip install gspread_dataframe")
     from gspread_dataframe import get_as_dataframe, set_with_dataframe
-try:
-    from gspread_formatting.dataframe import format_with_dataframe
-    from gspread_formatting import *
-    # from gspread_formatting import batch_updater
-except:
-    os.system(f"{sys.executable} -m pip install gspread_formatting")
-    # from gspread_formatting import batch_updater
-    from gspread_formatting import *
-    from gspread_formatting.dataframe import format_with_dataframe
 
-from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, GOOGLE_API_RATE_LIMIT_EMAIL, Create_Default_Sheet, UnpackItems
+from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, GOOGLE_API_RATE_LIMIT_EMAIL, UnpackItems
+from spreadsheet import Read_DataFrame_From_Sheet, Add_Event
 from bot_email import missing_info_email, error_email
 
 # useful for handling different item types with a single interface
@@ -53,22 +45,7 @@ class GgventuresPipeline:
     def process_item(self, item, spider):
         try:
             logger.info(f"PIPELINE: Currently processing {spider.name} scraped data:")
-            logger.info(f"{item}")
-            df_all, spreadsheet = Google_Sheets()
-            df = df_all
-            while True:
-                try:
-                    try:
-                        worksheet = spreadsheet.worksheet(spider.country)
-                    except gs_NoWS as e:
-                        logger.debug(f"Worksheet Not Found for -----> {spider.country}. Error: {e}")
-                        logger.debug(f"Creating Worksheet {spider.country}")
-                        worksheet = Create_Default_Sheet(spreadsheet,spider.country)
-                    break
-                except gs_APIError as e:
-                    logger.error(f"Error processing GSpread API Request --> {e}.")
-                    logger.debug(f"Waiting for 90 seconds before retrying request")
-                    sleep(90)
+            # logger.info(f"{item}")
 
             data = {
                         "Last Updated" : datetime.utcnow(),
@@ -85,61 +62,13 @@ class GgventuresPipeline:
                         "Logo" : UnpackItems(item.get("logo")),
                         "SpiderName" : spider.name
             }
-            # GET EXISTING DF from WORKSHEET
-            retry = 0
-            retry_max = 9
-            while True:
-                try:
-                    prev_df = get_as_dataframe(worksheet)
-                    break
-                except gs_APIError as e:
-                    if retry >= retry_max:
-                        if GOOGLE_API_RATE_LIMIT_EMAIL:
-                            logger.error(f"Error processing GSpread API Request --> {e}. Retries Exceeding more than {retry_max} attempts. Sending Error Email Notification")
-                            error_email(spider.name,e)
-                            retry = 0
-                        else:
-                            logger.error(f"Error processing GSpread API Request --> {e}.")
-                            retry = 0
-                    else:
-                        logger.error(f"Error processing GSpread API Request --> {e}.")
-                        retry+=1
-                    logger.debug(f"Waiting for 90 seconds before retrying request")
-                    sleep(90)
-            df = prev_df.copy()
-            # REMOVE EMPTY ROWS
-            df.dropna(how='all',inplace=True)
+
+            # GET COUNTRY DF
+            df, worksheet = Read_DataFrame_From_Sheet(spider.country)
+
             # ADD ITEM TO DF
-            df.loc[df.shape[0]] = data
-            # SORT ITEMS BY DATE AND REMOVE DUPLICATES
-            df["Last Updated"] = df["Last Updated"].astype('datetime64[ns]')
-            df.sort_values(by='Last Updated', ascending = False, inplace=True)
-            df.drop_duplicates(subset=['Event Name','Event Date'],inplace=True)
-            # WRITE DF TO GOOGGLE SHEETS
-            retry = 0
-            retry_max = 9
-            while True:
-                try:
-                    try:
-                        pass
-                    except gs_NoSS as e:
-                        logger.debug(f"Error: {e} ---> Worksheet ")
-                    prev_df = set_with_dataframe(worksheet, df)
-                    break
-                except gs_APIError as e:
-                    if retry >= retry_max:
-                        if GOOGLE_API_RATE_LIMIT_EMAIL:
-                            logger.error(f"Error processing GSpread API Request --> {e}. Sending Error Email Notification")
-                            error_email(spider.name,e)
-                            retry = 0
-                        else:
-                            logger.error(f"Error processing GSpread API Request --> {e}.")
-                            retry = 0
-                    else:
-                        logger.error(f"Error processing GSpread API Request --> {e}.")
-                        retry+=1
-                    logger.debug(f"Waiting for 90 seconds before retrying request")
-                    sleep(90)
+            Add_Event(data=data,country_df=df,country_worksheet=worksheet,country=spider.country)
+
             return item
         except Exception as e:
             logger.error(f"Experienced error on the Pipeline --> {e}. Sending Error Email Notification")

@@ -43,11 +43,6 @@ except:
     import dropbox
     from dropbox.exceptions import ApiError
 try:
-    from gspread_formatting import set_column_width
-except:
-    os.system(f"{sys.executable} -m pip install gspread_formatting")
-    from gspread_formatting import set_column_width
-try:
     from gspread_dataframe import get_as_dataframe, set_with_dataframe
 except:
     os.system(f"{sys.executable} -m pip install gspread_dataframe")
@@ -123,8 +118,13 @@ def EventBrite_API():
 
 ################################# DATAFRAME ###################################################
 
-df = pd.DataFrame(columns=["Last Updated", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
+default_all_df = pd.DataFrame(columns=["Last Updated", "Country", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
+
+default_country_df = pd.DataFrame(columns=["Last Updated", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
+                                "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
+
+default_error_df = pd.DataFrame(columns=["Time", "Error", "University Name", "SpiderName", "Status"])
 
 
 ######################### GOOGLE API #############################################
@@ -151,37 +151,9 @@ else:
       "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ggventures-dev%40ggventures.iam.gserviceaccount.com"
     }
 
-def Create_Default_Sheet(spreadsheet,SpiderName):
-    worksheet = spreadsheet.add_worksheet(title=SpiderName, rows="5000", cols="13")
-    worksheet.format('A1:M1', {
-                                "backgroundColor": {
-                                                      "red": 0.0,
-                                                      "green": 0.0,
-                                                      "blue": 0.0
-                                                    },
-                                "horizontalAlignment": "CENTER",
-                                'textFormat': {
-                                                "foregroundColor": {
-                                                                        "red": 1.0,
-                                                                        "green": 1.0,
-                                                                        "blue": 1.0
-                                                                      },
-                                                'bold': True
-                                                }
-                                })
-    worksheet.format('A:M',{"wrapStrategy":"WRAP"})
-    worksheet.freeze(rows=1)
-    worksheet.add_protected_range('A1:M1',developer_bot_email)
-    # Set Event Description COLUMN Size
-    set_column_width(worksheet, 'F', 600)
-    # Set University Contact Info COLUMN Size
-    set_column_width(worksheet, 'K', 350)
-    set_with_dataframe(worksheet, df)
-    return worksheet
-
 def Google_Sheets():
     gc = gspread.service_account_from_dict(BOT_KEYS)
-    return df, gc.open_by_key(SPREADSHEET_ID)
+    return gc.open_by_key(SPREADSHEET_ID)
 
 ############################## SELENIUM #########################################
 
