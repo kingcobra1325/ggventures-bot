@@ -98,7 +98,8 @@ def Create_Default_Sheet(spreadsheet,name):
                 set_column_width(worksheet, 'L', 350)
             elif name == 'ERRORS':
                 set_column_width(worksheet, 'A', 150)
-                set_column_width(worksheet, 'B', 750)
+                set_column_width(worksheet, 'B', 900)
+                set_column_width(worksheet, 'D', 400)
             else:
                 set_column_width(worksheet, 'A', 150)
                 set_column_width(worksheet, 'F', 600)
