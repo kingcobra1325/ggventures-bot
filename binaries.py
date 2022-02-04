@@ -58,6 +58,15 @@ except:
 from pprint import pprint
 
 
+############## SETTINGS ################
+
+ALL_EVENTS_SHEET = True
+UNIQUE_EVENT_EMAILS = False
+GOOGLE_API_RATE_LIMIT_EMAIL = False
+
+########################################
+
+
 ## -------------------- LOGGER SETUP ----------------------- ##
 cwd = os.path.dirname(os.path.realpath(__file__))
 FORMAT = "%(levelname)s: Func-%(funcName)s : Line-%(lineno)d : %(message)s"
@@ -70,9 +79,6 @@ file_handler.setFormatter(logging.Formatter(FORMAT))
 logger.addHandler(file_handler)
 logger.addHandler(logging.StreamHandler())
 
-# ------ SETTINGS -------- #
-
-GOOGLE_API_RATE_LIMIT_EMAIL = False
 
 # -------- DEVELOPER / CLIENT VARS ---------- #
 
@@ -124,7 +130,7 @@ default_all_df = pd.DataFrame(columns=["Last Updated", "Country", "Event Name", 
 default_country_df = pd.DataFrame(columns=["Last Updated", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
 
-default_error_df = pd.DataFrame(columns=["Time", "Error", "University Name", "SpiderName", "Status"])
+default_error_df = pd.DataFrame(columns=["Time", "Error", "SpiderName", "Status"])
 
 
 ######################### GOOGLE API #############################################

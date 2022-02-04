@@ -4,16 +4,30 @@ from email.mime.text import MIMEText
 from datetime import datetime
 import smtplib
 
+from datetime import datetime, timezone
 import time, os, sys
 
-from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, developer_emails
+from binaries import logger, UNIQUE_EVENT_EMAILS, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, developer_emails
+
+from spreadsheet import Read_DataFrame_From_Sheet, Add_Event, Log_Error
 
 client_recipients = []
 dev_recipients = developer_emails
 
+next_line = '\n'
+
 
 def website_changed(spider="Default Spider", university_name="Default University"):
     try:
+        # ------- LOG WEBSITE CHANGED TO ERRORS SHEETS -------#
+        Log_Error({
+                                "Time" : datetime.utcnow(),
+                                "Error" : f"Website EVENT Changed - {university_name}",
+                                "SpiderName" : spider,
+                                "Status" : ''
+                })
+
+
         # EMAIL INIT
         for recipient in dev_recipients:
             with smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT)) as mail:
@@ -53,50 +67,93 @@ def website_changed(spider="Default Spider", university_name="Default University
     except Exception as e:
         logger.error("Exception when calling Email Bot->: %s\n" % e)
 
-def unique_event(spider="Default Spider", university_name="Default University", href='default.link'):
+def unique_event(spider="No-Spider-Name", university_name="No-University-Name", href='No-Link', contact_info = 'No-Contact-Info', logo='NO-LOGO'):
     try:
-        # EMAIL INIT
-        for recipient in dev_recipients:
-            with smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT)) as mail:
-                mail.ehlo()
-                mail.starttls()
-                mail.login(SMTP_EMAIL,SMTP_KEY)
+        # ------- LOG UNIQUE EVENTS TO MAIN SHEETS -------#
+        # GET COUNTRY DF
+        df, worksheet = Read_DataFrame_From_Sheet(spider.country)
 
-                msg = MIMEMultipart('alternative')
-                msg['Subject'] = f'GGV BOT Unique Event - {spider}'
-                msg['To'] = recipient
-                msg['From'] = 'goldengooseventures.developer@gmail.com'
+        data = {
+                    "Last Updated" : datetime.utcnow(),
+                    "Event Name" : '<UNIQUE EVENT>',
+                    "Event Date" : '<UNIQUE EVENT>',
+                    "Event Time" : '<UNIQUE EVENT>',
+                    "Event Link" : UnpackItems(item.get("event_link")),
+                    "Event Description" : '<UNIQUE EVENT>',
+                    "Startup Name(s)" : '<UNIQUE EVENT>',
+                    "Startup Link(s)" : '<UNIQUE EVENT>',
+                    "Startup Contact Info(s)" : '<UNIQUE EVENT>',
+                    "University Name" : university_name,
+                    "University Contact Info" : contact_info,
+                    "Logo" : logo,
+                    "SpiderName" : spider
+        }
 
-                # EMAIL CONTENT
-                html = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                <html xmlns="http://www.w3.org/1999/xhtml">
-                 <head>
-                  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                  <title>Unique Event Detected on {spider} - {university_name}</title>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-                </head>
-                <body style="background-color:black;color:white">
-                <h1 style="text-align:center;color:white">Unique Event - {university_name}</h1>
-                <h4 style="color:white">The Spider: {spider} has found a Unique Event on the {university_name} website
-                <br>
-                <p>Please check the link of the Event for more details</p>
-                <p>Link: {href}</p>
-                <br>
-                </h4>
-                <h5 style="text-align:center">Email Timestamp: {datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p')}</h5>
-                </body>
-                </html>"""
+        # ADD ITEM TO DF
+        Add_Event(data=data,country_df=df,country_worksheet=worksheet,country=spider)
 
-                msg.attach(MIMEText(html,'html'))
+        logger.info("Added Unique Event into Google Sheets....")
 
-                mail.sendmail(msg['From'], msg['To'], msg.as_string())
-                logger.debug(f'Unique Event Detected Email from {spider} successfully sent to {msg["To"]}')
+        if UNIQUE_EVENT_EMAILS:
+
+            # ------- LOG UNIQUE EVENTS TO ERRORS SHEETS -------#
+            # Log_Error({
+            #                         "Time" : datetime.utcnow(),
+            #                         "Error" : f"Unique Event - {university_name}\n{href}",
+            #                         "SpiderName" : spider,
+            #                         "Status" : ''
+            #         })
+
+            # EMAIL INIT
+            logger.info("Unique Events Email Enabled.... Sending..")
+            for recipient in dev_recipients:
+                with smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT)) as mail:
+                    mail.ehlo()
+                    mail.starttls()
+                    mail.login(SMTP_EMAIL,SMTP_KEY)
+
+                    msg = MIMEMultipart('alternative')
+                    msg['Subject'] = f'GGV BOT Unique Event - {spider}'
+                    msg['To'] = recipient
+                    msg['From'] = 'goldengooseventures.developer@gmail.com'
+
+                    # EMAIL CONTENT
+                    html = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                    <html xmlns="http://www.w3.org/1999/xhtml">
+                     <head>
+                      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                      <title>Unique Event Detected on {spider} - {university_name}</title>
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                    </head>
+                    <body style="background-color:black;color:white">
+                    <h1 style="text-align:center;color:white">Unique Event - {university_name}</h1>
+                    <h4 style="color:white">The Spider: {spider} has found a Unique Event on the {university_name} website
+                    <br>
+                    <p>Please check the link of the Event for more details</p>
+                    <p>Link: {href}</p>
+                    <br>
+                    </h4>
+                    <h5 style="text-align:center">Email Timestamp: {datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p')}</h5>
+                    </body>
+                    </html>"""
+
+                    msg.attach(MIMEText(html,'html'))
+
+                    mail.sendmail(msg['From'], msg['To'], msg.as_string())
+                    logger.debug(f'Unique Event Detected Email from {spider} successfully sent to {msg["To"]}')
 
     except Exception as e:
         logger.error("Exception when calling Email Bot->: %s\n" % e)
 
 def missing_info_email(spider="Default Spider", university_name="Default University", missing_info=['missing','info'], web_link="www.google.com"):
     try:
+        # ------- LOG ERRORS TO ERRORS SHEETS -------#
+        Log_Error({
+                                "Time" : datetime.utcnow(),
+                                "Error" : f"Missing Information - {university_name}:\n{next_line.join(missing_info)}\n{web_link}",
+                                "SpiderName" : spider,
+                                "Status" : ''
+                })
         # EMAIL INIT
         for recipient in dev_recipients:
             with smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT)) as mail:
@@ -141,6 +198,14 @@ def missing_info_email(spider="Default Spider", university_name="Default Univers
 
 def error_email(spider="Default Spider",error="Default Error"):
     try:
+        # ------- LOG ERRORS TO ERRORS SHEETS -------#
+        Log_Error({
+                                "Time" : datetime.utcnow(),
+                                "Error" : f"ERROR:\n{error}",
+                                "SpiderName" : spider,
+                                "Status" : ''
+                })
+
         # EMAIL INIT
         for recipient in dev_recipients:
             with smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT)) as mail:
