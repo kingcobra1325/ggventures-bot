@@ -178,7 +178,7 @@ class Aus0001Spider(scrapy.Spider):
 
                 else:
                     logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
-                    unique_event(self.name,university_name,self.getter.current_url)
+                    unique_event(self,university_name,self.getter.current_url,university_contact_info,logo)
                     logger.debug("Skipping............")
 
             # number_of_months = 5
