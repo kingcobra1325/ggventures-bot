@@ -34,13 +34,13 @@ class Gbr0023Spider(scrapy.Spider):
             # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
 
             university_name = "Northumbria University,Newcastle Business School"
-            
+
             self.driver.get("https://www.northumbria.ac.uk/about-us/academic-departments/newcastle-business-school/contact-us/")
-            
+
             university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[@class='rich-text']")))).text
 
-            self.driver.get(response.url)     
-            
+            self.driver.get(response.url)
+
             counter = 0
             EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//article[@class='rich-text']//a")))
             for i in EventLinks:
@@ -55,17 +55,17 @@ class Gbr0023Spider(scrapy.Spider):
                         RawEventDesc = None
 
                     try:
-                        RawEventDate = self.getter.find_element(By.XPATH,"//div[@class='calendar']").text 
+                        RawEventDate = self.getter.find_element(By.XPATH,"//div[@class='calendar']").text
                     except:
                         RawEventDate = None
-                        
+
                     try:
-                        # RawEventTime = None                    
-                        RawEventTime = self.getter.find_element(By.XPATH,"//p[@class='time']").text 
+                        # RawEventTime = None
+                        RawEventTime = self.getter.find_element(By.XPATH,"//p[@class='time']").text
                         # RawEventTime = RawEventDate
                     except:
                         RawEventTime = None
-                        
+
                     # try:
                     #     RawStartContactInfo = self.getter.find_element(By.XPATH,"//section[contains(@class,'contact')]").text
                     # except:
@@ -81,16 +81,16 @@ class Gbr0023Spider(scrapy.Spider):
                     data.add_value('event_time', RawEventTime)
                     data.add_value('event_link', i.get_attribute('href'))
                     # data.add_value('startups_contact_info', RawStartContactInfo)
-                    
+
 
                     yield data.load_item()
                 else:
                     logger.debug(f"Link: {i.get_attribute('href')} is a Unique Event. Sending Emails.....")
-                    unique_event(self.name,university_name,i.get_attribute('href'))
+                    unique_event(self,university_name,self.getter.current_url,university_contact_info,logo)
                     logger.debug("Skipping............")
-                    
+
                 counter+=1
-                
+
 
         except Exception as e:
             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
