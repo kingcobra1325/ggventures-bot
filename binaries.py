@@ -60,9 +60,10 @@ from pprint import pprint
 
 ############## SETTINGS ################
 
-ALL_EVENTS_SHEET = True
+ALL_EVENTS_SHEET = False
 UNIQUE_EVENT_EMAILS = False
 GOOGLE_API_RATE_LIMIT_EMAIL = False
+CLEAN_DATA_PIPELINE = True
 
 ########################################
 
@@ -82,7 +83,7 @@ logger.addHandler(logging.StreamHandler())
 
 # -------- DEVELOPER / CLIENT VARS ---------- #
 
-developer_bot_email = ['ggventures-dev@ggventures.iam.gserviceaccount.com']
+developer_bot_email = ['ggventures-dev@ggventures.iam.gserviceaccount.com','joachim.cobar@gmail.com']
 developer_emails = [
                             'goldengooseventures.developer@gmail.com',
                             'kingcobra1325@gmail.com',
