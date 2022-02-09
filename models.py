@@ -4,7 +4,7 @@ from datetime import datetime
 
 from bot_email import missing_info_email, error_email, unique_event
 
-from binaries import Load_Driver, logger, WebScroller, EventBrite_API
+from binaries import REGEX_LOGS, Load_Driver, logger, WebScroller, EventBrite_API
 
 from scrapy.loader import ItemLoader
 
@@ -15,17 +15,98 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
-from patterns import PHONE_NUMBER_PATTERNS, EMAIL_PATTERNS
-
-
+from patterns import PHONE_NUMBER_PATTERNS, EMAIL_PATTERNS, DATE_PATTERNS, DATE_PATTERNS_RE, TIME_PATTERNS, TIME_PATTERNS_RE, TZ_PATTERNS, TZ_EXCLUDE
 
 class RegExGGV:
 
     def __init__(self):
         self.re = re
+        self.REGEX_LOGS = REGEX_LOGS
+        self.TZ_PATTERNS = TZ_PATTERNS
 
-    def perform_regex(self,pattern,data):
-        return self.re.compile('|'.join(pattern)).findall(data)
+    def perform_regex(self,pattern,data,method='all'):
+        if method == 'all':
+            return self.re.compile('|'.join(pattern)).findall(data)
+        if method == 'single':
+            return self.re.compile(pattern).findall(data)
+        else:
+            raise Exception(f"Invalid Perform Regex Method |{method}| ....")
+
+    def perform_strptime(self,pattern,strp_re,data,method='date'):
+
+        final_data = ''
+        final_data_ls = []
+
+        fetch_date = self.perform_regex(strp_re,data)
+
+        logger.info(f"Data after Regex ---> {fetch_date}")
+        for fetch in fetch_date:
+            for ptrn in pattern:
+
+                if fetch.lower() == 'noon' and method == 'time':
+
+                    logger.info(f"\nData detected as Noon. Setting Datetime to Noon and append...\n") if self.REGEX_LOGS else None
+                    final_data_ls.append(datetime(year=datetime.now().year,month=datetime.now().month,day=datetime.now().day,hour=12).strftime('%I:%M:%S %p'))
+
+                elif fetch.lower() == 'midnight' and method == 'time':
+
+                    logger.info(f"\nData detected as Noon. Setting Datetime to Noon and append...\n") if self.REGEX_LOGS else None
+                    final_data_ls.append(datetime(year=datetime.now().year,month=datetime.now().month,day=datetime.now().day,hour=23,minute=59,second=59).strftime('%I:%M:%S %p'))
+
+                else:
+
+                    data_process = ''
+                    timezone_data = ''
+
+                    fetch = fetch.replace(".","")
+
+                    try:
+                        logger.info(f"Data : '{fetch}' | STRP : {ptrn[0]} | STRF : {ptrn[1]}") if self.REGEX_LOGS else None
+
+                        if method == 'time':
+
+                            logger.info("Checking Time Data for valid timezone...") if self.REGEX_LOGS else None
+
+                            try:
+                                timezone_data = self.perform_regex(self.TZ_PATTERNS,fetch)
+                                # timezone_data = self.perform_regex(r'[ ][A-Za-z][A-Za-z][Tt]|[ ][A-Za-z][Tt]|[ ][(][A-Za-z][Tt][)]|[ ][(][A-Za-z][A-Za-z][Tt][)]',fetch,'single')
+                                if timezone_data:
+
+                                    logger.info(f"Scraped Time Zone Data: --> '{timezone_data[0]}'") if self.REGEX_LOGS else None
+                                    data_process = fetch.removesuffix(timezone_data[0])
+                                    if timezone_data[0] in TZ_EXCLUDE:
+                                        logger.info("Timezone scraped found in Exclusion list. Deleting....") if self.REGEX_LOGS else None
+                                        timezone_data = ''
+                                    logger.info(f"Time Data without Timezone --> {data_process}") if self.REGEX_LOGS else None
+                                else:
+                                    logger.debug(f"No timezone data located on |{fetch}|...") if self.REGEX_LOGS else None
+                            except ValueError as e:
+                                logger.debug(f"Error |{e}|: No valid timezone to parse.. Skipping") if self.REGEX_LOGS else None
+
+                        if not data_process:
+                            data_process = fetch
+
+                        clean_data = datetime.strptime(data_process,ptrn[0])
+
+                        logger.info(f"Data after cleaning --> {clean_data}") if self.REGEX_LOGS else None
+
+                        if timezone_data:
+                            logger.info("\nAdding timezone to Clean Data appending...\n") if self.REGEX_LOGS else None
+                            final_data_ls.append(clean_data.strftime(ptrn[1])+timezone_data[0])
+                        else:
+                            logger.info("\nClean Data appending...\n") if self.REGEX_LOGS else None
+                            final_data_ls.append(clean_data.strftime(ptrn[1]))
+
+                    except ValueError as e:
+                        logger.debug(f"Error |{e}|: strptime pattern not valid for current data.. Skipping") if self.REGEX_LOGS else None
+
+        if final_data_ls:
+            final_data = " - ".join(list(dict.fromkeys(final_data_ls)))
+            logger.info(f"\nFinal Datetime Data: {final_data}")
+        else:
+            logger.info("\nNo valid datetime data to be cleaned...")
+
+        return final_data
 
     def sort_startups():
         pass
@@ -35,6 +116,20 @@ class RegExGGV:
 
     def get_startup_datetime():
         pass
+
+    def clean_date(self,data):
+
+        date_criteria = DATE_PATTERNS
+        date_regex = DATE_PATTERNS_RE
+
+        return self.perform_strptime(date_criteria,date_regex,data,'date')
+
+    def clean_time(self,data):
+
+        time_criteria = TIME_PATTERNS
+        time_regex = TIME_PATTERNS_RE
+
+        return self.perform_strptime(time_criteria,time_regex,data,'time')
 
     def contact_info(self,data):
 

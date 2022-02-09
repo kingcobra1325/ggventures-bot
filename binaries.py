@@ -64,6 +64,8 @@ ALL_EVENTS_SHEET = False
 UNIQUE_EVENT_EMAILS = False
 GOOGLE_API_RATE_LIMIT_EMAIL = False
 CLEAN_DATA_PIPELINE = True
+# REGEX_LOGS = True
+REGEX_LOGS = False
 
 ########################################
 
