@@ -28,7 +28,7 @@ except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting import set_column_width
 
-from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_country_df, default_error_df, developer_bot_email, ALL_EVENTS_SHEET
+from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_country_df, default_error_df, developer_bot_email, GGV_SETTINGS
 
 
 SPREADSHEET_MAIN = Google_Sheets()
@@ -212,7 +212,7 @@ def Add_Event(data,country_df,country_worksheet,country):
 
 
     # ------ ALL -------- #
-    if ALL_EVENTS_SHEET:
+    if GGV_SETTINGS.ALL_EVENTS_SHEET:
 
         # Getting ALL Sheet / Dataframe
 
