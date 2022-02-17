@@ -7,9 +7,11 @@ import smtplib
 from datetime import datetime, timezone
 import time, os, sys
 
-from binaries import logger, UNIQUE_EVENT_EMAILS, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, developer_emails
+from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, developer_emails, GGV_SETTINGS
 
 from spreadsheet import Read_DataFrame_From_Sheet, Add_Event, Log_Error
+
+from models import pipeline_re
 
 client_recipients = []
 dev_recipients = developer_emails
@@ -73,12 +75,18 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
         # GET COUNTRY DF
         df, worksheet = Read_DataFrame_From_Sheet(spider.country)
 
+        if GGV_SETTINGS.CLEAN_DATA_PIPELINE:
+            logger.info("CLEANING 'university_contact_info'")
+            logger.info(f"Processing --> {contact_info}")
+            contact_info = pipeline_re.contact_info(data=str(contact_info))
+            logger.info(f"Result --> {contact_info}")
+
         data = {
                     "Last Updated" : datetime.utcnow(),
                     "Event Name" : '<UNIQUE EVENT>',
                     "Event Date" : '<UNIQUE EVENT>',
                     "Event Time" : '<UNIQUE EVENT>',
-                    "Event Link" : UnpackItems(item.get("event_link")),
+                    "Event Link" : href,
                     "Event Description" : '<UNIQUE EVENT>',
                     "Startup Name(s)" : '<UNIQUE EVENT>',
                     "Startup Link(s)" : '<UNIQUE EVENT>',
@@ -86,11 +94,11 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
                     "University Name" : university_name,
                     "University Contact Info" : contact_info,
                     "Logo" : logo,
-                    "SpiderName" : spider
+                    "SpiderName" : spider.name
         }
 
         # ADD ITEM TO DF
-        Add_Event(data=data,country_df=df,country_worksheet=worksheet,country=spider)
+        Add_Event(data=data,country_df=df,country_worksheet=worksheet,country=spider.country)
 
         logger.info("Added Unique Event into Google Sheets....")
 
@@ -100,7 +108,7 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
             # Log_Error({
             #                         "Time" : datetime.utcnow(),
             #                         "Error" : f"Unique Event - {university_name}\n{href}",
-            #                         "SpiderName" : spider,
+            #                         "SpiderName" : spider.name,
             #                         "Status" : ''
             #         })
 
@@ -113,7 +121,7 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
                     mail.login(SMTP_EMAIL,SMTP_KEY)
 
                     msg = MIMEMultipart('alternative')
-                    msg['Subject'] = f'GGV BOT Unique Event - {spider}'
+                    msg['Subject'] = f'GGV BOT Unique Event - {spider.name}'
                     msg['To'] = recipient
                     msg['From'] = 'goldengooseventures.developer@gmail.com'
 
@@ -122,12 +130,12 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
                     <html xmlns="http://www.w3.org/1999/xhtml">
                      <head>
                       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                      <title>Unique Event Detected on {spider} - {university_name}</title>
+                      <title>Unique Event Detected on {spider.name} - {university_name}</title>
                       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                     </head>
                     <body style="background-color:black;color:white">
                     <h1 style="text-align:center;color:white">Unique Event - {university_name}</h1>
-                    <h4 style="color:white">The Spider: {spider} has found a Unique Event on the {university_name} website
+                    <h4 style="color:white">The Spider: {spider.name} has found a Unique Event on the {university_name} website
                     <br>
                     <p>Please check the link of the Event for more details</p>
                     <p>Link: {href}</p>
@@ -140,7 +148,7 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
                     msg.attach(MIMEText(html,'html'))
 
                     mail.sendmail(msg['From'], msg['To'], msg.as_string())
-                    logger.debug(f'Unique Event Detected Email from {spider} successfully sent to {msg["To"]}')
+                    logger.debug(f'Unique Event Detected Email from {spider.name} successfully sent to {msg["To"]}')
 
     except Exception as e:
         logger.error("Exception when calling Email Bot->: %s\n" % e)

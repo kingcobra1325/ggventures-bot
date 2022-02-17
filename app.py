@@ -10,20 +10,25 @@ from os import environ
 
 # --------------- INSTALL MISSING DEPENDENCIES ----------------- #
 try:
+    from scrapy.exceptions import DropItem
+except ModuleNotFoundError as e:
+    os.system(f"{sys.executable} -m pip install scrapy")
+    from scrapy.exceptions import DropItem
+try:
     import schedule
-except:
+except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install schedule")
     import schedule
 try:
     import tabulate
-except:
+except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install tabulate")
     import tabulate
 
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
-from binaries import logger, DropBox_INIT
+from binaries import GGV_SETTINGS, logger, DropBox_INIT
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 
@@ -86,9 +91,11 @@ def exception_handler(errmsg="", e=""):
 if __name__ == '__main__':
     try:
         logger.info('Start Golden Goose Ventures Scraping Bot\n')
+        logger.info(f"\n{GGV_SETTINGS}\n")
         logger.debug(f'Fetching current progress on Dropbox BOT_JSON file...\n')
         status = DropBox_INIT()
         logger.info(status)
+        logger.info(f"Number of Pending Spiders: {len(spider_list)}")
         # while True:
         for spider in spider_list:
             # spider = 'usa-0001

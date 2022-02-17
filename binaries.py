@@ -10,14 +10,14 @@ try:
     import gspread
     from gspread.exceptions import APIError as gs_APIError
     from gspread.exceptions import WorksheetNotFound as gs_NoWS
-except:
+except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install gspread")
     import gspread
     from gspread.exceptions import APIError as gs_APIError
     from gspread.exceptions import WorksheetNotFound as gs_NoWS
 try:
     from eventbrite import Eventbrite
-except:
+except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install eventbrite")
     from eventbrite import Eventbrite
 
@@ -25,26 +25,26 @@ try:
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options as ChromeOptions
     from selenium.webdriver.firefox.options import Options as FirefoxOptions
-except:
+except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install selenium")
     from selenium import webdriver
     from selenium.webdriver.chrome.options import ChromeOptions
     from selenium.webdriver.firefox.options import FirefoxOptions
 try:
     import pandas as pd
-except:
+except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install pandas")
     import pandas as pd
 try:
     import dropbox
     from dropbox.exceptions import ApiError
-except:
+except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install dropbox")
     import dropbox
     from dropbox.exceptions import ApiError
 try:
     from gspread_dataframe import get_as_dataframe, set_with_dataframe
-except:
+except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install gspread_dataframe")
     from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
@@ -60,12 +60,39 @@ from pprint import pprint
 
 ############## SETTINGS ################
 
-ALL_EVENTS_SHEET = False
-UNIQUE_EVENT_EMAILS = False
-GOOGLE_API_RATE_LIMIT_EMAIL = False
-CLEAN_DATA_PIPELINE = True
-# REGEX_LOGS = True
-REGEX_LOGS = False
+
+class APPSettings():
+
+    def __init__(self):
+
+        # DEFAULT SETTINGS
+
+        self.ALL_EVENTS_SHEET = True
+        self.UNIQUE_EVENT_EMAILS = True
+        self.GOOGLE_API_RATE_LIMIT_EMAIL = False
+        self.CLEAN_DATA_PIPELINE = True
+        self.CLEAN_EVENT_DATE = True
+        self.CLEAN_EVENT_TIME = True
+        self.CLEAN_CONTACT_INFO = True
+        self.SORT_STARTUPS = True
+        self.REGEX_LOGS = False
+
+    def __repr__(self):
+
+        return f"""
+                    APP Settings Params...
+                    ALL_EVENTS_SHEET -> {self.ALL_EVENTS_SHEET}
+                    UNIQUE_EVENT_EMAILS -> {self.UNIQUE_EVENT_EMAILS}
+                    GOOGLE_API_RATE_LIMIT_EMAIL -> {self.GOOGLE_API_RATE_LIMIT_EMAIL}
+                    CLEAN_DATA_PIPELINE -> {self.CLEAN_DATA_PIPELINE}
+                    CLEAN_EVENT_DATE -> {self.CLEAN_EVENT_DATE}
+                    CLEAN_EVENT_TIME -> {self.CLEAN_EVENT_TIME}
+                    CLEAN_CONTACT_INFO -> {self.CLEAN_CONTACT_INFO}
+                    SORT_STARTUPS -> {self.SORT_STARTUPS}
+                    REGEX_LOGS -> {self.REGEX_LOGS}
+                """
+
+GGV_SETTINGS = APPSettings()
 
 ########################################
 
