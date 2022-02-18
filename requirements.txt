@@ -8,6 +8,7 @@ cachetools==4.2.4
 certifi==2021.10.8
 cffi==1.15.0
 charset-normalizer==2.0.9
+click==8.0.4
 colorama==0.4.4
 constantly==15.1.0
 cryptography==36.0.0
@@ -15,6 +16,7 @@ cssselect==1.1.0
 dropbox==11.25.0
 et-xmlfile==1.1.0
 eventbrite==3.3.5
+Flask==2.0.3
 google-auth==2.3.3
 google-auth-oauthlib==0.4.6
 gspread==5.1.1
@@ -30,8 +32,11 @@ incremental==21.3.0
 iniconfig==1.1.1
 itemadapter==0.4.0
 itemloaders==1.0.4
+itsdangerous==2.1.0
+Jinja2==3.0.3
 jmespath==0.10.0
 lxml==4.6.4
+MarkupSafe==2.1.0
 numpy==1.21.4
 oauthlib==3.1.1
 openpyxl==3.0.9
@@ -75,6 +80,7 @@ Twisted==21.7.0
 typing_extensions==4.0.1
 urllib3==1.26.7
 w3lib==1.22.0
+Werkzeug==2.0.3
 wincertstore==0.2
 wsproto==1.0.0
 zope.interface==5.4.0
