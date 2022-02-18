@@ -7,14 +7,14 @@ import smtplib
 from datetime import datetime, timezone
 import time, os, sys
 
-from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, developer_emails, GGV_SETTINGS
+from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, DEVELOPER_EMAILS, GGV_SETTINGS
 
 from spreadsheet import Read_DataFrame_From_Sheet, Add_Event, Log_Error
 
 from models import pipeline_re
 
 client_recipients = []
-dev_recipients = developer_emails
+dev_recipients = DEVELOPER_EMAILS
 
 next_line = '\n'
 
@@ -83,14 +83,14 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
 
         data = {
                     "Last Updated" : datetime.utcnow(),
-                    "Event Name" : '<UNIQUE EVENT>',
-                    "Event Date" : '<UNIQUE EVENT>',
-                    "Event Time" : '<UNIQUE EVENT>',
+                    "Event Name" : f'<UNIQUE EVENT - {href}>',
+                    "Event Date" : f'<UNIQUE EVENT - {href}>',
+                    "Event Time" : f'<UNIQUE EVENT - {href}>',
                     "Event Link" : href,
-                    "Event Description" : '<UNIQUE EVENT>',
-                    "Startup Name(s)" : '<UNIQUE EVENT>',
-                    "Startup Link(s)" : '<UNIQUE EVENT>',
-                    "Startup Contact Info(s)" : '<UNIQUE EVENT>',
+                    "Event Description" : f'<UNIQUE EVENT - {href}>',
+                    "Startup Name(s)" : f'<UNIQUE EVENT - {href}>',
+                    "Startup Link(s)" : f'<UNIQUE EVENT - {href}>',
+                    "Startup Contact Info(s)" : f'<UNIQUE EVENT - {href}>',
                     "University Name" : university_name,
                     "University Contact Info" : contact_info,
                     "Logo" : logo,
@@ -102,7 +102,7 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
 
         logger.info("Added Unique Event into Google Sheets....")
 
-        if UNIQUE_EVENT_EMAILS:
+        if GGV_SETTINGS.UNIQUE_EVENT_EMAILS:
 
             # ------- LOG UNIQUE EVENTS TO ERRORS SHEETS -------#
             # Log_Error({

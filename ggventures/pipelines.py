@@ -76,11 +76,11 @@ class CleanDataPipeline:
                         if adapter.get('event_desc'):
                             logger.info("PIPELINE: Fetching Startup Name from Description...\n")
 
-                            adapter["startups_name"] = pipeline_re.sort_startups(data=str(adapter.get('event_desc')))
+                            adapter["startups_name"] = pipeline_re.get_startup_name(data=str(adapter.get('event_desc')))
                             logger.info(f"PIPELINE: Result 'startups_name' --> {adapter.get('startups_name')}\n")
 
                             logger.info("PIPELINE: Fetching Startup Links from Description...")
-                            adapter["startups_link"] = pipeline_re.sort_startups(data=str(adapter.get('event_desc')))
+                            adapter["startups_link"] = pipeline_re.get_startup_links(data=str(adapter.get('event_desc')))
                             logger.info(f"PIPELINE: Result 'startups_link' --> {adapter.get('startups_link')}\n")
 
                             adapter["startups_contact_info"] = pipeline_re.contact_info(data=str(adapter.get('event_desc')))

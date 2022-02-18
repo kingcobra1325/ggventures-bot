@@ -28,7 +28,7 @@ except ModuleNotFoundError as e:
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
-from binaries import GGV_SETTINGS, logger, DropBox_INIT
+from binaries import GGV_SETTINGS, logger, DropBox_INIT, DropBox_Upload
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 
@@ -61,8 +61,6 @@ td = datetime.now().strftime('%m-%d-%Y')
 
 ## ---------------------- LOAD SPIDERS -------------------------- ##
 
-spider_list = Load_Spiders()
-
 def exception_handler(errmsg="", e=""):
     """
     Handle the Error Occur in the program
@@ -87,20 +85,58 @@ def exception_handler(errmsg="", e=""):
     #     pass
     sys.exit(1)
 
+# SCRAPING
+def start_spiders():
+
+    if GGV_SETTINGS.LOAD_DROPBOX_LIST:
+        logger.debug(f'Fetching current progress on Dropbox BOT_JSON file...\n')
+        load_spiders = DropBox_INIT()
+        logger.info(load_spiders)
+        if len(load_spiders["PENDING_SPIDERS"]) >= 1:
+            logger.info("Pending Spiders to scrape detected. Resuming....")
+            spider_list = load_spiders["PENDING_SPIDERS"]
+        else:
+            spider_list = Load_Spiders()
+            logger.info("No Pending Spiders to resume. Scraping New Spider List....")
+    else:
+        logger.info("Resume Progress DISABLED. Scraping New Spider List....")
+        spider_list = Load_Spiders()
+    logger.info(f"Number of Pending Spiders: {len(spider_list)}")
+
+    progress_counter = 0
+    save_counter = 0
+    save_spider_list = spider_list
+
+    for spider in spider_list:
+        # spider = 'usa-0001
+        logger.info(f"IN PROGRESS: Crawling with {spider}....")
+        os.system(f"scrapy crawl {spider}")
+        progress_counter += 1
+        save_counter += 1
+        logger.debug(f"Save Progress Counter {save_counter}/{GGV_SETTINGS.DB_SAVE_SPIDER_COUNTER}")
+        logger.info(f"Removing {spider} from Pending Spider List...")
+        save_spider_list.remove(spider)
+        if (save_counter >= GGV_SETTINGS.DB_SAVE_SPIDER_COUNTER) and GGV_SETTINGS.SAVE_DROPBOX_LIST:
+            logger.debug("Saving progress to Dropbox...")
+            DropBox_Upload(save_spider_list)
+            save_counter = 0
+        logger.info(f"\n\nCURRENT SCRAPING PROGRESS: {progress_counter}/{len(spider_list)}\n\n")
+
 ########## MAIN START ############
 if __name__ == '__main__':
     try:
         logger.info('Start Golden Goose Ventures Scraping Bot\n')
         logger.info(f"\n{GGV_SETTINGS}\n")
-        logger.debug(f'Fetching current progress on Dropbox BOT_JSON file...\n')
-        status = DropBox_INIT()
-        logger.info(status)
-        logger.info(f"Number of Pending Spiders: {len(spider_list)}")
-        # while True:
-        for spider in spider_list:
-            # spider = 'usa-0001
-            logger.info(f"IN PROGRESS: Crawling with {spider}....")
-            os.system(f"scrapy crawl {spider}")
+
+        if environ.get('DEPLOYED'):
+            logger.info("|PRODUCTION| Running program indefinitely....")
+            while True:
+                start_spiders()
+                logger.info("Completed current progress. Restarting Spider list...")
+        else:
+            logger.info("|DEVELOPMENT| Running program one-off....")
+            start_spiders()
+
         # process.start()
         end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
         logger.debug(f"Golden Goose Ventures BOT Finished successfully. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")

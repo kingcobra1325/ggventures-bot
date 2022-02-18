@@ -1,11 +1,16 @@
 from __future__ import print_function
-import time, os, sys, logging, json
+import time, os, sys, logging, json, ast
 from os import environ
 # try:
 #     import redis
 # except:
 #     os.system(f"{sys.executable} -m pip install redis")
 #     import redis
+try:
+    from dotenv import load_dotenv
+except Exception as e:
+    os.system(f"{sys.executable} -m pip install python-dotenv")
+    from dotenv import load_dotenv
 try:
     import gspread
     from gspread.exceptions import APIError as gs_APIError
@@ -57,6 +62,49 @@ except ModuleNotFoundError as e:
 #     from sib_api_v3_sdk.rest import ApiException
 from pprint import pprint
 
+################ LOAD ENV VARIABLES ####################
+
+load_dotenv('.env')
+
+# EMAIL VARS
+
+SMTP_SERVER = environ['SMTP_SERVER']
+SMTP_PORT = environ['SMTP_PORT']
+SMTP_EMAIL = environ['SMTP_EMAIL']
+SMTP_KEY = environ['SMTP_KEY']
+
+# EVENTBRITE VARS
+
+EB_API_KEY = environ['EB_API_KEY']
+EB_CLIENT_SECRET = environ['EB_CLIENT_SECRET']
+EB_PRIVATE_TOKEN = environ['EB_PRIVATE_TOKEN']
+EB_PUBLIC_TOKEN = environ['EB_PUBLIC_TOKEN']
+
+#  GSPREAD DEVELOPER VARS
+
+GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_DEV']
+BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_DEV'])
+SPREADSHEET_ID = environ['SPREADSHEET_ID_DEV']
+
+# DROPBOX VARS
+
+DROPBOX_TOKEN = environ['DROPBOX_TOKEN']
+
+# DEV / CLIENT EMAILS
+
+DEVELOPER_BOT_EMAIL = ast.literal_eval(environ['DEVELOPER_BOT_EMAIL'])
+DEVELOPER_EMAILS = ast.literal_eval(environ['DEVELOPER_EMAILS'])
+
+# CHROME VARS
+
+if environ.get('DEPLOYED'):
+    # DEPLOYED VARS
+    GOOGLE_CHROME_BIN = environ['GOOGLE_CHROME_BIN']
+    CHROMEDRIVER_PATH = environ['CHROMEDRIVER_PATH']
+else:
+    # DEVELOPER VARS
+    GOOGLE_CHROME_BIN = environ['DEFAULT_GOOGLE_CHROME_BIN']
+    CHROMEDRIVER_PATH = environ['DEFAULT_CHROMEDRIVER_PATH']
 
 ############## SETTINGS ################
 
@@ -68,14 +116,18 @@ class APPSettings():
         # DEFAULT SETTINGS
 
         self.ALL_EVENTS_SHEET = True
-        self.UNIQUE_EVENT_EMAILS = True
+        self.UNIQUE_EVENT_EMAILS = False
         self.GOOGLE_API_RATE_LIMIT_EMAIL = False
         self.CLEAN_DATA_PIPELINE = True
         self.CLEAN_EVENT_DATE = True
         self.CLEAN_EVENT_TIME = True
         self.CLEAN_CONTACT_INFO = True
-        self.SORT_STARTUPS = True
+        self.SORT_STARTUPS = False
         self.REGEX_LOGS = False
+        self.LOAD_DROPBOX_LIST = True
+        self.SAVE_DROPBOX_LIST = True
+        self.DB_SAVE_SPIDER_COUNTER = 20
+        self.PRINT_ENV_VARS = True
 
     def __repr__(self):
 
@@ -90,6 +142,10 @@ class APPSettings():
                     CLEAN_CONTACT_INFO -> {self.CLEAN_CONTACT_INFO}
                     SORT_STARTUPS -> {self.SORT_STARTUPS}
                     REGEX_LOGS -> {self.REGEX_LOGS}
+                    LOAD_DROPBOX_LIST -> {self.LOAD_DROPBOX_LIST}
+                    SAVE_DROPBOX_LIST -> {self.SAVE_DROPBOX_LIST}
+                    DB_SAVE_SPIDER_COUNTER -> {self.DB_SAVE_SPIDER_COUNTER}
+                    PRINT_ENV_VAR -> {self.PRINT_ENV_VARS}
                 """
 
 GGV_SETTINGS = APPSettings()
@@ -109,45 +165,27 @@ file_handler.setFormatter(logging.Formatter(FORMAT))
 logger.addHandler(file_handler)
 logger.addHandler(logging.StreamHandler())
 
+# -------------------- PRINT ENV VARS -------------------------- #
 
-# -------- DEVELOPER / CLIENT VARS ---------- #
+if GGV_SETTINGS.PRINT_ENV_VARS:
+    logger.debug("\nLOADED ENV VARS...\n")
+    logger.debug(f"SMTP_SERVER -> {SMTP_SERVER}")
+    logger.debug(f"SMTP_PORT -> {SMTP_PORT}")
+    logger.debug(f"SMTP_EMAIL -> {SMTP_EMAIL}")
+    logger.debug(f"SMTP_KEY -> {SMTP_KEY}")
+    logger.debug(f"EB_API_KEY -> {EB_API_KEY}")
+    logger.debug(f"EB_CLIENT_SECRET -> {EB_CLIENT_SECRET}")
+    logger.debug(f"EB_PRIVATE_TOKEN -> {EB_PRIVATE_TOKEN}")
+    logger.debug(f"EB_PUBLIC_TOKEN -> {EB_PUBLIC_TOKEN}")
+    logger.debug(f"GOOGLE_SHEETS_API -> {GOOGLE_SHEETS_API}")
+    logger.debug(f"BOT_KEYS -> {BOT_KEYS}")
+    logger.debug(f"SPREADSHEET_ID -> {SPREADSHEET_ID}")
+    logger.debug(f"DROPBOX_TOKEN -> {DROPBOX_TOKEN}")
+    logger.debug(f"DEVELOPER_BOT_EMAIL -> {DEVELOPER_BOT_EMAIL}")
+    logger.debug(f"DEVELOPER_EMAILS -> {DEVELOPER_EMAILS}")
+    logger.debug(f"GOOGLE_CHROME_BIN -> {GOOGLE_CHROME_BIN}")
+    logger.debug(f"CHROMEDRIVER_PATH -> {CHROMEDRIVER_PATH}")
 
-developer_bot_email = ['ggventures-dev@ggventures.iam.gserviceaccount.com','joachim.cobar@gmail.com']
-developer_emails = [
-                            'goldengooseventures.developer@gmail.com',
-                            'kingcobra1325@gmail.com',
-                            'joachim.cobar@gmail.com'
-                    ]
-
-## ----------------------- EMAIL API KEY ----------------------------- ##
-
-if environ.get('DEPLOYED'):
-    # BOT_EMAIL_API_KEY = environ.get('EMAIL_API_KEY')
-    SMTP_SERVER = environ.get('SMTP_SERVER')
-    SMTP_PORT = environ.get('SMTP_PORT')
-    SMTP_EMAIL = environ.get('SMTP_EMAIL')
-    SMTP_KEY = environ.get('SMTP_KEY')
-else:
-    # DEVELOPER TOKEN
-    # BOT_EMAIL_API_KEY = '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'
-    SMTP_SERVER = 'smtp-relay.sendinblue.com'
-    SMTP_PORT = '587'
-    SMTP_EMAIL = 'goldengooseventures.developer@gmail.com'
-    SMTP_KEY = 'zdFnEt7j56JgbOR0'
-
-## -------------------- EVENTBRITE ---------------------------------- ##
-
-if environ.get('DEPLOYED'):
-    EB_API_KEY = environ.get('EB_API_KEY')
-    EB_CLIENT_SECRET = environ.get('EB_CLIENT_SECRET')
-    EB_PRIVATE_TOKEN = environ.get('EB_PRIVATE_TOKEN')
-    EB_PUBLIC_TOKEN = environ.get('EB_PUBLIC_TOKEN')
-else:
-    # DEVELOPER TOKEN
-    EB_API_KEY = 'FZ3N5FJX7CBHPQ5BV6'
-    EB_CLIENT_SECRET = 'QQXGTE6QDA55I6BC2JEGLR2WJW525T7ACWRAHQEHMPCWASCPLY'
-    EB_PRIVATE_TOKEN = 'PRMPUINSBIOQFJYEDFSR'
-    EB_PUBLIC_TOKEN = 'NIUZTJJG4HQTETQ5IRQG'
 
 def EventBrite_API():
     return Eventbrite(EB_PRIVATE_TOKEN)
@@ -165,28 +203,6 @@ default_error_df = pd.DataFrame(columns=["Time", "Error", "SpiderName", "Status"
 
 ######################### GOOGLE API #############################################
 
-GOOGLE_SHEETS_API = 'AIzaSyCWiS836ydyMyWSwIK2jmpAwYogXGv3zNQ'
-
-# DEVELOPER ID
-SPREADSHEET_ID = '1I_ITHd6vn7x0Qil1wiX98G_t8dkcicBf1r-9Dik7GUY'
-
-if environ.get('DEPLOYED'):
-    BOT_KEYS = environ.get('BOT_KEYS')
-else:
-    # DEVELOPER VARS
-    BOT_KEYS = {
-      "type": "service_account",
-      "project_id": "ggventures",
-      "private_key_id": "33307ac49480497f17de746108a5bc27bc25b496",
-      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCc064qlEOWsWkA\nS/UbZx6bgueMgpaQZKEKK3aQmJ/NS9wdOXlsHiqrg9rtsRnAph8nCfB0VpFpZpFC\nF2cb7Feh+1XiE+cX10ccxObs8xpdL+NrsujiToUCs1tTXDkXjc0LRwF5+hegG5L4\nxR3LDZ0tULx1VpuznHoMSlpPjnSwQGaw9TiriaCPNVXbhneKehqXfewJ3COYUc3M\n5dOyJKugn7sLI3tp5DpYtiU7abFOUHIRmIhym9RDZ8kw1lkRiZbQ6czAd3gPFJww\nzCk8LgBjzx/19IB87ZpyQhbxv7ZUw9mN/+ZEgSTWdHh4NTQhaPnhwgSGoyF5tmBe\n5SFolWzDAgMBAAECggEABPZRtCPdgPQmHWNJ4yRqfIMyLmj8uJ7mgDrgf9zEbwDa\neyDpbaQFYkiZccdBHa5j8p6cOXd6bGUEGEeYn0flfJ5GQ7wGJjlNP7ofOxofbcQT\nzxbpytdZ2rxaxGgjn6eAoxMLwen0O2sD8H5+3dZAG0H1ue9pR8/zW1Yy8KzSQQ1h\nN4gIJJj7IqEotfSHutQXJ433ULlb/n51fe4EhSlMuUgQ0lPAdavhcg1+pUflpbwk\n+6kBpdGVd4nX1M7SHBHoVBz/82FGxwgnBCizGoTm5CjETY1qNMDCqgjOlVpwW5D3\nrtxgiDh3XAH6QCgHqDPSmXPz2VMdFOD/9XLjACjQ+QKBgQDa/ypMTycK/CdsvHgN\n3z7h8Bvn6n79EFxAv2pD1yeMg77Ses+KeEh6NDymV6XpyfK//HzGRmM92AvmUmPl\nMTpJ2FPyJak/ug8k9IWbMclNC+dYypYGUnE+FDYNhiSWqoqMhZWHp6u5dLQszanN\np42vdFXbJt19uXkev2vR6BtdvQKBgQC3U1IP4PVHehSeDEMAXEjtOhIzCBzTQntL\nFLQWxGtL+lZ2xiozBWaxS5NLG77PF9XkJWfO/gVm1XLtHhF4VYFqGnQFG58AH34d\nSD6Ujny5I1tQXk6/CCuHrvlRs+fITQSY0B0UrEP2KqZMJLpq7sodNa1ZPVVUabBV\nm6p4urpcfwKBgQCQu80Hq9RA5U9lBNZPTLjxd8/poUgWFibyP8+KUHr52eRWlQXv\nHPnBkh53TTwA3BAMJGGOZNyX9d4/dTpCMhu0zD0Gry9BR8VUhip63BePTQuz2gf2\n26ut/IuQupQZ41I39t1RT1Yl9mRRrAbKPS9dwwQvF2uQ+PB8isRGcSEM/QKBgQCy\nArj7bDAf0L42XaetsO6rU6kaXnVG+hYoaJkaRm39n77XpEKTulnmLIGA/BcClp19\n5IhxaR2rpfXrozfJhhWdBsTDtPdmsi3OlzkVHWqkh12Co6CJRJCoNtIncK7PQ2IE\nVIj4avGvFejWpQ9TCD2/sUB7F+BEkD/GUNpuUrrlVwKBgFN9CRX1avwBRG1R4crh\n3fyd9q9eLzR5yD0+z1odr5LpbK66DxyHUb4kF8QbYWdu7sZyb2Jpn1lRZt9fwnN+\nIOF/ioYtLmLiNn9J2krb/F1m5oi1+FIuBEO4q9XDwN/2OvbJ4PNUIUCIrWRo7PvR\nSfGZ8k1T4/MM4F1/GHSj2uEI\n-----END PRIVATE KEY-----\n",
-      "client_email": "ggventures-dev@ggventures.iam.gserviceaccount.com",
-      "client_id": "112885207965191858762",
-      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-      "token_uri": "https://oauth2.googleapis.com/token",
-      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ggventures-dev%40ggventures.iam.gserviceaccount.com"
-    }
-
 def Google_Sheets():
     gc = gspread.service_account_from_dict(BOT_KEYS)
     return gc.open_by_key(SPREADSHEET_ID)
@@ -194,14 +210,6 @@ def Google_Sheets():
 ############################## SELENIUM #########################################
 
 ##### -------------------------- CHROMEDRIVER ------------------------------####
-# ------------- BINARY INIT ----------------- #
-if environ.get('DEPLOYED'):
-    GOOGLE_CHROME_BIN = environ.get('GOOGLE_CHROME_BIN')
-    CHROMEDRIVER_PATH = environ.get('CHROMEDRIVER_PATH')
-else:
-    # DEVELOPER VARS
-    GOOGLE_CHROME_BIN = 'C:\\Pysourcecodes\\chromium\\chrome.exe'
-    CHROMEDRIVER_PATH = 'C:\\Pysourcecodes\\chromium\\chromedriver'
 
 # DRIVER VAR
 def Load_Driver():
@@ -224,49 +232,48 @@ def Load_Driver():
 
 
     return webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=options)
-# default_driver.quit()
 
 #### ------------------------- FIREFOX --------------------------------------####
 
-# ------------- BINARY INIT ----------------- #
-if environ.get('DEPLOYED'):
-    FIRE_FOX_BIN = environ.get('FIRE_FOX_BIN')
-    GECKODRIVER_PATH = environ.get('GECKODRIVER_PATH')
-else:
-    # DEVELOPER VARS
-    FIRE_FOX_BIN = 'C:\\Pysourcecodes\\Firefox\\firefox.exe'
-    GECKODRIVER_PATH = 'C:\\Pysourcecodes\\Firefox\\geckodriver'
-
+# # ------------- BINARY INIT ----------------- #
+# if environ.get('DEPLOYED'):
+#     FIRE_FOX_BIN = environ.get('FIRE_FOX_BIN')
+#     GECKODRIVER_PATH = environ.get('GECKODRIVER_PATH')
+# else:
+#     # DEVELOPER VARS
+#     FIRE_FOX_BIN = 'C:\\Pysourcecodes\\Firefox\\firefox.exe'
+#     GECKODRIVER_PATH = 'C:\\Pysourcecodes\\Firefox\\geckodriver'
+#
 def Load_FF_Driver():
-    # ------------- DRIVER OPTIONS --------------- #
-    options = FirefoxOptions()
-    # ------------- DRIVER OPTIONS --------------- #
-    options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
-    # options.add_argument(f'user-agent=Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0')
-    options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument("--log-level=3")
-    options.add_argument("--lang=en-US")
-    options.binary_location = FIRE_FOX_BIN
-    # options.add_argument('--no-sandbox')
-
-    return webdriver.Chrome(executable_path=GECKODRIVER_PATH,options=options)
+#     # ------------- DRIVER OPTIONS --------------- #
+#     options = FirefoxOptions()
+#     # ------------- DRIVER OPTIONS --------------- #
+#     options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
+#     # options.add_argument(f'user-agent=Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0')
+#     options.add_argument('--headless')
+#     options.add_argument('--disable-gpu')
+#     options.add_argument('--disable-dev-shm-usage')
+#     options.add_argument("--log-level=3")
+#     options.add_argument("--lang=en-US")
+#     options.binary_location = FIRE_FOX_BIN
+#     # options.add_argument('--no-sandbox')
+#
+#     return webdriver.Chrome(executable_path=GECKODRIVER_PATH,options=options)
+    pass
 
 ####################################### DROPBOX ###########################################
 
-# ------------- BINARY INIT ----------------- #
-if environ.get('DEPLOYED'):
-    DROPBOX_TOKEN = environ.get('DROPBOX_TOKEN')
-else:
-    # DEVELOPER TOKEN
-    # DROPBOX_TOKEN = "zu4qdcxiutlxerm"
-    DROPBOX_TOKEN = '87eVygKutx8AAAAAAAAAAdm1QXEJPIKBKiDndoKSeGGRq5WKKZ7dNA9_3r8Ic4Mg'
-    # DROPBOX_TOKEN = 'ujw9jgy3f4hkn3l'
-
 # API Access for Modules
-def DropBox_Upload(json_file):
-    return dropbox.Dropbox(DROPBOX_TOKEN)
+def DropBox_Upload(upload):
+
+    dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+
+    with open('bot_json.json', 'w') as data:
+        json.dump(upload, data)
+    with open('bot_json', 'rb') as data:
+        dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
+
+    logger.info("Progress uploaded successfully...")
 
 # API Access for Main APP
 def DropBox_INIT():

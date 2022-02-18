@@ -28,7 +28,7 @@ except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting import set_column_width
 
-from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_country_df, default_error_df, developer_bot_email, GGV_SETTINGS
+from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
 
 
 SPREADSHEET_MAIN = Google_Sheets()
@@ -125,7 +125,7 @@ def Create_Default_Sheet(spreadsheet,name):
                                                                     }
                                                 })
 
-            worksheet.add_protected_range(column_range_row, developer_bot_email)
+            worksheet.add_protected_range(column_range_row, DEVELOPER_BOT_EMAIL)
             set_with_dataframe(worksheet, df)
             logger.info(f"Added Blank Dataframe for {name}")
             break
