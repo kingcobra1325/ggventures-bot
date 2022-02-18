@@ -72,7 +72,6 @@ toml==0.10.2
 trio==0.19.0
 trio-websocket==0.9.2
 Twisted==21.7.0
-twisted-iocpsupport==1.0.2
 typing_extensions==4.0.1
 urllib3==1.26.7
 w3lib==1.22.0
