@@ -57,7 +57,7 @@ class Gbr0050Spider(scrapy.Spider):
                         RawEventDesc = None
 
                     try:
-                        RawEventDate = self.getter.find_element(By.XPATH,"date").text
+                        RawEventDate = self.getter.find_element(By.XPATH,"//div[@class='date']").text
                     except:
                         RawEventDate = None
                         
