@@ -268,11 +268,15 @@ def DropBox_Upload(upload):
 
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
 
-    with open('bot_json.json', 'w') as data:
-        json.dump(upload, data)
-    with open('bot_json', 'rb') as data:
-        dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
+    json_data = {
+                    'PENDING_SPIDERS' : upload
+                }
 
+    with open('bot_json.json', 'w') as data:
+        json.dump(json_data, data)
+    logger.info("Finished writing data to local json file...")
+    with open('bot_json.json', 'rb') as data:
+        dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
     logger.info("Progress uploaded successfully...")
 
 # API Access for Main APP
@@ -293,9 +297,12 @@ def DropBox_INIT():
                 pass
             # Create local EMPTY File
             with open('bot_json.json', 'w') as data:
+                # json_data = {
+                #                 'PENDING_SPIDERS' : [],
+                #                 'PAGE_SOURCES' : {}
+                #             }
                 json_data = {
-                                'PENDING_SPIDERS' : [],
-                                'PAGE_SOURCES' : {}
+                                'PENDING_SPIDERS' : []
                             }
                 json.dump(json_data, data)
                 logger.debug('Creating Blank Copy...')
@@ -325,8 +332,6 @@ def UnpackItems(item):
             return ''
     else:
         return ''
-
-
 
 
 # --------------- ERROR EXCEPTION ----------------- #

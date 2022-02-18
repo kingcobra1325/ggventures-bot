@@ -83,7 +83,11 @@ class CleanDataPipeline:
                             adapter["startups_link"] = pipeline_re.get_startup_links(data=str(adapter.get('event_desc')))
                             logger.info(f"PIPELINE: Result 'startups_link' --> {adapter.get('startups_link')}\n")
 
-                            adapter["startups_contact_info"] = pipeline_re.contact_info(data=str(adapter.get('event_desc')))
+                            if not adapter.get('startups_contact_info'):
+                                logger.debug("PIPELINE: No existing data on 'startups_contact_info'. Getting contact info on 'event_desc'")
+                                adapter["startups_contact_info"] = pipeline_re.contact_info(data=str(adapter.get('event_desc')))
+                            else:
+                                logger.debug("PIPELINE: Existing data on 'startups_contact_info'. No changes made.")
                         else:
                             logger.debug("PIPELINE: 'event_desc' empty.")
                             logger.debug("PIPELINE: Item Startup Data returns as empty...")
