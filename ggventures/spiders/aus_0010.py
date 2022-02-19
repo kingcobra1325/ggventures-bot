@@ -45,7 +45,7 @@ class Aus0010Spider(scrapy.Spider):
             
             (WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//li[@id='tab-Upcoming-Events']")))).click()
             
-            no_events = WebDriverWait(self.driver,20).until(EC.presence_of_elements_located((By.XPATH,"//div[@id='content_container_1075049']/p[contains(text(),'No upcoming events')]"))) 
+            no_events = WebDriverWait(self.driver,20).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@id='content_container_1075049']/p[contains(text(),'No upcoming events')]")))
             
             if not no_events:
                 logger.debug('Changes to Events on current Spider. Sending emails....')
