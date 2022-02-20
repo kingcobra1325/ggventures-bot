@@ -242,10 +242,9 @@ def Load_Driver():
     options.add_experimental_option("prefs",prefs)
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
-    driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=options)
-    driver.set_page_load_timeout(1000)
+    # driver.set_page_load_timeout(1000)
 
-    return driver
+    return webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=options)
 
 #### ------------------------- FIREFOX --------------------------------------####
 
