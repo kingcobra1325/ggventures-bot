@@ -96,6 +96,8 @@ def start_spiders():
         logger.info("|DEVELOPMENT| Loading Spider_List_Test....")
         get_spider_list = Load_Spiders_Test()
 
+    logger.info(f"Spider_List: {get_spider_list}")
+
     if GGV_SETTINGS.LOAD_DROPBOX_LIST:
         logger.debug(f'Fetching current progress on Dropbox BOT_JSON file...\n')
         load_spiders = DropBox_INIT()
