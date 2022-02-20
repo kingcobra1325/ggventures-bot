@@ -82,17 +82,35 @@ EB_PUBLIC_TOKEN = environ['EB_PUBLIC_TOKEN']
 
 #  GSPREAD DEVELOPER VARS
 
-GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_DEV']
-BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_DEV'])
-SPREADSHEET_ID = environ['SPREADSHEET_ID_DEV']
+if environ.get('DEPLOYED'):
+    logger.info("|PRODUCTION| Fetching MAIN GOOGLE API KEYS")
+    GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_MAIN']
+    BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_MAIN'])
+    SPREADSHEET_ID = environ['SPREADSHEET_ID_MAIN']
+else:
+    logger.info("|DEVELOPMENT| Fetching DEVELOPER GOOGLE API KEYS")
+    GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_DEV']
+    BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_DEV'])
+    SPREADSHEET_ID = environ['SPREADSHEET_ID_DEV']
 
 # DROPBOX VARS
 
-DROPBOX_TOKEN = environ['DROPBOX_TOKEN']
+if environ.get('DEPLOYED'):
+    logger.info("|PRODUCTION| Fetching MAIN DROPBOX API KEYS")
+    DROPBOX_TOKEN = environ['DROPBOX_TOKEN_MAIN']
+else:
+    logger.info("|DEVELOPMENT| Fetching DEVELOPER DROPBOX API KEYS")
+    DROPBOX_TOKEN = environ['DROPBOX_TOKEN_DEV']
 
 # DEV / CLIENT EMAILS
 
-DEVELOPER_BOT_EMAIL = ast.literal_eval(environ['DEVELOPER_BOT_EMAIL'])
+if environ.get('DEPLOYED'):
+    logger.info("|PRODUCTION| Fetching MAIN BOT EMAILS")
+    DEVELOPER_BOT_EMAIL = ast.literal_eval(environ['MAIN_BOT_EMAIL'])
+else:
+    logger.info("|DEVELOPMENT| Fetching DEVELOPER BOT EMAILS")
+    DEVELOPER_BOT_EMAIL = ast.literal_eval(environ['DEVELOPER_BOT_EMAIL'])
+
 DEVELOPER_EMAILS = ast.literal_eval(environ['DEVELOPER_EMAILS'])
 
 # CHROME VARS
