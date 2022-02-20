@@ -203,7 +203,7 @@ def Add_Event(data,country_df,country_worksheet,country):
     # SORT ITEMS BY DATE AND REMOVE DUPLICATES
     country_df["Last Updated"] = country_df["Last Updated"].astype('datetime64[ns]')
     country_df.sort_values(by='Last Updated', ascending = False, inplace=True)
-    country_df.drop_duplicates(subset=['Event Name','Event Date'],inplace=True)
+    country_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
 
     # COUNTRY
@@ -227,7 +227,7 @@ def Add_Event(data,country_df,country_worksheet,country):
 
         all_df["Last Updated"] = all_df["Last Updated"].astype('datetime64[ns]')
         all_df.sort_values(by='Last Updated', ascending = False, inplace=True)
-        all_df.drop_duplicates(subset=['Event Name','Event Date'],inplace=True)
+        all_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
         # WRITE ALL DF TO SHEET
 
