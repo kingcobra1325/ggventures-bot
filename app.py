@@ -106,11 +106,11 @@ def start_spiders():
             logger.info("Pending Spiders to scrape detected. Resuming....")
             spider_list = load_spiders["PENDING_SPIDERS"]
         else:
-            spider_list = get_spider_list
+            spider_list = get_spider_list.copy()
             logger.info("No Pending Spiders to resume. Scraping New Spider List....")
     else:
         logger.info("Resume Progress DISABLED. Scraping New Spider List....")
-        spider_list = get_spider_list
+        spider_list = get_spider_list.copy()
     logger.info(f"Number of Pending Spiders: {len(spider_list)}")
 
     progress_counter = 0
