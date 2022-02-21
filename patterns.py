@@ -1,12 +1,16 @@
 STARTUP_EVENT_KEYWORDS =            {
                                         'PRIORITY' :    [
-                                                            'adventure',
+                                                            'startup','start-up','demo-day'
                                                         ],
                                         'COMBINATION' : [
                                                             ['elevator','pitch'],
                                                             ['venture', 'pitch'],
                                                             ['venture','capital'],
                                                             ['venture','demo','day'],
+                                                            ['tech','accelerator'],
+                                                            ['pitch','accelerator'],
+                                                            ['tech','accelerator'],
+                                                            ['tech','competition'],
                                                         ]
 
                                     }

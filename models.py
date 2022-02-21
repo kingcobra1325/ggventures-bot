@@ -148,7 +148,7 @@ class RegExGGV:
         # CHECK IF DATA IS EMPTY
         if not data:
             logger.debug("Data is empty. Returning as False") if self.REGEX_LOGS else None
-            return False
+            return False, ''
 
         get_words = data.lower()
 
@@ -172,7 +172,7 @@ class RegExGGV:
             # if word in priority_words:
             if word.lower() in get_words:
                 logger.info("\nData found as Eligible Startup....\n")
-                return True
+                return True, f'PRIORITY: {word}'
             else:
                 logger.info(f"Word {word} not found on Eligible Startup Events Criteria 'PRIORITY'...\n") if self.REGEX_LOGS else None
 
@@ -200,13 +200,13 @@ class RegExGGV:
 
                     if criteria_pass >= criteria_num:
                         logger.info("\nData found as Eligible Startup....\n")
-                        return True
+                        return True, f'COMBINATION: {comb_words}'
                 else:
                     logger.info(f"Word -> '{word}' not found on Eligible Startup Events Criteria 'COMBINATION'...\n") if self.REGEX_LOGS else None
 
 
         logger.info("\nIneligible Startup Data...\n")
-        return False
+        return False, ''
 
 
     def get_startup_links(self,data):

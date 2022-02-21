@@ -207,6 +207,9 @@ def EventBrite_API():
 default_all_df = pd.DataFrame(columns=["Last Updated", "Country", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
 
+default_startups_df = pd.DataFrame(columns=["Last Updated", "Country", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
+                                "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "Criteria Met", "SpiderName"])
+
 default_country_df = pd.DataFrame(columns=["Last Updated", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
 

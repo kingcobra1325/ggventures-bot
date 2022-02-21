@@ -34,7 +34,7 @@ except ModuleNotFoundError as e:
 
 from binaries import GGV_SETTINGS, logger, Google_Sheets, gs_APIError, gs_NoWS, UnpackItems
 
-from spreadsheet import Read_DataFrame_From_Sheet, Add_Event
+from spreadsheet import Read_DataFrame_From_Sheet, Add_Event, Add_Startups_Event
 from bot_email import missing_info_email, error_email
 
 from models import pipeline_re
@@ -58,41 +58,6 @@ class CleanDataPipeline:
 
                 # SET ITEM ADAPTER
                 adapter = ItemAdapter(item)
-
-                # GET STARTUP EVENTS INFORMATION
-                if GGV_SETTINGS.SORT_STARTUPS:
-                    logger.info("PIPELINE: Initializing fetching Startup Events Information...")
-
-                    # CHECK EVENT IF IT CONTAINS STARTUP KEYWORDS
-                    logger.debug(f"PIPELINE: Checking Data for KEYWORDS....")
-                    check_event_title = pipeline_re.sort_startups(data=str(adapter.get('event_name')))
-                    check_event_desc = pipeline_re.sort_startups(data=str(adapter.get('university_contact_info')))
-                    logger.debug(f"PIPELINE: STARTUP KEYWORDS - Event Title: {check_event_title}")
-                    logger.debug(f"PIPELINE: STARTUP KEYWORDS - Event Desc: {check_event_desc}")
-
-                    if check_event_title or check_event_desc:
-                        logger.info("PIPELINE: Event meets Startup Keywords criteria...\n")
-
-                        if adapter.get('event_desc'):
-                            logger.info("PIPELINE: Fetching Startup Name from Description...\n")
-
-                            adapter["startups_name"] = pipeline_re.get_startup_name(data=str(adapter.get('event_desc')))
-                            logger.info(f"PIPELINE: Result 'startups_name' --> {adapter.get('startups_name')}\n")
-
-                            logger.info("PIPELINE: Fetching Startup Links from Description...")
-                            adapter["startups_link"] = pipeline_re.get_startup_links(data=str(adapter.get('event_desc')))
-                            logger.info(f"PIPELINE: Result 'startups_link' --> {adapter.get('startups_link')}\n")
-
-                            if not adapter.get('startups_contact_info'):
-                                logger.debug("PIPELINE: No existing data on 'startups_contact_info'. Getting contact info on 'event_desc'")
-                                adapter["startups_contact_info"] = pipeline_re.contact_info(data=str(adapter.get('event_desc')))
-                            else:
-                                logger.debug("PIPELINE: Existing data on 'startups_contact_info'. No changes made.")
-                        else:
-                            logger.debug("PIPELINE: 'event_desc' empty.")
-                            logger.debug("PIPELINE: Item Startup Data returns as empty...")
-                    else:
-                        raise DropItem("PIPELINE: Event failed to meet Startup Keyword criteria...")
 
                 # CLEAN EVENT DATE
                 if GGV_SETTINGS.CLEAN_EVENT_DATE:
@@ -135,9 +100,6 @@ class CleanDataPipeline:
 
             return item
 
-        except DropItem as e:
-            # logger.error("PIPELINE: Skipping Scraped Event Item...")
-            raise DropItem("PIPELINE: Skipping Scraped Event Item...")
         except Exception as e:
             logger.error(f"Experienced error on the CleanData Pipeline --> {e}. Sending Error Email Notification")
             error_email(spider.name,e)
@@ -200,4 +162,93 @@ class WriteDataPipeline:
             return item
         except Exception as e:
             logger.error(f"Experienced error on the WriteData Pipeline --> {e}. Sending Error Email Notification")
+            error_email(spider.name,e)
+
+class StartupsPipeline:
+    def __init__(self):
+        pass
+
+    def create_connection(self):
+        pass
+
+    def process_item(self, item, spider):
+        try:
+            # GET STARTUP EVENTS INFORMATION
+            if GGV_SETTINGS.SORT_STARTUPS:
+                logger.info("PIPELINE: SORTING STARTUPS EVENTS....")
+                logger.info(f"PIPELINE: Currently processing {spider.name} scraped data:")
+
+                # SET ITEM ADAPTER
+                adapter = ItemAdapter(item)
+
+                criteria_list = []
+
+                # CHECK EVENT IF IT CONTAINS STARTUP KEYWORDS
+                logger.debug(f"PIPELINE: Checking Data for KEYWORDS....")
+                check_event_title, title_criteria = pipeline_re.sort_startups(data=str(adapter.get('event_name')))
+                criteria_list.append(title_criteria) if check_event_title else None
+                check_event_desc, desc_criteria = pipeline_re.sort_startups(data=str(adapter.get('university_contact_info')))
+                criteria_list.append(desc_criteria) if check_event_desc else None
+                logger.debug(f"PIPELINE: STARTUP KEYWORDS - Event Title: {check_event_title}")
+                logger.debug(f"PIPELINE: STARTUP KEYWORDS - Event Desc: {check_event_desc}")
+
+                if check_event_title or check_event_desc:
+                    logger.info("PIPELINE: Event meets Startup Keywords criteria...\n")
+                    criteria_result = '\n'.join(criteria_list)
+                    logger.debug(f"PIPELINE: Criteria:\n{criteria_result}")
+
+                    if adapter.get('event_desc'):
+                        logger.info("PIPELINE: Fetching Startup Name from Description...\n")
+
+                        adapter["startups_name"] = pipeline_re.get_startup_name(data=str(adapter.get('event_desc')))
+                        logger.info(f"PIPELINE: Result 'startups_name' --> {adapter.get('startups_name')}\n")
+
+                        logger.info("PIPELINE: Fetching Startup Links from Description...")
+                        adapter["startups_link"] = pipeline_re.get_startup_links(data=str(adapter.get('event_desc')))
+                        logger.info(f"PIPELINE: Result 'startups_link' --> {adapter.get('startups_link')}\n")
+
+                        if not adapter.get('startups_contact_info'):
+                            logger.debug("PIPELINE: No existing data on 'startups_contact_info'. Getting contact info on 'event_desc'")
+                            adapter["startups_contact_info"] = pipeline_re.contact_info(data=str(adapter.get('event_desc')))
+                        else:
+                            logger.debug("PIPELINE: Existing data on 'startups_contact_info'. No changes made.")
+                    else:
+                        logger.debug("PIPELINE: 'event_desc' empty.")
+                        logger.debug("PIPELINE: Item Startup Data returns as empty...")
+
+                    data = {
+                                "Last Updated" : datetime.utcnow(),
+                                "Country" : spider.country,
+                                "Event Name" : UnpackItems(adapter.get("event_name")),
+                                "Event Date" : str(adapter.get("event_date")),
+                                "Event Time" : str(adapter.get("event_time")),
+                                "Event Link" : UnpackItems(adapter.get("event_link")),
+                                "Event Description" : UnpackItems(adapter.get("event_desc")),
+                                "Startup Name(s)" : str(adapter.get("startups_name")),
+                                "Startup Link(s)" : str(adapter.get("startups_link")),
+                                "Startup Contact Info(s)" : str(adapter.get("startups_contact_info")),
+                                "University Name" : UnpackItems(adapter.get("university_name")),
+                                "University Contact Info" : str(adapter.get("university_contact_info")),
+                                "Logo" : UnpackItems(adapter.get("logo")),
+                                "Criteria Met" : criteria_result,
+                                "SpiderName" : spider.name
+                    }
+
+                    # GET STARTUPS DF
+                    df, worksheet = Read_DataFrame_From_Sheet('STARTUPS')
+
+                    # ADD ITEM TO DF
+                    Add_Startups_Event(data=data,startups_df=df,startups_worksheet=worksheet,country=spider.country)
+
+                else:
+                    raise DropItem("PIPELINE: Event failed to meet Startup Keyword criteria...")
+            else:
+                logger.info("PIPELINE: SKIPPING SORTING STARTUPS EVENTS...")
+            return item
+
+        except DropItem as e:
+            # logger.error("PIPELINE: Skipping Scraped Event Item...")
+            raise DropItem("PIPELINE: Skipping Scraped Event Item...")
+        except Exception as e:
+            logger.error(f"Experienced error on the Startups Pipeline --> {e}. Sending Error Email Notification")
             error_email(spider.name,e)

@@ -65,6 +65,7 @@ ROBOTSTXT_OBEY = False
 ITEM_PIPELINES = {
    'ggventures.pipelines.CleanDataPipeline': 200,
    'ggventures.pipelines.WriteDataPipeline': 300,
+   'ggventures.pipelines.StartupsPipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
