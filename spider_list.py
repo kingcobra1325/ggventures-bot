@@ -94,10 +94,10 @@ spider_ushi = [
 # spider_irn = ['irn_0001', 'irn_0002']
 spider_irl = [
                 # 'irl_0001', 'irl_0002',
-                'irl_0003',
+                # 'irl_0003',
                 # 'irl_0004', 'irl_0005',
                 # 'irl_0006',
-                'irl_0007'
+                'irl_0007',
             ]
 # spider_isr = ['isr_0001', 'isr_0002', 'isr_0003', 'isr_0004', 'isr_0005', 'isr_0006']
 # spider_ita = ['ita_0001', 'ita_0002', 'ita_0003', 'ita_0004', 'ita_0005', 'ita_0006', 'ita_0007', 'ita_0008', 'ita_0009', 'ita_0010', 'ita_0011', 'ita_0012', 'ita_0013', 'ita_0014', 'ita_0015', 'ita_0016', 'ita_0017', 'ita_0018', 'ita_0019', 'ita_0020']
@@ -206,7 +206,8 @@ spider_gbr = [
                 # 'gbr_0034',
                 'gbr_0035',
                 'gbr_0036', 'gbr_0037',
-                'gbr_0038', 'gbr_0039',
+                'gbr_0038',
+                # 'gbr_0039',
                 'gbr_0040',
                 'gbr_0041', 'gbr_0042', 'gbr_0043', 'gbr_0044',
                 'gbr_0045',
