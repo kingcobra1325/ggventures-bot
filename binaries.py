@@ -283,17 +283,23 @@ def Load_FF_Driver():
 def DropBox_Upload(upload):
 
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+    while True:
+        try:
+            json_data = {
+                            'PENDING_SPIDERS' : upload
+                        }
 
-    json_data = {
-                    'PENDING_SPIDERS' : upload
-                }
+            with open('bot_json.json', 'w') as data:
+                json.dump(json_data, data)
+            logger.info("Finished writing data to local json file...")
+            with open('bot_json.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
+            logger.info("Progress uploaded successfully...")
+            break
+        except (ApiError,AttributeError):
+            pass
 
-    with open('bot_json.json', 'w') as data:
-        json.dump(json_data, data)
-    logger.info("Finished writing data to local json file...")
-    with open('bot_json.json', 'rb') as data:
-        dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
-    logger.info("Progress uploaded successfully...")
+
 
 # API Access for Main APP
 def DropBox_INIT():
@@ -328,6 +334,75 @@ def DropBox_INIT():
                 logger.debug('Uploading Blank Copy...')
             break
         return json_data
+
+default_startups_keyword = {
+                                        'PRIORITY' :    [
+                                                            'startup','start-up','demo-day'
+                                                        ],
+                                        'COMBINATION' : [
+                                                            ['elevator','pitch'],
+                                                            ['venture', 'pitch'],
+                                                            ['venture','capital'],
+                                                            ['venture','demo','day'],
+                                                            ['tech','accelerator'],
+                                                            ['pitch','accelerator'],
+                                                            ['tech','accelerator'],
+                                                            ['tech','competition'],
+                                                        ],
+                                        'WHOLE' : [
+                                                    'venture','capital'
+                                                ]
+
+                                    }
+
+def DropBox_Keywords():
+    dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+    try:
+        # Download DROPBOX File
+        downloaded = dbx.files_download_to_file('keywords_json.json','/keywords_json.json')
+        # return json.loads(open('keywords_json.json').read())
+        logger.info("Loading Startup Keywords Criteria from DropBox...")
+        result = json.loads(open('keywords_json.json').read())
+        logger.info(result)
+        return result
+    except (ApiError,AttributeError):
+        while True:
+            logger.error('Bot JSON not found!...')
+            # Delete Local File Copy
+            try:
+                os.remove('keywords_json.json')
+                logger.error('Deleting Local Copy...')
+            except FileNotFoundError:
+                pass
+            # Create local EMPTY File
+            with open('keywords_json.json', 'w') as data:
+
+                json_data = default_startups_keyword
+
+                json.dump(json_data, data)
+                logger.debug('Creating Blank Copy...')
+            # Upload EMPTY Copy to the DROPBOX API
+            with open('keywords_json.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/keywords_json.json',dropbox.files.WriteMode.overwrite)
+                logger.debug('Uploading Blank Copy...')
+            break
+        logger.info(json_data)
+        return json_data
+
+
+# class KeyWordsCriteriaClass:
+#
+#     def __init__(self):
+#         self.STARTUP_EVENT_KEYWORDS = DropBox_Keywords()
+#
+#     def __repr__(self):
+#         return f'STARTUP_EVENT_KEYWORDS --> {self.STARTUP_EVENT_KEYWORDS}'
+
+
+# KEYWORDS_CRITERIA = KeyWordsCriteriaClass()
+
+
+
 
 
 

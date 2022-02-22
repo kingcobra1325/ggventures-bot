@@ -11,7 +11,10 @@ STARTUP_EVENT_KEYWORDS =            {
                                                             ['pitch','accelerator'],
                                                             ['tech','accelerator'],
                                                             ['tech','competition'],
-                                                        ]
+                                                        ],
+                                        'WHOLE' : [
+                                                    'venture','capital'
+                                                ]
 
                                     }
 
