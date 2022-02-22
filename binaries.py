@@ -62,6 +62,8 @@ except ModuleNotFoundError as e:
 #     from sib_api_v3_sdk.rest import ApiException
 from pprint import pprint
 
+from patterns import STARTUP_EVENT_KEYWORDS
+
 ################ LOAD ENV VARIABLES ####################
 
 load_dotenv('.env')
@@ -289,11 +291,11 @@ def DropBox_Upload(upload):
                             'PENDING_SPIDERS' : upload
                         }
 
-            with open('bot_json.json', 'w') as data:
+            with open('bot.json', 'w') as data:
                 json.dump(json_data, data)
             logger.info("Finished writing data to local json file...")
-            with open('bot_json.json', 'rb') as data:
-                dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
+            with open('bot.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/bot.json',dropbox.files.WriteMode.overwrite)
             logger.info("Progress uploaded successfully...")
             break
         except (ApiError,AttributeError):
@@ -306,19 +308,19 @@ def DropBox_INIT():
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
         # Download DROPBOX File
-        downloaded = dbx.files_download_to_file('bot_json.json','/bot_json.json')
-        return json.loads(open('bot_json.json').read())
+        downloaded = dbx.files_download_to_file('bot.json','/bot.json')
+        return json.loads(open('bot.json').read())
     except (ApiError,AttributeError):
         while True:
             logger.error('Bot JSON not found!...')
             # Delete Local File Copy
             try:
-                os.remove('bot_json.json')
+                os.remove('bot.json')
                 logger.error('Deleting Local Copy...')
             except FileNotFoundError:
                 pass
             # Create local EMPTY File
-            with open('bot_json.json', 'w') as data:
+            with open('bot.json', 'w') as data:
                 # json_data = {
                 #                 'PENDING_SPIDERS' : [],
                 #                 'PAGE_SOURCES' : {}
@@ -329,40 +331,20 @@ def DropBox_INIT():
                 json.dump(json_data, data)
                 logger.debug('Creating Blank Copy...')
             # Upload EMPTY Copy to the DROPBOX API
-            with open('bot_json.json', 'rb') as data:
-                dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
+            with open('bot.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/bot.json',dropbox.files.WriteMode.overwrite)
                 logger.debug('Uploading Blank Copy...')
             break
         return json_data
-
-default_startups_keyword = {
-                                        'PRIORITY' :    [
-                                                            'startup','start-up','demo-day'
-                                                        ],
-                                        'COMBINATION' : [
-                                                            ['elevator','pitch'],
-                                                            ['venture', 'pitch'],
-                                                            ['venture','capital'],
-                                                            ['venture','demo','day'],
-                                                            ['tech','accelerator'],
-                                                            ['pitch','accelerator'],
-                                                            ['tech','accelerator'],
-                                                            ['tech','competition'],
-                                                        ],
-                                        'WHOLE' : [
-                                                    'venture','capital'
-                                                ]
-
-                                    }
 
 def DropBox_Keywords():
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
         # Download DROPBOX File
-        downloaded = dbx.files_download_to_file('keywords_json.json','/keywords_json.json')
-        # return json.loads(open('keywords_json.json').read())
+        downloaded = dbx.files_download_to_file('keywords.json','/keywords.json')
+        # return json.loads(open('keywords.json').read())
         logger.info("Loading Startup Keywords Criteria from DropBox...")
-        result = json.loads(open('keywords_json.json').read())
+        result = json.loads(open('keywords.json').read())
         logger.info(result)
         return result
     except (ApiError,AttributeError):
@@ -370,20 +352,20 @@ def DropBox_Keywords():
             logger.error('Bot JSON not found!...')
             # Delete Local File Copy
             try:
-                os.remove('keywords_json.json')
+                os.remove('keywords.json')
                 logger.error('Deleting Local Copy...')
             except FileNotFoundError:
                 pass
             # Create local EMPTY File
-            with open('keywords_json.json', 'w') as data:
+            with open('keywords.json', 'w') as data:
 
-                json_data = default_startups_keyword
+                json_data = STARTUP_EVENT_KEYWORDS
 
                 json.dump(json_data, data)
                 logger.debug('Creating Blank Copy...')
             # Upload EMPTY Copy to the DROPBOX API
-            with open('keywords_json.json', 'rb') as data:
-                dbx.files_upload(data.read(),'/keywords_json.json',dropbox.files.WriteMode.overwrite)
+            with open('keywords.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/keywords.json',dropbox.files.WriteMode.overwrite)
                 logger.debug('Uploading Blank Copy...')
             break
         logger.info(json_data)
