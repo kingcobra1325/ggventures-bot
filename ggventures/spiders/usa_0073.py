@@ -133,7 +133,7 @@ class Usa0073Spider(scrapy.Spider):
     def closed(self, reason):
         try:
             self.driver.quit()
-            # self.getter.quit()
+            self.getter.quit()
             self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
             logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
             logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")

@@ -2,7 +2,7 @@ import scrapy, time, re
 
 from datetime import datetime
 
-from binaries import GGV_SETTINGS, Load_Driver, logger, WebScroller, EventBrite_API
+from binaries import GGV_SETTINGS, DropBox_Keywords, Load_Driver, logger, WebScroller, EventBrite_API
 
 from scrapy.loader import ItemLoader
 
@@ -20,7 +20,8 @@ class RegExGGV:
         self.REGEX_LOGS = GGV_SETTINGS.REGEX_LOGS
 
         # PATTERNS VAR
-        self.STARTUP_EVENT_KEYWORDS = patterns.STARTUP_EVENT_KEYWORDS
+        # self.STARTUP_EVENT_KEYWORDS = patterns.STARTUP_EVENT_KEYWORDS
+        self.STARTUP_EVENT_KEYWORDS = DropBox_Keywords()
         self.STARTUP_NAMES = patterns.STARTUP_NAMES
         self.STARTUP_LINK_PATTERNS = patterns.STARTUP_LINK_PATTERNS
         self.TZ_PATTERNS = patterns.TZ_PATTERNS
@@ -142,22 +143,25 @@ class RegExGGV:
 
     def sort_startups(self,data):
 
-        # Get Words from Data
-        # get_words = data.lower().split(" ")
-
         # CHECK IF DATA IS EMPTY
         if not data:
             logger.debug("Data is empty. Returning as False") if self.REGEX_LOGS else None
-            return False
+            return False, ''
 
+        # Get Words Substring
         get_words = data.lower()
 
+        # Get Words Whole
+        whole_words_temp = data.lower().split(" ")
         # Remove Non-Alphanumeric Characters
-        # new_data = [self.re.sub(r"[^a-zA-Z0-9]","",x) for x in get_words]
+        get_words_whole = [self.re.sub(r"[^a-zA-Z0-9]","",x) for x in whole_words_temp]
 
-        logger.info(f"Sorted Words from the Data\n{new_data}") if self.REGEX_LOGS else None
+        logger.info(f"Sorted Words from the Data\n{get_words_whole}") if self.REGEX_LOGS else None
+        logger.info(f"List of Words: {get_words_whole}") if self.REGEX_LOGS else None
 
-        logger.info(f"List of Words: {new_data}") if self.REGEX_LOGS else None
+        # remove case-sensitivity in WHOLE WORDS CRITERIA
+        whole_words_criteria = [x.lower() for x in self.STARTUP_EVENT_KEYWORDS['WHOLE']]
+        logger.info(f"WHOLE Words Criteria: {whole_words_criteria}") if self.REGEX_LOGS else None
 
         # ---------- PRIORITY KEYWORD CHECK -------------- #
 
@@ -170,11 +174,23 @@ class RegExGGV:
             logger.debug(f"\nPRIORITY 'Word': {word}") if self.REGEX_LOGS else None
             # logger.debug(f"\nData: {word}") if self.REGEX_LOGS else None
             # if word in priority_words:
-            if word.lower() in get_words:
-                logger.info("\nData found as Eligible Startup....\n")
-                return True
+            if word.lower() in whole_words_criteria:
+                logger.debug(f"\nPRIORITY Criteria: WHOLE") if self.REGEX_LOGS else None
+
+                if word.lower() in get_words_whole:
+                    logger.info("\nData found as Eligible Startup....\n")
+                    return True, f'PRIORITY: {word}'
+                else:
+                    logger.info(f"Word {word} not found on Eligible Startup Events Criteria 'PRIORITY'...\n") if self.REGEX_LOGS else None
+
             else:
-                logger.info(f"Word {word} not found on Eligible Startup Events Criteria 'PRIORITY'...\n") if self.REGEX_LOGS else None
+                logger.debug(f"\nPRIORITY Criteria: Substring") if self.REGEX_LOGS else None
+
+                if word.lower() in get_words:
+                    logger.info("\nData found as Eligible Startup....\n")
+                    return True, f'PRIORITY: {word}'
+                else:
+                    logger.info(f"Word {word} not found on Eligible Startup Events Criteria 'PRIORITY'...\n") if self.REGEX_LOGS else None
 
         # --------- COMBINATION KEYWORD CHECK ------------ #
 
@@ -193,20 +209,37 @@ class RegExGGV:
 
             for word in comb_words:
                 # if word in new_data:
-                if word.lower() in get_words:
-                    criteria_pass+=1
-                    logger.info(f"Word ->'{word}' passes Startup Event Criteria 'COMBINATION'...") if self.REGEX_LOGS else None
-                    logger.info(f"Pass Count -> '{criteria_pass}'\n") if self.REGEX_LOGS else None
+                if word.lower() in whole_words_criteria:
+                    logger.debug(f"\nCOMBINATION Criteria: WHOLE") if self.REGEX_LOGS else None
 
-                    if criteria_pass >= criteria_num:
-                        logger.info("\nData found as Eligible Startup....\n")
-                        return True
+                    if word.lower() in get_words_whole:
+                        criteria_pass+=1
+                        logger.info(f"Word ->'{word}' passes Startup Event Criteria 'COMBINATION'...") if self.REGEX_LOGS else None
+                        logger.info(f"Pass Count -> '{criteria_pass}'\n") if self.REGEX_LOGS else None
+
+                        if criteria_pass >= criteria_num:
+                            logger.info("\nData found as Eligible Startup....\n")
+                            return True, f'COMBINATION: {comb_words}'
+
+                    else:
+                        logger.info(f"Word -> '{word}' not found on Eligible Startup Events Criteria 'COMBINATION'...\n") if self.REGEX_LOGS else None
+
                 else:
-                    logger.info(f"Word -> '{word}' not found on Eligible Startup Events Criteria 'COMBINATION'...\n") if self.REGEX_LOGS else None
+                    logger.debug(f"\nCOMBINATION Criteria: Substring") if self.REGEX_LOGS else None
+                    if word.lower() in get_words:
+                        criteria_pass+=1
+                        logger.info(f"Word ->'{word}' passes Startup Event Criteria 'COMBINATION'...") if self.REGEX_LOGS else None
+                        logger.info(f"Pass Count -> '{criteria_pass}'\n") if self.REGEX_LOGS else None
+
+                        if criteria_pass >= criteria_num:
+                            logger.info("\nData found as Eligible Startup....\n")
+                            return True, f'COMBINATION: {comb_words}'
+                    else:
+                        logger.info(f"Word -> '{word}' not found on Eligible Startup Events Criteria 'COMBINATION'...\n") if self.REGEX_LOGS else None
 
 
         logger.info("\nIneligible Startup Data...\n")
-        return False
+        return False, ''
 
 
     def get_startup_links(self,data):

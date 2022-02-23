@@ -6,6 +6,7 @@ start_time = round(time.time())
 
 from datetime import datetime, timezone, timedelta
 from spider_list import Load_Spiders
+from spider_list_test import Load_Spiders_Test
 from os import environ
 
 # --------------- INSTALL MISSING DEPENDENCIES ----------------- #
@@ -88,6 +89,15 @@ def exception_handler(errmsg="", e=""):
 # SCRAPING
 def start_spiders():
 
+    if environ.get('DEPLOYED'):
+        logger.info("|PRODUCTION| Loading Spider_List....")
+        get_spider_list = Load_Spiders()
+    else:
+        logger.info("|DEVELOPMENT| Loading Spider_List_Test....")
+        get_spider_list = Load_Spiders_Test()
+
+    logger.info(f"Spider_List: {get_spider_list}")
+
     if GGV_SETTINGS.LOAD_DROPBOX_LIST:
         logger.debug(f'Fetching current progress on Dropbox BOT_JSON file...\n')
         load_spiders = DropBox_INIT()
@@ -96,11 +106,11 @@ def start_spiders():
             logger.info("Pending Spiders to scrape detected. Resuming....")
             spider_list = load_spiders["PENDING_SPIDERS"]
         else:
-            spider_list = Load_Spiders()
+            spider_list = get_spider_list.copy()
             logger.info("No Pending Spiders to resume. Scraping New Spider List....")
     else:
         logger.info("Resume Progress DISABLED. Scraping New Spider List....")
-        spider_list = Load_Spiders()
+        spider_list = get_spider_list.copy()
     logger.info(f"Number of Pending Spiders: {len(spider_list)}")
 
     progress_counter = 0
@@ -121,6 +131,10 @@ def start_spiders():
             DropBox_Upload(save_spider_list)
             save_counter = 0
         logger.info(f"\n\nCURRENT SCRAPING PROGRESS: {progress_counter}/{len(spider_list)}\n\n")
+
+    logger.info("Finished pending Spider List...")
+    logger.debug("Saving empty list to Dropbox...")
+    DropBox_Upload(save_spider_list)
 
 ########## MAIN START ############
 if __name__ == '__main__':

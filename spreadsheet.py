@@ -28,7 +28,7 @@ except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting import set_column_width
 
-from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
+from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
 
 
 SPREADSHEET_MAIN = Google_Sheets()
@@ -45,9 +45,18 @@ def ReOrder_Sheets():
 
                 logger.info(f"Worksheet Name --> {worksheet.title} type: {type(worksheet.title)}")
 
+                if worksheet.title == 'STARTUPS':
+                    logger.info(f"STARTUPS Worksheet detected...")
+                    order.append(worksheet)
+
+            for worksheet in list_of_worksheets:
+
                 if worksheet.title == 'ALL':
                     logger.info(f"ALL Worksheet detected...")
                     order.append(worksheet)
+
+            for worksheet in list_of_worksheets:
+
                 if worksheet.title == 'ERRORS':
                     logger.info(f"ERRORS Worksheet detected...")
                     order.append(worksheet)
@@ -56,7 +65,9 @@ def ReOrder_Sheets():
                 SPREADSHEET_MAIN.reorder_worksheets(order)
             break
         except gs_APIError as e:
-            raise
+            logger.error(f"Error processing GSpread API Request --> {e}.")
+            logger.debug(f"Waiting for 90 seconds before retrying request")
+            sleep(90)
 
 
 def Create_Default_Sheet(spreadsheet,name):
@@ -68,13 +79,23 @@ def Create_Default_Sheet(spreadsheet,name):
     if name == 'ALL':
         logger.debug(f"Name identified as {name}. Setting Blank DataFrame for ALL")
         df = default_all_df.copy()
+        # print(len(df.columns))
+        # print(df.to_markdown())
+        column_range = 'A:N'
+        column_range_row = 'A1:N1'
+        num_cols = '14'
+    elif name == 'STARTUPS':
+        logger.debug(f"Name identified as {name}. Setting Blank DataFrame for STARTUPS")
+        df = default_startups_df.copy()
+        column_range = 'A:O'
+        column_range_row = 'A1:O1'
+        num_cols = '15'
     elif name == 'ERRORS':
         logger.debug(f"Name identified as {name}. Setting Blank DataFrame for ERRORS")
         df = default_error_df.copy()
         column_range = 'A:D'
         column_range_row = 'A1:D1'
         num_cols = '4'
-
     else:
         logger.debug(f"Name identified as {name}. Setting Blank DataFrame for Country")
         df = default_country_df.copy()
@@ -92,7 +113,7 @@ def Create_Default_Sheet(spreadsheet,name):
         try:
 
             # Set Event Description and University Contact Info COLUMN Size
-            if name == 'ALL':
+            if name == 'ALL' or name == 'STARTUPS':
                 set_column_width(worksheet, 'A', 150)
                 set_column_width(worksheet, 'G', 600)
                 set_column_width(worksheet, 'L', 350)
@@ -203,7 +224,7 @@ def Add_Event(data,country_df,country_worksheet,country):
     # SORT ITEMS BY DATE AND REMOVE DUPLICATES
     country_df["Last Updated"] = country_df["Last Updated"].astype('datetime64[ns]')
     country_df.sort_values(by='Last Updated', ascending = False, inplace=True)
-    country_df.drop_duplicates(subset=['Event Name','Event Date'],inplace=True)
+    country_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
 
     # COUNTRY
@@ -227,12 +248,29 @@ def Add_Event(data,country_df,country_worksheet,country):
 
         all_df["Last Updated"] = all_df["Last Updated"].astype('datetime64[ns]')
         all_df.sort_values(by='Last Updated', ascending = False, inplace=True)
-        all_df.drop_duplicates(subset=['Event Name','Event Date'],inplace=True)
+        all_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
         # WRITE ALL DF TO SHEET
 
         Write_DataFrame_To_Sheet(all_worksheet, all_df)
         logger.info("Added DataFrame to ALL Sheet")
+
+
+def Add_Startups_Event(data,startups_df,startups_worksheet,country):
+
+    # Adding Sorted Startup Events to DF
+
+    startups_df.loc[startups_df.shape[0]] = data
+
+    # SORT ITEMS BY DATE AND REMOVE DUPLICATES
+    startups_df["Last Updated"] = startups_df["Last Updated"].astype('datetime64[ns]')
+    startups_df.sort_values(by='Last Updated', ascending = False, inplace=True)
+    startups_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
+
+
+    # STARTUPS
+    Write_DataFrame_To_Sheet(startups_worksheet, startups_df)
+    logger.info(f"Added DataFrame to STARTUPS Sheet")
 
 
 

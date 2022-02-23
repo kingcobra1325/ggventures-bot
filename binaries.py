@@ -62,6 +62,8 @@ except ModuleNotFoundError as e:
 #     from sib_api_v3_sdk.rest import ApiException
 from pprint import pprint
 
+from patterns import STARTUP_EVENT_KEYWORDS
+
 ################ LOAD ENV VARIABLES ####################
 
 load_dotenv('.env')
@@ -82,17 +84,29 @@ EB_PUBLIC_TOKEN = environ['EB_PUBLIC_TOKEN']
 
 #  GSPREAD DEVELOPER VARS
 
-GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_DEV']
-BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_DEV'])
-SPREADSHEET_ID = environ['SPREADSHEET_ID_DEV']
+if environ.get('DEPLOYED'):
+    GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_MAIN']
+    BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_MAIN'])
+    SPREADSHEET_ID = environ['SPREADSHEET_ID_MAIN']
+else:
+    GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_DEV']
+    BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_DEV'])
+    SPREADSHEET_ID = environ['SPREADSHEET_ID_DEV']
 
 # DROPBOX VARS
 
-DROPBOX_TOKEN = environ['DROPBOX_TOKEN']
+if environ.get('DEPLOYED'):
+    DROPBOX_TOKEN = environ['DROPBOX_TOKEN_MAIN']
+else:
+    DROPBOX_TOKEN = environ['DROPBOX_TOKEN_DEV']
 
 # DEV / CLIENT EMAILS
 
-DEVELOPER_BOT_EMAIL = ast.literal_eval(environ['DEVELOPER_BOT_EMAIL'])
+if environ.get('DEPLOYED'):
+    DEVELOPER_BOT_EMAIL = ast.literal_eval(environ['MAIN_BOT_EMAIL'])
+else:
+    DEVELOPER_BOT_EMAIL = ast.literal_eval(environ['DEVELOPER_BOT_EMAIL'])
+
 DEVELOPER_EMAILS = ast.literal_eval(environ['DEVELOPER_EMAILS'])
 
 # CHROME VARS
@@ -122,12 +136,12 @@ class APPSettings():
         self.CLEAN_EVENT_DATE = True
         self.CLEAN_EVENT_TIME = True
         self.CLEAN_CONTACT_INFO = True
-        self.SORT_STARTUPS = False
+        self.SORT_STARTUPS = True
         self.REGEX_LOGS = False
         self.LOAD_DROPBOX_LIST = True
         self.SAVE_DROPBOX_LIST = True
-        self.DB_SAVE_SPIDER_COUNTER = 20
-        self.PRINT_ENV_VARS = True
+        self.DB_SAVE_SPIDER_COUNTER = 5
+        self.PRINT_ENV_VARS = False
 
     def __repr__(self):
 
@@ -195,6 +209,9 @@ def EventBrite_API():
 default_all_df = pd.DataFrame(columns=["Last Updated", "Country", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
 
+default_startups_df = pd.DataFrame(columns=["Last Updated", "Country", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
+                                "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "Criteria Met", "SpiderName"])
+
 default_country_df = pd.DataFrame(columns=["Last Updated", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
 
@@ -230,6 +247,7 @@ def Load_Driver():
     options.add_experimental_option("prefs",prefs)
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
+    # driver.set_page_load_timeout(1000)
 
     return webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=options)
 
@@ -267,44 +285,106 @@ def Load_FF_Driver():
 def DropBox_Upload(upload):
 
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+    while True:
+        try:
+            json_data = {
+                            'PENDING_SPIDERS' : upload
+                        }
 
-    with open('bot_json.json', 'w') as data:
-        json.dump(upload, data)
-    with open('bot_json', 'rb') as data:
-        dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
+            with open('bot.json', 'w') as data:
+                json.dump(json_data, data)
+            logger.info("Finished writing data to local json file...")
+            with open('bot.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/bot.json',dropbox.files.WriteMode.overwrite)
+            logger.info("Progress uploaded successfully...")
+            break
+        except (ApiError,AttributeError):
+            pass
 
-    logger.info("Progress uploaded successfully...")
+
 
 # API Access for Main APP
 def DropBox_INIT():
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
         # Download DROPBOX File
-        downloaded = dbx.files_download_to_file('bot_json.json','/bot_json.json')
-        return json.loads(open('bot_json.json').read())
+        downloaded = dbx.files_download_to_file('bot.json','/bot.json')
+        return json.loads(open('bot.json').read())
     except (ApiError,AttributeError):
         while True:
             logger.error('Bot JSON not found!...')
             # Delete Local File Copy
             try:
-                os.remove('bot_json.json')
+                os.remove('bot.json')
                 logger.error('Deleting Local Copy...')
             except FileNotFoundError:
                 pass
             # Create local EMPTY File
-            with open('bot_json.json', 'w') as data:
+            with open('bot.json', 'w') as data:
+                # json_data = {
+                #                 'PENDING_SPIDERS' : [],
+                #                 'PAGE_SOURCES' : {}
+                #             }
                 json_data = {
-                                'PENDING_SPIDERS' : [],
-                                'PAGE_SOURCES' : {}
+                                'PENDING_SPIDERS' : []
                             }
                 json.dump(json_data, data)
                 logger.debug('Creating Blank Copy...')
             # Upload EMPTY Copy to the DROPBOX API
-            with open('bot_json.json', 'rb') as data:
-                dbx.files_upload(data.read(),'/bot_json.json',dropbox.files.WriteMode.overwrite)
+            with open('bot.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/bot.json',dropbox.files.WriteMode.overwrite)
                 logger.debug('Uploading Blank Copy...')
             break
         return json_data
+
+def DropBox_Keywords():
+    dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+    try:
+        # Download DROPBOX File
+        downloaded = dbx.files_download_to_file('keywords.json','/keywords.json')
+        # return json.loads(open('keywords.json').read())
+        logger.info("Loading Startup Keywords Criteria from DropBox...")
+        result = json.loads(open('keywords.json').read())
+        logger.info(result)
+        return result
+    except (ApiError,AttributeError):
+        while True:
+            logger.error('Bot JSON not found!...')
+            # Delete Local File Copy
+            try:
+                os.remove('keywords.json')
+                logger.error('Deleting Local Copy...')
+            except FileNotFoundError:
+                pass
+            # Create local EMPTY File
+            with open('keywords.json', 'w') as data:
+
+                json_data = STARTUP_EVENT_KEYWORDS
+
+                json.dump(json_data, data)
+                logger.debug('Creating Blank Copy...')
+            # Upload EMPTY Copy to the DROPBOX API
+            with open('keywords.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/keywords.json',dropbox.files.WriteMode.overwrite)
+                logger.debug('Uploading Blank Copy...')
+            break
+        logger.info(json_data)
+        return json_data
+
+
+# class KeyWordsCriteriaClass:
+#
+#     def __init__(self):
+#         self.STARTUP_EVENT_KEYWORDS = DropBox_Keywords()
+#
+#     def __repr__(self):
+#         return f'STARTUP_EVENT_KEYWORDS --> {self.STARTUP_EVENT_KEYWORDS}'
+
+
+# KEYWORDS_CRITERIA = KeyWordsCriteriaClass()
+
+
+
 
 
 
@@ -325,8 +405,6 @@ def UnpackItems(item):
             return ''
     else:
         return ''
-
-
 
 
 # --------------- ERROR EXCEPTION ----------------- #
