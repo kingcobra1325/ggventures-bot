@@ -6,6 +6,8 @@ from binaries import GGV_SETTINGS, DropBox_Keywords, DropBox_EventNames, Load_Dr
 
 from scrapy.loader import ItemLoader
 
+from ggventures.items import GgventuresItem
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -329,96 +331,3 @@ class RegExGGV:
 
 
 pipeline_re = RegExGGV()
-
-
-
-
-# class GGVenturesSpider(scrapy.Spider):
-#
-#     name : str = 'DefaultName'
-#     start_urls : list = 'DefaultUrl'
-#     country : str = 'DefaultCountry'
-#
-#     USE_HANDLE_HTTPSTATUS_LIST = False
-#     USE_EVENTBRITE = False
-#
-#     if USE_HANDLE_HTTPSTATUS_LIST:
-#         handle_httpstatus_list = [403,404]
-#
-#     eventbrite_id : str
-#
-#     static_logo : str
-#
-#     def __init__(self):
-#         self.driver = Load_Driver()
-#         self.getter = Load_Driver()
-#         self.eventbrite_api = EventBrite_API()
-#         self.start_time = round(time.time())
-#         self.scrape_time = None
-#
-#     def eventbrite_API_call(Use=False,university_contact_info):
-#         if Use:
-#             # EVENTBRITE API - ORGANIZATION REQUEST
-#             raw_org = self.eventbrite_api.get_organizers(self.eventbrite_id)
-#
-#             university_name = raw_org['name']
-#             if raw_org['logo']:
-#                 logo = raw_org['logo']['url']
-#             else:
-#                 logo = static_logo
-#
-#             # EVENTBRITE API - EVENT LIST REQUEST
-#             raw_event = self.eventbrite_api.get_organizer_events(self.eventbrite_id)
-#             last_page = int(raw_event['pagination']['page_count'])
-#             prev_last_page = int(raw_event['pagination']['page_count']) - 1
-#
-#             event_list = self.eventbrite_api.get_organizer_events(self.eventbrite_id,page=prev_last_page)['events'] + self.eventbrite_api.get_organizer_events(self.eventbrite_id,page=last_page)['events']
-#
-#             for event in event_list:
-#                 if datetime.strptime(event['start']['utc'].split('T')[0],'%Y-%m-%d') > datetime.utcnow():
-#                     data = ItemLoader(item = GgventuresItem(), selector = event)
-#                     data.add_value('university_name',university_name)
-#                     data.add_value('university_contact_info',university_contact_info)
-#                     data.add_value('logo',logo)
-#                     data.add_value('event_name', event['name']['text'])
-#                     data.add_value('event_desc', event['description']['text'])
-#                     data.add_value('event_date', f"Start Date: {event['start']['utc']} - End Date: {event['end']['utc']}")
-#                     data.add_value('event_link', event['url'])
-#                     # data.add_value('event_time', event_time[i])
-#                     yield data.load_item()
-#
-#     def ClickMore(self,final_counter=10,start_counter=0):
-#         while True:
-#             try:
-#                 LoadMore = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(@class,'more-results')]"))).click()
-#                 logger.info("Load More Events....")
-#                 time.sleep(10)
-#                 counter+=1
-#                 if counter >= final_counter:
-#                     logger.debug(f"Loaded all Events. Start Scraping......")
-#                     break
-#             except TimeoutException as e:
-#                 logger.debug(f"No more Events to load --> {e}. Start Scraping......")
-#                 break
-#
-#     def parse_code(self):
-#
-#
-#
-#     def parse(self, response):
-#         try:
-#             parse_code()
-#         except Exception as e:
-#             logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-#             error_email(self.name,e)
-#
-#     def closed(self, reason):
-#         try:
-#             self.driver.quit()
-#             # self.getter.quit()
-#             self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-#             logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-#             logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-#         except Exception as e:
-#             logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-#             error_email(self.name,e)
