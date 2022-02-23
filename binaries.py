@@ -62,7 +62,7 @@ except ModuleNotFoundError as e:
 #     from sib_api_v3_sdk.rest import ApiException
 from pprint import pprint
 
-from patterns import STARTUP_EVENT_KEYWORDS
+from patterns import STARTUP_EVENT_KEYWORDS, STARTUP_NAMES
 
 ################ LOAD ENV VARIABLES ####################
 
@@ -340,10 +340,10 @@ def DropBox_INIT():
 def DropBox_Keywords():
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
+        logger.info("Loading Startup Keywords Criteria from DropBox...")
         # Download DROPBOX File
         downloaded = dbx.files_download_to_file('keywords.json','/keywords.json')
         # return json.loads(open('keywords.json').read())
-        logger.info("Loading Startup Keywords Criteria from DropBox...")
         result = json.loads(open('keywords.json').read())
         logger.info(result)
         return result
@@ -371,17 +371,39 @@ def DropBox_Keywords():
         logger.info(json_data)
         return json_data
 
+def DropBox_EventNames():
+    dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+    try:
+        # Download DROPBOX File
+        logger.info("Loading Startup Event Names from DropBox...")
+        downloaded = dbx.files_download_to_file('startups.json','/startups.json')
+        # return json.loads(open('startups.json').read())
+        result = json.loads(open('startups.json').read())
+        logger.info(result)
+        return result
+    except (ApiError,AttributeError):
+        while True:
+            logger.error('Bot JSON not found!...')
+            # Delete Local File Copy
+            try:
+                os.remove('startups.json')
+                logger.error('Deleting Local Copy...')
+            except FileNotFoundError:
+                pass
+            # Create local EMPTY File
+            with open('startups.json', 'w') as data:
 
-# class KeyWordsCriteriaClass:
-#
-#     def __init__(self):
-#         self.STARTUP_EVENT_KEYWORDS = DropBox_Keywords()
-#
-#     def __repr__(self):
-#         return f'STARTUP_EVENT_KEYWORDS --> {self.STARTUP_EVENT_KEYWORDS}'
+                json_data = STARTUP_NAMES
 
-
-# KEYWORDS_CRITERIA = KeyWordsCriteriaClass()
+                json.dump(json_data, data)
+                logger.debug('Creating Blank Copy...')
+            # Upload EMPTY Copy to the DROPBOX API
+            with open('startups.json', 'rb') as data:
+                dbx.files_upload(data.read(),'/startups.json',dropbox.files.WriteMode.overwrite)
+                logger.debug('Uploading Blank Copy...')
+            break
+        logger.info(json_data)
+        return json_data
 
 
 

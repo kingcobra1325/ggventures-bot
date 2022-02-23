@@ -2,7 +2,7 @@ import scrapy, time, re
 
 from datetime import datetime
 
-from binaries import GGV_SETTINGS, DropBox_Keywords, Load_Driver, logger, WebScroller, EventBrite_API
+from binaries import GGV_SETTINGS, DropBox_Keywords, DropBox_EventNames, Load_Driver, logger, WebScroller, EventBrite_API
 
 from scrapy.loader import ItemLoader
 
@@ -22,7 +22,8 @@ class RegExGGV:
         # PATTERNS VAR
         # self.STARTUP_EVENT_KEYWORDS = patterns.STARTUP_EVENT_KEYWORDS
         self.STARTUP_EVENT_KEYWORDS = DropBox_Keywords()
-        self.STARTUP_NAMES = patterns.STARTUP_NAMES
+        # self.STARTUP_NAMES = patterns.STARTUP_NAMES
+        self.STARTUP_NAMES = DropBox_EventNames()
         self.STARTUP_LINK_PATTERNS = patterns.STARTUP_LINK_PATTERNS
         self.TZ_PATTERNS = patterns.TZ_PATTERNS
         self.PHONE_NUMBER_PATTERNS = patterns.PHONE_NUMBER_PATTERNS
@@ -330,11 +331,13 @@ class RegExGGV:
 pipeline_re = RegExGGV()
 
 
+
+
 # class GGVenturesSpider(scrapy.Spider):
 #
-#     name : str
-#     start_urls : list
-#     country : str
+#     name : str = 'DefaultName'
+#     start_urls : list = 'DefaultUrl'
+#     country : str = 'DefaultCountry'
 #
 #     USE_HANDLE_HTTPSTATUS_LIST = False
 #     USE_EVENTBRITE = False
