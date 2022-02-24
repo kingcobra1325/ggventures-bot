@@ -2,7 +2,7 @@ import scrapy, time
 # from scrapy import Selector
 from datetime import datetime
 
-from bot_email import missing_info_email, error_email, unique_event
+from bot_email import missing_info_email, error_email, unique_event, website_changed
 
 from binaries import Load_Driver, logger, WebScroller, EventBrite_API
 
@@ -171,6 +171,20 @@ class GGVenturesSpider(scrapy.Spider):
             yield scrapy.Request(url=response.url,callback=self.eventbrite_API_call)
         except Exception as e:
             self.exception_handler(e)
+
+    def check_website_changed(self,upcoming_events_xpath=''):
+        try:
+            no_events = WebDriverWait(self.driver,30).until(EC.presence_of_all_elements_located((By.XPATH,upcoming_events_xpath)))
+            if not no_events:
+                logger.debug('Changes to Events on current Spider. Sending emails....')
+                website_changed(self.name,self.static_name)
+            else:
+                logger.debug('No changes to Events on current Spider. Skipping.....')
+        except TimeoutException as e:
+            logger.debug(f"Upcoming Events XPATH cannot be located --> {e}")
+            logger.debug('Changes to Events on current Spider. Sending emails....')
+            website_changed(self.name,self.static_name)
+
 
     def events_list(self,event_links_xpath:str):
 
