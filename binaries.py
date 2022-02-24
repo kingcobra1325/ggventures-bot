@@ -138,8 +138,12 @@ class APPSettings():
         self.CLEAN_CONTACT_INFO = True
         self.SORT_STARTUPS = True
         self.REGEX_LOGS = False
-        self.LOAD_DROPBOX_LIST = True
-        self.SAVE_DROPBOX_LIST = True
+        if environ.get('DEPLOYED'):
+            self.LOAD_DROPBOX_LIST = True
+            self.SAVE_DROPBOX_LIST = True
+        else:
+            self.LOAD_DROPBOX_LIST = False
+            self.SAVE_DROPBOX_LIST = False
         self.DB_SAVE_SPIDER_COUNTER = 5
         self.PRINT_ENV_VARS = False
 
