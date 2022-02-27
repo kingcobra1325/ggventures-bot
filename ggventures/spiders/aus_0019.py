@@ -1,21 +1,11 @@
-import scrapy, time
-
-from datetime import datetime
-
-from bot_email import missing_info_email, error_email, unique_event
-
-from binaries import Load_Driver, logger, WebScroller, EventBrite_API
-
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
+from binaries import logger
 
 from spider_template import GGVenturesSpider
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException
 
 
 class Aus0019Spider(GGVenturesSpider):
