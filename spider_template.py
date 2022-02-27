@@ -52,7 +52,9 @@ class GGVenturesSpider(scrapy.Spider):
                         'event_date' : '',
                         'event_link' : '',
                         'event_time' : '',
-                        'startups_contact_info' : ''
+                        'startups_contact_info' : '',
+                        'startups_link' : '',
+                        'startups_name' : ''
                         }
 
     def __init__(self):
@@ -139,10 +141,10 @@ class GGVenturesSpider(scrapy.Spider):
         except Exception as e:
             self.exception_handler(e)
 
-    def ClickMore(self,final_counter=10,start_counter=0):
+    def ClickMore(self,click_xpath='',final_counter=10,start_counter=0):
         while True:
             try:
-                LoadMore = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(@class,'more-results')]"))).click()
+                LoadMore = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH, click_xpath))).click()
                 logger.info("Load More Events....")
                 time.sleep(10)
                 counter+=1
@@ -192,7 +194,7 @@ class GGVenturesSpider(scrapy.Spider):
         return [x.get_attribute('href') for x in web_elements_list]
 
 
-    def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False):
+    def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False):
 
         event_links = []
 
@@ -206,12 +208,14 @@ class GGVenturesSpider(scrapy.Spider):
 
             try:
                 if get_next_month:
-                    next_month = self.driver.find_element(By.XPATH,"//a[contains(@title,'Go to next page')]").get_attribute('href')
+                    next_month = self.driver.find_element(By.XPATH,next_page_xpath).get_attribute('href')
                     self.driver.get(next_month)
 
                 if click_next_month:
-                    WebDriverWait(self.driver,40).until(EC.element_to_be_clickable((By.XPATH,"//span[contains(@class,'next-btn')]"))).click()
+                    WebDriverWait(self.driver,40).until(EC.element_to_be_clickable((By.XPATH,next_page_xpath))).click()
                 # next_month = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@title,'Go to the next page of the results')]"))).get_attribute('href')
+                if wait_after_loading:
+                    time.sleep(10)
             except (TimeoutException,NoSuchElementException) as e:
                 logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
                 break

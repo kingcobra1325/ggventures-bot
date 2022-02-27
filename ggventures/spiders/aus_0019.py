@@ -66,7 +66,9 @@ class Aus0019Spider(GGVenturesSpider):
                         item_data['event_date'] = self.getter.find_element(By.XPATH,"//time[contains(@data-automation,'event-details-time')]").text
                         item_data['event_time'] = self.getter.find_element(By.XPATH,"//time[contains(@data-automation,'event-details-time')]").text
 
-                    item_data['startups_contact_info'] = ''
+                    # item_data['startups_contact_info'] = ''
+                    # item_data['startups_link'] = ''
+                    # item_data['startups_name'] = ''
                     item_data['event_link'] = link
 
                     yield self.load_item(item_data=item_data,item_selector=link)

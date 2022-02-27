@@ -29,11 +29,12 @@ class Usa0036Spider(GGVenturesSpider):
     static_name = 'Howard University,School of Business'
     static_logo = 'https://economist-findercms-files.s3.us-west-1.amazonaws.com/2018-10/howardlg01.jpg'
 
+    # MAIN EVENTS LIST PAGE
     parse_code_link = 'https://calendar.howard.edu/'
 
     university_contact_info_xpath = "//div[contains(@class,'contact_info')]"
     contact_info_text = True
-    # contact_info_textContent = False
+    # contact_info_textContent = True
 
     def parse_code(self,response):
         try:
@@ -42,6 +43,7 @@ class Usa0036Spider(GGVenturesSpider):
 
             # self.check_website_changed(upcoming_events_xpath="//p[text()='No upcoming events.']")
 
+            # for link in self.multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False)
             for link in self.events_list(event_links_xpath="//h2[contains(@class,'unical-calendar__event-title')]/a"):
 
                 self.getter.get(link)
@@ -70,7 +72,9 @@ class Usa0036Spider(GGVenturesSpider):
                     #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//time[contains(@data-automation,'event-details-time')]").text
                     #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//time[contains(@data-automation,'event-details-time')]").text
 
-                    item_data['startups_contact_info'] = ''
+                    # item_data['startups_contact_info'] = ''
+                    # item_data['startups_link'] = ''
+                    # item_data['startups_name'] = ''
                     item_data['event_link'] = link
 
                     yield self.load_item(item_data=item_data,item_selector=link)
