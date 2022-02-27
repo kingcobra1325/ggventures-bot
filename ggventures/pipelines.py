@@ -198,14 +198,20 @@ class StartupsPipeline:
                     logger.debug(f"PIPELINE: Criteria:\n{criteria_result}")
 
                     if adapter.get('event_desc'):
-                        logger.info("PIPELINE: Fetching Startup Name from Description...\n")
 
-                        adapter["startups_name"] = pipeline_re.get_startup_name(data=str(adapter.get('event_desc')))
-                        logger.info(f"PIPELINE: Result 'startups_name' --> {adapter.get('startups_name')}\n")
+                        if not adapter.get('startups_name'):
+                            logger.info("PIPELINE: Fetching Startup Name from Description...\n")
+                            adapter["startups_name"] = pipeline_re.get_startup_name(data=str(adapter.get('event_desc')))
+                            logger.info(f"PIPELINE: Result 'startups_name' --> {adapter.get('startups_name')}\n")
+                        else:
+                            logger.debug("PIPELINE: Existing data on 'startups_name'. No changes made.")
 
-                        logger.info("PIPELINE: Fetching Startup Links from Description...")
-                        adapter["startups_link"] = pipeline_re.get_startup_links(data=str(adapter.get('event_desc')))
-                        logger.info(f"PIPELINE: Result 'startups_link' --> {adapter.get('startups_link')}\n")
+                        if not adapter.get('startups_link'):
+                            logger.info("PIPELINE: Fetching Startup Links from Description...")
+                            adapter["startups_link"] = pipeline_re.get_startup_links(data=str(adapter.get('event_desc')))
+                            logger.info(f"PIPELINE: Result 'startups_link' --> {adapter.get('startups_link')}\n")
+                        else:
+                            logger.debug("PIPELINE: Existing data on 'startups_link'. No changes made.")
 
                         if not adapter.get('startups_contact_info'):
                             logger.debug("PIPELINE: No existing data on 'startups_contact_info'. Getting contact info on 'event_desc'")

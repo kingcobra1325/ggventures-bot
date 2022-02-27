@@ -66,15 +66,23 @@ class GGVenturesSpider(scrapy.Spider):
 
     def exception_handler(self,e):
         logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-        error_email(self.name,e)
+        err_message = f"{type(e)}\n{e}"
+        error_email(self.name,err_message)
 
     def unique_event_checker(self,url_substring=''):
         if url_substring:
             if url_substring in self.getter.current_url:
                 return True
             elif 'www.eventbrite.com' in self.getter.current_url:
-                logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
-                return False
+                if not self.eventbrite_id:
+                    logger.info("X"*1000)
+                    logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
+                    unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
+                    return False
+                else:
+                    logger.info("Y"*1000)
+                    logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
+                    return False
             else:
                 logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
                 unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
@@ -96,6 +104,8 @@ class GGVenturesSpider(scrapy.Spider):
         data.add_value('event_date', item_data['event_date'])
         data.add_value('event_link', item_data['event_link'])
         data.add_value('event_time', item_data['event_time'])
+        data.add_value('startups_link', item_data['startups_link'])
+        data.add_value('startups_name', item_data['startups_name'])
         data.add_value('startups_contact_info', item_data['startups_contact_info'])
 
         return data.load_item()
