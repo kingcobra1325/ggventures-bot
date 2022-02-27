@@ -1,4 +1,4 @@
-import scrapy, time
+import scrapy, time, traceback
 # from scrapy import Selector
 from datetime import datetime
 
@@ -65,8 +65,9 @@ class GGVenturesSpider(scrapy.Spider):
         self.scrape_time = None
 
     def exception_handler(self,e):
-        logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-        err_message = f"{type(e)}\n{e}"
+        tb_log = traceback.format_exc()
+        logger.exception(f"Experienced error on Spider: {self.name} --> {type(e).__name__}\n{e}. Sending Error Email Notification")
+        err_message = f"{type(e).__name__}\n{tb_log}\n{e}"
         error_email(self.name,err_message)
 
     def unique_event_checker(self,url_substring=''):
@@ -238,5 +239,7 @@ class GGVenturesSpider(scrapy.Spider):
             logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
             logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
         except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            tb_log = traceback.format_exc()
+            logger.exception(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
+            err_message = f"{type(e).__name__}\n{tb_log}\n{e}"
+            error_email(self.name,err_message)

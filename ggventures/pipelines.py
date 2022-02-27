@@ -1,6 +1,6 @@
 # Define your item pipelines here
 #
-import os,sys
+import os,sys,traceback
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 from datetime import datetime, timezone
@@ -101,8 +101,10 @@ class CleanDataPipeline:
             return item
 
         except Exception as e:
-            logger.error(f"Experienced error on the CleanData Pipeline --> {e}. Sending Error Email Notification")
-            error_email(spider.name,e)
+            tb_log = traceback.format_exc()
+            logger.exception(f"Experienced error on the CleanData Pipeline --> {type(e).__name__}\n{e}. Sending Error Email Notification")
+            err_message = f"{type(e).__name__}\n{tb_log}\n{e}"
+            error_email(spider.name,err_message)
 
 
 class WriteDataPipeline:
@@ -161,8 +163,10 @@ class WriteDataPipeline:
 
             return item
         except Exception as e:
-            logger.error(f"Experienced error on the WriteData Pipeline --> {e}. Sending Error Email Notification")
-            error_email(spider.name,e)
+            tb_log = traceback.format_exc()
+            logger.exception(f"Experienced error on the WriteData Pipeline --> {type(e).__name__}\n{e}. Sending Error Email Notification")
+            err_message = f"{type(e).__name__}\n{tb_log}\n{e}"
+            error_email(spider.name,err_message)
 
 class StartupsPipeline:
     def __init__(self):
@@ -256,5 +260,7 @@ class StartupsPipeline:
             # logger.error("PIPELINE: Skipping Scraped Event Item...")
             raise DropItem("PIPELINE: Skipping Scraped Event Item...")
         except Exception as e:
-            logger.error(f"Experienced error on the Startups Pipeline --> {e}. Sending Error Email Notification")
-            error_email(spider.name,e)
+            tb_log = traceback.format_exc()
+            logger.exception(f"Experienced error on the Startups Pipeline --> {type(e).__name__}\n{e}. Sending Error Email Notification")
+            err_message = f"{type(e).__name__}\n{tb_log}\n{e}"
+            error_email(spider.name,err_message)
