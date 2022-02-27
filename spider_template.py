@@ -75,12 +75,10 @@ class GGVenturesSpider(scrapy.Spider):
                 return True
             elif 'www.eventbrite.com' in self.getter.current_url:
                 if not self.eventbrite_id:
-                    logger.info("X"*1000)
                     logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
                     unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
                     return False
                 else:
-                    logger.info("Y"*1000)
                     logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
                     return False
             else:
