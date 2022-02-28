@@ -57,7 +57,7 @@ class Aus0033Spider(GGVenturesSpider):
                         # item_data['event_date'] = self.getter.find_element(By.XPATH,"").text
                         # item_data['event_time'] = self.getter.find_element(By.XPATH,"").text
 
-                    item_data['startups_contact_info'] = "//dt[text()='Contact']/following-sibling::dd"
+                    item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//dt[text()='Contact']/following-sibling::dd").text
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
 
