@@ -7,18 +7,21 @@
 # spider_arm = ['arm_0001']
 spider_aus = [
                 'aus_0001',
-                # 'aus_0002',
+                'aus_0002',
                 'aus_0003', 'aus_0004', 'aus_0005', 'aus_0006', 'aus_0007', 'aus_0008', 'aus_0009',
-                # 'aus_0010',
+                'aus_0010',
                 # 'aus_0011', 'aus_0012',
                 'aus_0013',
                 # 'aus_0014',
-                # 'aus_0015', 'aus_0016', 'aus_0017', 'aus_0018',
+                # 'aus_0015',
+                'aus_0016', 'aus_0017', 'aus_0018',
                 'aus_0019',
-                # 'aus_0020', 'aus_0021', 'aus_0022', 'aus_0023', 'aus_0024', 'aus_0025', 'aus_0026', 'aus_0027',
+                'aus_0020', 'aus_0021',
+                # 'aus_0022', 'aus_0023',
+                'aus_0024', 'aus_0025', 'aus_0026', 'aus_0027',
                 'aus_0028',
                 # 'aus_0029',
-                # 'aus_0030', 'aus_0031', 'aus_0032', 'aus_0033', 'aus_0034', 'aus_0035', 'aus_0036'
+                'aus_0030', 'aus_0031', 'aus_0032', 'aus_0033', 'aus_0034', 'aus_0035'
             ]
 # spider_aut = ['aut_0001', 'aut_0002', 'aut_0003', 'aut_0004']
 # spider_aze = ['aze_0001', 'aze_0002']
@@ -51,8 +54,19 @@ spider_can = [
                 ]
 # spider_cym = ['cym_0001']
 # spider_chl = ['chl_0001', 'chl_0002', 'chl_0003', 'chl_0004', 'chl_0005', 'chl_0006', 'chl_0007']
-# spider_chn = [
-#                 'chn_0001', 'chn_0002', 'chn_0003', 'chn_0004', 'chn_0005', 'chn_0006', 'chn_0007', 'chn_0008', 'chn_0009', 'chn_0010', 'chn_0011', 'chn_0012', 'chn_0013', 'chn_0014', 'chn_0015', 'chn_0016', 'chn_0017', 'chn_0018', 'chn_0019', 'chn_0020', 'chn_0021', 'chn_0022', 'chn_0023', 'chn_0024', 'chn_0025', 'chn_0026', 'chn_0027', 'chn_0028', 'chn_0029', 'chn_0030', 'chn_0031', 'chn_0032', 'chn_0033', 'chn_0034', 'chn_0035', 'chn_0036', 'chn_0037', 'chn_0038', 'chn_0039', 'chn_0040', 'chn_0041', 'chn_0042', 'chn_0043', 'chn_0044', 'chn_0045', 'chn_0046', 'chn_0047', 'chn_0048', 'chn_0049', 'chn_0050', 'chn_0051', 'chn_0052', 'chn_0053', 'chn_0054']
+spider_chn = [
+                'chn_0001',
+                # 'chn_0002', 'chn_0003',
+                'chn_0004', 'chn_0005',
+                # 'chn_0006',
+                'chn_0007',
+                # 'chn_0008', 'chn_0009', 'chn_0010',
+                'chn_0011',
+                # 'chn_0012', 'chn_0013', 'chn_0014', 'chn_0015', 'chn_0016', 'chn_0017',
+                # 'chn_0018', 'chn_0019', 'chn_0020', 'chn_0021', 'chn_0022', 'chn_0023',
+                'chn_0024',
+                # 'chn_0025', 'chn_0026', 'chn_0027', 'chn_0028', 'chn_0029', 'chn_0030', 'chn_0031', 'chn_0032', 'chn_0033', 'chn_0034', 'chn_0035', 'chn_0036', 'chn_0037', 'chn_0038', 'chn_0039', 'chn_0040', 'chn_0041', 'chn_0042', 'chn_0043', 'chn_0044', 'chn_0045', 'chn_0046', 'chn_0047', 'chn_0048', 'chn_0049', 'chn_0050', 'chn_0051', 'chn_0052', 'chn_0053', 'chn_0054'
+                ]
 # spider_col = ['col_0001', 'col_0002', 'col_0003', 'col_0004', 'col_0005', 'col_0006']
 # spider_cog = ['cog_0001']
 # spider_cri = ['cri_0001', 'cri_0002']
@@ -255,7 +269,7 @@ spider_usa = [
                     'usa_0040',
                     # 'usa_0041',
                     #  'usa_0042',
-                    'usa_0043',
+                    # 'usa_0043',
                     # 'usa_0044',
                     'usa_0045', 'usa_0046',
                     # # 'usa_0047',
@@ -300,7 +314,7 @@ spider_usa = [
                     # 'usa_0095',
                     'usa_0096',
                     # # 'usa_0097',
-                    'usa_0098',
+                    # 'usa_0098',
                     # # 'usa_0099', 'usa_0100',
                     'usa_0101', 'usa_0102', 'usa_0103',
                     # 'usa_0104', 'usa_0105',
@@ -383,7 +397,7 @@ spider_list.extend(spider_brb)
 spider_list.extend(spider_can)
 # spider_list.extend(spider_cym)
 # spider_list.extend(spider_chl)
-# spider_list.extend(spider_chn)
+spider_list.extend(spider_chn)
 # spider_list.extend(spider_col)
 # spider_list.extend(spider_cog)
 # spider_list.extend(spider_cri)
