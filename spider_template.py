@@ -67,7 +67,7 @@ class GGVenturesSpider(scrapy.Spider):
     def exception_handler(self,e):
         tb_log = traceback.format_exc()
         logger.exception(f"Experienced error on Spider: {self.name} --> {type(e).__name__}\n{e}. Sending Error Email Notification")
-        err_message = f"{type(e).__name__}\n{tb_log}\n{e}"
+        err_message = f"{type(e).__name__}\n{tb_log}"
         error_email(self.name,err_message)
 
     def unique_event_checker(self,url_substring=''):
@@ -229,6 +229,7 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
                 break
 
+        logger.debug(f"Number of Event Links: {len(event_links)}")
         return event_links
 
     def closed(self, reason):
@@ -236,7 +237,7 @@ class GGVenturesSpider(scrapy.Spider):
             self.driver.quit()
             self.getter.quit()
             self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
+            logger.debug(f"Spider: {self.name} scraping closed due to --> {reason}")
             logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
         except Exception as e:
             tb_log = traceback.format_exc()
