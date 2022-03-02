@@ -150,7 +150,7 @@ class GGVenturesSpider(scrapy.Spider):
         except Exception as e:
             self.exception_handler(e)
 
-    def ClickMore(self,click_xpath='',final_counter=10,start_counter=0):
+    def ClickMore(self,click_xpath='',counter=0,final_counter=10):
         while True:
             try:
                 LoadMore = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH, click_xpath))).click()
