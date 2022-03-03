@@ -7,14 +7,15 @@
 # spider_arm = ['arm_0001']
 spider_aus = [
                 'aus_0001',
-                'aus_0002',
+                # 'aus_0002',
                 'aus_0003', 'aus_0004', 'aus_0005', 'aus_0006', 'aus_0007', 'aus_0008', 'aus_0009',
                 'aus_0010',
                 # 'aus_0011', 'aus_0012',
                 'aus_0013',
                 # 'aus_0014',
                 # 'aus_0015',
-                'aus_0016', 'aus_0017', 'aus_0018',
+                # 'aus_0016',
+                'aus_0017', 'aus_0018',
                 'aus_0019',
                 'aus_0020', 'aus_0021',
                 # 'aus_0022', 'aus_0023',
@@ -82,8 +83,16 @@ spider_chn = [
 # spider_eth = ['eth_0001']
 # spider_fji = ['fji_0001']
 # spider_fin = ['fin_0001', 'fin_0002', 'fin_0003', 'fin_0004', 'fin_0005']
-# spider_fra = [
-#                 'fra_0001', 'fra_0002', 'fra_0003', 'fra_0004', 'fra_0005', 'fra_0006', 'fra_0007', 'fra_0008', 'fra_0009', 'fra_0010', 'fra_0011', 'fra_0012', 'fra_0013', 'fra_0014', 'fra_0015', 'fra_0016', 'fra_0017', 'fra_0018', 'fra_0019', 'fra_0020', 'fra_0021', 'fra_0022', 'fra_0023', 'fra_0024', 'fra_0025', 'fra_0026', 'fra_0027', 'fra_0028', 'fra_0029', 'fra_0030', 'fra_0031', 'fra_0032', 'fra_0033', 'fra_0034', 'fra_0035', 'fra_0036', 'fra_0037', 'fra_0038', 'fra_0039', 'fra_0040', 'fra_0041', 'fra_0042', 'fra_0043', 'fra_0044', 'fra_0045', 'fra_0046', 'fra_0047', 'fra_0048', 'fra_0049', 'fra_0050', 'fra_0051']
+spider_fra = [
+                'fra_0001',
+                # 'fra_0002',
+                'fra_0003', 'fra_0004', 'fra_0005', 'fra_0006', 'fra_0007', 'fra_0008',
+                # 'fra_0009', 
+                'fra_0010',
+                # 'fra_0011', 'fra_0012', 'fra_0013', 'fra_0014',
+                'fra_0015',
+                # 'fra_0016', 'fra_0017', 'fra_0018', 'fra_0019', 'fra_0020', 'fra_0021', 'fra_0022', 'fra_0023', 'fra_0024', 'fra_0025', 'fra_0026', 'fra_0027', 'fra_0028', 'fra_0029', 'fra_0030', 'fra_0031', 'fra_0032', 'fra_0033', 'fra_0034', 'fra_0035', 'fra_0036', 'fra_0037', 'fra_0038', 'fra_0039', 'fra_0040', 'fra_0041', 'fra_0042', 'fra_0043', 'fra_0044', 'fra_0045', 'fra_0046', 'fra_0047', 'fra_0048', 'fra_0049', 'fra_0050', 'fra_0051'
+            ]
 # spider_gab = ['gab_0001']
 # spider_geo = ['geo_0001', 'geo_0002', 'geo_0003']
 # spider_deu = ['deu_0001', 'deu_0002', 'deu_0003', 'deu_0004', 'deu_0005', 'deu_0006', 'deu_0007', 'deu_0008', 'deu_0009', 'deu_0010', 'deu_0011', 'deu_0012', 'deu_0013', 'deu_0014', 'deu_0015', 'deu_0016', 'deu_0017', 'deu_0018', 'deu_0019', 'deu_0020', 'deu_0021', 'deu_0022', 'deu_0023', 'deu_0024', 'deu_0025', 'deu_0026', 'deu_0027', 'deu_0028', 'deu_0029', 'deu_0030', 'deu_0031', 'deu_0032', 'deu_0033', 'deu_0034', 'deu_0035', 'deu_0036']
@@ -174,7 +183,10 @@ spider_nzl = [
 # spider_sau = ['sau_0001', 'sau_0002', 'sau_0003', 'sau_0004', 'sau_0005', 'sau_0006']
 # spider_sen = ['sen_0001', 'sen_0002']
 # spider_srb = ['srb_0001', 'srb_0002']
-# spider_sgp = ['sgp_0001', 'sgp_0002', 'sgp_0003', 'sgp_0004']
+spider_sgp = [
+                'sgp_0001', 'sgp_0002',
+                # 'sgp_0003', 'sgp_0004'
+            ]
 # spider_svk = ['svk_0001', 'svk_0002', 'svk_0003', 'svk_0004', 'svk_0005', 'svk_0006']
 # spider_som = ['som_0001']
 # spider_zaf = ['zaf_0001', 'zaf_0002', 'zaf_0003', 'zaf_0004', 'zaf_0005', 'zaf_0006', 'zaf_0007', 'zaf_0008', 'zaf_0009', 'zaf_0010', 'zaf_0011', 'zaf_0012', 'zaf_0013', 'zaf_0014', 'zaf_0015', 'zaf_0016', 'zaf_0017', 'zaf_0018', 'zaf_0019']
@@ -248,7 +260,7 @@ spider_usa = [
                     # 'usa_0015',
                     # 'usa_0016',
                     'usa_0017', 'usa_0018', 'usa_0019',
-                    'usa_0020',
+                    # 'usa_0020',
                     # 'usa_0021',
                     'usa_0022', 'usa_0023', 'usa_0024',
                     # 'usa_0025',
@@ -261,7 +273,7 @@ spider_usa = [
                     # 'usa_0032',
                     'usa_0033',
                     # 'usa_0034',
-                    'usa_0035',
+                    # 'usa_0035',
                     # 'usa_0036',
                     'usa_0037',
                     # 'usa_0038',
@@ -346,7 +358,7 @@ spider_usa = [
                     'usa_0134',
                     # 'usa_0135',
                     # 'usa_0136',
-                    'usa_0137',
+                    # 'usa_0137',
                     # 'usa_0138',
                     'usa_0139', 'usa_0140',
                     # 'usa_0141',
@@ -413,7 +425,7 @@ spider_list.extend(spider_chn)
 # spider_list.extend(spider_eth)
 # spider_list.extend(spider_fji)
 # spider_list.extend(spider_fin)
-# spider_list.extend(spider_fra)
+spider_list.extend(spider_fra)
 # spider_list.extend(spider_gab)
 # spider_list.extend(spider_geo)
 # spider_list.extend(spider_deu)
@@ -488,7 +500,7 @@ spider_list.extend(spider_nzl)
 # spider_list.extend(spider_sau)
 # spider_list.extend(spider_sen)
 # spider_list.extend(spider_srb)
-# spider_list.extend(spider_sgp)
+spider_list.extend(spider_sgp)
 # spider_list.extend(spider_svk)
 # spider_list.extend(spider_som)
 # spider_list.extend(spider_zaf)

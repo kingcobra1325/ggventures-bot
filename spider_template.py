@@ -42,6 +42,7 @@ class GGVenturesSpider(scrapy.Spider):
     university_contact_info_xpath : str = ''
     contact_info_text = False
     contact_info_textContent = False
+    contact_info_multispan = False
 
     item_data_empty = {
                         'university_name' : '',
@@ -71,22 +72,48 @@ class GGVenturesSpider(scrapy.Spider):
         error_email(self.name,err_message)
 
     def unique_event_checker(self,url_substring=''):
+        # CHECK IF NOT EMPTY
         if url_substring:
-            if url_substring in self.getter.current_url:
-                return True
-            elif 'www.eventbrite.com' in self.getter.current_url:
-                if not self.eventbrite_id:
-                    logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
-                    unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
-                    return False
+            # String - url_substring
+            if isinstance(url_substring,str):
+                if url_substring in self.getter.current_url:
+                    return True
+                elif 'www.eventbrite.com' in self.getter.current_url:
+                    if not self.eventbrite_id:
+                        logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
+                        unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
+                        return False
+                    else:
+                        logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
+                        return False
                 else:
-                    logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
+                    logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
+                    unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
+                    logger.debug("Skipping............")
                     return False
-            else:
+            # List - url_substring
+            if isinstance(url_substring,list):
+                for url in url_substring:
+
+                    if url in self.getter.current_url:
+                        return True
+                    elif 'www.eventbrite.com' in self.getter.current_url:
+                        if not self.eventbrite_id:
+                            logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
+                            unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
+                            return False
+                        else:
+                            logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
+                            return False
+
+                # No substring matching from list
                 logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
                 unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
                 logger.debug("Skipping............")
                 return False
+
+            else:
+                logger.debug(f"URL Substring not a valid format --> {type(url_substring)}. Need to be a string or list. Proceed...")
         else:
             logger.debug("No URL Substring. Proceed...")
             return True
@@ -167,10 +194,14 @@ class GGVenturesSpider(scrapy.Spider):
     def get_university_contact_info(self,response):
         self.driver.get(response.url)
 
-        if self.contact_info_text:
-            self.university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, self.university_contact_info_xpath)))).text
-        elif self.contact_info_textContent:
-            self.university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, self.university_contact_info_xpath)))).get_attribute('textContent')
+        if self.university_contact_info_xpath:
+            if self.contact_info_text:
+                self.university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, self.university_contact_info_xpath)))).text
+            elif self.contact_info_textContent:
+                self.university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, self.university_contact_info_xpath)))).get_attribute('textContent')
+            elif self.contact_info_multispan:
+                self.university_contact_info = '\n'.join([x.get_attribute('textContent') for x in WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH, self.university_contact_info_xpath)))])
+
 
 
     def parse_code(self,response):
@@ -200,6 +231,7 @@ class GGVenturesSpider(scrapy.Spider):
     def events_list(self,event_links_xpath:str):
 
         web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
+        logger.debug(f"Number of Event Links: {len(web_elements_list)}")
         return [x.get_attribute('href') for x in web_elements_list]
 
 
