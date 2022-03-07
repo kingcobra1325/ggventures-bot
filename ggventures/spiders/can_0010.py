@@ -8,21 +8,21 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
 
-class Can0006Spider(GGVenturesSpider):
-    name = 'can_0006'
-    start_urls = ["https://www.mcgill.ca/desautels/about/contact"]
+class Can0010Spider(GGVenturesSpider):
+    name = 'can_0010'
+    start_urls = ["https://www.smu.ca/academics/sobey/sobey-about-contact-us.html"]
     country = 'Canada'
     # eventbrite_id = 1412983127
 
     # USE_HANDLE_HTTPSTATUS_LIST = False
 
-    static_name = "McGill University,Desautels Faculty of Management"
+    static_name = "Saint Mary's University,Sobey School of Business"
     
-    static_logo = "https://mbatube.com/themes/mbatube/logos/1a5ab941da189d4794298d4412d6ec6d1584435255.jpg"
+    static_logo = "https://smuca-179a2.kxcdn.com/images/brandassets/logo/SMU_Sobey_4C_200x71.png"
 
-    parse_code_link = "https://www.mcgill.ca/desautels/events"
+    parse_code_link = "https://www.smu.ca/academics/sobey/sobey-about-events.html"
 
-    university_contact_info_xpath = "//div[@id='content']//div[@class='field-items']"
+    university_contact_info_xpath = "//div[@class='cnt_block']"
     contact_info_text = True
     # contact_info_textContent = False
 
@@ -31,35 +31,35 @@ class Can0006Spider(GGVenturesSpider):
         ####################
             self.driver.get(response.url)
             
-            self.ClickMore(click_xpath="//span[text()='Load More']")
+            # self.ClickMore(click_xpath="//span[text()='Load More']")
 
-            for link in self.events_list(event_links_xpath="//div[@class='preview']//a"):
+            for link in self.events_list(event_links_xpath="//div[@class='pincard__row']//a"):
 
                 self.getter.get(link)
 
-                if self.unique_event_checker(url_substring="https://www.mcgill.ca/desautels/channels/event/"):
+                if self.unique_event_checker(url_substring="https://tockify.com/smuhalifax/detail/"):
 
                     logger.info(f"Currently scraping --> {self.getter.current_url}")
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1[@id='page-title']"))).get_attribute('textContent')
+                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class,'header')]"))).get_attribute('textContent')
                     item_data['event_link'] = link
                     try:
-                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='channels-body-images']/following-sibling::div").text
+                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='eventDetail__what']").text
                     except NoSuchElementException as e:
                         logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
                         item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='lw_calendar_event_description']").text
 
                     try:
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[@class='custom-multi-date']").text
-                        item_data['event_time'] = self.getter.find_element(By.XPATH,"//hr/following-sibling::h5").text
+                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'when')]").text
+                        item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'when')]").text
                     except NoSuchElementException as e:
                         logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
                         # item_data['event_date'] = self.getter.find_element(By.XPATH,"").text
                         # item_data['event_time'] = self.getter.find_element(By.XPATH,"").text
 
-                    item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//h4[text()='Contact']/following-sibling::p/a").text
+                    # item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//h4[text()='Contact']/following-sibling::p/a").text
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
 
