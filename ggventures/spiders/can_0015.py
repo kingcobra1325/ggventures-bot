@@ -20,7 +20,7 @@ class Can0015Spider(GGVenturesSpider):
     
     static_logo = "https://www.ualberta.ca/_assets/images/ua-logo-reversed-white.svg"
 
-    parse_code_link = "https://www.ualberta.ca/events/index.html#sort=relevancy&f:FacultyFacet=[Alberta%20School%20of%20Business]"
+    parse_code_link = r"https://www.ualberta.ca/events/index.html#sort=relevancy&f:FacultyFacet=[Alberta%20School%20of%20Business]"
 
     university_contact_info_xpath = "//div[@class='row  ']"
     contact_info_text = True
