@@ -20,7 +20,7 @@ class Can0010Spider(GGVenturesSpider):
     
     static_logo = "https://smuca-179a2.kxcdn.com/images/brandassets/logo/SMU_Sobey_4C_200x71.png"
 
-    parse_code_link = "https://www.smu.ca/academics/sobey/sobey-about-events.html"
+    parse_code_link = "https://www.smu.ca/studentlife/index.html"
 
     university_contact_info_xpath = "//div[@class='cnt_block']"
     contact_info_text = True
@@ -31,9 +31,9 @@ class Can0010Spider(GGVenturesSpider):
         ####################
             self.driver.get(response.url)
             
-            # self.ClickMore(click_xpath="//span[text()='Load More']")
+            self.ClickMore(click_xpath="//a[@translate='loadMoreEvents']")
 
-            for link in self.events_list(event_links_xpath="//div[@class='pincard__row']//a"):
+            for link in self.events_list(event_links_xpath="//div[contains(@class,'agendaItem__image')]//a"):
 
                 self.getter.get(link)
 
