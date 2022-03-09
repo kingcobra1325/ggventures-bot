@@ -20,6 +20,7 @@ class RegExGGV:
     def __init__(self):
         self.re = re
         self.REGEX_LOGS = GGV_SETTINGS.REGEX_LOGS
+        self.NO_MATCH_REGEX_LOGS = GGV_SETTINGS.NO_MATCH_REGEX_LOGS
 
         # PATTERNS VAR
         # self.STARTUP_EVENT_KEYWORDS = patterns.STARTUP_EVENT_KEYWORDS
@@ -140,7 +141,7 @@ class RegExGGV:
             logger.info("\nNo valid datetime data to be cleaned...")
             if fetch_date:
                 logger.debug(f"No valid data but REGEX was detected... Setting 'final_data' to <NO DATA|REGEX DETECTED>") if self.REGEX_LOGS else None
-                final_data = "<NO DATA|REGEX DETECTED>"
+                final_data = "<NO DATA|REGEX DETECTED>" if self.NO_MATCH_REGEX_LOGS else ''
 
         return final_data
 
