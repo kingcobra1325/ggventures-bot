@@ -149,22 +149,10 @@ class APPSettings():
 
     def __repr__(self):
 
-        return f"""
-                    APP Settings Params...
-                    ALL_EVENTS_SHEET -> {self.ALL_EVENTS_SHEET}
-                    UNIQUE_EVENT_EMAILS -> {self.UNIQUE_EVENT_EMAILS}
-                    GOOGLE_API_RATE_LIMIT_EMAIL -> {self.GOOGLE_API_RATE_LIMIT_EMAIL}
-                    CLEAN_DATA_PIPELINE -> {self.CLEAN_DATA_PIPELINE}
-                    CLEAN_EVENT_DATE -> {self.CLEAN_EVENT_DATE}
-                    CLEAN_EVENT_TIME -> {self.CLEAN_EVENT_TIME}
-                    CLEAN_CONTACT_INFO -> {self.CLEAN_CONTACT_INFO}
-                    SORT_STARTUPS -> {self.SORT_STARTUPS}
-                    REGEX_LOGS -> {self.REGEX_LOGS}
-                    LOAD_DROPBOX_LIST -> {self.LOAD_DROPBOX_LIST}
-                    SAVE_DROPBOX_LIST -> {self.SAVE_DROPBOX_LIST}
-                    DB_SAVE_SPIDER_COUNTER -> {self.DB_SAVE_SPIDER_COUNTER}
-                    PRINT_ENV_VAR -> {self.PRINT_ENV_VARS}
-                """
+        repr_string = ''
+        for k,v in self.__dict__.items():
+            repr_string = repr_string + f"{k} -> {v}\n"
+        return repr_string
 
 GGV_SETTINGS = APPSettings()
 
