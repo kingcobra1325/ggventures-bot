@@ -15,7 +15,7 @@ spider_aus = [
                 # 'aus_0014',
                 # 'aus_0015',
                 # 'aus_0016',
-                # 'aus_0017', 
+                # 'aus_0017',
                 'aus_0018',
                 'aus_0019',
                 # 'aus_0020',
@@ -27,7 +27,10 @@ spider_aus = [
                 'aus_0030', 'aus_0031', 'aus_0032', 'aus_0033', 'aus_0034', 'aus_0035'
             ]
 # spider_aut = ['aut_0001', 'aut_0002', 'aut_0003', 'aut_0004']
-# spider_aze = ['aze_0001', 'aze_0002']
+spider_aze = [
+                'aze_0001',
+                # 'aze_0002'
+            ]
 # spider_bhr = ['bhr_0001', 'bhr_0002', 'bhr_0003', 'bhr_0004', 'bhr_0005']
 spider_brb = [
                 'brb_0001'
@@ -398,7 +401,7 @@ spider_list = []
 # spider_list.extend(spider_arm)
 spider_list.extend(spider_aus)
 # spider_list.extend(spider_aut)
-# spider_list.extend(spider_aze)
+spider_list.extend(spider_aze)
 # spider_list.extend(spider_bhr)
 spider_list.extend(spider_brb)
 # spider_list.extend(spider_blr)
