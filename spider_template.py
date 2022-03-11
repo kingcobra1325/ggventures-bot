@@ -68,7 +68,7 @@ class GGVenturesSpider(scrapy.Spider):
     def exception_handler(self,e):
         tb_log = traceback.format_exc()
         logger.exception(f"Experienced error on Spider: {self.name} --> {type(e).__name__}\n{e}. Sending Error Email Notification")
-        err_message = f"{type(e).__name__}\n{tb_log}"
+        err_message = f"{type(e).__name__}\nDRIVER URL: {self.driver.current_url}\nGETTER URL: {self.getter.current_url}\n{tb_log}"
         error_email(self.name,err_message)
 
     def unique_event_checker(self,url_substring=''):
@@ -133,6 +133,18 @@ class GGVenturesSpider(scrapy.Spider):
         data.add_value('startups_link', item_data['startups_link'])
         data.add_value('startups_name', item_data['startups_name'])
         data.add_value('startups_contact_info', item_data['startups_contact_info'])
+
+        logger.info(f"|LOADING| 'university_name' -> {self.static_name}")
+        logger.info(f"|LOADING| 'university_contact_info' -> {self.university_contact_info}")
+        logger.info(f"|LOADING| 'logo' -> {self.static_logo}")
+        logger.info(f"|LOADING| 'event_name' -> {item_data['event_name']}")
+        logger.info(f"|LOADING| 'event_desc' -> {item_data['event_desc']}")
+        logger.info(f"|LOADING| 'event_date' -> {item_data['event_date']}")
+        logger.info(f"|LOADING| 'event_link' -> {item_data['event_link']}")
+        logger.info(f"|LOADING| 'event_time' -> {item_data['event_time']}")
+        logger.info(f"|LOADING| 'startups_link' -> {item_data['startups_link']}")
+        logger.info(f"|LOADING| 'startups_name' -> {item_data['startups_name']}")
+        logger.info(f"|LOADING| 'startups_contact_info' -> {item_data['startups_contact_info']}")
 
         return data.load_item()
 
@@ -260,6 +272,7 @@ class GGVenturesSpider(scrapy.Spider):
             except (TimeoutException,NoSuchElementException) as e:
                 logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
                 break
+            logger.debug(f"IN-PROGRESS: Pending Number of Event Links: {len(event_links)}")
 
         logger.debug(f"Number of Event Links: {len(event_links)}")
         return event_links
