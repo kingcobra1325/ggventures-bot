@@ -4,7 +4,7 @@ from datetime import datetime
 
 from bot_email import missing_info_email, error_email, unique_event, website_changed
 
-from binaries import Load_Driver, logger, WebScroller, EventBrite_API
+from binaries import Load_Driver, logger, WebScroller, EventBrite_API, GGV_SETTINGS
 
 from scrapy.loader import ItemLoader
 
@@ -226,14 +226,30 @@ class GGVenturesSpider(scrapy.Spider):
         except Exception as e:
             self.exception_handler(e)
 
-    def check_website_changed(self,upcoming_events_xpath=''):
+    def check_website_changed(self,upcoming_events_xpath='',empty_text=False):
         try:
             no_events = WebDriverWait(self.driver,30).until(EC.presence_of_all_elements_located((By.XPATH,upcoming_events_xpath)))
             if not no_events:
                 logger.debug('Changes to Events on current Spider. Sending emails....')
                 website_changed(self.name,self.static_name)
             else:
-                logger.debug('No changes to Events on current Spider. Skipping.....')
+                if empty_text:
+                    logger.info("Empty Text check...")
+
+                    logger.debug(f"no_events: {no_events}") if GGV_SETTINGS.DEBUG_LOGS else None
+                    logger.debug(f"no_events type: {type(no_events)}") if GGV_SETTINGS.DEBUG_LOGS else None
+
+                    no_events_text = ''.join([x.text for x in no_events])
+
+                    logger.debug(f"no_events_text: '{no_events_text}'") if GGV_SETTINGS.DEBUG_LOGS else None
+
+                    if no_events_text:
+                        logger.debug('Text detected. Changes to Events on current Spider. Sending emails....')
+                        website_changed(self.name,self.static_name)
+                    else:
+                        logger.debug('Empty Text. No changes to Events on current Spider. Skipping.....')
+                else:
+                    logger.debug('No changes to Events on current Spider. Skipping.....')
         except TimeoutException as e:
             logger.debug(f"Upcoming Events XPATH cannot be located --> {e}")
             logger.debug('Changes to Events on current Spider. Sending emails....')
@@ -260,7 +276,7 @@ class GGVenturesSpider(scrapy.Spider):
 
             except TimeoutException as e:
                 logger.debug(f"No available events for this month : {e} ---> Skipping...........")
-            
+
             if no_next_page_xpath:
                 next_page_xpath = f"{no_next_page_xpath}[@rel='{page_number}']"
 
