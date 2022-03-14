@@ -144,9 +144,11 @@ class APPSettings():
             self.SAVE_DROPBOX_LIST = True
             self.REGEX_LOGS = False
             self.NO_MATCH_REGEX_LOGS = False
+            self.DEBUG_LOGS = False
         else:
             self.LOAD_DROPBOX_LIST = False
             self.SAVE_DROPBOX_LIST = False
+            self.DEBUG_LOGS = True
         self.DB_SAVE_SPIDER_COUNTER = 5
         self.PRINT_ENV_VARS = False
 

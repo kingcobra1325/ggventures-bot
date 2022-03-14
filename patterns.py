@@ -29,6 +29,8 @@ STARTUP_LINK_PATTERNS =             [
 
 DATE_PATTERNS_RE =                  [
                                         # r"(January|February|March|April|May|June|July|August|September|October|November|December)/s/d/d[,]/d/d/d/d",
+                                        r"[0-9][0-9](?:st|ST|nd|ND|rd|RD|th|TH)[ ](?:of|OF|Of|oF)[ ](?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER|January|February|March|April|May|June|July|August|September|October|November|December)",
+                                        r"[0-9](?:st|ST|nd|ND|rd|RD|th|TH)[ ](?:of|OF|Of|oF)[ ](?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER|January|February|March|April|May|June|July|August|September|October|November|December)",
                                         r"(?:January|February|March|April|May|June|July|August|September|October|November|December)[ ][0-9][0-9][,][ ][0-9][0-9][0-9][0-9]",
                                         r"(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)[ ][0-9][0-9][,][ ][0-9][0-9][0-9][0-9]",
                                         r"(?:January|February|March|April|May|June|July|August|September|October|November|December)[ ][0-9][,][ ][0-9][0-9][0-9][0-9]",
@@ -76,6 +78,10 @@ DATE_PATTERNS =                     [
                                         ["%d. %b. %Y"         ,date_strf_pattern],
                                         ["%d. %b %Y"         ,date_strf_pattern],
                                         ["%d %B"            ,'%m/%d'],
+                                        ["%dst of %B"            ,'%m/%d'],
+                                        ["%dnd of %B"            ,'%m/%d'],
+                                        ["%drd of %B"            ,'%m/%d'],
+                                        ["%dth of %B"            ,'%m/%d'],
                                         ["%dst %B %Y"         ,date_strf_pattern],
                                         ["%dnd %B %Y"         ,date_strf_pattern],
                                         ["%drd %B %Y"         ,date_strf_pattern],

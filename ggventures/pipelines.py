@@ -64,7 +64,11 @@ class CleanDataPipeline:
                     logger.info("PIPELINE: CLEANING 'event_date'")
                     if adapter.get('event_date'):
                         logger.info(f"PIPELINE: Processing --> {adapter.get('event_date')}")
-                        adapter['event_date'] = pipeline_re.clean_date(data=str(adapter.get('event_date')))
+                        event_date_result = pipeline_re.clean_date(data=str(adapter.get('event_date')))
+                        if not event_date_result:
+                            logger.debug("PIPELINE: 'event_date' after regex is empty... Getting contact info on 'event_name'")
+                            event_date_result = pipeline_re.clean_date(data=str(adapter.get('event_name')))
+                        adapter['event_date'] = event_date_result
                         logger.info(f"PIPELINE: Result 'event_date' --> {adapter.get('event_date')}")
                     else:
                         logger.debug("PIPELINE: 'event_date' empty...")

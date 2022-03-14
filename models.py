@@ -300,12 +300,18 @@ class RegExGGV:
         date_criteria = self.DATE_PATTERNS
         date_regex = self.DATE_PATTERNS_RE
 
+        # remove double spacing
+        data = data.replace("  "," ")
+
         return self.perform_strptime(date_criteria,date_regex,data,'date')
 
     def clean_time(self,data):
 
         time_criteria = self.TIME_PATTERNS
         time_regex = self.TIME_PATTERNS_RE
+
+        # remove double spacing
+        data = data.replace("  "," ")
 
         return self.perform_strptime(time_criteria,time_regex,data,'time')
 
