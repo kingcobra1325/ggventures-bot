@@ -60,6 +60,7 @@ DATE_PATTERNS_RE =                  [
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec).\s[0-9][0-9]",
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec).\s[0-9]",
                                         r"[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9]",
+                                        r"[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9]",
 
                                     ]
 
@@ -91,6 +92,7 @@ DATE_PATTERNS =                     [
                                         ["%drd %b %Y"         ,date_strf_pattern],
                                         ["%dth %b %Y"         ,date_strf_pattern],
                                         ["%d.%m.%Y"         ,date_strf_pattern],
+                                        ["%Y.%m.%d"         ,date_strf_pattern],
                                     ]
 
 TIME_PATTERNS_RE =                  [
