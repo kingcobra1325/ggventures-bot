@@ -267,7 +267,7 @@ class GGVenturesSpider(scrapy.Spider):
         return [x.get_attribute('href') for x in web_elements_list]
 
 
-    def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,no_next_page_xpath=''):
+    def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,no_next_page_xpath='',run_script=False):
 
         event_links = []
         page_number = 0
@@ -289,7 +289,11 @@ class GGVenturesSpider(scrapy.Spider):
                     next_month = self.driver.find_element(By.XPATH,next_page_xpath).get_attribute('href')
                     self.driver.get(next_month)
                 if click_next_month:
-                    WebDriverWait(self.driver,40).until(EC.element_to_be_clickable((By.XPATH,next_page_xpath))).click()
+                    next_page_btn = WebDriverWait(self.driver,40).until(EC.element_to_be_clickable((By.XPATH,next_page_xpath)))
+                    if run_script:
+                        self.driver.execute_script("arguments[0].click();", next_page_btn)
+                    else:
+                        next_page_btn.click()
                 # next_month = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@title,'Go to the next page of the results')]"))).get_attribute('href')
                 if wait_after_loading:
                     time.sleep(10)

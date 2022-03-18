@@ -29,7 +29,7 @@ class Fra0027Spider(GGVenturesSpider):
         ####################
             self.driver.get(response.url)
             
-            self.ClickMore(click_xpath="//a[@class='more-button__link']")
+            self.ClickMore(click_xpath="//a[@class='more-button__link']",run_script=True)
 
             for link in self.events_list(event_links_xpath="//div[@class='event-item__title']/a"):
             # for link in self.multi_event_pages(event_links_xpath="//h3//a",next_page_xpath="//i[@class='icons8-forward']",click_next_month=True):
