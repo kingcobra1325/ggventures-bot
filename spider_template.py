@@ -230,34 +230,63 @@ class GGVenturesSpider(scrapy.Spider):
         except Exception as e:
             self.exception_handler(e)
 
-    def check_website_changed(self,upcoming_events_xpath='',empty_text=False):
+    def check_website_changed(self,upcoming_events_xpath='',empty_text=False,checking_if_none=False):
         try:
             no_events = WebDriverWait(self.driver,30).until(EC.presence_of_all_elements_located((By.XPATH,upcoming_events_xpath)))
-            if not no_events:
+
+            if checking_if_none:
+                if no_events:
+                    logger.debug('Changes to Events on current Spider. Sending emails....')
+                    website_changed(self.name,self.static_name)
+                else:
+                    if empty_text:
+                        logger.info("Empty Text check...")
+
+                        logger.debug(f"no_events: {no_events}") if GGV_SETTINGS.DEBUG_LOGS else None
+                        logger.debug(f"no_events type: {type(no_events)}") if GGV_SETTINGS.DEBUG_LOGS else None
+
+                        no_events_text = ''.join([x.text for x in no_events])
+
+                        logger.debug(f"no_events_text: '{no_events_text}'") if GGV_SETTINGS.DEBUG_LOGS else None
+
+                        if no_events_text:
+                            logger.debug('Text detected. Changes to Events on current Spider. Sending emails....')
+                            website_changed(self.name,self.static_name)
+                        else:
+                            logger.debug('Empty Text. No changes to Events on current Spider. Skipping.....')
+                    else:
+                        logger.debug('No changes to Events on current Spider. Skipping.....')
+
+
+            else:
+                if not no_events:
+                    logger.debug('Changes to Events on current Spider. Sending emails....')
+                    website_changed(self.name,self.static_name)
+                else:
+                    if empty_text:
+                        logger.info("Empty Text check...")
+
+                        logger.debug(f"no_events: {no_events}") if GGV_SETTINGS.DEBUG_LOGS else None
+                        logger.debug(f"no_events type: {type(no_events)}") if GGV_SETTINGS.DEBUG_LOGS else None
+
+                        no_events_text = ''.join([x.text for x in no_events])
+
+                        logger.debug(f"no_events_text: '{no_events_text}'") if GGV_SETTINGS.DEBUG_LOGS else None
+
+                        if no_events_text:
+                            logger.debug('Text detected. Changes to Events on current Spider. Sending emails....')
+                            website_changed(self.name,self.static_name)
+                        else:
+                            logger.debug('Empty Text. No changes to Events on current Spider. Skipping.....')
+                    else:
+                        logger.debug('No changes to Events on current Spider. Skipping.....')
+        except TimeoutException as e:
+            if checking_if_none:
+                logger.debug('No changes to Events on current Spider. Skipping.....')
+            else:
+                logger.debug(f"Upcoming Events XPATH cannot be located --> {e}")
                 logger.debug('Changes to Events on current Spider. Sending emails....')
                 website_changed(self.name,self.static_name)
-            else:
-                if empty_text:
-                    logger.info("Empty Text check...")
-
-                    logger.debug(f"no_events: {no_events}") if GGV_SETTINGS.DEBUG_LOGS else None
-                    logger.debug(f"no_events type: {type(no_events)}") if GGV_SETTINGS.DEBUG_LOGS else None
-
-                    no_events_text = ''.join([x.text for x in no_events])
-
-                    logger.debug(f"no_events_text: '{no_events_text}'") if GGV_SETTINGS.DEBUG_LOGS else None
-
-                    if no_events_text:
-                        logger.debug('Text detected. Changes to Events on current Spider. Sending emails....')
-                        website_changed(self.name,self.static_name)
-                    else:
-                        logger.debug('Empty Text. No changes to Events on current Spider. Skipping.....')
-                else:
-                    logger.debug('No changes to Events on current Spider. Skipping.....')
-        except TimeoutException as e:
-            logger.debug(f"Upcoming Events XPATH cannot be located --> {e}")
-            logger.debug('Changes to Events on current Spider. Sending emails....')
-            website_changed(self.name,self.static_name)
 
 
     def events_list(self,event_links_xpath:str):
