@@ -49,7 +49,7 @@ class Fra0041Spider(GGVenturesSpider):
                         item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@id='description']").text
                     except NoSuchElementException as e:
                         logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='nd-hide-900']/..").text
+                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"content__photo-actu--center").text
 
                     try:
                         item_data['event_date'] = self.getter.find_element(By.XPATH,"//p[@id='date']|//span[@class='date']|//span[@class='date-maj']").text

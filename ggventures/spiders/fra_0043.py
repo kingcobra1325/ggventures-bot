@@ -13,7 +13,7 @@ class Fra0043Spider(GGVenturesSpider):
     country = 'France'
     # eventbrite_id = 1412983127
 
-    # USE_HANDLE_HTTPSTATUS_LIST = False
+    USE_HANDLE_HTTPSTATUS_LIST = False
 
     static_name = "Université Lyon 2 - Lumière,Faculté des Sciences Economiques et de Gestion"
     
