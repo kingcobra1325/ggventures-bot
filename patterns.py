@@ -57,10 +57,12 @@ DATE_PATTERNS_RE =                  [
                                         r"[0-9][0-9]\s(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER|January|February|March|April|May|June|July|August|September|October|November|December),\s[0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9]\s(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER|January|February|March|April|May|June|July|August|September|October|November|December)\s[0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9][ ](?:January|February|March|April|May|June|July|August|September|October|November|December)",
-                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec).\s[0-9][0-9]",
-                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec).\s[0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)\s[0-9][0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)\s[0-9]",
                                         r"[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9]",
+                                        r"[0-9][0-9]\s(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
+                                        r"[0-9]\s(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
 
                                     ]
 
@@ -74,6 +76,7 @@ DATE_PATTERNS =                     [
                                         ["%b. %d, %Y"        ,date_strf_pattern],
                                         ["%b %d, %Y"        ,date_strf_pattern],
                                         ["%b %d"            ,'%m/%d'],
+                                        ["%d %b"            ,'%m/%d'],
                                         ["%d %B, %Y"        ,date_strf_pattern],
                                         ["%d %B %Y"         ,date_strf_pattern],
                                         ["%d. %b. %Y"         ,date_strf_pattern],
