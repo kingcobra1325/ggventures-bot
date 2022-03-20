@@ -119,6 +119,24 @@ class GGVenturesSpider(scrapy.Spider):
             return True
 
 
+    def get_links_from_source(self,link_base_list=['zoom']):
+        final_string = ''
+        for link_base in link_base_list:
+            logger.debug(f"LINK_BASE: {link_base}") if GGV_SETTINGS.DEBUG_LOGS else None
+            get_all_links = [x.get_attribute('href').lower() for x in self.getter.find_elements(By.TAG_NAME,'a')]
+            get_all_links = list(set(get_all_links))
+            logger.debug(f"GET_ALL_LINKS:\n{get_all_links}") if GGV_SETTINGS.DEBUG_LOGS else None
+            for link in get_all_links:
+                logger.debug(f"LINK: {link}")  if GGV_SETTINGS.DEBUG_LOGS else None
+                if link_base in link:
+                    logger.info(f"Link meets criteria as a startup link |{link_base}|. Adding...") if GGV_SETTINGS.DEBUG_LOGS else None
+                    final_string = final_string + f"{link}\n"
+                else:
+                    logger.debug("Link doesn't meet the criteria. Skipping...") if GGV_SETTINGS.DEBUG_LOGS else None
+        logger.debug(f"FINAL STRING: {final_string}")  if GGV_SETTINGS.DEBUG_LOGS else None
+        return final_string
+
+
     def load_item(self,item_data,item_selector):
 
         data = ItemLoader(item = GgventuresItem(), selector = item_selector)
@@ -130,9 +148,14 @@ class GGVenturesSpider(scrapy.Spider):
         data.add_value('event_date', item_data['event_date'])
         data.add_value('event_link', item_data['event_link'])
         data.add_value('event_time', item_data['event_time'])
-        data.add_value('startups_link', item_data['startups_link'])
         data.add_value('startups_name', item_data['startups_name'])
         data.add_value('startups_contact_info', item_data['startups_contact_info'])
+        if item_data['startups_link']:
+            logger.debug(f"'startup_links' is loaded...") if GGV_SETTINGS.DEBUG_LOGS else None
+            data.add_value('startups_link', item_data['startups_link'])
+        else:
+            logger.debug(f"'startup_links' is empty. Using get_links_from_source...") if GGV_SETTINGS.DEBUG_LOGS else None
+            data.add_value('startups_link', self.get_links_from_source())
 
         logger.info(f"|LOADING| 'university_name' -> {self.static_name}")
         logger.info(f"|LOADING| 'university_contact_info' -> {self.university_contact_info}")
