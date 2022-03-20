@@ -118,6 +118,22 @@ class GGVenturesSpider(scrapy.Spider):
             logger.debug("No URL Substring. Proceed...")
             return True
 
+    def get_links_from_source(self,link_base_list=['zoom']):
+        final_string = ''
+        for link_base in link_base_list:
+            logger.debug(f"LINK_BASE: {link_base}")
+            get_all_links = [x.get_attribute('href') for x in self.getter.find_elements(By.TAG_NAME,'a')]
+            logger.debug(f"GET_ALL_LINKS:\n{get_all_links}")
+            for link in get_all_links:
+                logger.debug(f"LINK: {link}")
+                if link_base in link:
+                    logger.info(f"Link meets criteria as a startup link |{link_base}|. Adding...")
+                    final_string = final_string + f"{link}\n"
+                else:
+                    logger.debug("Link doesn't meet the criteria. Skipping...")
+        logger.debug(f"FINAL STRING: {final_string}")
+        return final_string
+
 
     def load_item(self,item_data,item_selector):
 
@@ -130,9 +146,14 @@ class GGVenturesSpider(scrapy.Spider):
         data.add_value('event_date', item_data['event_date'])
         data.add_value('event_link', item_data['event_link'])
         data.add_value('event_time', item_data['event_time'])
-        data.add_value('startups_link', item_data['startups_link'])
         data.add_value('startups_name', item_data['startups_name'])
         data.add_value('startups_contact_info', item_data['startups_contact_info'])
+        if item_data['startups_link']:
+            logger.debug(f"'startup_links' is loaded...")
+            data.add_value('startups_link', item_data['startups_link'])
+        else:
+            logger.debug(f"'startup_links' is empty. Using get_links_from_source...")
+            data.add_value('startups_link', self.get_links_from_source())
 
         logger.info(f"|LOADING| 'university_name' -> {self.static_name}")
         logger.info(f"|LOADING| 'university_contact_info' -> {self.university_contact_info}")
@@ -296,7 +317,7 @@ class GGVenturesSpider(scrapy.Spider):
         return [x.get_attribute('href') for x in web_elements_list]
 
 
-    def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,no_next_page_xpath='',run_script=False):
+    def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,no_next_page_xpath=''):
 
         event_links = []
         page_number = 0
@@ -318,11 +339,7 @@ class GGVenturesSpider(scrapy.Spider):
                     next_month = self.driver.find_element(By.XPATH,next_page_xpath).get_attribute('href')
                     self.driver.get(next_month)
                 if click_next_month:
-                    next_page_btn = WebDriverWait(self.driver,40).until(EC.element_to_be_clickable((By.XPATH,next_page_xpath)))
-                    if run_script:
-                        self.driver.execute_script("arguments[0].click();", next_page_btn)
-                    else:
-                        next_page_btn.click()
+                    WebDriverWait(self.driver,40).until(EC.element_to_be_clickable((By.XPATH,next_page_xpath))).click()
                 # next_month = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@title,'Go to the next page of the results')]"))).get_attribute('href')
                 if wait_after_loading:
                     time.sleep(10)
