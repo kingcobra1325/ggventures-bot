@@ -127,6 +127,8 @@ class GGVenturesSpider(scrapy.Spider):
             get_all_links = list(set(get_all_links))
             logger.debug(f"GET_ALL_LINKS:\n{get_all_links}") if GGV_SETTINGS.DEBUG_LOGS else None
             for link in get_all_links:
+                if not link:
+                    continue
                 logger.debug(f"LINK: {link}")  if GGV_SETTINGS.DEBUG_LOGS else None
                 if link_base in link:
                     logger.info(f"Link meets criteria as a startup link |{link_base}|. Adding...") if GGV_SETTINGS.DEBUG_LOGS else None
