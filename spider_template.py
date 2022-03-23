@@ -13,7 +13,7 @@ from ggventures.items import GgventuresItem
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 
 from functools import wraps
 
@@ -121,8 +121,9 @@ class GGVenturesSpider(scrapy.Spider):
 
     def get_links_from_source(self,link_base_list=['zoom']):
         final_string = ''
-        for link_base in link_base_list:
-            logger.debug(f"LINK_BASE: {link_base}") if GGV_SETTINGS.DEBUG_LOGS else None
+        try:
+            for link_base in link_base_list:
+                logger.debug(f"LINK_BASE: {link_base}") if GGV_SETTINGS.DEBUG_LOGS else None
             get_all_links = [x.get_attribute('href') for x in self.getter.find_elements(By.TAG_NAME,'a')]
             get_all_links = list(set(get_all_links))
             logger.debug(f"GET_ALL_LINKS:\n{get_all_links}") if GGV_SETTINGS.DEBUG_LOGS else None
@@ -135,7 +136,9 @@ class GGVenturesSpider(scrapy.Spider):
                     final_string = final_string + f"{link}\n"
                 else:
                     logger.debug("Link doesn't meet the criteria. Skipping...") if GGV_SETTINGS.DEBUG_LOGS else None
-        logger.debug(f"FINAL STRING: {final_string}")  if GGV_SETTINGS.DEBUG_LOGS else None
+            logger.debug(f"FINAL STRING: {final_string}")  if GGV_SETTINGS.DEBUG_LOGS else None
+        except StaleElementReferenceException as e:
+            logger.debug(f"ERROR: {e}. Skip fetching links...")  if GGV_SETTINGS.DEBUG_LOGS else None
         return final_string
 
 
@@ -336,7 +339,7 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug(f"No available events for this month : {e} ---> Skipping...........")
 
             if no_next_page_xpath:
-                next_page_xpath = f"{no_next_page_xpath}[@rel='{page_number}']"
+                next_page_xpath = f"{no_next_page_xpath}[@rel='{page_number}' | {no_next_page_xpath}[text() = '{page_number}'"
 
             try:
                 if get_next_month:
