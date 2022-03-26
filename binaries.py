@@ -176,6 +176,25 @@ file_handler.setFormatter(logging.Formatter(FORMAT))
 logger.addHandler(file_handler)
 logger.addHandler(logging.StreamHandler())
 
+def print_log(msg="",method='info',condition=True):
+    if condition:
+        if method.lower() == 'info':
+            logger.info(msg)
+        elif method.lower() == 'debug':
+            logger.debug(msg)
+        elif method.lower() == 'warning':
+            logger.warning(msg)
+        elif method.lower() == 'error':
+            logger.error(msg)
+        elif method.lower() == 'critical':
+            logger.critical(msg)
+        elif method.lower() == 'exception':
+            logger.exception(msg)
+        else:
+            logger.exception(f"Invalid method |{method}|..")
+    else:
+        pass
+
 # -------------------- PRINT ENV VARS -------------------------- #
 
 if GGV_SETTINGS.PRINT_ENV_VARS:

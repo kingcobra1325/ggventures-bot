@@ -4,7 +4,7 @@ from datetime import datetime
 
 from bot_email import missing_info_email, error_email, unique_event, website_changed
 
-from binaries import Load_Driver, logger, WebScroller, EventBrite_API, GGV_SETTINGS
+from binaries import Load_Driver, logger, WebScroller, EventBrite_API, GGV_SETTINGS, print_log
 
 from scrapy.loader import ItemLoader
 
@@ -29,6 +29,21 @@ class GGVenturesSpider(scrapy.Spider):
 
     if USE_HANDLE_HTTPSTATUS_LIST:
         handle_httpstatus_list = [403,404]
+
+    class Func:
+        print_log = print_log
+        def sleep(time_seconds=5):
+            time.sleep(time_seconds)
+
+    class Mth:
+        By = By
+        WebDriverWait = WebDriverWait
+        EC = EC
+
+    class Exc:
+        NoSuchElementException = NoSuchElementException
+        TimeoutException = TimeoutException
+        StaleElementReferenceException = StaleElementReferenceException
 
     eventbrite_id : int = 0
 
@@ -57,6 +72,7 @@ class GGVenturesSpider(scrapy.Spider):
                         'startups_link' : '',
                         'startups_name' : ''
                         }
+
 
     def __init__(self):
         self.driver = Load_Driver()
