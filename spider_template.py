@@ -277,6 +277,14 @@ class GGVenturesSpider(scrapy.Spider):
             yield scrapy.Request(url=response.url,callback=self.eventbrite_API_call)
         except Exception as e:
             self.exception_handler(e)
+            
+    def desc_images(self,desc_xpath=''):
+        try:
+            temp_event_desc = self.getter.find_element(By.XPATH,desc_xpath)
+            return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s): {[x.get_attribute('src') for x in temp_event_desc.find_elements(By.XPATH,'.//img')]}"
+        except NoSuchElementException as e:
+            logger.debug("No image found on spider {self.name}... scraping text only...")
+            return temp_event_desc
 
     def check_website_changed(self,upcoming_events_xpath='',empty_text=False,checking_if_none=False):
         try:
@@ -381,6 +389,7 @@ class GGVenturesSpider(scrapy.Spider):
 
         logger.debug(f"Number of Event Links: {len(event_links)}")
         return event_links
+        
 
     def closed(self, reason):
         try:
