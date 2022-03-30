@@ -87,6 +87,10 @@ class GGVenturesSpider(scrapy.Spider):
         err_message = f"{type(e).__name__}\nDRIVER URL: {self.driver.current_url}\nGETTER URL: {self.getter.current_url}\n{tb_log}"
         error_email(self.name,err_message)
 
+    def get_datetime_attributes(self,datetime_xpath):
+        datetime_list = [x.get_attribute('datetime') for x in self.getter.find_elements(self.Mth.By.XPATH,datetime_xpath)]
+        return '\n'.join(datetime_list)
+
     def unique_event_checker(self,url_substring=''):
         # CHECK IF NOT EMPTY
         if url_substring:
