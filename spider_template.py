@@ -13,7 +13,7 @@ from ggventures.items import GgventuresItem
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException
 
 from functools import wraps
 
@@ -281,8 +281,9 @@ class GGVenturesSpider(scrapy.Spider):
     def desc_images(self,desc_xpath=''):
         try:
             temp_event_desc = self.getter.find_element(By.XPATH,desc_xpath)
-            return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s): {[x.get_attribute('src') for x in temp_event_desc.find_elements(By.XPATH,'.//img')]}"
-        except NoSuchElementException as e:
+            list_images = "\n".join([x.get_attribute('src') for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
+            return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s): {list_images}"
+        except NoSuchAttributeException as e:
             logger.debug("No image found on spider {self.name}... scraping text only...")
             return temp_event_desc
 
