@@ -122,8 +122,8 @@ class GGVenturesSpider(scrapy.Spider):
         print(f"TRANSLATED TEXT DICT: {text_translated_dict}")
         print("\n")
 
-    def get_datetime_attributes(self,datetime_xpath,attribute='datetime'):
-        datetime_list = [x.get_attribute('datetime') for x in self.getter.find_elements(self.Mth.By.XPATH,datetime_xpath)]
+    def get_datetime_attributes(self,datetime_xpath,datetime_attribute='datetime'):
+        datetime_list = [x.get_attribute(datetime_attribute) for x in self.getter.find_elements(self.Mth.By.XPATH,datetime_xpath)]
         return '\n'.join(datetime_list)
 
     def unique_event_checker(self,url_substring=''):
