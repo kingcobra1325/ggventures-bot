@@ -15,6 +15,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException
 
+try:
+    from googletrans import Translator
+except ModuleNotFoundError as e:
+    os.system(f"{sys.executable} -m pip install googletrans==4.0.0-rc1")
+    from googletrans import Translator
+
 from functools import wraps
 
 
@@ -26,6 +32,10 @@ class GGVenturesSpider(scrapy.Spider):
     eventbrite_id : int = 0
 
     USE_HANDLE_HTTPSTATUS_LIST = False
+
+    TRANSLATE = False
+    SRC_LANG = 'en'
+    TL_LANG = 'en'
 
     if USE_HANDLE_HTTPSTATUS_LIST:
         handle_httpstatus_list = [403,404]
@@ -87,7 +97,32 @@ class GGVenturesSpider(scrapy.Spider):
         err_message = f"{type(e).__name__}\nDRIVER URL: {self.driver.current_url}\nGETTER URL: {self.getter.current_url}\n{tb_log}"
         error_email(self.name,err_message)
 
-    def get_datetime_attributes(self,datetime_xpath):
+    def translate_text(self):
+        translator = Translator()
+        text_translated_dict = {}
+        # text_translated = translator.translate(text_raw)
+
+
+        print("\n")
+        print(f"RAW TEXT DICT: {text_raw_dict}")
+        for k,v in text_raw_dict.items():
+
+            result = translator.translate(v)
+            text_translated_dict.update({k : result.text})
+
+            print("\n")
+            print(f"KEY |{k}|")
+            print(f"RAW LANG: {result.src}")
+            print(f"RAW TEXT: {result.origin}")
+            print(f"TRANSLATED LANG: {result.dest}")
+            print(f"TRANSLATED TEXT: {result.text}")
+            print("\n")
+
+
+        print(f"TRANSLATED TEXT DICT: {text_translated_dict}")
+        print("\n")
+
+    def get_datetime_attributes(self,datetime_xpath,attribute='datetime'):
         datetime_list = [x.get_attribute('datetime') for x in self.getter.find_elements(self.Mth.By.XPATH,datetime_xpath)]
         return '\n'.join(datetime_list)
 
@@ -277,7 +312,7 @@ class GGVenturesSpider(scrapy.Spider):
             yield scrapy.Request(url=response.url,callback=self.eventbrite_API_call)
         except Exception as e:
             self.exception_handler(e)
-            
+
     def desc_images(self,desc_xpath=''):
         try:
             temp_event_desc = self.getter.find_element(By.XPATH,desc_xpath)
@@ -285,7 +320,7 @@ class GGVenturesSpider(scrapy.Spider):
             return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s): {list_images}"
         except NoSuchAttributeException as e:
             logger.debug("No image found on spider {self.name}... scraping text only...")
-            return temp_event_desc
+            return temp_event_desc.get_attribute('textContent')
 
     def check_website_changed(self,upcoming_events_xpath='',empty_text=False,checking_if_none=False):
         try:
@@ -390,7 +425,7 @@ class GGVenturesSpider(scrapy.Spider):
 
         logger.debug(f"Number of Event Links: {len(event_links)}")
         return event_links
-        
+
 
     def closed(self, reason):
         try:
