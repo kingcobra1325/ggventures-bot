@@ -15,11 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException
 
-try:
-    from googletrans import Translator
-except ModuleNotFoundError as e:
-    os.system(f"{sys.executable} -m pip install googletrans==4.0.0-rc1")
-    from googletrans import Translator
+from googletrans import Translator
 
 from functools import wraps
 

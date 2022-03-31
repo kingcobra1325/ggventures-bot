@@ -25,7 +25,11 @@ try:
 except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install tabulate")
     import tabulate
-
+try:
+    from googletrans import Translator
+except ModuleNotFoundError as e:
+    os.system(f"{sys.executable} -m pip install googletrans==4.0.0-rc1")
+    from googletrans import Translator
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
