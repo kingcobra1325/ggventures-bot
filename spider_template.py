@@ -32,12 +32,26 @@ class GGVenturesSpider(scrapy.Spider):
     TRANSLATE = False
     SRC_LANG = 'en'
     TL_LANG = 'en'
+    TL_ITEM_EXCLUDE = [
+                'university_name',
+                'university_contact_info',
+                'logo',
+                # 'event_name',
+                # 'event_desc',
+                # 'event_date',
+                'event_link',
+                # 'event_time',
+                'startups_contact_info',
+                'startups_link',
+                'startups_name',
+                ]
 
     if USE_HANDLE_HTTPSTATUS_LIST:
         handle_httpstatus_list = [403,404]
 
     class Func:
         print_log = print_log
+        translator = Translator()
         def sleep(time_seconds=5):
             time.sleep(time_seconds)
 
@@ -50,6 +64,7 @@ class GGVenturesSpider(scrapy.Spider):
         NoSuchElementException = NoSuchElementException
         TimeoutException = TimeoutException
         StaleElementReferenceException = StaleElementReferenceException
+        NoSuchAttributeException = NoSuchAttributeException
 
     eventbrite_id : int = 0
 
@@ -93,30 +108,63 @@ class GGVenturesSpider(scrapy.Spider):
         err_message = f"{type(e).__name__}\nDRIVER URL: {self.driver.current_url}\nGETTER URL: {self.getter.current_url}\n{tb_log}"
         error_email(self.name,err_message)
 
-    def translate_text(self):
-        translator = Translator()
-        text_translated_dict = {}
-        # text_translated = translator.translate(text_raw)
+    def translate_API_call(self,data):
+        while True:
+            try:
+                result = self.Func.translator.translate(data)
+            except Exception as e:
+                raise
 
 
-        print("\n")
-        print(f"RAW TEXT DICT: {text_raw_dict}")
-        for k,v in text_raw_dict.items():
+    def translate_text(self,raw_text=''):
 
-            result = translator.translate(v)
-            text_translated_dict.update({k : result.text})
+        if isinstance(raw_text,dict):
+            text_translated_dict = {}
 
-            print("\n")
-            print(f"KEY |{k}|")
-            print(f"RAW LANG: {result.src}")
-            print(f"RAW TEXT: {result.origin}")
-            print(f"TRANSLATED LANG: {result.dest}")
-            print(f"TRANSLATED TEXT: {result.text}")
-            print("\n")
+            self.Func.print_log(f"\nRAW TEXT: {raw_text}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.Func.print_log(f"TYPE: {type(raw_text)}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            for k,v in raw_text.items():
 
+                if k not in self.TL_ITEM_EXCLUDE:
+                    result = self.Func.translator.translate(v)
+                    text_translated_dict.update({k : result.text})
 
-        print(f"TRANSLATED TEXT DICT: {text_translated_dict}")
-        print("\n")
+                    self.SRC_LANG = result.src
+                    self.TL_LANG = result.dest
+
+                    self.Func.print_log(f"\nKEY |{k}|",'debug')
+                    self.Func.print_log(f"RAW LANG: {result.src}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                    self.Func.print_log(f"RAW TEXT: {result.origin}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                    self.Func.print_log(f"TRANSLATED LANG: {result.dest}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                    self.Func.print_log(f"TRANSLATED TEXT: {result.text}\n",'debug',GGV_SETTINGS.DEBUG_LOGS)
+
+                else:
+                    self.Func.print_log(f"'{k}' included as Excluded from Translation. Loading Raw Data...",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                    text_translated_dict.update({k : v})
+
+            self.Func.print_log(f"TRANSLATED TEXT DICT: {text_translated_dict}\n",'info')
+
+            return text_translated_dict
+
+        elif isinstance(raw_text,str):
+
+            self.Func.print_log(f"\nRAW TEXT: {raw_text}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.Func.print_log(f"TYPE: {type(raw_text)}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+
+            result = self.Func.translator.translate(raw_text)
+            self.SRC_LANG = result.src
+            self.TL_LANG = result.dest
+
+            self.Func.print_log(f"RAW LANG: {result.src}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.Func.print_log(f"RAW TEXT: {result.origin}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.Func.print_log(f"TRANSLATED LANG: {result.dest}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.Func.print_log(f"TRANSLATED TEXT: {result.text}\n",'debug',GGV_SETTINGS.DEBUG_LOGS)
+
+            return result
+
+        else:
+            self.Func.print_log(f"|raw_text| not a valid format --> {type(raw_text)}. Need to be a string or dict. Proceed...","error")
+
 
     def get_datetime_attributes(self,datetime_xpath,datetime_attribute='datetime'):
         datetime_list = [x.get_attribute(datetime_attribute) for x in self.getter.find_elements(self.Mth.By.XPATH,datetime_xpath)]
@@ -194,6 +242,10 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def load_item(self,item_data,item_selector):
+
+        if self.TRANSLATE:
+            # Translate before Loading Items....
+            item_data = self.translate_text(item_data)
 
         data = ItemLoader(item = GgventuresItem(), selector = item_selector)
         data.add_value('university_name', self.static_name)

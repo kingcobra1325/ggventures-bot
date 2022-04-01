@@ -28,7 +28,7 @@ except ModuleNotFoundError as e:
 try:
     from googletrans import Translator
 except ModuleNotFoundError as e:
-    os.system(f"{sys.executable} -m pip install googletrans==4.0.0-rc1")
+    os.system(f"{sys.executable} -m pip install googletrans==3.1.0a0")
     from googletrans import Translator
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
