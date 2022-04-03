@@ -369,6 +369,19 @@ class GGVenturesSpider(scrapy.Spider):
         except NoSuchAttributeException as e:
             logger.debug("No image found on spider {self.name}... scraping text only...")
             return temp_event_desc.get_attribute('textContent')
+    
+    def alert_handler(self,alert_text='',alert_accept=True,alert_driver=None):
+        try:
+            self.Mth.WebDriverWait(alert_driver, 5).until(self.Mth.EC.alert_is_present(),alert_text,)
+            alert = alert_driver.switch_to.alert
+            if alert_accept:
+                alert.accept()
+            else:
+                alert.dismiss()
+            self.Func.print_log(f"Alert found and accepted... Proceeding to scrape spider {self.name}")
+        except self.Exc.TimeoutException as e:
+            self.Func.print_log(f"No Alert found with text \"{alert_text}\" on spider {self.name}... Proceeding to scrape spider")
+              
 
     def check_website_changed(self,upcoming_events_xpath='',empty_text=False,checking_if_none=False):
         try:
