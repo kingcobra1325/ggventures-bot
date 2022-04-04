@@ -220,6 +220,7 @@ class GGVenturesSpider(scrapy.Spider):
                 return True
         else:
             logger.debug("ERROR 404 FOUND... Skipping Spider")
+            return False
 
 
     def get_links_from_source(self,link_base_list=['zoom']):
