@@ -368,8 +368,8 @@ class GGVenturesSpider(scrapy.Spider):
     def desc_images(self,desc_xpath=''):
         try:
             temp_event_desc = self.getter.find_element(By.XPATH,desc_xpath)
-            list_images = "\n".join([x.get_attribute('src') for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
-            return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s): {list_images}"
+            list_images = "\n".join([str(x.get_attribute('src')) for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
+            return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s):\n{list_images}"
         except NoSuchAttributeException as e:
             logger.debug("No image found on spider {self.name}... scraping text only...")
             return temp_event_desc.get_attribute('textContent')
