@@ -171,30 +171,13 @@ class GGVenturesSpider(scrapy.Spider):
         return '\n'.join(datetime_list)
 
     def unique_event_checker(self,url_substring=''):
-        # CHECK IF NOT EMPTY
-        if url_substring:
-            # String - url_substring
-            if isinstance(url_substring,str):
-                if url_substring in self.getter.current_url:
-                    return True
-                elif 'www.eventbrite.com' in self.getter.current_url:
-                    if not self.eventbrite_id:
-                        logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
-                        unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
-                        return False
-                    else:
-                        logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
-                        return False
-                else:
-                    logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
-                    unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
-                    logger.debug("Skipping............")
-                    return False
-            # List - url_substring
-            if isinstance(url_substring,list):
-                for url in url_substring:
-
-                    if url in self.getter.current_url:
+        # CHECK IF PAGE NOT FOUND
+        if self.getter.title.lower() not in ['page not found','404']:
+            # CHECK IF NOT EMPTY
+            if url_substring:
+                # String - url_substring
+                if isinstance(url_substring,str):
+                    if url_substring in self.getter.current_url:
                         return True
                     elif 'www.eventbrite.com' in self.getter.current_url:
                         if not self.eventbrite_id:
@@ -204,18 +187,39 @@ class GGVenturesSpider(scrapy.Spider):
                         else:
                             logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
                             return False
+                    else:
+                        logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
+                        unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
+                        logger.debug("Skipping............")
+                        return False
+                # List - url_substring
+                if isinstance(url_substring,list):
+                    for url in url_substring:
 
-                # No substring matching from list
-                logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
-                unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
-                logger.debug("Skipping............")
-                return False
+                        if url in self.getter.current_url:
+                            return True
+                        elif 'www.eventbrite.com' in self.getter.current_url:
+                            if not self.eventbrite_id:
+                                logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
+                                unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
+                                return False
+                            else:
+                                logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
+                                return False
 
+                    # No substring matching from list
+                    logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
+                    unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
+                    logger.debug("Skipping............")
+                    return False
+
+                else:
+                    logger.debug(f"URL Substring not a valid format --> {type(url_substring)}. Need to be a string or list. Proceed...")
             else:
-                logger.debug(f"URL Substring not a valid format --> {type(url_substring)}. Need to be a string or list. Proceed...")
+                logger.debug("No URL Substring. Proceed...")
+                return True
         else:
-            logger.debug("No URL Substring. Proceed...")
-            return True
+            logger.debug("ERROR 404 FOUND... Skipping Spider")
 
 
     def get_links_from_source(self,link_base_list=['zoom']):
@@ -372,7 +376,7 @@ class GGVenturesSpider(scrapy.Spider):
     
     def alert_handler(self,alert_text='',alert_accept=True,alert_driver=None):
         try:
-            self.Mth.WebDriverWait(alert_driver, 5).until(self.Mth.EC.alert_is_present(),alert_text,)
+            self.Mth.WebDriverWait(alert_driver, 10).until(self.Mth.EC.alert_is_present(),alert_text)
             alert = alert_driver.switch_to.alert
             if alert_accept:
                 alert.accept()
