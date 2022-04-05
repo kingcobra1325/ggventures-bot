@@ -112,8 +112,9 @@ class GGVenturesSpider(scrapy.Spider):
         while True:
             try:
                 result = self.Func.translator.translate(data)
+                return result
             except Exception as e:
-                raise
+                self.Func.print_log(f"Translate API Error: {e}. Retrying...",'error')
 
 
     def translate_text(self,raw_text=''):
@@ -126,7 +127,7 @@ class GGVenturesSpider(scrapy.Spider):
             for k,v in raw_text.items():
 
                 if k not in self.TL_ITEM_EXCLUDE:
-                    result = self.Func.translator.translate(v)
+                    result = self.translate_API_call(v)
                     text_translated_dict.update({k : result.text})
 
                     self.SRC_LANG = result.src
@@ -151,7 +152,7 @@ class GGVenturesSpider(scrapy.Spider):
             self.Func.print_log(f"\nRAW TEXT: {raw_text}",'debug',GGV_SETTINGS.DEBUG_LOGS)
             self.Func.print_log(f"TYPE: {type(raw_text)}",'debug',GGV_SETTINGS.DEBUG_LOGS)
 
-            result = self.Func.translator.translate(raw_text)
+            result = self.translate_API_call(raw_text)
             self.SRC_LANG = result.src
             self.TL_LANG = result.dest
 
@@ -230,7 +231,7 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug(f"LINK_BASE: {link_base}") if GGV_SETTINGS.DEBUG_LOGS else None
             get_all_links = [x.get_attribute('href') for x in self.getter.find_elements(By.TAG_NAME,'a')]
             get_all_links = list(set(get_all_links))
-            logger.debug(f"GET_ALL_LINKS:\n{get_all_links}") if GGV_SETTINGS.DEBUG_LOGS else None
+            self.Func.print_log(f"GET_ALL_LINKS:\n{get_all_links}",'debug',GGV_SETTINGS.DEBUG_LOGS)
             for link in get_all_links:
                 if not link:
                     continue
@@ -245,6 +246,29 @@ class GGVenturesSpider(scrapy.Spider):
             logger.debug(f"ERROR: {e}. Skip fetching links...")  if GGV_SETTINGS.DEBUG_LOGS else None
         return final_string
 
+    def get_emails_from_source(self,tag_list=['a'],attribute_name='href',driver_name='driver'):
+        all_emails = []
+        final_all_emails = []
+        if driver_name.lower() == 'driver':
+            email_driver = self.driver
+        elif driver_name.lower() == 'getter':
+            email_driver = self.getter
+        else:
+            self.Func.print_log(f"Invalid Driver Name |{driver_name}|. Returning None...",'error')
+            return None
+        try:
+            for tag in tag_list:
+                get_all_emails = [x.get_attribute(attribute_name) for x in email_driver.find_elements(By.TAG_NAME,tag)]
+                get_all_emails = list(set(get_all_emails))
+                self.Func.print_log(f"TAG |{tag}| ATTRIBUTE |{attribute_name}| - Emails:\n{get_all_emails}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                all_emails.extend(get_all_emails)
+                self.Func.print_log(f"FINAL ALL EMAILS TYPE {type(final_all_emails)} | ALL EMAILS TYPE {type(all_emails)}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            all_emails = [str(x) for x in all_emails]
+            final_all_emails = "\n".join(all_emails)
+            self.Func.print_log(f"ALL EMAILS FROM SOURCE:\n{final_all_emails}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+        except StaleElementReferenceException as e:
+            self.Func.print_log(f"ERROR: {e}. Skip fetching emails...",'debug',GGV_SETTINGS.DEBUG_LOGS)
+        return final_all_emails
 
     def load_item(self,item_data,item_selector):
 
@@ -354,6 +378,8 @@ class GGVenturesSpider(scrapy.Spider):
             elif self.contact_info_multispan:
                 self.university_contact_info = '\n'.join([x.get_attribute('textContent') for x in WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH, self.university_contact_info_xpath)))])
 
+            self.university_contact_info = f"{self.university_contact_info}\n{self.get_emails_from_source()}"
+
 
 
     def parse_code(self,response):
@@ -374,7 +400,7 @@ class GGVenturesSpider(scrapy.Spider):
         except NoSuchAttributeException as e:
             logger.debug("No image found on spider {self.name}... scraping text only...")
             return temp_event_desc.get_attribute('textContent')
-    
+
     def alert_handler(self,alert_text='',alert_accept=True,alert_driver=None):
         try:
             self.Mth.WebDriverWait(alert_driver, 10).until(self.Mth.EC.alert_is_present(),alert_text)
@@ -386,7 +412,7 @@ class GGVenturesSpider(scrapy.Spider):
             self.Func.print_log(f"Alert found and accepted... Proceeding to scrape spider {self.name}")
         except self.Exc.TimeoutException as e:
             self.Func.print_log(f"No Alert found with text \"{alert_text}\" on spider {self.name}... Proceeding to scrape spider")
-              
+
 
     def check_website_changed(self,upcoming_events_xpath='',empty_text=False,checking_if_none=False):
         try:
@@ -447,11 +473,14 @@ class GGVenturesSpider(scrapy.Spider):
                 website_changed(self.name,self.static_name)
 
 
-    def events_list(self,event_links_xpath:str):
+    def events_list(self,event_links_xpath:str,return_elements=False):
 
         web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
         logger.debug(f"Number of Event Links: {len(web_elements_list)}")
-        return [x.get_attribute('href') for x in web_elements_list]
+        if return_elements:
+            return web_elements_list
+        else:
+            return [x.get_attribute('href') for x in web_elements_list]
 
 
     def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,no_next_page_xpath='',run_script=False):
