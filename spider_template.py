@@ -11,7 +11,7 @@ from scrapy.loader import ItemLoader
 from ggventures.items import GgventuresItem
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException
 
@@ -58,6 +58,7 @@ class GGVenturesSpider(scrapy.Spider):
     class Mth:
         By = By
         WebDriverWait = WebDriverWait
+        Select = Select
         EC = EC
 
     class Exc:
@@ -115,6 +116,23 @@ class GGVenturesSpider(scrapy.Spider):
                 return result
             except Exception as e:
                 self.Func.print_log(f"Translate API Error: {e}. Retrying...",'error')
+
+    def select_dropdown(self,xpath,value,wait_after_loading=False):
+
+        dropdown = self.Mth.Select(self.driver.find_element(self.Mth.By.XPATH,xpath))
+        dropdown.select_by_value(value)
+        self.Func.sleep() if wait_after_loading else None
+
+    def mat_select_dropdown(self,dropdown_xpath,option_xpath,wait_after_loading=False,run_script=False):
+
+        dropdown = self.Mth.WebDriverWait(self.driver,20).until(self.Mth.EC.element_to_be_clickable((self.Mth.By.XPATH, dropdown_xpath)))
+        self.driver.execute_script("arguments[0].click();", dropdown) if run_script else dropdown.click()
+
+        option = self.Mth.WebDriverWait(self.driver,20).until(self.Mth.EC.element_to_be_clickable((self.Mth.By.XPATH, option_xpath)))
+        self.driver.execute_script("arguments[0].click();", option) if run_script else option.click()
+
+        self.Func.sleep() if wait_after_loading else None
+
 
 
     def translate_text(self,raw_text=''):
