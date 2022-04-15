@@ -1,4 +1,3 @@
-from distutils.util import run_2to3
 from spider_template import GGVenturesSpider
 
 
