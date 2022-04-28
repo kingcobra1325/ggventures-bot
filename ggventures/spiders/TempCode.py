@@ -25,13 +25,17 @@ if __name__ == '__main__':
     # getter = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
     # getter2 = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
     
-    link = "https://daniels.du.edu/events/"
-        
+    link = "https://www.rug.nl/about-ug/latest-news/events/calendar/"
+    
     driver.get(link)
-    driver.maximize_window()
-    EventLinks = WebDriverWait(driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='twMonthEventContainer']//a")))
-    for i in EventLinks:
-        driver.get(i.get_attribute('href'))
+    try:
+        WebDriverWait(driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[@class='h4']")))
+    except Exception as e:
+        print(e)
+    # driver.maximize_window()
+    # EventLinks = WebDriverWait(driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='twMonthEventContainer']//a")))
+    # for i in EventLinks:
+    #     driver.get(i.get_attribute('href'))
         
     sleep(100)
 

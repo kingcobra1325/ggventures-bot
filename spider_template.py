@@ -410,9 +410,12 @@ class GGVenturesSpider(scrapy.Spider):
         except Exception as e:
             self.exception_handler(e)
 
-    def desc_images(self,desc_xpath=''):
+    def desc_images(self,desc_xpath='',use_getter=True):
         try:
-            temp_event_desc = self.getter.find_element(By.XPATH,desc_xpath)
+            if use_getter:
+                temp_event_desc = self.getter.find_element(By.XPATH,desc_xpath)
+            else:
+                temp_event_desc = self.driver.find_element(By.XPATH,desc_xpath)
             list_images = "\n".join([str(x.get_attribute('src')) for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
             return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s):\n{list_images}"
         except NoSuchAttributeException as e:
