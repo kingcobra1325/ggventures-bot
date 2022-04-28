@@ -63,6 +63,8 @@ DATE_PATTERNS_RE =                  [
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)\s[0-9]",
                                         r"[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9]",
+                                        r"[0-9][0-9]\s(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)\s[0-9][0-9][0-9][0-9]",
+                                        r"[0-9]\s(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)\s[0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9]\s(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
                                         r"[0-9]\s(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
                                         r"[0-9][0-9]/[0-9][0-9]",
@@ -73,6 +75,7 @@ date_strf_pattern = '%m/%d/%Y'
 
 DATE_PATTERNS =                     [
                                         ["%B %d, %Y"        ,date_strf_pattern],
+                                        ["%B %d %Y"        ,date_strf_pattern],
                                         ["%m/%d/%Y"         ,date_strf_pattern],
                                         ["%d/%m/%Y"         ,date_strf_pattern],
                                         ["%d/%m"         ,'%m/%d'],
@@ -85,6 +88,7 @@ DATE_PATTERNS =                     [
                                         ["%d %b"            ,'%m/%d'],
                                         ["%d %B, %Y"        ,date_strf_pattern],
                                         ["%d %B %Y"         ,date_strf_pattern],
+                                        ["%d %b %Y"        ,date_strf_pattern],
                                         ["%d. %b. %Y"         ,date_strf_pattern],
                                         ["%d. %b %Y"         ,date_strf_pattern],
                                         ["%d %B"            ,'%m/%d'],
