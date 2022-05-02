@@ -1,4 +1,4 @@
-import os,sys
+import os,sys,pytz
 
 from datetime import datetime, timezone
 from time import sleep
@@ -28,11 +28,44 @@ except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting import set_column_width
 
-from binaries import logger, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
+from binaries import logger, print_log, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
 
 
 SPREADSHEET_MAIN = Google_Sheets()
 
+def check_outdated_events(date_list):
+    bool_array = []
+    print_log(f"\nEvent Date: |{date_list}|{type(date_list)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+    current_date = datetime.now(pytz.timezone('Pacific/Honolulu')).replace(hour=0, minute=0, second=0, microsecond=0)
+    for event_date in list(date_list):
+        event_bool = True
+        for raw in event_date:
+            try:
+                print_log(f"\nRaw Date: |{raw}|{type(raw)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+                print_log(f"Using MM/DD/YYYY Strptime Pattern...","debug",GGV_SETTINGS.DEV_LOGS)
+                date = datetime.strptime(raw,'%m/%d/%Y').replace(tzinfo=pytz.utc)
+                print_log(f"\nStripped Date: |{date.strftime('%m-%d-%Y')}|{type(raw)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+            except ValueError as e:
+                try:
+                    print_log(f"MM/DD/YYYY not valid. Using MM/DD Strptime Pattern...","debug",GGV_SETTINGS.DEV_LOGS)
+                    date = datetime.strptime(raw,'%m/%d').replace(year=datetime.now().year,tzinfo=pytz.utc)
+                    print_log(f"\nStripped Date: |{date.strftime('%m-%d-%Y')}|{type(raw)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+                except ValueError as e:
+                    print_log(f"No valid data to strip time {e}. Skipping...","debug",GGV_SETTINGS.DEV_LOGS)
+                    continue
+            if current_date <= date:
+                print_log(f"Event Date |{date.strftime('%m-%d-%Y')}| is equal/later than Current Date |{current_date.strftime('%m-%d-%Y')}|...","debug",GGV_SETTINGS.DEV_LOGS)
+                event_bool = False
+                print_log(f"{event_date} -> FALSE\n","debug",GGV_SETTINGS.DEV_LOGS)
+            else:
+                print_log(f"Event Date |{date.strftime('%m-%d-%Y')}| is no longer a valid date...","debug",GGV_SETTINGS.DEV_LOGS)
+        bool_array.append(event_bool)
+        if event_bool:
+            print_log(f"{event_date} -> TRUE\n","debug",GGV_SETTINGS.DEV_LOGS)
+    print_log(f"\nFinal Bool Array: |{bool_array}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+    print_log(f"\nDate List Count -> |{len(date_list)}| Bool Array Count -> |{len(bool_array)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+    print_log(f"\nNumber of Deleted Rows: |{bool_array.count(True)}|\n","info")
+    return bool_array
 
 def ReOrder_Sheets():
     while True:
@@ -226,6 +259,12 @@ def Add_Event(data,country_df,country_worksheet,country):
     country_df.sort_values(by='Last Updated', ascending = False, inplace=True)
     country_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
+    # DELETE PAST EVENTS
+    if GGV_SETTINGS.DELETE_PAST_EVENTS:
+        col_dates_list = country_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
+        country_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+        del [col_dates_list]
+
 
     # COUNTRY
     Write_DataFrame_To_Sheet(country_worksheet, country_df)
@@ -250,6 +289,12 @@ def Add_Event(data,country_df,country_worksheet,country):
         all_df.sort_values(by='Last Updated', ascending = False, inplace=True)
         all_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
+        # DELETE PAST EVENTS
+        if GGV_SETTINGS.DELETE_PAST_EVENTS:
+            col_dates_list = all_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
+            all_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+            del [col_dates_list]
+
         # WRITE ALL DF TO SHEET
 
         Write_DataFrame_To_Sheet(all_worksheet, all_df)
@@ -266,6 +311,12 @@ def Add_Startups_Event(data,startups_df,startups_worksheet,country):
     startups_df["Last Updated"] = startups_df["Last Updated"].astype('datetime64[ns]')
     startups_df.sort_values(by='Last Updated', ascending = False, inplace=True)
     startups_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
+
+    # DELETE PAST EVENTS
+    if GGV_SETTINGS.DELETE_PAST_EVENTS:
+        col_dates_list = startups_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
+        startups_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+        del [col_dates_list]
 
 
     # STARTUPS
