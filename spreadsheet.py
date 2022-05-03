@@ -1,4 +1,4 @@
-import os,sys,pytz
+import os,sys,pytz,gc
 
 from datetime import datetime, timezone
 from time import sleep
@@ -269,6 +269,7 @@ def Add_Event(data,country_df,country_worksheet,country):
     # COUNTRY
     Write_DataFrame_To_Sheet(country_worksheet, country_df)
     logger.info(f"Added DataFrame to {country} Sheet")
+    del [country_df]
 
 
     # ------ ALL -------- #
@@ -299,6 +300,9 @@ def Add_Event(data,country_df,country_worksheet,country):
 
         Write_DataFrame_To_Sheet(all_worksheet, all_df)
         logger.info("Added DataFrame to ALL Sheet")
+        del [all_df]
+
+    gc.collect()
 
 
 def Add_Startups_Event(data,startups_df,startups_worksheet,country):
@@ -322,6 +326,9 @@ def Add_Startups_Event(data,startups_df,startups_worksheet,country):
     # STARTUPS
     Write_DataFrame_To_Sheet(startups_worksheet, startups_df)
     logger.info(f"Added DataFrame to STARTUPS Sheet")
+
+    del [startups_df]
+    gc.collect()
 
 
 
