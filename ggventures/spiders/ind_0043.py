@@ -1,8 +1,8 @@
 from spider_template import GGVenturesSpider
 
 
-class Ind0034Spider(GGVenturesSpider):
-    name = 'ind_0034'
+class Ind0043Spider(GGVenturesSpider):
+    name = 'ind_0043'
     start_urls = ["https://www.tapmi.edu.in/contact-us/"]
     country = 'India'
     # eventbrite_id = 6221361805
