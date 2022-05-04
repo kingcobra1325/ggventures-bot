@@ -137,7 +137,9 @@ class APPSettings():
         self.CLEAN_EVENT_TIME = True
         self.CLEAN_CONTACT_INFO = True
         self.SORT_STARTUPS = True
+        self.DELETE_PAST_EVENTS = True
         self.REGEX_LOGS = True
+        self.DEV_LOGS = True
         self.NO_MATCH_REGEX_LOGS = True
         if environ.get('DEPLOYED'):
             self.LOAD_DROPBOX_LIST = True
@@ -145,6 +147,7 @@ class APPSettings():
             self.REGEX_LOGS = False
             self.NO_MATCH_REGEX_LOGS = False
             self.DEBUG_LOGS = False
+            self.DEV_LOGS = False
         else:
             self.LOAD_DROPBOX_LIST = False
             self.SAVE_DROPBOX_LIST = False

@@ -1,4 +1,4 @@
-import scrapy, time, traceback
+import scrapy, time, traceback, os, sys
 # from scrapy import Selector
 from datetime import datetime
 
@@ -563,6 +563,7 @@ class GGVenturesSpider(scrapy.Spider):
         try:
             self.driver.quit()
             self.getter.quit()
+            os.system("pkill chrome")
             self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
             logger.debug(f"Spider: {self.name} scraping closed due to --> {reason}")
             logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
