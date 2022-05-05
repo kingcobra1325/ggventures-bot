@@ -495,14 +495,14 @@ class GGVenturesSpider(scrapy.Spider):
                 website_changed(self.name,self.static_name)
 
 
-    def events_list(self,event_links_xpath:str,return_elements=False):
+    def events_list(self,event_links_xpath:str,return_elements=False,link_attribute='href'):
         try:
             web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
             logger.debug(f"Number of Event Links: {len(web_elements_list)}")
             if return_elements:
                 return web_elements_list
             else:
-                return [x.get_attribute('href') for x in web_elements_list]
+                return [x.get_attribute(link_attribute) for x in web_elements_list]
         except self.Exc.TimeoutException as e:
             logger.debug(f'No Events Found --> {e}. Skipping.....')
             return []
