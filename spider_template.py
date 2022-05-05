@@ -17,8 +17,6 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException,
 
 from googletrans import Translator
 
-from functools import wraps
-
 
 class GGVenturesSpider(scrapy.Spider):
 
@@ -98,7 +96,10 @@ class GGVenturesSpider(scrapy.Spider):
 
     def __init__(self):
         self.driver = Load_Driver()
-        self.getter = Load_Driver()
+        if GGV_SETTINGS.MULTI_DRIVER:
+            self.getter = Load_Driver()
+        else:
+            self.getter = self.driver
         self.eventbrite_api = EventBrite_API()
         self.start_time = round(time.time())
         self.scrape_time = None
@@ -563,7 +564,6 @@ class GGVenturesSpider(scrapy.Spider):
         try:
             self.driver.quit()
             self.getter.quit()
-            os.system("pkill chrome")
             self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
             logger.debug(f"Spider: {self.name} scraping closed due to --> {reason}")
             logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")

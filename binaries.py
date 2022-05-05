@@ -141,6 +141,7 @@ class APPSettings():
         self.REGEX_LOGS = True
         self.DEV_LOGS = True
         self.NO_MATCH_REGEX_LOGS = True
+        self.MULTI_DRIVER = False
         if environ.get('DEPLOYED'):
             self.LOAD_DROPBOX_LIST = True
             self.SAVE_DROPBOX_LIST = True
