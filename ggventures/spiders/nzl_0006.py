@@ -34,7 +34,7 @@ class Nzl0006Spider(GGVenturesSpider):
             # self.ClickMore(click_xpath="//li[starts-with(@class,'pager-next')]")
 
             # for link in self.events_list(event_links_xpath="//li[contains(@style,'list-item')]//h3//a"):
-            for link in self.multi_event_pages(event_links_xpath="//li[contains(@style,'list-item')]//h3//a",no_next_page_xpath='//a',click_next_month=True,wait_after_loading=True):
+            for link in self.multi_event_pages(event_links_xpath="//li[contains(@style,'list-item')]//h3//a",next_page_xpath="//ul[@class='simplePagerNav']",page_element="//a",current_page_class="rel",click_next_month=True,wait_after_loading=True):
 
                 self.getter.get(link)
 
