@@ -17,6 +17,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException,
 
 from googletrans import Translator
 
+import re
 
 class GGVenturesSpider(scrapy.Spider):
 
@@ -508,22 +509,43 @@ class GGVenturesSpider(scrapy.Spider):
             return []
 
 
+    def get_no_page_xpath(self,next_page_xpath=''):
+        return [x.get_attribute('href') for x in self.driver.find_elements(By.XPATH,next_page_xpath)]
+    
+    def find_href_button(self,href_button_xpath,base_site):
+        button_links = [x.get_attribute('onclick') for x in self.driver.find_elements(By.XPATH,href_button_xpath)]
+        new_list = []
+        for btn in button_links:
+            regexlink = re.search('href="\/\S+"',btn).group()
+            regexnew= regexlink.replace('href=','').replace('\"','')
+            new_list.append(f'{base_site}{regexnew}')
+        return new_list
+        
 
-    def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,no_next_page_xpath='',click_month_list_xpath="",run_script=False):
+    def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,click_month_list_xpath="",run_script=False\
+        ,page_element='',current_page_class='',next_page_set_xpath='',href_button_xpath="",base_site=""):
 
         event_links = []
+        page_links = []
         page_number = 0
 
         if click_month_list_xpath:
             pages_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,click_month_list_xpath)))
         else:
             pages_list = range(num_of_pages)
+            
+        if page_element and get_next_month:
+            next_page_xpath = f"{next_page_xpath}{page_element}[not(contains(@class,'{current_page_class}'))]/a"
+            page_links.extend(self.get_no_page_xpath(next_page_xpath))
 
 
         for scrape_page in pages_list:
             try:
-                web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
-                event_links.extend([x.get_attribute('href') for x in web_elements_list])
+                if href_button_xpath:
+                    event_links.extend(self.find_href_button(href_button_xpath,base_site))
+                else:
+                    web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
+                    event_links.extend([x.get_attribute('href') for x in web_elements_list])
 
             except TimeoutException as e:
                 logger.debug(f"No available events for this month : {e} ---> Skipping...........")
@@ -535,11 +557,16 @@ class GGVenturesSpider(scrapy.Spider):
                     else:
                         scrape_page.click()
                 else:
-                    if no_next_page_xpath:
+                    if page_element and get_next_month:
+                        if len(page_links) == scrape_page and next_page_set_xpath:
+                            self.driver.get(self.driver.find_element(By.XPATH,next_page_set_xpath).get_attribute('href'))
+                            page_links.extend(self.get_no_page_xpath(next_page_xpath))
+                        self.driver.get(page_links[scrape_page]) 
+                    elif page_element and click_next_month:
                         page_number = scrape_page + 2
-                        next_page_xpath = f"{no_next_page_xpath}[@rel='{page_number}' | {no_next_page_xpath}[text() = '{page_number}'"
-
-                    if get_next_month:
+                        next_page_xpath = f"{page_element}[@{current_page_class}='{page_number}']"
+                        
+                    if not page_element and get_next_month:
                         next_month = self.driver.find_element(By.XPATH,next_page_xpath).get_attribute('href')
                         self.driver.get(next_month)
                     if click_next_month:
@@ -551,7 +578,7 @@ class GGVenturesSpider(scrapy.Spider):
                     # next_month = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@title,'Go to the next page of the results')]"))).get_attribute('href')
                 if wait_after_loading:
                     time.sleep(10)
-            except (TimeoutException,NoSuchElementException) as e:
+            except (TimeoutException,NoSuchElementException,IndexError) as e:
                 logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
                 break
             logger.debug(f"IN-PROGRESS: Pending Number of Event Links: {len(event_links)}")
