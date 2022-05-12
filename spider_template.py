@@ -47,6 +47,8 @@ class GGVenturesSpider(scrapy.Spider):
 
     if USE_HANDLE_HTTPSTATUS_LIST:
         handle_httpstatus_list = [403,404]
+    
+    USE_MULTI_DRIVER = GGV_SETTINGS.MULTI_DRIVER
 
     class Func:
         print_log = print_log
@@ -97,7 +99,7 @@ class GGVenturesSpider(scrapy.Spider):
 
     def __init__(self):
         self.driver = Load_Driver()
-        if GGV_SETTINGS.MULTI_DRIVER:
+        if self.USE_MULTI_DRIVER:
             self.getter = Load_Driver()
         else:
             self.getter = self.driver
@@ -511,7 +513,7 @@ class GGVenturesSpider(scrapy.Spider):
 
     def get_no_page_xpath(self,next_page_xpath=''):
         return [x.get_attribute('href') for x in self.driver.find_elements(By.XPATH,next_page_xpath)]
-    
+
     def find_href_button(self,href_button_xpath,base_site):
         button_links = [x.get_attribute('onclick') for x in self.driver.find_elements(By.XPATH,href_button_xpath)]
         new_list = []
@@ -520,7 +522,7 @@ class GGVenturesSpider(scrapy.Spider):
             regexnew= regexlink.replace('href=','').replace('\"','')
             new_list.append(f'{base_site}{regexnew}')
         return new_list
-        
+
 
     def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,click_month_list_xpath="",run_script=False\
         ,page_element='',current_page_class='',next_page_set_xpath='',href_button_xpath="",base_site=""):
@@ -533,7 +535,7 @@ class GGVenturesSpider(scrapy.Spider):
             pages_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,click_month_list_xpath)))
         else:
             pages_list = range(num_of_pages)
-            
+
         if page_element and get_next_month:
             next_page_xpath = f"{next_page_xpath}{page_element}[not(contains(@class,'{current_page_class}'))]/a"
             page_links.extend(self.get_no_page_xpath(next_page_xpath))
@@ -561,11 +563,11 @@ class GGVenturesSpider(scrapy.Spider):
                         if len(page_links) == scrape_page and next_page_set_xpath:
                             self.driver.get(self.driver.find_element(By.XPATH,next_page_set_xpath).get_attribute('href'))
                             page_links.extend(self.get_no_page_xpath(next_page_xpath))
-                        self.driver.get(page_links[scrape_page]) 
+                        self.driver.get(page_links[scrape_page])
                     elif page_element and click_next_month:
                         page_number = scrape_page + 2
                         next_page_xpath = f"{page_element}[@{current_page_class}='{page_number}']"
-                        
+
                     if not page_element and get_next_month:
                         next_month = self.driver.find_element(By.XPATH,next_page_xpath).get_attribute('href')
                         self.driver.get(next_month)
@@ -590,7 +592,8 @@ class GGVenturesSpider(scrapy.Spider):
     def closed(self, reason):
         try:
             self.driver.quit()
-            self.getter.quit()
+            if self.USE_MULTI_DRIVER:
+                self.getter.quit()
             self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
             logger.debug(f"Spider: {self.name} scraping closed due to --> {reason}")
             logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
