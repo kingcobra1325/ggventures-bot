@@ -49,7 +49,7 @@ class Che0009Spider(GGVenturesSpider):
                     try:
                         item_data['event_desc'] = self.desc_images(desc_xpath="//p[@class='text-justify']/following-sibling::p ")   
                     except self.Exc.NoSuchElementException as e:
-                        item_data['event_desc'] = self.desc_images(desc_xpath=" (//span[@class='z-html']//div[starts-with(@class,'col-xs-12')])[5]")   
+                        item_data['event_desc'] = self.desc_images(desc_xpath="(//span[@class='z-html']//div[starts-with(@class,'col-xs-12')])[5]")   
                         self.Func.print_log(f"XPATH not found {e}: Skipping.....")
 
                     # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//p[@class='event_date']").get_attribute('textContent')
