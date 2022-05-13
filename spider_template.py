@@ -1,3 +1,4 @@
+from distutils.log import error
 import scrapy, time, traceback, os, sys
 # from scrapy import Selector
 from datetime import datetime
@@ -423,8 +424,18 @@ class GGVenturesSpider(scrapy.Spider):
             list_images = "\n".join([str(x.get_attribute('src')) for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
             return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s):\n{list_images}"
         except NoSuchAttributeException as e:
-            logger.debug("No image found on spider {self.name}... scraping text only...")
+            logger.debug(f"No image found on spider {self.name}... scraping text only...")
             return temp_event_desc.get_attribute('textContent')
+    
+    def desc_images_2(self,driver,xpath):
+        try:
+            temp_event_desc = driver.find_element(By.XPATH,xpath)
+            list_images = "\n".join([str(x.get_attribute('src')) for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
+            return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s):\n{list_images}"
+        except NoSuchAttributeException as e:
+            logger.debug(f"No image found on spider {self.name}... Skipping image description scraping.")
+            return ""
+
 
     def alert_handler(self,alert_text='',alert_accept=True,alert_driver=None):
         try:
@@ -496,6 +507,31 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug(f"Upcoming Events XPATH cannot be located --> {e}")
                 logger.debug('Changes to Events on current Spider. Sending emails....')
                 website_changed(self.name,self.static_name)
+
+    def scrape_xpath(self,driver='',xpath_list=[],method='text',error_when_none=True):
+        if not driver:
+            driver = self.getter
+        errors_dict = {}
+        for xpath in xpath_list:
+            try:
+                if method.lower() == 'text':
+                    result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,xpath))).text
+                else:
+                    result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,xpath))).get_attribute('textContent')
+                image_desc = self.desc_images_2(driver,xpath)
+                final_result = f"{result}\n{image_desc}"
+                return final_result
+            except TimeoutError as e:
+                self.Func.print_log(f"XPATH: {xpath} cannot be scraped..",'debug')
+                errors_dict.update({xpath:f"|{type(e).__name__}\n{e}|"})
+        if error_when_none:
+            self.Func.print_log(f"No valid XPATH scraped...",'error')
+            xpath_errors = "\n".join([f"{k}{v}" for k,v in errors_dict.items()])
+            error_message = f"No valid scrapable XPATH.\n{xpath_errors}"
+            raise NoSuchElementException(error_message)
+        else:
+            self.Func.print_log(f"No valid XPATH scraped. Skipping...",'error')
+            return ""
 
 
     def events_list(self,event_links_xpath:str,return_elements=False,link_attribute='href'):
