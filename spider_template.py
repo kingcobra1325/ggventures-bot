@@ -521,7 +521,7 @@ class GGVenturesSpider(scrapy.Spider):
                 image_desc = self.desc_images_2(driver,xpath)
                 final_result = f"{result}\n{image_desc}"
                 return final_result
-            except TimeoutError as e:
+            except self.Exc.TimeoutException as e:
                 self.Func.print_log(f"XPATH: {xpath} cannot be scraped..",'debug')
                 errors_dict.update({xpath:f"|{type(e).__name__}\n{e}|"})
         if error_when_none:
