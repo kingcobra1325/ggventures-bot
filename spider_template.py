@@ -431,7 +431,7 @@ class GGVenturesSpider(scrapy.Spider):
         try:
             temp_event_desc = driver.find_element(By.XPATH,xpath)
             list_images = "\n".join([str(x.get_attribute('src')) for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
-            return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s):\n{list_images}"
+            return f"\nPictures Link(s):\n{list_images}"
         except NoSuchAttributeException as e:
             logger.debug(f"No image found on spider {self.name}... Skipping image description scraping.")
             return ""
@@ -508,7 +508,8 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug('Changes to Events on current Spider. Sending emails....')
                 website_changed(self.name,self.static_name)
 
-    def scrape_xpath(self,driver='',xpath_list=[],method='text',error_when_none=True):
+    def scrape_xpath(self,driver='',xpath_list=[],method='text',error_when_none=True,enable_desc_image=False):
+        image_desc = ""
         if not driver:
             driver = self.getter
         errors_dict = {}
@@ -518,7 +519,8 @@ class GGVenturesSpider(scrapy.Spider):
                     result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,xpath))).text
                 else:
                     result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,xpath))).get_attribute('textContent')
-                image_desc = self.desc_images_2(driver,xpath)
+                if enable_desc_image:
+                    image_desc = self.desc_images_2(driver,xpath)
                 final_result = f"{result}\n{image_desc}"
                 return final_result
             except self.Exc.TimeoutException as e:
