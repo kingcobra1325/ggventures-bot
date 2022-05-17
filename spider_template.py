@@ -513,19 +513,19 @@ class GGVenturesSpider(scrapy.Spider):
         if not driver:
             driver = self.getter
         errors_dict = {}
-        for xpath in xpath_list:
-            try:
-                if method.lower() == 'text':
-                    result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,xpath))).text
-                else:
-                    result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,xpath))).get_attribute('textContent')
-                if enable_desc_image:
-                    image_desc = self.desc_images_2(driver,xpath)
-                final_result = f"{result}\n{image_desc}"
-                return final_result
-            except self.Exc.TimeoutException as e:
-                self.Func.print_log(f"XPATH: {xpath} cannot be scraped..",'debug')
-                errors_dict.update({xpath:f"|{type(e).__name__}\n{e}|"})
+        joined_xpath = " | ".join(xpath_list)
+        try:
+            if method.lower() == 'text':
+                result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).text
+            else:
+                result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).get_attribute('textContent')
+            if enable_desc_image:
+                image_desc = self.desc_images_2(driver,joined_xpath)
+            final_result = f"{result}\n{image_desc}"
+            return final_result.strip()
+        except self.Exc.TimeoutException as e:
+            self.Func.print_log(f"XPATH: {joined_xpath} cannot be scraped..",'debug')
+            errors_dict.update({joined_xpath:f"|{type(e).__name__}\n{e}|"})
         if error_when_none:
             self.Func.print_log(f"No valid XPATH scraped...",'error')
             xpath_errors = "\n".join([f"{k}{v}" for k,v in errors_dict.items()])
