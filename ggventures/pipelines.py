@@ -195,7 +195,7 @@ class StartupsPipeline:
                 logger.debug(f"PIPELINE: Checking Data for KEYWORDS....")
                 check_event_title, title_criteria = pipeline_re.sort_startups(data=str(adapter.get('event_name')))
                 criteria_list.append(title_criteria) if check_event_title else None
-                check_event_desc, desc_criteria = pipeline_re.sort_startups(data=str(adapter.get('university_contact_info')))
+                check_event_desc, desc_criteria = pipeline_re.sort_startups(data=str(adapter.get('event_desc')))
                 criteria_list.append(desc_criteria) if check_event_desc else None
                 logger.debug(f"PIPELINE: STARTUP KEYWORDS - Event Title: {check_event_title}")
                 logger.debug(f"PIPELINE: STARTUP KEYWORDS - Event Desc: {check_event_desc}")
