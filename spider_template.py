@@ -29,7 +29,7 @@ class GGVenturesSpider(scrapy.Spider):
 
     USE_HANDLE_HTTPSTATUS_LIST = False
 
-    TRANSLATE = False
+    TRANSLATE = True
     SRC_LANG = 'en'
     TL_LANG = 'en'
     TL_ITEM_EXCLUDE = [
