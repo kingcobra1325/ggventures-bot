@@ -3,7 +3,7 @@ from spider_template import GGVenturesSpider
 
 class Jpn0008Spider(GGVenturesSpider):
     name = 'jpn_0008'
-    start_urls = ["https://www.iuj.ac.jp/about-2/contact/"]
+    start_urls = ["http://www.kbs.keio.ac.jp/en/about/contact.html"]
     country = 'Japan'
     # eventbrite_id = 6221361805
 

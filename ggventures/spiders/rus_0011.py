@@ -42,9 +42,9 @@ class Rus0011Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1",])
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'news-detail')]"],method='attr',enable_desc_image=True)
-                    # item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event-info']",],method='attr')
+                    # item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event-info']"],method='attr')
                     # item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event-info']"],method='attr')
 
                     yield self.load_item(item_data=item_data,item_selector=link)
