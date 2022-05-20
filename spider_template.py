@@ -543,7 +543,10 @@ class GGVenturesSpider(scrapy.Spider):
             if return_elements:
                 return web_elements_list
             else:
-                return [x.get_attribute(link_attribute) for x in web_elements_list]
+                event_links = [x.get_attribute(link_attribute) for x in web_elements_list]
+                # REMOVE EMPTY ELEMENTS
+                cleaned_event_links = list(filter(None, event_links))
+                return cleaned_event_links
         except self.Exc.TimeoutException as e:
             logger.debug(f'No Events Found --> {e}. Skipping.....')
             return []
@@ -623,6 +626,10 @@ class GGVenturesSpider(scrapy.Spider):
                 break
             logger.debug(f"IN-PROGRESS: Pending Number of Event Links: {len(event_links)}")
 
+        
+        # REMOVE EMPTY ELEMENTS
+        event_links = list(filter(None, event_links))
+        
         logger.debug(f"Number of Event Links: {len(event_links)}")
         return event_links
 
