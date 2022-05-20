@@ -14,7 +14,7 @@ class Zaf0014Spider(GGVenturesSpider):
     static_logo = "https://j9f2q5c9.stackpathcdn.com/wp-content/uploads/2020/04/ukzn-logo.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "http://businessschool.mandela.ac.za/events"
+    parse_code_link = "https://clms.ukzn.ac.za/"
 
     university_contact_info_xpath = "//div[@class='elementor-tabs-content-wrapper']"
     contact_info_text = True
@@ -27,7 +27,7 @@ class Zaf0014Spider(GGVenturesSpider):
         ####################
             self.driver.get(response.url)
     
-            self.check_website_changed(upcoming_events_xpath="//h3[text()='Upcoming Events']/../../following-sibling::section",empty_text=True)
+            self.check_website_changed(upcoming_events_xpath="//p[text()='No Upcoming Events']",empty_text=False)
             
             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
             

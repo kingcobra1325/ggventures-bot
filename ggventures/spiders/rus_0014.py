@@ -42,9 +42,9 @@ class Rus0014Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@id='pageTitle']",])
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@id='pageTitle']"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='fieldText']"],method='attr',enable_desc_image=True)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//td[@class='right']",],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//td[@class='right']"],method='attr')
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//td[@class='right']"],method='attr')
                     item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//td[@class='right']"],method='attr')
 
