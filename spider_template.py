@@ -514,6 +514,7 @@ class GGVenturesSpider(scrapy.Spider):
             driver = self.getter
         errors_dict = {}
         joined_xpath = " | ".join(xpath_list)
+        method = 'attr' if '//span' in joined_xpath else 'text'
         try:
             if method.lower() == 'text':
                 result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).text
@@ -549,6 +550,15 @@ class GGVenturesSpider(scrapy.Spider):
                 return cleaned_event_links
         except self.Exc.TimeoutException as e:
             logger.debug(f'No Events Found --> {e}. Skipping.....')
+            return []
+        
+    def events_click_reveal(self,click_area_xpath=''):
+        try:
+            click_elements_list = WebDriverWait(self.driver,15).until(EC.presence_of_all_elements_located((By.XPATH,click_area_xpath)))
+            for element in click_elements_list: 
+                element.click()
+        except self.Exc.TimeoutException as e:
+            logger.debug(f'No clickable element Found --> {e}. Skipping.....')
             return []
 
 
