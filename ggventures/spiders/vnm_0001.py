@@ -1,7 +1,7 @@
 from spider_template import GGVenturesSpider
 
 
-class Vnmn0001Spider(GGVenturesSpider):
+class Vnm0001Spider(GGVenturesSpider):
     name = 'vnm_0001'
     start_urls = ["https://www.cfvg.org/inquiry-form/"]
     country = 'Vietnam'

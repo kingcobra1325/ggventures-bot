@@ -1,99 +1,55 @@
-import scrapy, time
-# from scrapy import Selector
+from spider_template import GGVenturesSpider
 
-from bot_email import missing_info_email, error_email
 
-from binaries import Load_Driver, logger, WebScroller
-
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-import re
-
-class Usa0006Spider(scrapy.Spider):
+class Usa0006Spider(GGVenturesSpider):
     name = 'usa_0006'
+    start_urls = ["https://www.baylor.edu/business/index.php?id=87041"]
     country = 'US'
-    start_urls = ['https://www.baylor.edu/business/news/index.php?id=86163']
+    # eventbrite_id = 6221361805
+
+    # handle_httpstatus_list = [301,302,403,404]
+
+    static_name = "Baylor University - Hankamer School of Business"
     
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
+    static_logo = "https://www.baylor.edu/business/images_3/newLogoWeb.png"
 
-    def parse(self, response):
+    # MAIN EVENTS LIST PAGE
+    parse_code_link = "https://www.baylor.edu/business/news/index.php?id=86163"
+
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
+    # TRANSLATE = True
+
+    def parse_code(self,response):
         try:
+        ####################
             self.driver.get(response.url)
+    
+            # self.check_website_changed(upcoming_events_xpath="//p[text()='No events are currently published.']",empty_text=False)
             
-            event_name = list()
-            event_date = list()
-            event_time = list()
-            event_desc = list()
-            event_link = list()
-
-            logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@class ,'logo')]")))).value_of_css_property('background')
-            logo = re.findall(r'''\"(\S+)\"''',logo)[0]
+            # self.ClickMore(click_xpath="//a[text()='Больше событий']",run_script=True)
             
-            university_name = self.driver.find_element(By.XPATH , "//a[contains(@class,'logo')]").get_attribute('textContent')
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='em-card_image']/a",next_page_xpath="(//div[@class='em-search-pagination']//i)[2]/..",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            for link in self.events_list(event_links_xpath="//a[starts-with(@class,'tribe-event-url')]"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["https://zicklin.baruch.cuny.edu/event/"]):
+                    
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-            university_contact_info = self.driver.find_element(By.XPATH,"//div[contains(@id, 'copyright')]/p").text.split('\n')[1]
+                    item_data = self.item_data_empty.copy()
+                    
+                    item_data['event_link'] = link
 
-            Next_Link = self.driver.find_element(By.XPATH, "//input[contains(@type, 'submit')]")
-            Next_Link.click()
-                
-            for i in range(2):
-                EventLinks = self.driver.find_elements(By.XPATH, "//div[contains(@class, 'notResponsive')]//td[contains(@align, 'left')]/a")
-                for i in EventLinks:
-                    i.click()
-                    print(len(self.driver.window_handles))
-                    new_window = self.driver.window_handles[1]
-                    self.driver.switch_to.window(new_window)
-                    event_name.append((WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@id, 'content')]/h1")))).text)
-                    eventDescCount = self.driver.find_elements(By.XPATH,"//tbody/tr")
-                    if len(eventDescCount) <= 3:
-                        event_desc.append(None)
-                    elif len(eventDescCount) == 4:
-                        event_desc.append(self.driver.find_element(By.XPATH, "//tr[2]").text)
-                    elif len(eventDescCount) >= 5:
-                        event_desc.append(self.driver.find_element(By.XPATH, "//tr[3]").text)
-                    else:
-                        event_desc.append(None)
-                    event_date.append(self.driver.find_element(By.XPATH, "//tr[1]/td[2]").text)
-                    try:
-                        event_time.append(self.driver.find_element(By.XPATH, "//tr[1]/td[4]").text)
-                    except:
-                        event_time.append('All Day')
-                    event_link.append(self.driver.current_url)
-                    #Some events don't have time and element position changes depends on the event
-                    self.driver.close()
-                    self.driver.switch_to.window(self.driver.window_handles[0])
-                self.driver.get(self.driver.find_element(By.XPATH,"//div[contains(@class, 'box_title')]/a[3]").get_attribute('href'))
-                
-            for i in range(len(event_name)):
-                data = ItemLoader(item = GgventuresItem(), selector = i)
-                data.add_value('university_name',university_name)
-                data.add_value('university_contact_info',university_contact_info)
-                data.add_value('logo',logo)
-                data.add_value('event_name', event_name[i])
-                data.add_value('event_desc', event_desc[i])
-                data.add_value('event_date', event_date[i])
-                data.add_value('event_time', event_time[i])
-                data.add_value('event_link', event_link[i])
-                yield data.load_item()
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='tribe-events-single-event-title']"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'tribe-events-single-event-description')]"],enable_desc_image=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'tribe-events-schedule')]"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'tribe-events-schedule')]"],method='attr')
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h2[text()='Organizer']/.."],method='attr')
+
+                    yield self.load_item(item_data=item_data,item_selector=link)
+
+        ####################
         except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
-        
-    def closed(self, reason):
-        try:
-            self.driver.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-        except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            self.exception_handler(e)

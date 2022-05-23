@@ -1,7 +1,7 @@
 from spider_template import GGVenturesSpider
 
 
-class Vnmn0002Spider(GGVenturesSpider):
+class Vnm0002Spider(GGVenturesSpider):
     name = 'vnm_0002'
     start_urls = ["https://ueh.edu.vn/en/about-us/overview"]
     country = 'Vietnam'

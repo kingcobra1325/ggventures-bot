@@ -1,111 +1,55 @@
-import scrapy, time
-# from scrapy import Selector
+from spider_template import GGVenturesSpider
 
-from bot_email import missing_info_email, error_email,website_changed
 
-from binaries import Load_Driver, logger, WebScroller
-
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-class Usa0027Spider(scrapy.Spider):
+class Usa0027Spider(GGVenturesSpider):
     name = 'usa_0027'
+    start_urls = ["https://www.fairfield.edu/undergraduate/academics/schools-and-colleges/charles-f-dolan-school-of-business/"]
     country = 'US'
-    start_urls = ["https://fairfield.campuslabs.com/engage/organization/dolan-school-of-business/events"]
+    # eventbrite_id = 6221361805
 
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.getter = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
-        
-    def parse(self, response):
-        try:
-            event_name = list()
-            event_date = list()
-            event_time = list()
-            event_desc = list()
-            event_link = list()
+    # handle_httpstatus_list = [301,302,403,404]
 
-            self.driver.get("https://www.lebow.drexel.edu/")
-            
-            # logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@class,'logo-long d-none d-md-block')]")))).value_of_css_property('background-image')
-            
-            university_name = self.driver.find_element(By.XPATH , "//title").get_attribute('textContent')
-            
-            self.driver.get("https://www.lebow.drexel.edu/about/contact-us")
-  
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(text(),'Graduate Programs')]/following-sibling::div")))).text
-            
-            self.driver.get(response.url)  
-            
-            no_events = WebDriverWait(self.driver,20).until(EC.presence_of_all_elements_located((By.XPATH,'''//p[text()="This organization doesn't have any upcoming events."]'''))) 
-            
-            if not no_events:
-                logger.debug('Changes to Events on current Spider. Sending emails....')
-                website_changed(self.name,university_name)
-            else:
-                logger.debug('No changes to Events on current Spider. Skipping.....')
-            
-                    
-            
-            # while True:
-            #     EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//h1[contains(@class,'title p-name fn')]/a")))
-                
-            #     for i in EventLinks:
-            #         self.getter.get(i.get_attribute('href'))
-                        
-            #         RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[contains(@class,'title')]")))).text
-                    
-            #         RawEventDesc = self.getter.find_element(By.XPATH,"//div[contains(@class,'panel-pane pane-node-body')]").text
+    static_name = "Fairfield University,Charles F. Dolan School of Business"
     
-            #         RawEventDate = self.getter.find_element(By.XPATH,"//div[contains(@class,'long-date-event')]").text
-                    
-            #         try:
-            #             RawEventTime = self.getter.find_element(By.XPATH,"//div[contains(@class,'long-date-event')]").text
-            #         except:
-            #             RawEventTime = None
+    static_logo = "https://www.fairfield.edu/files/images/graduate-and-professional-studies/charles-f-dolan-school-of-business/11837_grad_dsb_logo.png"
 
-                        
-            #         event_name.append(RawEventName)
-            #         event_desc.append(RawEventDesc)
-            #         event_date.append(RawEventDate)
-            #         event_time.append(RawEventTime)
-            #         event_link.append(i.get_attribute('href'))        
-                
-            #     try:
-            #         self.driver.get(self.driver.find_element(By.XPATH,"//li[contains(@class,'pager-next last')]/a").get_attribute('href'))  
-            #     except:
-            #         break
+    # MAIN EVENTS LIST PAGE
+    parse_code_link = "https://fairfield.imodules.com/s/1671/18/interior.aspx?sid=1671&gid=2&pgid=13&cid=664"
 
-            # for i in range(len(event_name)):
-            #     data = ItemLoader(item = GgventuresItem(), selector = i)
-            #     data.add_value('university_name',university_name)
-            #     data.add_value('university_contact_info',university_contact_info)
-            #     # data.add_value('logo',logo)
-            #     data.add_value('event_name', event_name[i])
-            #     data.add_value('event_desc', event_desc[i])
-            #     data.add_value('event_date', event_date[i])
-            #     data.add_value('event_time', event_time[i])
-            #     data.add_value('event_link', event_link[i])
-                
-            #     yield data.load_item()
-            
-        except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)    
-    def closed(self, reason):
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
+    # TRANSLATE = True
+
+    def parse_code(self,response):
         try:
-            self.driver.quit()
-            self.getter.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
+        ####################
+            self.driver.get(response.url)
+    
+            # self.check_website_changed(upcoming_events_xpath="//p[text()='No events are currently published.']",empty_text=False)
+            
+            # self.ClickMore(click_xpath="//a[text()='View more events...']",run_script=True)
+              
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='events-card']/a",next_page_xpath="//span[text()='Next Page']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            for link in self.events_list(event_links_xpath="//div[@class='title']"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["https://fairfield.imodules.com/s/"]):
+                    
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
+
+                    item_data = self.item_data_empty.copy()
+                    
+                    item_data['event_link'] = link
+
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='inner']/h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//main//div[contains(@class,'description')]"],enable_desc_image=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event-date']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event-date']"],method='attr',error_when_none=False)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[text()='Contact Info']/.."],method='attr',error_when_none=False)
+
+                    yield self.load_item(item_data=item_data,item_selector=link)
+
+        ####################
         except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            self.exception_handler(e)

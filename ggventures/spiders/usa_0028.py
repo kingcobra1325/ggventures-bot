@@ -1,76 +1,55 @@
-import scrapy
+from spider_template import GGVenturesSpider
 
 
-class Usa0028Spider(scrapy.Spider):
+class Usa0028Spider(GGVenturesSpider):
     name = 'usa_0028'
-    start_urls = ['https://www.fdu.edu/academics/colleges-schools/silberman/']
+    start_urls = ["https://www.fdu.edu/about/contact-us/"]
     country = 'US'
+    # eventbrite_id = 6221361805
 
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.getter = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
+    # handle_httpstatus_list = [301,302,403,404]
 
-    def parse(self, response):
+    static_name = "Fairleigh Dickinson University,Silberman College of Business"
+    
+    static_logo = "https://www.fdu.edu/wp-content/themes/fairleigh-dickinson/dist/assets/images/fdu-logo.svg"
+
+    # MAIN EVENTS LIST PAGE
+    parse_code_link = "https://www.creighton.edu/events"
+
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
+    # TRANSLATE = True
+
+    def parse_code(self,response):
         try:
-            # event_name = list()
-            # event_date = list()
-            # event_time = list()
-            # event_desc = list()
-            # event_link = list()
-
+        ####################
             self.driver.get(response.url)
+    
+            # self.check_website_changed(upcoming_events_xpath="//p[text()='No events are currently published.']",empty_text=False)
+            
+            # self.ClickMore(click_xpath="//a[text()='View more events...']",run_script=True)
+              
+            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='events-card']/a",next_page_xpath="//span[text()='Next Page']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            # for link in self.events_list(event_links_xpath="//div[@class='eventolink']"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["https://www.creighton.edu/events/"]):
+                    
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-            logo = WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//img[contains(@class,'brand-logo')]"))).get_attribute("src")
+                    item_data = self.item_data_empty.copy()
+                    
+                    item_data['event_link'] = link
 
-            university_name = 'Fairleigh Dickinson University, Silberman College of Business'
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='inner']/h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//main//div[contains(@class,'description')]"],enable_desc_image=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event-date']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event-date']"],method='attr',error_when_none=False)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[text()='Contact Info']/.."],method='attr',error_when_none=False)
 
-            self.driver.get("https://www.fdu.edu/about/contact-us/")
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(text(),'Contacts')]/parent::div")))).text
-
-            self.driver.get(response.url)
-
-            select = Select(WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//select[contains(@name,'jump_menu')]"))))
-            select.select_by_value('all')
-
-            time.sleep(4)
-
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[contains(@title,'Expand to View')]")))
-
-            for i in EventLinks:
-                self.getter.get(i.get_attribute('href'))
-
-                if 'gsb.columbia.edu' in i.get_attribute('href'):
-
-                    data = ItemLoader(item = GgventuresItem(), selector = i)
-                    data.add_value('university_name',university_name)
-                    data.add_value('university_contact_info',university_contact_info)
-                    data.add_value('logo',logo)
-                    data.add_value('event_name', WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH, "//h1"))).text)
-                    data.add_value('event_desc', self.getter.find_elements(By.XPATH , "//div[contains(@class,'col-md-4_5')]//p")[0].text)
-                    data.add_value('event_date', self.getter.find_elements(By.XPATH , "//div[contains(@class,'col-md-4_5')]//p")[1].text)
-                    data.add_value('event_time', self.getter.find_element(By.XPATH , "//div[contains(@id,'event_details')]").text)
-                    data.add_value('event_link', i.get_attribute('href'))
-
-                    yield data.load_item()
-                else:
-                    logger.debug(f"Link: {i.get_attribute('href')} is a Unique Event. Sending Emails.....")
-                    unique_event(self.name,university_name,i.get_attribute('href'))
-                    logger.debug("Skipping............")
-
-
+        ####################
         except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
-    def closed(self, reason):
-        try:
-            self.driver.quit()
-            self.getter.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-        except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            self.exception_handler(e)
