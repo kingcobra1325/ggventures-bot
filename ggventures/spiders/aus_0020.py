@@ -1,101 +1,59 @@
-import scrapy
-import scrapy, time
-# from scrapy import Selector
 
-from bot_email import missing_info_email, error_email,website_changed
+from spider_template import GGVenturesSpider
 
-from binaries import Load_Driver, logger, WebScroller
 
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-class Aus0020Spider(scrapy.Spider):
+class Aus0020Spider(GGVenturesSpider):
     name = 'aus_0020'
+    start_urls = ['https://fbe.unimelb.edu.au/contact/media-contacts']
     country = 'Australia'
-    # allowed_domains = ['https://bond.edu.au/intl/about-bond/academia/bond-business-school']
-    start_urls = ["https://fbe.unimelb.edu.au/events"]
+    # eventbrite_id = 6552000185
+    TRANSLATE = True
 
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.getter = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
+    # handle_httpstatus_list = [301,302,403,404,410,429]
 
-    def parse(self, response):
+    static_name = "The University of Melbourne,Faculty of Economics and Commerce"
+    static_logo = "https://180dc.org/wp-content/uploads/2017/02/original.jpg"
+
+    # MAIN EVENTS LIST PAGE
+    parse_code_link = "https://events.unimelb.edu.au/"
+
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
+
+    def parse_code(self,response):
         try:
-            self.driver.get("https://fbe.unimelb.edu.au/")
+        ####################
+            self.driver.get(response.url)            
+            # self.check_website_changed(upcoming_events_xpath="//div[@id='eventos']//a",checking_if_none=True)
+            # self.ClickMore(click_xpath="//a[@id='btnLoadMore']",run_script=True)
+            # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='List Calendar View']")))
+            # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//li[@class='four-column']/a",next_page_xpath="//a[@class='next page-numbers']",get_next_month=True):
+            for link in self.events_list(event_links_xpath="//div[@class='uom-event-title']/a"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=['events.unimelb.edu.au']):
 
-            logo = "https://180dc.org/wp-content/uploads/2017/02/original.jpg"
-            # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-            university_name = "The University of Melbourne,Faculty of Economics and Commerce"
-            
-            self.driver.get("https://fbe.unimelb.edu.au/contact/media-contacts")
-            
-            # self.driver.find_element(By.XPATH,"//*[contains(text(),'General contacts')]").click()
-            
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//ul[@class='profile-header__contact']")))).get_attribute('textContent')
+                    item_data = self.item_data_empty.copy()
 
-            self.driver.get(response.url)     
-        
-            counter = 0
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//ul[@class='block-listing ']//a")))
-            for i in EventLinks:
-                self.getter.get(i.get_attribute('href'))
+                    # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[@class='uom-event-detail-title']")))).text
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='uom-event-detail-title']"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'uom-event-description')]"])
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'uom-event-meta')]"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'uom-event-meta')]"],method='attr')
+                    # item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
+                    # item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
 
-                try:
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'uom-event-description')]").text
-                except:
-                    RawEventDesc = None
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h4[text()='Contact email']/.."],error_when_none=False)
+                    # item_data['startups_link'] = ''
+                    # item_data['startups_name'] = ''
+                    item_data['event_link'] = link
 
-                try:
-                    RawEventDate = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'details-date')]//span[starts-with(@class,'details-value')]").text
-                except:
-                    RawEventDate = None
-                    
-                try:
-                    # RawEventTime = None                    
-                    RawEventTime = self.getter.find_element(By.XPATH,"//span[@class='lw_start_time']").text 
-                    # RawEventTime = RawEventDate
-                except:
-                    RawEventTime = None
-                    
-                try:
-                    RawStartContactInfo = self.getter.find_element(By.XPATH,"//h4[text()='Contact email']/..").text
-                except:
-                    RawStartContactInfo = None
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
-                data = ItemLoader(item = GgventuresItem(), selector = counter)
-                data.add_value('university_name',university_name)
-                data.add_value('university_contact_info',university_contact_info)
-                data.add_value('logo',logo)
-                data.add_value('event_name', RawEventName)
-                data.add_value('event_desc', RawEventDesc)
-                data.add_value('event_date', RawEventDate)
-                data.add_value('event_time', RawEventTime)
-                data.add_value('event_link', i.get_attribute('href'))
-                data.add_value('startups_contact_info', RawStartContactInfo)
-                counter+=1
-
-                yield data.load_item()
-
+        ####################
         except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
-    def closed(self, reason):
-        try:
-            self.driver.quit()
-            self.getter.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-        except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            self.exception_handler(e)
