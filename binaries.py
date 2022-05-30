@@ -133,11 +133,13 @@ class APPSettings():
         self.UNIQUE_EVENT_EMAILS = False
         self.GOOGLE_API_RATE_LIMIT_EMAIL = False
         self.CLEAN_DATA_PIPELINE = True
+        # self.CLEAN_DATA_PIPELINE = False
         self.CLEAN_EVENT_DATE = True
         self.CLEAN_EVENT_TIME = True
         self.CLEAN_CONTACT_INFO = True
         self.SORT_STARTUPS = True
         self.DELETE_PAST_EVENTS = True
+        # self.DELETE_PAST_EVENTS = False
         self.REGEX_LOGS = True
         self.DEV_LOGS = True
         self.NO_MATCH_REGEX_LOGS = True

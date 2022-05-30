@@ -68,6 +68,10 @@ DATE_PATTERNS_RE =                  [
                                         r"[0-9][0-9]\s(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
                                         r"[0-9]\s(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
                                         r"[0-9][0-9]/[0-9][0-9]",
+                                        r"[0-9][0-9]/[0-9][0-9]/[0-9][0-9]",
+                                        r"[0-9][0-9]/[0-9]/[0-9][0-9]",
+                                        r"[0-9]/[0-9][0-9]/[0-9][0-9]",
+                                        r"[0-9]/[0-9]/[0-9][0-9]",
 
                                     ]
 
@@ -106,6 +110,8 @@ DATE_PATTERNS =                     [
                                         ["%dth %b %Y"         ,date_strf_pattern],
                                         ["%d.%m.%Y"         ,date_strf_pattern],
                                         ["%Y.%m.%d"         ,date_strf_pattern],
+                                        ["%d/%m/%y"         ,date_strf_pattern],
+                                        ["%m/%d/%y"         ,date_strf_pattern],
                                     ]
 
 TIME_PATTERNS_RE =                  [
@@ -201,6 +207,7 @@ TIME_PATTERNS =                     [
                                         ["%I.%M%p"     ,time_strf_pattern],
                                         ["%I:%M%p"      ,time_strf_pattern],
                                         ["T%H:%M:%SZ"   ,time_strf_pattern],
+                                        ["%H:%M:%SZ"   ,time_strf_pattern],
                                         ["%H:%M"   ,time_strf_pattern],
                                         ["%I:%M"        , "'%I:%M:%S"],
                                     ]

@@ -9,7 +9,7 @@ from spider_list import Load_Spiders
 from spider_list_test import Load_Spiders_Test
 from os import environ
 
-# --------------- INSTALL MISSING DEPENDENCIES ----------------- #
+# --------------- INSTALL MISSING DEPENDENCIES ---------- ------- #
 try:
     from scrapy.exceptions import DropItem
 except ModuleNotFoundError as e:

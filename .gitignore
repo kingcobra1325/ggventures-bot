@@ -153,3 +153,5 @@ ggventures/spiders/__pycache__/gbr_0003.cpython-310.pyc
 ggventures/spiders/__pycache__/gbr_0002.cpython-310.pyc
 ggventures/spiders/__pycache__/gbr_0001.cpython-310.pyc
 .env
+spider_list_test.py
+spider_list_test.py
