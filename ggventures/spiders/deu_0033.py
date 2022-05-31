@@ -36,30 +36,21 @@ class Deu0033Spider(GGVenturesSpider):
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
                     item_data = self.item_data_empty.copy()
-                    
-                    item_data['event_link'] = link
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//div[@class='desktop-headline']"))).get_attribute('textContent')
-                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='content-standard-left']").text
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='desktop-headline']"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='content-standard-left']"])
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[contains(text(),'Termin')]/following-sibling::div","//div[contains(@class,'inner-box information')]","//div[contains(@class,'odd-even-table')]//div[contains(@class,'content-tabelle-row')]"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(text(),'Termin')]/following-sibling::div","//div[contains(@class,'inner-box information')]","//div[contains(@class,'odd-even-table')]//div[contains(@class,'content-tabelle-row')]"],method='attr')
+                    # item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
+                    # item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-
-                    try:
-                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(text(),'Termin')]/following-sibling::div").get_attribute('textContent')
-                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(text(),'Termin')]/following-sibling::div").get_attribute('textContent')
-                    except self.Exc.NoSuchElementException as e:
-                        self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                        # logger.debug(f"XPATH not found {e}: Skipping.....")
-                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-
-                    try:
-                        item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(text(),'Kontakt')]/following-sibling::div").get_attribute('textContent')
-                    except self.Exc.NoSuchElementException as e:
-                        self.Func.print_log(f"XPATH not found {e}: Skipping.....")
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[contains(text(),'Kontakt')]/following-sibling::div"],method='attr',error_when_none=False)
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
+                    item_data['event_link'] = link
+
+                    
+
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 
