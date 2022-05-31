@@ -21,9 +21,9 @@ class Deu0016Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.rwth-aachen.de/cms/root/Die-RWTH/Aktuell/~ulx/Veranstaltungen/lidx/1/"
 
-    university_contact_info_xpath = "//div[@class='text']"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):
@@ -33,40 +33,31 @@ class Deu0016Spider(GGVenturesSpider):
 
             # self.ClickMore(upcoming_events_xpath="//button[@class='filterable-list__load-more']")
 
-            for link in self.multi_event_pages(event_links_xpath="//div[@class='location']/a",next_page_xpath="//a[text()='Next Page']",get_next_month=True,click_next_month=False,wait_after_loading=False):
+            for link in self.multi_event_pages(num_of_pages=2,event_links_xpath="//div[@class='location']/a",next_page_xpath="//a[text()='Next Page']",get_next_month=True,click_next_month=False,wait_after_loading=False):
             # for link in self.events_list(event_links_xpath="//em[@class='filterable-list__list-item-meta']/../a"):
 
                 self.getter.get(link)
 
-                if self.unique_event_checker(url_substring=["https://www.rwth-aachen.de/go/id/"]):
+                if self.unique_event_checker(url_substring=["rwth-aachen.de","rwth-aachen.de/cms/root","https://www.rwth-aachen.de/go/id/"]):
 
                     logger.info(f"Currently scraping --> {self.getter.current_url}")
 
                     item_data = self.item_data_empty.copy()
                     
-                    item_data['event_link'] = link
-
-                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//div[@class='text']/h1"))).text
-                    item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='text']").text
-
-                    # item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'box-event-doc-header-date')]").text
-                    # item_data['event_time'] = self.getter.find_element(By.XPATH,"//dl[contains(@class,'contact-list')]").text
-
                     try:
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[@class='text']/h3").text
-                        item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[@class='text']/h3").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                        # logger.debug(f"XPATH not found {e}: Skipping.....")
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-                        item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
+                        item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='text']/h1"])
+                        item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='text']","//div[contains(@class,'item-page')]/div[contains(@class,'row')]/div[contains(@class,'col')]"])
+                    except NoSuchElementException:
+                        continue
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='text']/h3","//div[contains(@class,'tile__content')]"],error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='text']/h3","//div[contains(@class,'tile__content')]"],error_when_none=False)
+                    # item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
+                    # item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
 
-                    # try:
-                    #     item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//strong[text()='Contact']/../following-sibling::p").text
-                    # except NoSuchElementException as e:
-                    #     logger.debug(f"XPATH not found {e}: Skipping.....")
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[contains(text(),'CONTACT')]/following-sibling::p"],error_when_none=False)
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
+                    item_data['event_link'] = link
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

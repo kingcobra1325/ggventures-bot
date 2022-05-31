@@ -31,8 +31,6 @@ class Chn0007Spider(GGVenturesSpider):
 
             # self.check_website_changed(upcoming_events_xpath="//p[contains(text(),'Sorry, no events for this category right now but check back later.')]")
 
-            date_time = WebDriverWait(self.driver,20).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'rst-box-events')]/h2"))).text
-
             # for link in self.multi_event_pages(num_of_pages=5,event_links_xpath="//div[contains(@class,'about_right')]//li/a",next_page_xpath="//a[contains(text(),'Next')]",get_next_month=True,click_next_month=False,wait_after_loading=False):
             for link in self.events_list(event_links_xpath="//div[contains(@class,'rst-box-events')]//h3/a"):
 
@@ -44,19 +42,16 @@ class Chn0007Spider(GGVenturesSpider):
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).text
-                    item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'main_about')]").text
-                    item_data['event_date'] = date_time
-                    item_data['event_time'] = date_time
-                    # try:
-                    #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//p[contains(text(),'Time')]").text
-                    #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//p[contains(text(),'Time')]").text
-                    # except NoSuchElementException as e:
-                    #     logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                    #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//strong[contains(text(),'Time')]/parent::p").text
-                    #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//strong[contains(text(),'Time')]/parent::p").text
+                    # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
-                    # item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//h3[text()='Contact']/..").text
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'main_about')]","//div[@id='about_event']"])
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='single-main-event']//ul"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='single-main-event']//ul"],method='attr')
+                    # item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
+                    # item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
+
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[contains(text(),'CONTACT')]/following-sibling::p"],error_when_none=False)
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
                     item_data['event_link'] = link

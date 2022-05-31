@@ -35,27 +35,16 @@ class Fin0002Spider(GGVenturesSpider):
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1/span"))).get_attribute('textContent')
-                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'text-text')]").text
+                    # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'event-date')]").text
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'event-date')]").text
-                    item_data['event_date'] = self.get_datetime_attributes("//div[contains(@class,'aalto-article__info-text')]//time")
-                    item_data['event_time'] = self.get_datetime_attributes("//div[contains(@class,'aalto-article__info-text')]//time")
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1/span"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'text-text')]","//div[@class='aalto-article__ingress']"])
+                    # item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='single-main-event']//ul"],method='attr')
+                    # item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='single-main-event']//ul"],method='attr')
+                    item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
+                    item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
 
-                    # try:
-                    #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text
-                    #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text
-                    # except NoSuchElementException as e:
-                    #     logger.debug(f"XPATH not found {e}: Skipping.....")
-                    #     # logger.debug(f"XPATH not found {e}: Skipping.....")
-                    #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-                    #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-
-                    # try:
-                    #     item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'c-contact-card')]").text
-                    # except NoSuchElementException as e:
-                    #     logger.debug(f"XPATH not found {e}: Skipping.....")
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[contains(text(),'CONTACT')]/following-sibling::p"],error_when_none=False)
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
                     item_data['event_link'] = link

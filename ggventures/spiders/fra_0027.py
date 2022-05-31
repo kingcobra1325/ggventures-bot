@@ -20,9 +20,9 @@ class Fra0027Spider(GGVenturesSpider):
 
     parse_code_link = "https://www.hec.edu/en/events"
 
-    university_contact_info_xpath = "//div[starts-with(@class,'l-container')][2]"
-    contact_info_text = True
-    # contact_info_textContent = False
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
 
     def parse_code(self,response):
         try:
