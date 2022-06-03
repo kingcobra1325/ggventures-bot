@@ -19,10 +19,10 @@ class Jpn0005Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.hosei.ac.jp/english/news/"
 
-    university_contact_info_xpath = "//div[contains(@class,'contents')]"
+    university_contact_info_xpath = "//body"
     # contact_info_text = True
-    # contact_info_textContent = True
-    contact_info_multispan = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
 
     def parse_code(self,response):
         try:

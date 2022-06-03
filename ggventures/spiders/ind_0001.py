@@ -3,7 +3,7 @@ from spider_template import GGVenturesSpider
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import WebDriverException
 
 
 class Ind0001Spider(GGVenturesSpider):
@@ -36,7 +36,10 @@ class Ind0001Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//h4[contains(@class,'event-teaser')]/a",next_page_xpath="//a[@rel='next']",get_next_month=True,click_next_month=False,wait_after_loading=False):
             for link in self.events_list(event_links_xpath="//div[contains(@class,'events')]//a"):
 
-                self.getter.get(link)
+                try:
+                    self.getter.get(link)
+                except WebDriverException:
+                    continue
 
                 if self.unique_event_checker(url_substring=['www.alliance.edu.in/events']):
 

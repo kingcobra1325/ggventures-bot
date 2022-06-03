@@ -357,7 +357,7 @@ spider_guy = [
 # spider_hti = ['hti_0001']
 spider_ushi = [
                     # # 'us-hi_0001',
-                    'us-hi_0002'
+                    # 'us-hi_0002'
                 ]
 spider_hnd = [
                 # 'hnd_0001'
@@ -393,9 +393,9 @@ spider_ind = [
                 # # 'ind_0010', 'ind_0011',
                 # 'ind_0012', 'ind_0013', 'ind_0014',
                 # # 'ind_0015', 'ind_0016',
-                # # 'ind_0017',
+                # 'ind_0017',
                 # 'ind_0018',
-                # # 'ind_0019',
+                # 'ind_0019',
                 # 'ind_0020',
                 # # 'ind_0021',
                 # 'ind_0022', 'ind_0023', 'ind_0024',
@@ -611,7 +611,10 @@ spider_nld = [
 spider_nzl = [
                 # 'nzl_0001', 'nzl_0002', 'nzl_0003',
                 # 'nzl_0004',
-                # 'nzl_0005', 'nzl_0006', 'nzl_0007', 'nzl_0008'
+                # 'nzl_0005', 
+                # 'nzl_0006', 
+                # 'nzl_0007', 
+                'nzl_0008'
             ]
 spider_nic = [
                 # 'nic_0001'

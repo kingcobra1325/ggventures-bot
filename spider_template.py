@@ -14,11 +14,11 @@ from ggventures.items import GgventuresItem
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException
-
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException, UnexpectedAlertPresentException, NoAlertPresentException
 from googletrans import Translator
 
 import re
+from lib.decorators import decorate
 
 class GGVenturesSpider(scrapy.Spider):
 
@@ -390,6 +390,7 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug(f"No more Events to load --> {e}. Start Scraping......")
                 break
 
+    @decorate.selenium_popup_handler_fn(exc=UnexpectedAlertPresentException)
     def get_university_contact_info(self,response):
         self.driver.get(response.url)
 
@@ -642,6 +643,23 @@ class GGVenturesSpider(scrapy.Spider):
         
         logger.debug(f"Number of Event Links: {len(event_links)}")
         return event_links
+    
+    def handle_popup_alert(self,use_driver=True,action='cancel'):
+        if use_driver:
+            driver = self.driver
+        else:
+            driver = self.getter
+        # Actions
+        try:
+            if action.lower() == 'cancel':
+                driver.switch_to.alert().dismiss()
+            elif action.lower() == 'ok':
+                driver.switch_to.alert().accept()
+                # driver.switchTo().alert().accept()
+            else:
+                raise Exception(f"Invalid pop-up action - {action}...")
+        except NoAlertPresentException as e:
+            self.logger.debug(f"|{e}| No Alert present...")
 
 
     def closed(self, reason):

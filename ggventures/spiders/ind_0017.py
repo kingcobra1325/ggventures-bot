@@ -16,9 +16,9 @@ class Ind0017Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.iiml.ac.in/events"
 
-    university_contact_info_xpath = "//div[@class='content_layout']"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):
@@ -45,8 +45,8 @@ class Ind0017Spider(GGVenturesSpider):
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='node__content']")
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='node__content']").get_attribute('textContent')
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='node__content']").get_attribute('textContent')
 
                     # try:
                     #     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[starts-with(@class,'tribe-events-schedule')]").get_attribute('textContent')
