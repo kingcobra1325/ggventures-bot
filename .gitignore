@@ -165,3 +165,6 @@ ggventures/spiders/__pycache__/chn_0007.cpython-310.pyc
 ggventures/spiders/__pycache__/chn_0011.cpython-310.pyc
 __pycache__/spider_list_test.cpython-310.pyc
 GGVENTURES_BOT_LOG.log
+__pycache__
+ggventures\__pycache__
+ggventures\spiders\__pycache__

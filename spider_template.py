@@ -14,7 +14,7 @@ from ggventures.items import GgventuresItem
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException, UnexpectedAlertPresentException, NoAlertPresentException
+from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException, UnexpectedAlertPresentException, NoAlertPresentException
 from googletrans import Translator
 
 import re
@@ -509,7 +509,7 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug('Changes to Events on current Spider. Sending emails....')
                 website_changed(self.name,self.static_name)
 
-    def scrape_xpath(self,driver='',xpath_list=[],method='text',error_when_none=True,enable_desc_image=False):
+    def scrape_xpath(self,driver='',xpath_list=[],method='text',error_when_none=True,enable_desc_image=False,wait_time=15):
         image_desc = ""
         if not driver:
             driver = self.getter
@@ -518,9 +518,9 @@ class GGVenturesSpider(scrapy.Spider):
         method = 'attr' if '//span' in joined_xpath else 'text'
         try:
             if method.lower() == 'text':
-                result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).text
+                result = self.Mth.WebDriverWait(driver,wait_time).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).text
             else:
-                result = self.Mth.WebDriverWait(driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).get_attribute('textContent')
+                result = self.Mth.WebDriverWait(driver,wait_time).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).get_attribute('textContent')
             if enable_desc_image:
                 image_desc = self.desc_images_2(driver,joined_xpath)
             final_result = f"{result}\n{image_desc}"
@@ -577,7 +577,7 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,click_month_list_xpath="",run_script=False\
-        ,page_element='',current_page_class='',next_page_set_xpath='',href_button_xpath="",base_site=""):
+        ,page_element='',current_page_class='',next_page_set_xpath='',href_button_xpath="",base_site="",elem_intercept_exc=False):
 
         event_links = []
         page_links = []
@@ -625,10 +625,19 @@ class GGVenturesSpider(scrapy.Spider):
                         self.driver.get(next_month)
                     if click_next_month:
                         next_page_btn = WebDriverWait(self.driver,40).until(EC.element_to_be_clickable((By.XPATH,next_page_xpath)))
-                        if run_script:
-                            self.driver.execute_script("arguments[0].click();", next_page_btn)
+                        if elem_intercept_exc:
+                            try:
+                                if run_script:
+                                    self.driver.execute_script("arguments[0].click();", next_page_btn)
+                                else:
+                                    next_page_btn.click()
+                            except ElementClickInterceptedException as e:
+                                self.logger.debug(f"{e} --> No more pages to scrape")
                         else:
-                            next_page_btn.click()
+                            if run_script:
+                                self.driver.execute_script("arguments[0].click();", next_page_btn)
+                            else:
+                                next_page_btn.click()
                     # next_month = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(@title,'Go to the next page of the results')]"))).get_attribute('href')
                 if wait_after_loading:
                     time.sleep(10)

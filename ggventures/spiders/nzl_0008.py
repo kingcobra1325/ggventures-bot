@@ -36,7 +36,7 @@ class Nzl0008Spider(GGVenturesSpider):
 
             # for link in self.events_list(event_links_xpath="//h3/a"):
             sleep(5)
-            for link in self.multi_event_pages(event_links_xpath="//h3//a",next_page_xpath="//i[@class='icons8-forward']",click_next_month=True):
+            for link in self.multi_event_pages(num_of_pages=2,event_links_xpath="//h3//a",next_page_xpath="//i[@class='icons8-forward']",click_next_month=True,elem_intercept_exc=True):
 
                 self.getter.get(link)
 
@@ -47,28 +47,17 @@ class Nzl0008Spider(GGVenturesSpider):
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//main//h1"))).get_attribute('textContent')
-                    item_data['event_link'] = link
-                    try:
-                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'desc')]").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='nd-hide-900']/..").text
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//main//h1"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'desc')]","//div[@class='nd-hide-900']/.."],error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='time']","//h5[@id='lw_cal_this_day']"])
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[@class='time']","//span[@class='lw_start_time']/.."])
+                    # item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
+                    # item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
 
-                    try:
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//span[@class='time']").text
-                        item_data['event_time'] = self.getter.find_element(By.XPATH,"//span[@class='time']").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//h5[@id='lw_cal_this_day']").text
-                        item_data['event_time'] = self.getter.find_element(By.XPATH,"//span[@class='lw_start_time']/..").text
-
-                    try:
-                        item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//label[text()='Contact']/..").text
-                        item_data['startups_link'] = self.getter.find_element(By.XPATH,"//label[@class='bt-label']").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//label[text()='Contact']/.."],method='attr',error_when_none=False,wait_time=5)
+                    item_data['startups_link'] = self.scrape_xpath(xpath_list=["//label[@class='bt-label']"],method='attr',error_when_none=False,wait_time=5)
                     # item_data['startups_name'] = ''
+                    item_data['event_link'] = link
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 
