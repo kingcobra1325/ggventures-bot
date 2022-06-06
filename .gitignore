@@ -168,3 +168,4 @@ GGVENTURES_BOT_LOG.log
 __pycache__
 ggventures\__pycache__
 ggventures\spiders\__pycache__
+lib\__pycache__
