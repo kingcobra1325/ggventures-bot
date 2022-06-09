@@ -19,7 +19,7 @@ class Fra0047Spider(GGVenturesSpider):
     
     static_logo = "https://www.u-paris2.fr/sites/default/files/paup-header.png"
 
-    parse_code_link = "https://ils-assas-university.com/"
+    parse_code_link = "https://ils-assas-university.com/news-paris-campus/"
 
     university_contact_info_xpath = "//div[@class='iconbox_content_container ']"
     contact_info_text = True
@@ -33,7 +33,7 @@ class Fra0047Spider(GGVenturesSpider):
             # self.ClickMore(click_xpath="//strong[text()='Events']",run_script=True)
 
             # for link in self.events_list(event_links_xpath="//div[@class='media-actualite__contenu']/a"):
-            for link in self.multi_event_pages(event_links_xpath="//a[@class='slide-image']",next_page_xpath="//i[@class='scpo-icon-arrow-right']",get_next_month=True,no_next_page_xpath='//a'):
+            for link in self.multi_event_pages(event_links_xpath="//a[@class='slide-image']",next_page_xpath="//a[contains(@class,'next_page')]",get_next_month=True):
 
                 self.getter.get(link)
 
@@ -43,27 +43,18 @@ class Fra0047Spider(GGVenturesSpider):
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).get_attribute('textContent')
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1","//h3"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='entry-content']","//div[@class='nd-hide-900']/..","//div[@id='av_section_2']//div[contains(@class,'entry-content')]"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='entry-content']","//div[@class='nd-hide-900']/..","//div[@id='av_section_2']//div[contains(@class,'entry-content')]"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='entry-content']","//div[@class='nd-hide-900']/..","//div[@id='av_section_2']//div[contains(@class,'entry-content')]"],method='attr')
+
+                    # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
+                    # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')
+
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//span[@itemprop='organizer']/.."],method='attr',error_when_none=False)
+                    # item_data['startups_link'] = ''
+                    # item_data['startups_name'] = ''
                     item_data['event_link'] = link
-                    try:
-                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='entry-content']").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='nd-hide-900']/..").text
-
-                    try:
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//span[@class='post-meta-infos']").text
-                        # item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[@class='inner-single-event-infos']//span[@class='value']").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//span[@class='date']").text
-                        # item_data['event_time'] = self.getter.find_element(By.XPATH,"//strong[contains(text(),'Date')]").text
-
-                    # try:
-                    #     item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//span[@itemprop='organizer']/..").text
-                    #     # item_data['startups_link'] = self.getter.find_element(By.XPATH,"//label[@class='bt-label']").text
-                    # except NoSuchElementException as e:
-                    #     logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

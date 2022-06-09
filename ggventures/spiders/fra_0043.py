@@ -43,27 +43,18 @@ class Fra0043Spider(GGVenturesSpider):
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).get_attribute('textContent')
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='contenu__interieur']","//div[@class='nd-hide-900']/.."])
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='actualite-dates']","//span[@class='date']","//div[@class='contenu__interieur']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='actualite-dates']","//span[@class='date']","//div[@class='contenu__interieur']"],method='attr')
+
+                    # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
+                    # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')
+
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//span[@itemprop='organizer']/.."],method='attr',error_when_none=False)
+                    # item_data['startups_link'] = ''
+                    # item_data['startups_name'] = ''
                     item_data['event_link'] = link
-                    try:
-                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='contenu__interieur']").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                        item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='nd-hide-900']/..").text
-
-                    try:
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[@class='actualite-dates']").text
-                        # item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[@class='inner-single-event-infos']//span[@class='value']").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                        item_data['event_date'] = self.getter.find_element(By.XPATH,"//span[@class='date']").text
-                        # item_data['event_time'] = self.getter.find_element(By.XPATH,"//strong[contains(text(),'Date')]").text
-
-                    try:
-                        item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//span[@itemprop='organizer']/..").text
-                        # item_data['startups_link'] = self.getter.find_element(By.XPATH,"//label[@class='bt-label']").text
-                    except NoSuchElementException as e:
-                        logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

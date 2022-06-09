@@ -10,6 +10,7 @@ class Fra0002Spider(GGVenturesSpider):
     start_urls = ['https://student.kedge.edu/contact']
     country = 'France'
     # eventbrite_id = 1412983127
+    TRANSLATE=True
 
     # USE_HANDLE_HTTPSTATUS_LIST = False
 

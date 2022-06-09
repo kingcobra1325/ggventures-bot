@@ -14,7 +14,7 @@ from ggventures.items import GgventuresItem
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException, UnexpectedAlertPresentException, NoAlertPresentException
+from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, TimeoutException, StaleElementReferenceException, NoSuchAttributeException, UnexpectedAlertPresentException, NoAlertPresentException,InvalidArgumentException
 from googletrans import Translator
 
 import re
@@ -622,7 +622,11 @@ class GGVenturesSpider(scrapy.Spider):
 
                     if not page_element and get_next_month:
                         next_month = self.driver.find_element(By.XPATH,next_page_xpath).get_attribute('href')
-                        self.driver.get(next_month)
+                        try:
+                            self.driver.get(next_month)
+                        except InvalidArgumentException as e:
+                            self.logger.debug(f"{e} --> No more pages to scrape")
+                            break
                     if click_next_month:
                         next_page_btn = WebDriverWait(self.driver,40).until(EC.element_to_be_clickable((By.XPATH,next_page_xpath)))
                         if elem_intercept_exc:
