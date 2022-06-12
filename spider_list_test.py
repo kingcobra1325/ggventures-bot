@@ -298,7 +298,7 @@ spider_fra = [
                 # 'fra_0042', 
                 # 'fra_0043', 
                 # 'fra_0044', 'fra_0045', 'fra_0046', 
-                'fra_0047', 
+                # 'fra_0047', 
                 # 'fra_0048', 
                 # 'fra_0049', 'fra_0050', 'fra_0051'
             ]
@@ -782,14 +782,21 @@ spider_swe = [
             ]
 # spider_che = ['che_0001', 'che_0002', 'che_0003', 'che_0004', 'che_0005', 'che_0006', 'che_0007', 'che_0008', 'che_0009', 'che_0010']
 # spider_syr = ['syr_0001']
-# spider_twn = ['twn_0001', 'twn_0002', 'twn_0003', 'twn_0004', 'twn_0005', 'twn_0006', 'twn_0007']
+spider_twn = [
+                # 'twn_0001', 'twn_0002', 'twn_0003', 
+                # 'twn_0004', 
+                # 'twn_0005', 'twn_0006', 'twn_0007'
+            ]
 spider_tza = [
                 # 'tza_0001'
             ]
 spider_tto = [
                 # 'tto_0001'
             ]
-# spider_tha = ['tha_0001', 'tha_0002', 'tha_0003', 'tha_0004', 'tha_0005', 'tha_0006', 'tha_0007']
+spider_tha = [
+                # 'tha_0001', 'tha_0002', 'tha_0003', 'tha_0004', 'tha_0005', 'tha_0006', 
+                'tha_0007'
+            ]
 spider_tgo = [
                 # 'tgo_0001'
             ]
@@ -1156,10 +1163,10 @@ spider_list.extend(spider_sz)
 spider_list.extend(spider_swe)
 # spider_list.extend(spider_che)
 # spider_list.extend(spider_syr)
-# spider_list.extend(spider_twn)
+spider_list.extend(spider_twn)
 spider_list.extend(spider_tza)
 spider_list.extend(spider_tto)
-# spider_list.extend(spider_tha)
+spider_list.extend(spider_tha)
 spider_list.extend(spider_tgo)
 spider_list.extend(spider_tun)
 spider_list.extend(spider_tur)

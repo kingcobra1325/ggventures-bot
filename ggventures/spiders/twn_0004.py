@@ -44,8 +44,8 @@ class Twn0004Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h2[@class='hdline']"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='module-inner']"],method='attr',enable_desc_image=True)
-                    # item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@id='body_text_bg']"],method='attr')
-                    # item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@id='body_text_bg']"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='module-inner']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='module-inner']"],method='attr')
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 
