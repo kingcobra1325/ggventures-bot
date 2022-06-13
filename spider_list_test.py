@@ -795,7 +795,7 @@ spider_tto = [
             ]
 spider_tha = [
                 # 'tha_0001', 'tha_0002', 'tha_0003', 'tha_0004', 'tha_0005', 'tha_0006', 
-                'tha_0007'
+                # 'tha_0007'
             ]
 spider_tgo = [
                 # 'tgo_0001'
@@ -822,7 +822,7 @@ spider_are = [
             ]
 spider_gbr = [
                 # 'gbr_0001',
-                # # # 'gbr_0002',
+                # 'gbr_0002',
                 # 'gbr_0003',
                 # # # 'gbr_0004',
                 # 'gbr_0005',
@@ -865,7 +865,8 @@ spider_gbr = [
                 # 'gbr_0045',
                 # 'gbr_0046',
                 # 'gbr_0047',
-                # 'gbr_0048', 'gbr_0049', 'gbr_0050'
+                # 'gbr_0048', 'gbr_0049', 
+                # 'gbr_0050'
                 ]
 spider_ury = [
                 # 'ury_0001', 

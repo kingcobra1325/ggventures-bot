@@ -11,6 +11,8 @@ from scrapy.loader import ItemLoader
 
 from ggventures.items import GgventuresItem
 
+import requests
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
@@ -107,6 +109,11 @@ class GGVenturesSpider(scrapy.Spider):
         self.eventbrite_api = EventBrite_API()
         self.start_time = round(time.time())
         self.scrape_time = None
+    
+    def request_api_call(self,url="",params={},payload="",method="GET"):
+        response = requests.request(method, url, params=params,data=payload).json()
+        return response
+            
 
     def exception_handler(self,e):
         tb_log = traceback.format_exc()
