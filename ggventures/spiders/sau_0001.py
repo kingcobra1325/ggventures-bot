@@ -28,40 +28,23 @@ class Sau0001Spider(GGVenturesSpider):
             # self.check_website_changed(upcoming_events_xpath="//main",empty_text=True)
             # self.ClickMore(click_xpath="//a[contains(@class,'moreListing')]",run_script=True)
             # for link in self.multi_event_pages(num_of_pages=5,event_links_xpath="//h5/a",next_page_xpath="//a[@class='next page-numbers']",get_next_month=True):
-            for link in self.events_list(event_links_xpath="//div[@class='home-section__events-featured']/a"):
+            for link in self.events_list(event_links_xpath="//div[@class='event-title']/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['ur.ac.rw']):
+                if self.unique_event_checker(url_substring=['arabou.edu.sa']):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1"))).text
-                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@id,'content_container')]").text
-                    # try:
-                    #     item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'event-desc')]").text
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
-
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@id,'content_container')]").text
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@id,'content_container')]").text
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'events-title')]"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='events-body']"],method='attr',enable_desc_image=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'events-date')]"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'events-date')]"],method='attr')
 
                     # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
                     # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')
 
-                    # try:
-                    #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text
-                    #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....","debug")
-                    #     # logger.debug(f"XPATH not found {e}: Skipping.....")
-                    #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-                    #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-
-                    # try:
-                    #     item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//td[text()='Email']/following-sibling::td").text
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[@class='evento-cont']"],method='attr',error_when_none=False)
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
                     item_data['event_link'] = link

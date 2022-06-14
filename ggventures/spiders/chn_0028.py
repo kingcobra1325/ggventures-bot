@@ -15,11 +15,11 @@ class Chn0028Spider(GGVenturesSpider):
     static_logo = "https://www.ruc.edu.cn/wp-content/themes/rucweb/images/logo.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://newsen.pku.edu.cn/activity.html"
+    parse_code_link = "http://iss.ruc.edu.cn/events.php"
 
     university_contact_info_xpath = "//div[@class='nc_body']"
-    contact_info_text = True
-    # contact_info_textContent = True
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
     TRANSLATE = True
 
@@ -32,19 +32,23 @@ class Chn0028Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
             
-            for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//div[starts-with(@class,'item')]/a",next_page_xpath="//a[@class='next']",get_next_month=True,click_next_month=False,wait_after_loading=False,run_script=False):
-                # for link in self.events_list(event_links_xpath="//div[starts-with(@class,'item')]/a"):
+            # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//div[starts-with(@class,'item')]/a",next_page_xpath="//a[@class='next']",get_next_month=True,click_next_month=False,wait_after_loading=False,run_script=False):
+            raw_event_times = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//a[contains(@class,'event')]/parent::p/preceding-sibling::p")))
+            event_times = [x.text for x in raw_event_times]
+            for link in self.events_list(event_links_xpath="//a[contains(@class,'event')]"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=["https://newsen.pku.edu.cn/events/"]):
+                if self.unique_event_checker(url_substring=["ruc.edu.cn/events_info"]):
                     
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
                     item_data = self.item_data_empty.copy()
+
+                    datetime = event_times.pop(0)
                     
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='f30']"],method='attr')
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='box']"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Time')]","//span[contains(text(),'Time')]/parent::strong/following-sibling::span"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Time')]","//span[contains(text(),'Time')]/parent::strong/following-sibling::span"],method='attr')
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='main_tt2']"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='main_content']"],method='attr')
+                    item_data['event_date'] = datetime
+                    item_data['event_time'] = datetime
 
                     # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
                     # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')

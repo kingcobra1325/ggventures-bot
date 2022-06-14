@@ -20,9 +20,9 @@ class Mex0004Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.ipadebusinessschool.com/category/events/"
 
-    university_contact_info_xpath = "//div[contains(@class,'c-map__container')]"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):
