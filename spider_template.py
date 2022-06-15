@@ -522,7 +522,7 @@ class GGVenturesSpider(scrapy.Spider):
             driver = self.getter
         errors_dict = {}
         joined_xpath = " | ".join(xpath_list)
-        method = 'attr' if '//span' in joined_xpath else 'text'
+        method = 'attr' if '//span' or '/span' in joined_xpath else 'text'
         try:
             if method.lower() == 'text':
                 result = self.Mth.WebDriverWait(driver,wait_time).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).text
@@ -543,6 +543,22 @@ class GGVenturesSpider(scrapy.Spider):
         else:
             self.Func.print_log(f"No valid XPATH scraped. Skipping...",'error')
             return ""
+    
+    def switch_iframe(self,iframe_xpath="",error_when_none=True,iframe_driver=''):
+        if not iframe_driver:
+            iframe_driver = self.getter
+        try:
+            self.Mth.WebDriverWait(iframe_driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,iframe_xpath)))
+            self.Func.sleep(4)
+        except self.Exc.TimeoutException as e:
+            self.Func.print_log(f"Iframe XPATH: {iframe_xpath} cannot be scraped..",'debug')
+        if error_when_none:
+            self.Func.print_log(f"No valid Iframe to switch...",'error')
+            raise NoSuchElementException()
+        else:
+            self.Func.print_log(f"No valid Iframe. Skipping...",'error')
+            return ""
+        
 
 
     def events_list(self,event_links_xpath:str,return_elements=False,link_attribute='href'):
