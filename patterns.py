@@ -49,6 +49,9 @@ DATE_PATTERNS_RE =                  [
                                         r"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]",
                                         r"[0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]",
+                                        r"[0-9][0-9][0-9][0-9]-[0-9]-[0-9][0-9]",
+                                        r"[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9]",
+                                        r"[0-9][0-9][0-9][0-9]-[0-9]-[0-9]",
                                         r"[0-9][0-9][.][ ](?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|OKT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|OKT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Okt|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Okt.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|okt.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|okt|nov|dec)[ ][0-9][0-9][0-9][0-9]",
                                         r"[0-9][.][ ](?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|OKT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|OKT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Okt|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Okt.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|okt.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|okt|nov|dec)[ ][0-9][0-9][0-9][0-9]",
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[ ][0-9][0-9][,][ ][0-9][0-9][0-9][0-9]",
@@ -76,6 +79,10 @@ DATE_PATTERNS_RE =                  [
                                         r"[0-9][0-9]/[0-9]/[0-9][0-9]",
                                         r"[0-9]/[0-9][0-9]/[0-9][0-9]",
                                         r"[0-9]/[0-9]/[0-9][0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9][0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9]",
+                                        r"[0-9][0-9](?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
+                                        r"[0-9](?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|SEPT.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
 
                                     ]
 
@@ -96,6 +103,8 @@ DATE_PATTERNS =                     [
                                         ["%b %d %Y"        ,date_strf_pattern],
                                         ["%b %d"            ,'%m/%d'],
                                         ["%d %b"            ,'%m/%d'],
+                                        ["%d%b"            ,'%m/%d'],
+                                        ["%b%d"            ,'%m/%d'],
                                         ["%d %B, %Y"        ,date_strf_pattern],
                                         ["%d %B %Y"         ,date_strf_pattern],
                                         ["%d %b %Y"        ,date_strf_pattern],
@@ -246,7 +255,7 @@ EMAIL_PATTERNS =                    [
                                     ]
 
 PHONE_NUMBER_PATTERNS =             [
-                                        r"(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d|)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d|)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d|)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d|)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d)(?:[0-9]|\d|)(?:[0-9]|\d|)(?:[0-9]|\d|)(?:[0-9]|\d|)",
+                                        r"(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d|)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d|)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d|)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)(?:[0-9]|\d|)(?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)[0-9](?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)[0-9](?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)[0-9](?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)[0-9](?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)[0-9](?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)[0-9](?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)[0-9](?:[+().]|[-]|[ ]|\s|)(?:[+().]|[-]|[ ]|\s|)[0-9](?:[0-9]|\d|)(?:[0-9]|\d|)(?:[0-9]|\d|)(?:[0-9]|\d|)",
                                         # r"/^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d+)\)?)[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i",
                                         # r"/^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm",
                                         # r"^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$",

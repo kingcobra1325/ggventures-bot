@@ -30,7 +30,7 @@ class Aus0036Spider(GGVenturesSpider):
             # self.ClickMore(click_xpath="//a[@id='btnLoadMore']",run_script=True)
             # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='List Calendar View']")))
             # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//div[contains(@class,'fc-view-month')]//a",next_page_xpath="//span[contains(@class,'ui-corner-right')]",click_next_month=True,run_script=True,wait_after_loading=True):
-            for link in self.events_list(event_links_xpath="//a[contains(@class,'desc_trig')]"):
+            for link in self.events_list(event_links_xpath="//div[@id='evcal_list']//div[@class='evo_event_schema']/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=['events.flinders.edu.au/events']):
 
@@ -42,8 +42,9 @@ class Aus0036Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//span[contains(@class,'evcal_event_title')]"],method='attr')
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@itemprop='description']"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[contains(@class,'evo_start')]"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[contains(@class,'evo_start')]"],method='attr')
+                    item_data['event_date'] = self.Mth.WebDriverWait(self.getter,10).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//div[@class='evo_event_schema']/script"))).get_attribute('innerHTML')
+                    
+                    item_data['event_time'] = self.Mth.WebDriverWait(self.getter,10).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//div[@class='evo_event_schema']/script"))).get_attribute('innerHTML')
 
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=[''])
                     # item_data['startups_link'] = ''
