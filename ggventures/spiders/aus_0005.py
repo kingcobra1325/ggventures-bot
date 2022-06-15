@@ -1,5 +1,6 @@
 import scrapy
 import scrapy, time
+
 # from scrapy import Selector
 
 from bot_email import missing_info_email, error_email
@@ -39,8 +40,7 @@ class Aus0005Spider(scrapy.Spider):
             
             # self.driver.find_element(By.XPATH,"//*[contains(text(),'General contacts')]").click()
             
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[starts-with(@class,'enquiries')]")))).get_attribute('textContent')
-
+            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[@class='enquiries desktop-only']")))).get_attribute('textContent')
             self.driver.get(response.url)     
         
             counter = 0
