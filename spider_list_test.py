@@ -63,7 +63,7 @@ spider_aus = [
                 # 'aus_0034',
                 # 'aus_0035',
                 # 'aus_0036',
-                'aus_0036'
+                # 'aus_0036'
             ]
 spider_aut = [
                 # 'aut_0001',

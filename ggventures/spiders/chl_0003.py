@@ -42,7 +42,7 @@ class Chl0003Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'single-content')]"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event__date']"],method='attr')
+                    item_data['event_date'] = ''.join([x for x in ''.join(self.scrape_xpath(xpath_list=["//div[@class='event__date']"],method='attr').split('\n')).split() if x])
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'event__extras')]"],method='attr')
 
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=[''])
