@@ -1,79 +1,56 @@
-import scrapy, time
-# from scrapy import Selector
-from datetime import datetime
+from spider_template import GGVenturesSpider
 
-from bot_email import missing_info_email, error_email
 
-from binaries import Load_Driver, logger, WebScroller, EventBrite_API
-
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-class Usa0053Spider(scrapy.Spider):
+class Usa0053Spider(GGVenturesSpider):
     name = 'usa_0053'
+    start_urls = ["https://www.kellogg.northwestern.edu/contact.aspx"]
     country = 'US'
-    start_urls = ['https://www.kellogg.northwestern.edu/']
     eventbrite_id = 12878181627
 
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.eventbrite_api = EventBrite_API()
-        # self.getter = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
+    # handle_httpstatus_list = [301,302,403,404]
 
-        
-    def parse(self, response):
-        try:
-            # EVENTBRITE API - ORGANIZATION REQUEST
-            raw_org = self.eventbrite_api.get_organizers(self.eventbrite_id)
+    static_name = "Northwestern University,Kellogg School of Management"
+    
+    static_logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Kellogg_School_of_Management.svg/1200px-Kellogg_School_of_Management.svg.png"
 
-            university_name = raw_org['name']
-            logo = raw_org['logo']
+    # MAIN EVENTS LIST PAGE
+    parse_code_link = "https://carey.jhu.edu/news-events/events"
 
-            self.driver.get(response.url)
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
+    # TRANSLATE = True
 
-            if not logo:
-                logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Kellogg_School_of_Management.svg/1200px-Kellogg_School_of_Management.svg.png"
-
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//footer//div[@class='col-md-3']")))).text
+    def parse_code(self,response):
+        pass
+        # try:
+        # ####################
+        #     self.driver.get(response.url)
+    
+        #     # self.check_website_changed(upcoming_events_xpath="//p[text()='No events are currently published.']",empty_text=False)
             
-            # EVENTBRITE API - EVENT LIST REQUEST
-            raw_event = self.eventbrite_api.get_organizer_events(self.eventbrite_id)
-            last_page = int(raw_event['pagination']['page_count'])
-            prev_last_page = int(raw_event['pagination']['page_count']) - 1
+        #     # self.ClickMore(click_xpath="//a[text()='View more events...']",run_script=True)
+              
+        #     # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='events-card']/a",next_page_xpath="//span[text()='Next Page']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+        #     for link in self.events_list(event_links_xpath="//h3/a"):
+        #         self.getter.get(link)
+        #         if self.unique_event_checker(url_substring=["https://calendar.gsu.edu/event"]):
+                    
+        #             self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-            event_list = self.eventbrite_api.get_organizer_events(self.eventbrite_id,page=prev_last_page)['events'] + self.eventbrite_api.get_organizer_events(self.eventbrite_id,page=last_page)['events']
+        #             item_data = self.item_data_empty.copy()
+                    
+        #             item_data['event_link'] = link
 
-            for event in event_list:
-                if datetime.strptime(event['start']['utc'].split('T')[0],'%Y-%m-%d') > datetime.utcnow():
-                    data = ItemLoader(item = GgventuresItem(), selector = event)
-                    data.add_value('university_name',university_name)
-                    data.add_value('university_contact_info',university_contact_info)
-                    data.add_value('logo',logo)
-                    data.add_value('event_name', event['name']['text'])
-                    data.add_value('event_desc', event['description']['text'])
-                    data.add_value('event_date', f"Start Date: {event['start']['utc']} - End Date: {event['end']['utc']}")
-                    data.add_value('event_link', event['url'])
-                    # data.add_value('event_time', event_time[i])
-                    yield data.load_item()
+        #             item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='summary']"])
+        #             item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='description']"],enable_desc_image=True)
+        #             item_data['event_date'] = self.scrape_xpath(xpath_list=["//p[@class='dateright']"],method='attr')
+        #             item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[@class='dateright']"],method='attr',error_when_none=False)
+        #             # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[text()='Contact Info']/.."],method='attr',error_when_none=False)
 
-        except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+        #             yield self.load_item(item_data=item_data,item_selector=link)
 
-    def closed(self, reason):
-        try:
-            self.driver.quit()
-            # self.getter.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-        except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+        # ####################
+        # except Exception as e:
+        #     self.exception_handler(e)

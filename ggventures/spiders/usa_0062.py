@@ -1,144 +1,59 @@
-import scrapy, time
-# from scrapy import Selector
-
-from bot_email import missing_info_email, error_email, unique_event
-
-from binaries import Load_Driver, logger, WebScroller
-
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+from spider_template import GGVenturesSpider
 
 
-class Usa0062Spider(scrapy.Spider):
+class Usa0062Spider(GGVenturesSpider):
     name = 'usa_0062'
+    start_urls = ["https://www.sju.edu/haub-school-business/about/contact-us#no-back"]
     country = 'US'
-    # allowed_domains = ['https://www.sju.edu/haub-school-business']
-    start_urls = ['https://www.sju.edu/haub-school-business/']
+    # eventbrite_id = 6221361805
 
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.getter = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
+    # handle_httpstatus_list = [301,302,403,404]
 
-    def parse(self, response):
+    static_name = "Saint Joseph's University,Erivan K. Haub School of Business"
+    
+    static_logo = "https://upload.wikimedia.org/wikipedia/commons/a/a5/HaubLogo.png"
+
+    # MAIN EVENTS LIST PAGE
+    parse_code_link = "https://www.sju.edu/events"
+
+    university_contact_info_xpath = "//body"
+    # contact_info_text = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
+    # TRANSLATE = True
+
+    def parse_code(self,response):
         try:
-
+        ####################
             self.driver.get(response.url)
-
-            logo = 'https://upload.wikimedia.org/wikipedia/commons/a/a5/HaubLogo.png'
-
-            university_name = "Saint Joseph's University, Haub School of Business"
-
-            university_contact_info = WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, "//div[contains(@class,'info-container')]"))).text
-
-            self.driver.get('https://www.sju.edu/events?trumbaEmbed=filterview%3DHSB')
-
-            # number_of_months = 3
-            # #
-            # for scrape_month in range(number_of_months):
-
-                # try:
-                    # WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH,"//div[contains(@id,'tribe-events-day')]/a")))
-            # self.driver.switch_to.frame(WebDriverWait(self.driver,20).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@title,'List Calendar View')]"))))
-
-            WebDriverWait(self.driver,20).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,"//iframe[contains(@title,'List Calendar View')]")))
-
-            EventLinks = WebDriverWait(self.driver,20).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class,'twDescription')]/a")))
-
-            for i in EventLinks:
-
-                data = ItemLoader(item = GgventuresItem(), selector = i)
-
-                link = i.get_attribute('href')
+            
+            self.switch_iframe(iframe_driver=self.driver,iframe_xpath="//iframe[@name='trumba.spud.4.iframe']")
+            
+            # self.check_website_changed(upcoming_events_xpath="//p[text()='No events are currently published.']",empty_text=False)
+            
+            # self.ClickMore(click_xpath="//a[@rel='next']",run_script=True)
+              
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='search-result--content']//a",next_page_xpath="//a[@rel='next']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            for link in self.events_list(event_links_xpath="//div[@class='twDescription']/a"):
                 self.getter.get(link)
+                if self.unique_event_checker(url_substring=["https://www.sju.edu/events?"]):
+                    
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-                # if 'saunders.rit.edu/events' in self.getter.current_url:
+                    item_data = self.item_data_empty.copy()
+                    
+                    self.switch_iframe(iframe_driver=self.getter,iframe_xpath="//iframe[@name='trumba.spud.4.iframe']",error_when_none=False)
+                    
+                    item_data['event_link'] = link
+                    
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//span[@class='twEDDescription']"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//td[@class='twEDContentCell']"],enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='twEDStartEndRange']"],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[@class='twEDStartEndRange']"],method='attr',error_when_none=False)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//span[contains(text(),'Contact')]/../.."],method='attr',error_when_none=False)
 
-                logger.info(f"Currently scraping --> {self.getter.current_url}")
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
-                WebDriverWait(self.getter,20).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,"//iframe[contains(@title,'Event Detail - Enhanced')]")))
-
-                # self.getter.switch_to.frame(self.getter.find_element(By.XPATH,"//iframe[contains(@title,'Event Detail - Enhanced')]"))
-
-                data.add_value('university_name',university_name)
-                data.add_value('university_contact_info',university_contact_info)
-                data.add_value('logo',logo)
-                data.add_value('event_name', WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//span[contains(@class,'twEDDescription')]"))).text)
-                data.add_value('event_desc', self.getter.find_element(By.XPATH,"//table[contains(@class,'twEDContent')]").text)
-                data.add_value('event_date', self.getter.find_element(By.XPATH,"//span[contains(@class,'twEDStartEndRange')]").text)
-                data.add_value('event_time', self.getter.find_element(By.XPATH,"//span[contains(@class,'twEDStartEndRange')]").text)
-                # try:
-                #     data.add_value('event_date', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-single')]").text)
-                #     data.add_value('event_time', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-single')]").text)
-                # except NoSuchElementException as e:
-                #     logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-                #     data.add_value('event_date', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-range')]").text)
-                #     data.add_value('event_time', self.getter.find_element(By.XPATH,"//span[contains(@class,'date-display-range')]").text)
-                data.add_value('event_link', link)
-
-
-                yield data.load_item()
-
-                self.getter.switch_to.default_content()
-                # else:
-                #     logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
-                #     unique_event(self.name,university_name,self.getter.current_url)
-                #     logger.debug("Skipping............")
-
-                # except TimeoutException as e:
-                #     logger.debug(f"No available events for this month : {e} ---> Skipping...........")
-
-                # WebDriverWait(self.driver,20).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@rel,'next')]"))).click()
-                # time.sleep(10)
-
-
-
-
-
-
-            # self.driver.get(response.url)
-            #
-            # EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='eventCard']")))
-            #
-            # for i in EventLinks:
-            #
-            #     RawEventName = (WebDriverWait(i,60).until(EC.presence_of_element_located((By.XPATH,".//h3")))).text
-            #
-            #     RawEventDesc = i.find_element(By.XPATH,".//span[@class='ng-binding']").text
-            #
-            #     RawEventDate = i.find_element(By.XPATH,".//div[contains(@class,'eventCard_date')]").text
-            #
-            #     try:
-            #         RawEventTime = i.find_element(By.XPATH,".//div[contains(@class,'eventCard_date')]").text
-            #     except:
-            #         RawEventTime = None
-            #
-            #
-            #     event_name.append(RawEventName)
-            #     event_desc.append(RawEventDesc)
-            #     event_date.append(RawEventDate)
-            #     event_time.append(RawEventTime)
-            #     event_link.append(i.get_attribute('href'))
-            #
-
-
+        ####################
         except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
-    def closed(self, reason):
-        try:
-            self.driver.quit()
-            self.getter.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-        except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            self.exception_handler(e)

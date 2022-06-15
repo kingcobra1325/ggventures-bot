@@ -3,20 +3,20 @@ from spider_template import GGVenturesSpider
 
 class Usa0033Spider(GGVenturesSpider):
     name = 'usa_0033'
-    start_urls = ["https://www.fdu.edu/about/contact-us/"]
+    start_urls = ["https://robinson.gsu.edu/"]
     country = 'US'
     # eventbrite_id = 6221361805
 
-    # handle_httpstatus_list = [301,302,403,404]
+    handle_httpstatus_list = [301,302,403,404]
 
-    static_name = "Fairleigh Dickinson University,Silberman College of Business"
+    static_name = "Georgia State University,J. Mack Robinson College of Business"
     
-    static_logo = "https://www.fdu.edu/wp-content/themes/fairleigh-dickinson/dist/assets/images/fdu-logo.svg"
+    static_logo = "https://ebcs.gsu.edu/files/2018/12/georgie-state-j-mack-robinson-college-of-business.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://www.creighton.edu/events"
+    parse_code_link = "https://calendar.gsu.edu/calendar?event_types%5B%5D=83442"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "(//div[@class='upb_row_bg'])[3]"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -31,10 +31,10 @@ class Usa0033Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//a[text()='View more events...']",run_script=True)
               
-            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='events-card']/a",next_page_xpath="//span[text()='Next Page']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
-            # for link in self.events_list(event_links_xpath="//div[@class='eventolink']"):
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='events-card']/a",next_page_xpath="//span[text()='Next Page']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            for link in self.events_list(event_links_xpath="//h3/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=["https://www.creighton.edu/events/"]):
+                if self.unique_event_checker(url_substring=["https://calendar.gsu.edu/event"]):
                     
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
@@ -42,11 +42,11 @@ class Usa0033Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='inner']/h1"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//main//div[contains(@class,'description')]"],enable_desc_image=True)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event-date']"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event-date']"],method='attr',error_when_none=False)
-                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[text()='Contact Info']/.."],method='attr',error_when_none=False)
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='summary']"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='description']"],enable_desc_image=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//p[@class='dateright']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[@class='dateright']"],method='attr',error_when_none=False)
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[text()='Contact Info']/.."],method='attr',error_when_none=False)
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

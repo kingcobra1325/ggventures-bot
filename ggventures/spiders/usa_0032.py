@@ -3,7 +3,7 @@ from spider_template import GGVenturesSpider
 
 class Usa0032Spider(GGVenturesSpider):
     name = 'usa_0032'
-    start_urls = ["https://www.scheller.gatech.edu/contact-us.html"]
+    start_urls = ["https://www.scheller.gatech.edu/directory/index.html"]
     country = 'US'
     # eventbrite_id = 6221361805
 
