@@ -1,4 +1,5 @@
 from distutils.log import error
+from numpy import maximum
 import scrapy, time, traceback, os, sys
 # from scrapy import Selector
 from datetime import datetime
@@ -564,7 +565,7 @@ class GGVenturesSpider(scrapy.Spider):
         
 
 
-    def events_list(self,event_links_xpath:str,return_elements=False,link_attribute='href'):
+    def events_list(self,event_links_xpath:str,return_elements=False,link_attribute='href',maximum_events=30):
         try:
             web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
             logger.debug(f"Number of Event Links: {len(web_elements_list)}")
@@ -574,7 +575,15 @@ class GGVenturesSpider(scrapy.Spider):
                 event_links = [x.get_attribute(link_attribute) for x in web_elements_list]
                 # REMOVE EMPTY ELEMENTS
                 cleaned_event_links = list(filter(None, event_links))
-                return cleaned_event_links
+                # LIMIT EVENTS TO SCRAPE
+                if not maximum_events:
+                    return cleaned_event_links
+                else:
+                    logger.debug(f"Maximum Events to scrape: {maximum_events}")
+                    if len(cleaned_event_links) >= maximum_events:
+                        return cleaned_event_links[0:maximum_events]
+                    else:
+                        return cleaned_event_links
         except self.Exc.TimeoutException as e:
             logger.debug(f'No Events Found --> {e}. Skipping.....')
             return []
@@ -603,7 +612,7 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,click_month_list_xpath="",run_script=False\
-        ,page_element='',current_page_class='',next_page_set_xpath='',href_button_xpath="",base_site="",elem_intercept_exc=False):
+        ,page_element='',current_page_class='',next_page_set_xpath='',href_button_xpath="",base_site="",elem_intercept_exc=False,maximum_events=30):
 
         event_links = []
         page_links = []
@@ -675,13 +684,23 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
                 break
             logger.debug(f"IN-PROGRESS: Pending Number of Event Links: {len(event_links)}")
-
+            
         
         # REMOVE EMPTY ELEMENTS
         event_links = list(filter(None, event_links))
-        
         logger.debug(f"Number of Event Links: {len(event_links)}")
-        return event_links
+        
+        #LIMIT EVENTS TO SCRAPE
+        if not maximum_events:
+            return event_links
+        else:
+            logger.debug(f"Maximum Events to scrape: {maximum_events}")
+            if len(event_links) >= maximum_events:
+                return event_links[0:maximum_events]
+            else:
+                return event_links
+            
+        
     
     def handle_popup_alert(self,use_driver=True,action='cancel'):
         if use_driver:
