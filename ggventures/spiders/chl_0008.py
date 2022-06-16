@@ -42,8 +42,10 @@ class Chl0008Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'field-name-field-descripcion-evento')]"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='date-display-range']"],method='attr',error_when_none=False)
+                    # item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='date-display-range']"],method='attr',error_when_none=False)
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='field-titulo-informacion-evento']"],method='attr')
+
+                    item_data['event_date'] = self.get_datetime_attributes("//div[contains(@class,'field-name-field-fecha-evento-udec')]//span[contains(@class,'date-display-start') or contains(@class,'date-display-end') or contains(@class,'date-display-single')]",datetime_attribute='content')
 
                     item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[@class='field-titulo-informacion-contacto']"],method='attr',error_when_none=True)
                     # item_data['startups_link'] = ''

@@ -197,9 +197,12 @@ class GGVenturesSpider(scrapy.Spider):
             self.Func.print_log(f"|raw_text| not a valid format --> {type(raw_text)}. Need to be a string or dict. Proceed...","error")
 
 
-    def get_datetime_attributes(self,datetime_xpath,datetime_attribute='datetime'):
-        datetime_list = [x.get_attribute(datetime_attribute) for x in self.getter.find_elements(self.Mth.By.XPATH,datetime_xpath)]
-        return '\n'.join(datetime_list)
+    def get_datetime_attributes(self,datetime_xpath,datetime_attribute='datetime',multi=True):
+        if multi:
+            datetime_list = [x.get_attribute(datetime_attribute) for x in self.getter.find_elements(self.Mth.By.XPATH,datetime_xpath)]
+            return '\n'.join(datetime_list)
+        else:
+            return self.getter.find_element(self.Mth.By.XPATH,datetime_xpath).get_attribute(datetime_attribute)
 
     def unique_event_checker(self,url_substring=''):
         # CHECK IF PAGE NOT FOUND

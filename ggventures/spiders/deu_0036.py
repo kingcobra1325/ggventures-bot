@@ -50,7 +50,10 @@ class Deu0036Spider(GGVenturesSpider):
                     # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
 
                     try:
-                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='eventDataDate']").get_attribute('textContent')
+                        event_day = self.getter.find_element(self.Mth.By.XPATH,"//span[@class='day']").get_attribute('textContent')
+                        event_month = self.getter.find_element(self.Mth.By.XPATH,"//span[@class='month']").get_attribute('textContent').replace(u'\xa0','')
+                        event_year = self.getter.find_element(self.Mth.By.XPATH,"//span[@class='year']").get_attribute('textContent')
+                        item_data['event_date'] = f"{event_month}-{event_day}-{event_year}"
                         item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='elementObjectEventMultiTime']").get_attribute('textContent')
                     except self.Exc.NoSuchElementException as e:
                         self.Func.print_log(f"XPATH not found {e}: Skipping.....")

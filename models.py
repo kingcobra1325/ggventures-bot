@@ -141,7 +141,7 @@ class RegExGGV:
             logger.info("\nNo valid datetime data to be cleaned...")
             if fetch_date:
                 logger.debug(f"No valid data but REGEX was detected... Setting 'final_data' to <NO DATA|REGEX DETECTED>") if self.REGEX_LOGS else None
-                final_data = "<NO DATA|REGEX DETECTED>" if self.NO_MATCH_REGEX_LOGS else ''
+                final_data = f"<NO DATA|REGEX DETECTED>\n{fetch_date}" if self.NO_MATCH_REGEX_LOGS else ''
 
         return final_data
 

@@ -5,7 +5,7 @@ from spider_template import GGVenturesSpider
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, NoSuchAttributeException
 
 
 class Deu0019Spider(GGVenturesSpider):
@@ -15,6 +15,7 @@ class Deu0019Spider(GGVenturesSpider):
     # eventbrite_id = 30819498834
 
     # USE_HANDLE_HTTPSTATUS_LIST = False
+    TRANSLATE = False
 
     static_name = "Universität Bayreuth"
     
@@ -57,9 +58,9 @@ class Deu0019Spider(GGVenturesSpider):
                     # item_data['event_time'] = self.getter.find_element(By.XPATH,"//dl[contains(@class,'contact-list')]").text
 
                     try:
-                        item_data['event_date'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//table[@aria-label='date and time']"))).get_attribute('textContent')
-                        item_data['event_time'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//table[@aria-label='date and time']"))).get_attribute('textContent')
-                    except NoSuchElementException as e:
+                        item_data['event_date'] = self.get_datetime_attributes("//table[@aria-label='date and time']//meta",datetime_attribute='content')
+                        item_data['event_time'] = self.get_datetime_attributes("//table[@aria-label='date and time']//meta",datetime_attribute='content')
+                    except (NoSuchElementException,NoSuchAttributeException) as e:
                         logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
                         # logger.debug(f"XPATH not found {e}: Skipping.....")
                         item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
