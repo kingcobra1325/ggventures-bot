@@ -153,7 +153,8 @@ DATE_PATTERNS =                     [
                                         ["%m/%d/%y"         ,date_strf_pattern],
                                         ["%b-%d-%Y"         ,date_strf_pattern],
                                         ["%b%Y%d"         ,date_strf_pattern],
-                                        ["%b0%y%d"         ,date_strf_pattern],                                        
+                                        ["%b0%y%d"         ,date_strf_pattern],
+                                        ["%b-%d"         ,'%m/%d'],                                        
                                     ]
 TIME_PATTERNS_RE =                  [
                                         r"(?:Noon|noon|NOON|Midnight|midnight|MIDNIGHT)",

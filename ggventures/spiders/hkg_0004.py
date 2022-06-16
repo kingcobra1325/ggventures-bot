@@ -26,8 +26,8 @@ class Hkg0004Spider(GGVenturesSpider):
             self.driver.get(response.url)
             # self.check_website_changed(upcoming_events_xpath="//p[contains(text(),'There are no upcoming events to display at this time.')]")
             # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
-            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//a[@class='title']",next_page_xpath="//a[@rel='next']",get_next_month=False,click_next_month=False,click_month_list_xpath="//a[@class='month']",wait_after_loading=True,run_script=True):
-                # for link in self.events_list(event_links_xpath="//div[@id='news-grid-section']//article/a"):
+            # for link in self.multi_event_pages(num_of_pages=1,event_links_xpath="//a[@class='title']",next_page_xpath="//a[@rel='next']",get_next_month=False,click_next_month=False,click_month_list_xpath="//a[@class='month']",wait_after_loading=True,run_script=True):
+            for link in self.events_list(event_links_xpath="//a[@class='title']"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=['www.cpr.cuhk.edu.hk/en/event']):
 

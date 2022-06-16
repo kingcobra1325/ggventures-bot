@@ -42,7 +42,13 @@ class Rus0020Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='post__text']"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='post-meta__date']","//div[@class='post__text']"])
+                    try:
+                        event_day = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='post-meta__day']").get_attribute('textContent')
+                        event_month = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='post-meta__month']").get_attribute('textContent')
+                        event_year = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='post-meta__year']").get_attribute('textContent')
+                        item_data['event_date'] = f"{event_month}-{event_day}-{event_year}"
+                    except self.Exc.NoSuchElementException:
+                        item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='post-meta__date']","//div[@class='post__text']"])
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='post-meta__date']","//div[@class='post__text']"])
                     # item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
                     # item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
