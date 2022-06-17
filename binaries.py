@@ -140,7 +140,7 @@ class APPSettings():
         self.CLEAN_CONTACT_INFO = True
         self.SORT_STARTUPS = True
         # self.DELETE_PAST_EVENTS = True
-        self.DELETE_PAST_EVENTS = False
+        self.DELETE_PAST_EVENTS = True
         self.REGEX_LOGS = True
         self.DEV_LOGS = True
         self.NO_MATCH_REGEX_LOGS = True

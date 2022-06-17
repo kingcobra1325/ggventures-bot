@@ -51,6 +51,8 @@ class Usa0142Spider(GGVenturesSpider):
                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[text()='When']/ancestor::tr[1]"],method='attr',error_when_none=False)
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[text()='When']/ancestor::tr[1]"],method='attr',error_when_none=False)
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'tribe-block tribe-block__organizer__details')]"],method='attr',error_when_none=False,wait_time=5)
+                    if item_data['event_time']:
+                        item_data['event_time'] = item_data['event_time'].replace(r"\xa0","")
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

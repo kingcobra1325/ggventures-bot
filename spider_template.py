@@ -372,6 +372,7 @@ class GGVenturesSpider(scrapy.Spider):
                         data.add_value('event_name', event['name']['text'])
                         data.add_value('event_desc', event['description']['text'])
                         data.add_value('event_date', f"Start Date: {event['start']['utc']} - End Date: {event['end']['utc']}")
+                        data.add_value('event_time', f"Start Date: {event['start']['utc']} - End Date: {event['end']['utc']}")
                         data.add_value('event_link', event['url'])
                         # data.add_value('event_time', event_time[i])
                         yield data.load_item()

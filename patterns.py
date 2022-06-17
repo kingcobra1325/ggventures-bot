@@ -207,7 +207,6 @@ TIME_PATTERNS_RE =                  [
                                         r"[0-9]:[0-9][0-9]",
                                         r"[0-9][0-9][ ](?:am|pm|AM|PM|Am|Pm|Nn|NN|nn|MN|Mn|mn|a.m.|p.m.|A.M.|P.M.|A.m.|P.m.|N.n.|N.N.|n.n.|M.N.|M.n.|m.n.)",
                                         r"[0-9][ ](?:am|pm|AM|PM|Am|Pm|Nn|NN|nn|MN|Mn|mn|a.m.|p.m.|A.M.|P.M.|A.m.|P.m.|N.n.|N.N.|n.n.|M.N.|M.n.|m.n.)",
-
                                     ]
 
 time_strf_pattern = '%I:%M:%S %p'
