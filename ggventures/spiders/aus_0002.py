@@ -1,9 +1,4 @@
-from binaries import logger
 from spider_template import GGVenturesSpider
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class Aus0002Spider(GGVenturesSpider):
 
@@ -28,44 +23,29 @@ class Aus0002Spider(GGVenturesSpider):
         try:
         ####################
             self.driver.get(response.url)
+    
+            # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
+            
+            # self.ClickMore(click_xpath="//a[text()='View more events...']",run_script=True)
+              
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='search-result--content']//a",next_page_xpath="//a[@rel='next']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            for link in self.events_list(event_links_xpath="//h4[@class='timeline-title']/a"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["https://bond.edu.au/intl/event/"]):
+                    
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-            self.check_website_changed(upcoming_events_xpath="//p[contains(text(),'Sorry, no events for this category right now but check back later.')]")
+                    item_data = self.item_data_empty.copy()
+                    
+                    item_data['event_link'] = link
 
-            # # for link in self.multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False)
-            # for link in self.events_list(event_links_xpath="//h4[@class='timeline-title']/a"):
-            #
-            #     self.getter.get(link)
-            #
-            #     if self.unique_event_checker(url_substring='calendar.howard.edu/event'):
-            #
-            #         logger.info(f"Currently scraping --> {self.getter.current_url}")
-            #
-            #         item_data = self.item_data_empty.copy()
-            #
-            #         item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).text
-            #         item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='container']/article").text
-            #         # try:
-            #         #     item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-left-col')]").text
-            #         # except NoSuchElementException as e:
-            #         #     logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-            #         #     item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'structured-content-rich-text')]").text
-            #
-            #         item_data['event_date'] = self.getter.find_element(By.XPATH,"//span[@class='day_month_year']").text
-            #         item_data['event_time'] = self.getter.find_element(By.XPATH,"//span[@class='time']").text
-            #         # try:
-            #         #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-right-col')]").text
-            #         #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-right-col')]").text
-            #         # except NoSuchElementException as e:
-            #         #     logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-            #         #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//time[contains(@data-automation,'event-details-time')]").text
-            #         #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//time[contains(@data-automation,'event-details-time')]").text
-            #
-            #         item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//h3[text()='Contact']/..").text
-            #         # item_data['startups_link'] = ''
-            #         # item_data['startups_name'] = ''
-            #         item_data['event_link'] = link
-            #
-            #         yield self.load_item(item_data=item_data,item_selector=link)
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='container']/article"],enable_desc_image=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Date') or contains(text(),'When')]/.."],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Date') or contains(text(),'When')]/.."],method='attr',error_when_none=False)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h3[text()='Contact']/.."],method='attr',error_when_none=False,wait_time=5)
+
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
         ####################
         except Exception as e:

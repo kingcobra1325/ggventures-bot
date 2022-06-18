@@ -3,7 +3,7 @@ from spider_template import GGVenturesSpider
 
 class Aus0031Spider(GGVenturesSpider):
     name = 'aus_0031'
-    start_urls = ["https://www.usc.edu.au/about/structure/schools/school-of-business-and-creative-industries"]
+    start_urls = ["https://www.usc.edu.au/about/structure/schools/school-of-business-and-creative-industries/school-of-business-and-creative-industries-staff#tab-dean-and-head-of-school_12040"]
     country = 'Australia'
     # eventbrite_id = 6073111265
     TRANSLATE = True
@@ -16,7 +16,7 @@ class Aus0031Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.usc.edu.au/community/events"
 
-    university_contact_info_xpath = "//h4[text()='Enquiries']/.."
+    university_contact_info_xpath = "//div[@class='tab-content']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

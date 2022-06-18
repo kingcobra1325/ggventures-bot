@@ -31,16 +31,16 @@ class Aus0011Spider(GGVenturesSpider):
 
                 self.getter.get(link)
 
-                if self.unique_event_checker(url_substring=["mq.edu.au"]):
+                if self.unique_event_checker(url_substring=["https://event.mq.edu.au/"]):
 
                     self.logger.info(f"Currently scraping --> {self.getter.current_url}")
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[starts-with(@class,'event-title')]","//div[contains(@class,'h1')]"],method='attr')
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='row']/div","//div[@id='page_0']"],method='attr')
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[text()='date']/..","//div[@id='page_0']"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[text()='Time']/..","//div[@id='page_0']"],method='attr')
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'h1')]"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='page_0']"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@id='page_0']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@id='page_0']"],method='attr')
 
                     # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
                     # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')

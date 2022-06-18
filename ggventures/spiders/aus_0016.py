@@ -31,7 +31,7 @@ class Aus0016Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//li[@class='four-column']/a",next_page_xpath="//a[@class='next page-numbers']",get_next_month=True):
             for link in self.events_list(event_links_xpath="//h4/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['qut.edu.au/events']):
+                if self.unique_event_checker(url_substring=["https://www.qut.edu.au/study/","https://www.qut.edu.au/events"]):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
@@ -40,9 +40,9 @@ class Aus0016Spider(GGVenturesSpider):
                     # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//div/h1"],method='attr')
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'col-lg-11')]"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'event-details')]"])
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'event-details')]"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[starts-with(@id,'introduction')]","//div[@class='blurb-content']"],error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//h3[@id='Date_and_time']/..","//h5[@id='when']/..","//dt[text()=' Date ']/.."],error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//h3[@id='Date_and_time']/..","//h5[@id='when']/..","//dt[text()=' Date ']/.."],error_when_none=False)
                     # item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
                     # item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
 

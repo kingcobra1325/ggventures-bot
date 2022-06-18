@@ -16,7 +16,7 @@ class Aus0017Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.swinburne.edu.au/events/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[starts-with(@class,'general-content')][2]"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

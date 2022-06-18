@@ -17,7 +17,7 @@ class Arg0007Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = f"https://www.economicas.uba.ar/category/novedades/areas/eventos/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//aside[@id='contacto']"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

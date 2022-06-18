@@ -4,7 +4,7 @@ from spider_template import GGVenturesSpider
 
 class Arg0005Spider(GGVenturesSpider):
     name = 'arg_0005'
-    start_urls = ['https://www.iae.edu.ar/en/Pages/default.aspx/']
+    start_urls = ["https://www.iae.edu.ar/es/Comunidad/Alumni/Paginas/default.aspx"]
     country = "Argentina"
     # eventbrite_id = 6552000185
     TRANSLATE = True
@@ -17,7 +17,7 @@ class Arg0005Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.iae.edu.ar/eventos/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[text()='CONTACTANOS']/../.."
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

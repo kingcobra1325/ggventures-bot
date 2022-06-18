@@ -17,7 +17,7 @@ class Aus0020Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://events.unimelb.edu.au/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='main']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

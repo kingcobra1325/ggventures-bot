@@ -38,38 +38,14 @@ class Arg0006Spider(GGVenturesSpider):
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
                     item_data = self.item_data_empty.copy()
-
-                    # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
-
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1"))).text
-                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='body']").text
-                    # try:
-                    #     item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class'block-paragraph']/parent::div").text
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
-
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='col-lg-8']").text
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='col-lg-8']").text
-
-                    # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
-                    # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')
-
-                    # try:
-                    #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text
-                    #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....","debug")
-                    #     # logger.debug(f"XPATH not found {e}: Skipping.....")
-                    #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-                    #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-
-                    # try:
-                    #     item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='contactInfo']").get_attribute('textContent')
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
-                    # item_data['startups_link'] = ''
-                    # item_data['startups_name'] = ''
+                    
                     item_data['event_link'] = link
+
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='body']"],enable_desc_image=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='azul']/.."],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//h2[@class='fecha']"],method='attr',error_when_none=False)
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[text()='Event contact details']/following-sibling::ul"],method='attr',error_when_none=False,wait_time=5)
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 
