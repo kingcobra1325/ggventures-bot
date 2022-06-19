@@ -1,6 +1,6 @@
 from distutils.log import error
 from numpy import maximum
-import scrapy, time, traceback, os, sys
+import scrapy, time, traceback, os, sys, json
 # from scrapy import Selector
 from datetime import datetime
 
@@ -9,6 +9,7 @@ from bot_email import missing_info_email, error_email, unique_event, website_cha
 from binaries import Load_Driver, logger, WebScroller, EventBrite_API, GGV_SETTINGS, print_log
 
 from scrapy.loader import ItemLoader
+from scrapy.http import HtmlResponse
 
 from ggventures.items import GgventuresItem
 
@@ -65,6 +66,9 @@ class GGVenturesSpider(scrapy.Spider):
         WebDriverWait = WebDriverWait
         Select = Select
         EC = EC
+        WebScroller = WebScroller
+        datetime = datetime
+        website_changed = website_changed
 
     class Exc:
         NoSuchElementException = NoSuchElementException
@@ -115,6 +119,10 @@ class GGVenturesSpider(scrapy.Spider):
         response = requests.request(method, url, params=params,data=payload).json()
         return response
             
+        
+    def convert_str_to_html(self,string):
+        response = HtmlResponse(url="converting string...", body=string, encoding='utf-8')
+        return response
 
     def exception_handler(self,e):
         tb_log = traceback.format_exc()

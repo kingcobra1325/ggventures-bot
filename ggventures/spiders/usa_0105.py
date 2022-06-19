@@ -1,102 +1,102 @@
-import scrapy, time
-# from scrapy import Selector
+from spider_template import GGVenturesSpider
 
-from bot_email import missing_info_email, error_email
-
-from binaries import Load_Driver, logger, WebScroller
-
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-class Usa0105Spider(scrapy.Spider):
+class Usa0105Spider(GGVenturesSpider):
     name = 'usa_0105'
     country = 'US'
-    # start_urls = ["https://cba.k-state.edu/about/events/"]
-    start_urls = ["https://www.anderson.ucla.edu/"]
+    start_urls = ["https://www.anderson.ucla.edu/degrees/full-time-mba/meet-our-team/contact-us"]
+    # eventbrite_id = 6221361805
 
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.getter = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
+    # handle_httpstatus_list = [301,302,403,404]
 
-    def parse(self, response):
+    static_name = "University of California - Irvine,The Paul Merage School of Business"
+    
+    static_logo = "https://merage.uci.edu/_files/images/logo.svg"
+
+    # MAIN EVENTS LIST PAGE
+    parse_code_link = "https://api.eventcalendarapp.com/events?id=5973"
+
+    university_contact_info_xpath = "//div[@id='region--content']//div[@class='container']/div[2]"
+    # contact_info_text = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
+    TRANSLATE = True
+
+    num_of_events = 50
+
+    def get_api_events(self,url):
+        result = []
+        url = url
+        page = 0
+        payload = ""
+        params={}
+        # while True:
+        #     params = {"page":page}
+        #     response = self.request_api_call(url=url,params=params)
+        #     response_events = response['page']['content']
+        #     page+=1
+        #     if response_events:
+        #         self.logger.debug(f"API Events: {response_events}")
+        #         result.extend(response_events)
+        #     else:
+        #         break
+        result = self.request_api_call(url=url,params=params)["events"]
+        self.logger.debug(f"All API Events: {result}")
+        self.logger.debug(f"Number of Events: {len(result)}")
+        return result
+
+
+    def parse_code(self,response):
         try:
-            event_name = list()
-            event_date = list()
-            event_time = list()
-            event_desc = list()
-            event_link = list()
+        ####################
+            scraped_events = 0
 
-            self.driver.get("https://www.anderson.ucla.edu/")
-
-            logo = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//img[contains(@alt,'logo')]")))).get_attribute('src')
-            # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
-
-            university_name = "University of California - Los Angeles (UCLA),John E. Anderson School of Management"
-
-            self.driver.get("https://www.anderson.ucla.edu/degrees/full-time-mba/meet-our-team/contact-us")
+            no_new_events = True
             
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[@id='region--content']//div[@class='container']/div[2]")))).text
+            for event in self.get_api_events(response.url):
+                self.logger.debug("Event Detected. Sending Emails...")
+                self.Mth.website_changed(self.name,self.static_name)
+                no_new_events = False
+                break
+            
+            if no_new_events:
+                self.logger.debug("No Events found...")
 
-            self.driver.get(response.url)
+                
+                # link = "https://merage.uci.edu/events/"+event['url']
+                # self.Func.print_log(f"Currently scraping --> {link}","info")
 
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[contains(@class,'calendar-list-events-wrapper')]")))
-            for i in EventLinks:
-                i.click()
-                self.getter.get(self.driver.find_elment(By.XPATH,".//a[@target='_blank']").get_attribute('href'))
+                # item_data = self.item_data_empty.copy()
 
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//strong")))).text
+                # start_timestamp = int(event['start'])/1000
+                # start_date = self.Mth.datetime.fromtimestamp(start_timestamp)
 
-                try:
-                    RawEventDesc = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//div[@class='webinar_topic']//label[text()='Description']/following-sibling::div")))).text
-                except:
-                    RawEventDesc = None
+                # end_timestamp = int(event['end'])/1000
+                # end_date = self.Mth.datetime.fromtimestamp(end_timestamp)
 
-                RawEventDate = self.getter.find_element(By.XPATH,"//div[@class='webinar_topic']//label[text()='Time']/following-sibling::div").text
+                # if self.Mth.datetime.utcnow() > start_date:
+                #     self.logger.debug("Event has already passed. Skipping...")
+                #     continue
+                
+                # self.getter.get(link)
+                
+                # item_data['event_link'] = link
 
-                try:
-                    RawEventTime = RawEventDate
-                except:
-                    RawEventTime = None
+                # item_data['event_name'] = event['title']
+                # item_data['event_desc'] = event['description']
+                # item_data['event_date'] = "\n".join([start_date.strftime("%B %d, %Y %I:%M:%S %p"),end_date.strftime("%B %d, %Y %I:%M:%S %p")])
+                # item_data['event_time'] = "\n".join([start_date.strftime("%B %d, %Y %I:%M:%S %p"),end_date.strftime("%B %d, %Y %I:%M:%S %p")])
+                # # item_data['startups_link'] = event['onlineJoinUrl']
+                # # item_data['startups_name'] = ''
+                # # item_data['startups_contact_info'] = ''
+                # item_data['event_link'] = link
 
+                # yield self.load_item(item_data=item_data,item_selector=link)
 
-                event_name.append(RawEventName)
-                event_desc.append(RawEventDesc)
-                event_date.append(RawEventDate)
-                event_time.append(RawEventTime)
-                event_link.append(i.get_attribute('href'))
+                # scraped_events+=1
+                # if scraped_events >= self.num_of_events:
+                #     self.logger.debug("Scraped Events Limit Reached...")
+                #     break
 
-
-
-            for i in range(len(event_name)):
-                data = ItemLoader(item = GgventuresItem(), selector = i)
-                data.add_value('university_name',university_name)
-                data.add_value('university_contact_info',university_contact_info)
-                data.add_value('logo',logo)
-                data.add_value('event_name', event_name[i])
-                data.add_value('event_desc', event_desc[i])
-                data.add_value('event_date', event_date[i])
-                data.add_value('event_time', event_time[i])
-                data.add_value('event_link', event_link[i])
-
-                yield data.load_item()
-
+        ####################
         except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
-    def closed(self, reason):
-        try:
-            self.driver.quit()
-            self.getter.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-        except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            self.exception_handler(e)

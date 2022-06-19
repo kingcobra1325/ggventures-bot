@@ -31,7 +31,7 @@ class Usa0112Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//a[@rel='next']",run_script=True)
               
-            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3[@class='summary']",next_page_xpath="//a[@id='next-number']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3[@class='summary']/a",next_page_xpath="//a[@id='next-number']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
             # for link in self.events_list(event_links_xpath="//a[@class='redirect']"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://calendar.uga.edu/event/"]):
@@ -43,7 +43,7 @@ class Usa0112Spider(GGVenturesSpider):
                     item_data['event_link'] = link
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='summary']"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='description']"],enable_desc_image=True,error_when_none=False)
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='description']"],enable_desc_image=True)
                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//p[@class='dateright']"],method='attr',error_when_none=False)
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[@class='dateright']"],method='attr',error_when_none=False)
                     item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//dt[@class='custom-field-event_contact_name']/.."],method='attr',error_when_none=False)
