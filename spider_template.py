@@ -271,7 +271,7 @@ class GGVenturesSpider(scrapy.Spider):
         try:
             for link_base in link_base_list:
                 logger.debug(f"LINK_BASE: {link_base}") if GGV_SETTINGS.DEBUG_LOGS else None
-            get_all_links = [x.get_attribute('href') for x in self.getter.find_elements(By.TAG_NAME,'a')]
+            get_all_links = [x.get_attribute('href') for x in self.getter.find_elements(By.TAG_NAME,'a') if isinstance(x.get_attribute('href'),str)]
             get_all_links = list(set(get_all_links))
             self.Func.print_log(f"GET_ALL_LINKS:\n{get_all_links}",'debug',GGV_SETTINGS.DEBUG_LOGS)
             for link in get_all_links:
