@@ -49,6 +49,8 @@ class GGVenturesSpider(scrapy.Spider):
                 'startups_link',
                 'startups_name',
                 ]
+    
+    LIMIT_LINK_FETCHER : int = 0
 
     if USE_HANDLE_HTTPSTATUS_LIST:
         handle_httpstatus_list = [403,404]
@@ -273,6 +275,14 @@ class GGVenturesSpider(scrapy.Spider):
                 logger.debug(f"LINK_BASE: {link_base}") if GGV_SETTINGS.DEBUG_LOGS else None
             get_all_links = [x.get_attribute('href') for x in self.getter.find_elements(By.TAG_NAME,'a') if isinstance(x.get_attribute('href'),str)]
             get_all_links = list(set(get_all_links))
+
+            # FILTER LINK COUNT
+            if self.LIMIT_LINK_FETCHER:
+                self.logger.debug("LIMIT Fetched Links from Source...")
+                self.logger.debug(f"Number of Links: {len(get_all_links)}")
+                get_all_links = get_all_links[0:self.LIMIT_LINK_FETCHER]
+                self.logger.debug(f"Number of Links After Filtering: {len(get_all_links)}")
+
             self.Func.print_log(f"GET_ALL_LINKS:\n{get_all_links}",'debug',GGV_SETTINGS.DEBUG_LOGS)
             for link in get_all_links:
                 if not link:
@@ -286,6 +296,7 @@ class GGVenturesSpider(scrapy.Spider):
             logger.debug(f"FINAL STRING: {final_string}")  if GGV_SETTINGS.DEBUG_LOGS else None
         except StaleElementReferenceException as e:
             logger.debug(f"ERROR: {e}. Skip fetching links...")  if GGV_SETTINGS.DEBUG_LOGS else None
+
         return final_string
 
     def get_emails_from_source(self,tag_list=['a'],attribute_name='href',driver_name='driver'):
@@ -306,10 +317,19 @@ class GGVenturesSpider(scrapy.Spider):
                 all_emails.extend(get_all_emails)
                 self.Func.print_log(f"FINAL ALL EMAILS TYPE {type(final_all_emails)} | ALL EMAILS TYPE {type(all_emails)}",'debug',GGV_SETTINGS.DEBUG_LOGS)
             all_emails = [str(x) for x in all_emails]
+
+             # FILTER LINK COUNT
+            if self.LIMIT_LINK_FETCHER:
+                self.logger.debug("LIMIT Fetched Emails from Source...")
+                self.logger.debug(f"Number of Emails: {len(all_emails)}")
+                all_emails = all_emails[0:self.LIMIT_LINK_FETCHER]
+                self.logger.debug(f"Number of Emails After Filtering: {len(all_emails)}")
+
             final_all_emails = "\n".join(all_emails)
             self.Func.print_log(f"ALL EMAILS FROM SOURCE:\n{final_all_emails}",'debug',GGV_SETTINGS.DEBUG_LOGS)
         except StaleElementReferenceException as e:
             self.Func.print_log(f"ERROR: {e}. Skip fetching emails...",'debug',GGV_SETTINGS.DEBUG_LOGS)
+
         return final_all_emails
 
     def load_item(self,item_data,item_selector):

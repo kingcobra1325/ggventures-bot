@@ -16,7 +16,7 @@ class Usa0034Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.alumni.hbs.edu/events/Pages/default.aspx"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[contains(@class,'contact-us-boxes')]"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -43,7 +43,7 @@ class Usa0034Spider(GGVenturesSpider):
                     item_data['event_link'] = link
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='gamma-uc']","//h1/span"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='media-body']","//div[@class='body-content']"],enable_desc_image=True)
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='media-body']","//div[@class='sectioned']"])
                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='event-date']","//span[@class='kappa']/.."],method='attr')
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[@class='event-date']","//span[@class='kappa']/.."],method='attr',error_when_none=False)
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[text()='Contact Info']/.."],method='attr',error_when_none=False)

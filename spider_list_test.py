@@ -766,7 +766,11 @@ spider_zaf = [
                     # 'zaf_0014', 'zaf_0015', 'zaf_0016',
                     # 'zaf_0017', 'zaf_0018', 'zaf_0019'
             ]
-# spider_kor = ['kor_0001', 'kor_0002', 'kor_0003', 'kor_0004', 'kor_0005', 'kor_0006', 'kor_0007', 'kor_0008', 'kor_0009', 'kor_0010', 'kor_0011', 'kor_0012', 'kor_0013', 'kor_0014', 'kor_0015']
+spider_kor = [
+                # 'kor_0001', 'kor_0002', 'kor_0003', 
+                'kor_0004', 
+                # 'kor_0005', 'kor_0006', 'kor_0007', 'kor_0008', 'kor_0009', 'kor_0010', 'kor_0011', 'kor_0012', 'kor_0013', 'kor_0014', 'kor_0015'
+                ]
 spider_esp = [
                     # 'esp_0001',
                     # 'esp_0002',
@@ -915,7 +919,7 @@ spider_usa = [
                     # 'usa_0031',
                     # # 'usa_0032',
                     # 'usa_0033',
-                    # # 'usa_0034',
+                    # 'usa_0034',
                     # 'usa_0035',
                     # 'usa_0036',
                     # 'usa_0037',
@@ -949,7 +953,7 @@ spider_usa = [
                     # # 'usa_0071',
                     # 'usa_0072',
                     # 'usa_0073',
-                    'usa_0074',
+                    # 'usa_0074',
                     # 'usa_0075', 
                     # 'usa_0076',
                     # 'usa_0077',
@@ -1172,7 +1176,7 @@ spider_list.extend(spider_svk)
 spider_list.extend(spider_svn)
 spider_list.extend(spider_som)
 spider_list.extend(spider_zaf)
-# spider_list.extend(spider_kor)
+spider_list.extend(spider_kor)
 spider_list.extend(spider_esp)
 spider_list.extend(spider_lka)
 spider_list.extend(spider_sdn)
