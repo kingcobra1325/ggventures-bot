@@ -9,7 +9,9 @@ import time, os, sys
 
 from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, DEVELOPER_EMAILS, GGV_SETTINGS
 
-from spreadsheet import Read_DataFrame_From_Sheet, Add_Event, Log_Error
+from spreadsheet import Read_DataFrame_From_Sheet
+
+from lib.error_dashboard import error_dashboard
 
 from models import pipeline_re
 
@@ -22,7 +24,7 @@ next_line = '\n'
 def website_changed(spider="Default Spider", university_name="Default University"):
     try:
         # ------- LOG WEBSITE CHANGED TO ERRORS SHEETS -------#
-        Log_Error({
+        error_dashboard.log_error({
                                 "Time" : datetime.utcnow(),
                                 "Error" : f"Website EVENT Changed - {university_name}",
                                 "SpiderName" : spider,
@@ -105,7 +107,7 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
         if GGV_SETTINGS.UNIQUE_EVENT_EMAILS:
 
             # ------- LOG UNIQUE EVENTS TO ERRORS SHEETS -------#
-            # Log_Error({
+            # error_dashboard.log_error({
             #                         "Time" : datetime.utcnow(),
             #                         "Error" : f"Unique Event - {university_name}\n{href}",
             #                         "SpiderName" : spider.name,
@@ -156,7 +158,7 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
 def missing_info_email(spider="Default Spider", university_name="Default University", missing_info=['missing','info'], web_link="www.google.com"):
     try:
         # ------- LOG ERRORS TO ERRORS SHEETS -------#
-        Log_Error({
+        error_dashboard.log_error({
                                 "Time" : datetime.utcnow(),
                                 "Error" : f"Missing Information - {university_name}:\n{next_line.join(missing_info)}\n{web_link}",
                                 "SpiderName" : spider,
@@ -207,7 +209,7 @@ def missing_info_email(spider="Default Spider", university_name="Default Univers
 def error_email(spider="Default Spider",error="Default Error"):
     try:
         # ------- LOG ERRORS TO ERRORS SHEETS -------#
-        Log_Error({
+        error_dashboard.log_error({
                                 "Time" : datetime.utcnow(),
                                 "Error" : f"ERROR:\n{error}",
                                 "SpiderName" : spider,

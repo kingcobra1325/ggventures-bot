@@ -1,8 +1,6 @@
 import os, logging
 import __main__
 
-from scrapy.utils.log
-
 try:
     from dotenv import load_dotenv
 except Exception as e:
@@ -26,8 +24,8 @@ def logger_level():
     else:
         raise Exception("Invalid Logger Level value...")
 
-def initialize_logger():
-    if __name__ == '__main__':
+def initialize_logger(name=''):
+    if name == '__main__':
         CWD = os.path.dirname(os.path.realpath(__main__.__file__))
         string_format = "|%(asctime)s|{%(module)s}-(%(funcName)s)  (%(lineno)d) [%(levelname)s] %(message)s"
         FORMAT = logging.Formatter(string_format)

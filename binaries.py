@@ -233,6 +233,8 @@ default_startups_df = pd.DataFrame(columns=["Last Updated", "Country", "Event Na
 default_country_df = pd.DataFrame(columns=["Last Updated", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
 
+default_dashboard_df = pd.DataFrame(columns=["Last Updated","Spider","Status","Consecutive Fail Count","Last Error Time"])
+
 default_error_df = pd.DataFrame(columns=["Time", "Error", "SpiderName", "Status"])
 
 

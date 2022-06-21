@@ -37,7 +37,7 @@ except ModuleNotFoundError as e:
 from binaries import GGV_SETTINGS, DropBox_INIT, DropBox_Upload
 from lib.baselogger import initialize_logger
 
-logger = initialize_logger()
+logger = initialize_logger(__name__)
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 

@@ -28,7 +28,7 @@ except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting import set_column_width
 
-from binaries import Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
+from binaries import Google_Sheets, gs_APIError, gs_NoWS, default_dashboard_df, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
 from lib.baselogger import initialize_logger
 
 SPREADSHEET_MAIN = Google_Sheets()
@@ -89,6 +89,12 @@ def ReOrder_Sheets():
                 if worksheet.title == 'ALL':
                     logger.info(f"ALL Worksheet detected...")
                     order.append(worksheet)
+            
+            for worksheet in list_of_worksheets:
+
+                if worksheet.title == 'DASHBOARD':
+                    logger.info(f"DASHBOARD Worksheet detected...")
+                    order.append(worksheet)
 
             for worksheet in list_of_worksheets:
 
@@ -125,7 +131,16 @@ def Create_Default_Sheet(spreadsheet,name):
         column_range = 'A:O'
         column_range_row = 'A1:O1'
         num_cols = '15'
+    elif name == 'DASHBOARD':
+        logger.debug(f"Name identified as {name}. Setting Blank DataFrame for DASHBOARD")
+        df = default_dashboard_df.copy()
+        column_range = 'A:E'
+        column_range_row = 'A1:E1'
+        num_cols = '5'
     elif name == 'ERRORS':
+        column_range = 'A:D'
+        column_range_row = 'A1:D1'
+        num_cols = '4'
         logger.debug(f"Name identified as {name}. Setting Blank DataFrame for ERRORS")
         df = default_error_df.copy()
         column_range = 'A:D'
@@ -156,6 +171,11 @@ def Create_Default_Sheet(spreadsheet,name):
                 set_column_width(worksheet, 'A', 150)
                 set_column_width(worksheet, 'B', 900)
                 set_column_width(worksheet, 'D', 400)
+            elif name == 'DASHBOARD':
+                set_column_width(worksheet, 'A', 150)
+                set_column_width(worksheet, 'C', 150)
+                set_column_width(worksheet, 'D', 200)
+                set_column_width(worksheet, 'E', 150)
             else:
                 set_column_width(worksheet, 'A', 150)
                 set_column_width(worksheet, 'F', 600)
@@ -210,10 +230,11 @@ def Write_DataFrame_To_Sheet(worksheet,df):
             sleep(90)
 
 
-def Read_DataFrame_From_Sheet(Name):
+def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
 
     # spreadsheet = Google_Sheets()
-    spreadsheet = SPREADSHEET_MAIN
+    if not spreadsheet:
+        spreadsheet = SPREADSHEET_MAIN
 
     # Fetching / Creating Spreadsheet
     while True:
@@ -331,22 +352,3 @@ def Add_Startups_Event(data,startups_df,startups_worksheet,country):
 
     del [startups_df]
     gc.collect()
-
-
-
-def Log_Error(data):
-
-    # Getting ERRORS Sheet / Datafram
-    error_df, error_worksheet = Read_DataFrame_From_Sheet('ERRORS')
-
-    error_df.loc[error_df.shape[0]] = data
-
-    # SORT ITEMS BY DATE AND REMOVE DUPLICATES
-
-    error_df["Time"] = error_df["Time"].astype('datetime64[ns]')
-    error_df.sort_values(by='Time', ascending = False, inplace=True)
-
-    # WRITE ALL DF TO SHEET
-
-    Write_DataFrame_To_Sheet(error_worksheet, error_df)
-    logger.info("Added DataFrame to ERRORS Sheet")
