@@ -1,6 +1,8 @@
 import os, logging
 import __main__
 
+from scrapy.utils.log
+
 try:
     from dotenv import load_dotenv
 except Exception as e:

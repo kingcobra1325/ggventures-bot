@@ -131,7 +131,7 @@ class GGVenturesSpider(scrapy.Spider):
 
     def exception_handler(self,e):
         tb_log = traceback.format_exc()
-        logger.exception(f"Experienced error on Spider: {self.name} --> {type(e).__name__}\n{e}. Sending Error Email Notification")
+        self.logger.exception(f"Experienced error on Spider: {self.name} --> {type(e).__name__}\n{e}. Sending Error Email Notification")
         err_message = f"{type(e).__name__}\nDRIVER URL: {self.driver.current_url}\nGETTER URL: {self.getter.current_url}\n{tb_log}"
         error_email(self.name,err_message)
 
@@ -229,16 +229,16 @@ class GGVenturesSpider(scrapy.Spider):
                         return True
                     elif 'www.eventbrite.com' in self.getter.current_url:
                         if not self.eventbrite_id:
-                            logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
+                            self.logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
                             unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
                             return False
                         else:
-                            logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
+                            self.logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
                             return False
                     else:
-                        logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
+                        self.logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
                         unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
-                        logger.debug("Skipping............")
+                        self.logger.debug("Skipping............")
                         return False
                 # List - url_substring
                 if isinstance(url_substring,list):
@@ -248,26 +248,26 @@ class GGVenturesSpider(scrapy.Spider):
                             return True
                         elif 'www.eventbrite.com' in self.getter.current_url:
                             if not self.eventbrite_id:
-                                logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
+                                self.logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. No EventBrite ID detected for Spider. Sending Emails...")
                                 unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
                                 return False
                             else:
-                                logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
+                                self.logger.debug(f"Link: {self.getter.current_url} is an Eventbrite Link. Skipping....")
                                 return False
 
                     # No substring matching from list
-                    logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
+                    self.logger.debug(f"Link: {self.getter.current_url} is a Unique Event. Sending Emails.....")
                     unique_event(self,self.static_name,self.getter.current_url,self.university_contact_info,self.static_logo)
-                    logger.debug("Skipping............")
+                    self.logger.debug("Skipping............")
                     return False
 
                 else:
-                    logger.debug(f"URL Substring not a valid format --> {type(url_substring)}. Need to be a string or list. Proceed...")
+                    self.logger.debug(f"URL Substring not a valid format --> {type(url_substring)}. Need to be a string or list. Proceed...")
             else:
-                logger.debug("No URL Substring. Proceed...")
+                self.logger.debug("No URL Substring. Proceed...")
                 return True
         else:
-            logger.debug("ERROR 404 FOUND... Skipping Spider")
+            self.logger.debug("ERROR 404 FOUND... Skipping Spider")
             return False
 
 
@@ -275,7 +275,7 @@ class GGVenturesSpider(scrapy.Spider):
         final_string = ''
         try:
             for link_base in link_base_list:
-                logger.debug(f"LINK_BASE: {link_base}") if GGV_SETTINGS.DEBUG_LOGS else None
+                self.logger.debug(f"LINK_BASE: {link_base}") if GGV_SETTINGS.DEBUG_LOGS else None
             get_all_links = [x.get_attribute('href') for x in self.getter.find_elements(By.TAG_NAME,'a') if isinstance(x.get_attribute('href'),str)]
             get_all_links = list(set(get_all_links))
 
@@ -290,15 +290,15 @@ class GGVenturesSpider(scrapy.Spider):
             for link in get_all_links:
                 if not link:
                     continue
-                logger.debug(f"LINK: {link}")  if GGV_SETTINGS.DEBUG_LOGS else None
+                self.logger.debug(f"LINK: {link}")  if GGV_SETTINGS.DEBUG_LOGS else None
                 if link_base in link:
-                    logger.info(f"Link meets criteria as a startup link |{link_base}|. Adding...") if GGV_SETTINGS.DEBUG_LOGS else None
+                    self.logger.info(f"Link meets criteria as a startup link |{link_base}|. Adding...") if GGV_SETTINGS.DEBUG_LOGS else None
                     final_string = final_string + f"{link}\n"
                 else:
-                    logger.debug("Link doesn't meet the criteria. Skipping...") if GGV_SETTINGS.DEBUG_LOGS else None
-            logger.debug(f"FINAL STRING: {final_string}")  if GGV_SETTINGS.DEBUG_LOGS else None
+                    self.logger.debug("Link doesn't meet the criteria. Skipping...") if GGV_SETTINGS.DEBUG_LOGS else None
+            self.logger.debug(f"FINAL STRING: {final_string}")  if GGV_SETTINGS.DEBUG_LOGS else None
         except StaleElementReferenceException as e:
-            logger.debug(f"ERROR: {e}. Skip fetching links...")  if GGV_SETTINGS.DEBUG_LOGS else None
+            self.logger.debug(f"ERROR: {e}. Skip fetching links...")  if GGV_SETTINGS.DEBUG_LOGS else None
 
         return final_string
 
@@ -353,23 +353,23 @@ class GGVenturesSpider(scrapy.Spider):
         data.add_value('startups_name', item_data['startups_name'])
         data.add_value('startups_contact_info', item_data['startups_contact_info'])
         if item_data['startups_link']:
-            logger.debug(f"'startup_links' is loaded...") if GGV_SETTINGS.DEBUG_LOGS else None
+            self.logger.debug(f"'startup_links' is loaded...") if GGV_SETTINGS.DEBUG_LOGS else None
             data.add_value('startups_link', item_data['startups_link'])
         else:
-            logger.debug(f"'startup_links' is empty. Using get_links_from_source...") if GGV_SETTINGS.DEBUG_LOGS else None
+            self.logger.debug(f"'startup_links' is empty. Using get_links_from_source...") if GGV_SETTINGS.DEBUG_LOGS else None
             data.add_value('startups_link', self.get_links_from_source())
 
-        logger.info(f"|LOADING| 'university_name' -> {self.static_name}")
-        logger.info(f"|LOADING| 'university_contact_info' -> {self.university_contact_info}")
-        logger.info(f"|LOADING| 'logo' -> {self.static_logo}")
-        logger.info(f"|LOADING| 'event_name' -> {item_data['event_name']}")
-        logger.info(f"|LOADING| 'event_desc' -> {item_data['event_desc']}")
-        logger.info(f"|LOADING| 'event_date' -> {item_data['event_date']}")
-        logger.info(f"|LOADING| 'event_link' -> {item_data['event_link']}")
-        logger.info(f"|LOADING| 'event_time' -> {item_data['event_time']}")
-        logger.info(f"|LOADING| 'startups_link' -> {item_data['startups_link']}")
-        logger.info(f"|LOADING| 'startups_name' -> {item_data['startups_name']}")
-        logger.info(f"|LOADING| 'startups_contact_info' -> {item_data['startups_contact_info']}")
+        self.logger.info(f"|LOADING| 'university_name' -> {self.static_name}")
+        self.logger.info(f"|LOADING| 'university_contact_info' -> {self.university_contact_info}")
+        self.logger.info(f"|LOADING| 'logo' -> {self.static_logo}")
+        self.logger.info(f"|LOADING| 'event_name' -> {item_data['event_name']}")
+        self.logger.info(f"|LOADING| 'event_desc' -> {item_data['event_desc']}")
+        self.logger.info(f"|LOADING| 'event_date' -> {item_data['event_date']}")
+        self.logger.info(f"|LOADING| 'event_link' -> {item_data['event_link']}")
+        self.logger.info(f"|LOADING| 'event_time' -> {item_data['event_time']}")
+        self.logger.info(f"|LOADING| 'startups_link' -> {item_data['startups_link']}")
+        self.logger.info(f"|LOADING| 'startups_name' -> {item_data['startups_name']}")
+        self.logger.info(f"|LOADING| 'startups_contact_info' -> {item_data['startups_contact_info']}")
 
         return data.load_item()
 
@@ -377,7 +377,7 @@ class GGVenturesSpider(scrapy.Spider):
         try:
             if self.eventbrite_id:
                 # EVENTBRITE API - ORGANIZATION REQUEST
-                logger.info("Eventbrite ID Detected. Processing...")
+                self.logger.info("Eventbrite ID Detected. Processing...")
                 raw_org = self.eventbrite_api.get_organizers(self.eventbrite_id)
 
                 self.static_name = raw_org['name']
@@ -408,9 +408,9 @@ class GGVenturesSpider(scrapy.Spider):
                         # data.add_value('event_time', event_time[i])
                         yield data.load_item()
             else:
-                logger.debug(f"No EventBrite ID Number...")
+                self.logger.debug(f"No EventBrite ID Number...")
 
-            logger.info("Proceed to Main Parse...")
+            self.logger.info("Proceed to Main Parse...")
             yield scrapy.Request(url=self.parse_code_link,callback=self.parse_code)
         except Exception as e:
             self.exception_handler(e)
@@ -423,14 +423,14 @@ class GGVenturesSpider(scrapy.Spider):
                     self.driver.execute_script("arguments[0].click();", LoadMore)
                 else:
                     LoadMore.click()
-                logger.info("Load More Events....")
+                self.logger.info("Load More Events....")
                 time.sleep(10)
                 counter+=1
                 if counter >= final_counter:
                     logger.debug(f"Loaded all Events. Start Scraping......")
                     break
             except TimeoutException as e:
-                logger.debug(f"No more Events to load --> {e}. Start Scraping......")
+                self.logger.debug(f"No more Events to load --> {e}. Start Scraping......")
                 break
 
     @decorate.selenium_popup_handler_fn(exc=UnexpectedAlertPresentException)
@@ -468,7 +468,7 @@ class GGVenturesSpider(scrapy.Spider):
             list_images = "\n".join([str(x.get_attribute('src')) for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
             return f"{temp_event_desc.get_attribute('textContent')} \nPicture Link(s):\n{list_images}"
         except NoSuchAttributeException as e:
-            logger.debug(f"No image found on spider {self.name}... scraping text only...")
+            self.logger.debug(f"No image found on spider {self.name}... scraping text only...")
             return temp_event_desc.get_attribute('textContent')
     
     def desc_images_2(self,driver,xpath):
@@ -477,7 +477,7 @@ class GGVenturesSpider(scrapy.Spider):
             list_images = "\n".join([str(x.get_attribute('src')) for x in temp_event_desc.find_elements(By.XPATH,'.//img')])
             return f"\nPictures Link(s):\n{list_images}"
         except NoSuchAttributeException as e:
-            logger.debug(f"No image found on spider {self.name}... Skipping image description scraping.")
+            self.logger.debug(f"No image found on spider {self.name}... Skipping image description scraping.")
             return ""
 
 
@@ -546,10 +546,10 @@ class GGVenturesSpider(scrapy.Spider):
                         logger.debug('No changes to Events on current Spider. Skipping.....')
         except TimeoutException as e:
             if checking_if_none:
-                logger.debug('No changes to Events on current Spider. Skipping.....')
+                self.logger.debug('No changes to Events on current Spider. Skipping.....')
             else:
-                logger.debug(f"Upcoming Events XPATH cannot be located --> {e}")
-                logger.debug('Changes to Events on current Spider. Sending emails....')
+                self.logger.debug(f"Upcoming Events XPATH cannot be located --> {e}")
+                self.logger.debug('Changes to Events on current Spider. Sending emails....')
                 website_changed(self.name,self.static_name)
 
     def scrape_xpath(self,driver='',xpath_list=[],method='text',error_when_none=True,enable_desc_image=False,wait_time=15):
@@ -600,7 +600,7 @@ class GGVenturesSpider(scrapy.Spider):
     def events_list(self,event_links_xpath:str,return_elements=False,link_attribute='href',maximum_events=30):
         try:
             web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
-            logger.debug(f"Number of Event Links: {len(web_elements_list)}")
+            self.logger.debug(f"Number of Event Links: {len(web_elements_list)}")
             if return_elements:
                 return web_elements_list
             else:
@@ -611,13 +611,13 @@ class GGVenturesSpider(scrapy.Spider):
                 if not maximum_events:
                     return cleaned_event_links
                 else:
-                    logger.debug(f"Maximum Events to scrape: {maximum_events}")
+                    self.logger.debug(f"Maximum Events to scrape: {maximum_events}")
                     if len(cleaned_event_links) >= maximum_events:
                         return cleaned_event_links[0:maximum_events]
                     else:
                         return cleaned_event_links
         except self.Exc.TimeoutException as e:
-            logger.debug(f'No Events Found --> {e}. Skipping.....')
+            self.logger.debug(f'No Events Found --> {e}. Skipping.....')
             return []
         
     def events_click_reveal(self,click_area_xpath=''):
@@ -626,7 +626,7 @@ class GGVenturesSpider(scrapy.Spider):
             for element in click_elements_list: 
                 element.click()
         except self.Exc.TimeoutException as e:
-            logger.debug(f'No clickable element Found --> {e}. Skipping.....')
+            self.logger.debug(f'No clickable element Found --> {e}. Skipping.....')
             return []
 
 
@@ -669,7 +669,7 @@ class GGVenturesSpider(scrapy.Spider):
                     event_links.extend([x.get_attribute('href') for x in web_elements_list])
 
             except TimeoutException as e:
-                logger.debug(f"No available events for this month : {e} ---> Skipping...........")
+                self.logger.debug(f"No available events for this month : {e} ---> Skipping...........")
 
             try:
                 if click_month_list_xpath:
@@ -713,20 +713,20 @@ class GGVenturesSpider(scrapy.Spider):
                 if wait_after_loading:
                     time.sleep(10)
             except (TimeoutException,NoSuchElementException,IndexError) as e:
-                logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
+                self.logger.debug(f"Experienced Timeout Error on Spider: {self.name} --> {e}. Moving to the next spider...")
                 break
-            logger.debug(f"IN-PROGRESS: Pending Number of Event Links: {len(event_links)}")
+            self.logger.debug(f"IN-PROGRESS: Pending Number of Event Links: {len(event_links)}")
             
         
         # REMOVE EMPTY ELEMENTS
         event_links = list(filter(None, event_links))
-        logger.debug(f"Number of Event Links: {len(event_links)}")
+        self.logger.debug(f"Number of Event Links: {len(event_links)}")
         
         #LIMIT EVENTS TO SCRAPE
         if not maximum_events:
             return event_links
         else:
-            logger.debug(f"Maximum Events to scrape: {maximum_events}")
+            self.logger.debug(f"Maximum Events to scrape: {maximum_events}")
             if len(event_links) >= maximum_events:
                 return event_links[0:maximum_events]
             else:
@@ -758,10 +758,10 @@ class GGVenturesSpider(scrapy.Spider):
             if self.USE_MULTI_DRIVER:
                 self.getter.quit()
             self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping closed due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
+            self.logger.debug(f"Spider: {self.name} scraping closed due to --> {reason}")
+            self.logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
         except Exception as e:
             tb_log = traceback.format_exc()
-            logger.exception(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
+            self.logger.exception(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
             err_message = f"{type(e).__name__}\n{tb_log}\n{e}"
             error_email(self.name,err_message)
