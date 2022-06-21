@@ -32,7 +32,8 @@ except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install gspread_dataframe")
     from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
-from binaries import GGV_SETTINGS, logger, Google_Sheets, gs_APIError, gs_NoWS, UnpackItems
+from binaries import GGV_SETTINGS, Google_Sheets, gs_APIError, gs_NoWS, UnpackItems
+from lib.baselogger import initialize_logger
 
 from spreadsheet import Read_DataFrame_From_Sheet, Add_Event, Add_Startups_Event
 from bot_email import missing_info_email, error_email
@@ -41,6 +42,8 @@ from models import pipeline_re
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+
+logger = initialize_logger()
 
 class CleanDataPipeline:
 
@@ -131,15 +134,15 @@ class WriteDataPipeline:
             data = {
                         "Last Updated" : datetime.utcnow(),
                         "Event Name" : UnpackItems(adapter.get("event_name")),
-                        "Event Date" : str(adapter.get("event_date")),
-                        "Event Time" : str(adapter.get("event_time")),
+                        "Event Date" : UnpackItems(adapter.get("event_date")),
+                        "Event Time" : UnpackItems(adapter.get("event_time")),
                         "Event Link" : UnpackItems(adapter.get("event_link")),
                         "Event Description" : UnpackItems(adapter.get("event_desc")),
-                        "Startup Name(s)" : str(adapter.get("startups_name")),
-                        "Startup Link(s)" : str(adapter.get("startups_link")),
-                        "Startup Contact Info(s)" : str(adapter.get("startups_contact_info")),
+                        "Startup Name(s)" : UnpackItems(adapter.get("startups_name")),
+                        "Startup Link(s)" : UnpackItems(adapter.get("startups_link")),
+                        "Startup Contact Info(s)" : UnpackItems(adapter.get("startups_contact_info")),
                         "University Name" : UnpackItems(adapter.get("university_name")),
-                        "University Contact Info" : str(adapter.get("university_contact_info")),
+                        "University Contact Info" : UnpackItems(adapter.get("university_contact_info")),
                         "Logo" : UnpackItems(adapter.get("logo")),
                         "SpiderName" : spider.name
             }
@@ -234,15 +237,15 @@ class StartupsPipeline:
                                 "Last Updated" : datetime.utcnow(),
                                 "Country" : spider.country,
                                 "Event Name" : UnpackItems(adapter.get("event_name")),
-                                "Event Date" : str(adapter.get("event_date")),
-                                "Event Time" : str(adapter.get("event_time")),
+                                "Event Date" : UnpackItems(adapter.get("event_date")),
+                                "Event Time" : UnpackItems(adapter.get("event_time")),
                                 "Event Link" : UnpackItems(adapter.get("event_link")),
                                 "Event Description" : UnpackItems(adapter.get("event_desc")),
-                                "Startup Name(s)" : str(adapter.get("startups_name")),
-                                "Startup Link(s)" : str(adapter.get("startups_link")),
-                                "Startup Contact Info(s)" : str(adapter.get("startups_contact_info")),
+                                "Startup Name(s)" : UnpackItems(adapter.get("startups_name")),
+                                "Startup Link(s)" : UnpackItems(adapter.get("startups_link")),
+                                "Startup Contact Info(s)" : UnpackItems(adapter.get("startups_contact_info")),
                                 "University Name" : UnpackItems(adapter.get("university_name")),
-                                "University Contact Info" : str(adapter.get("university_contact_info")),
+                                "University Contact Info" : UnpackItems(adapter.get("university_contact_info")),
                                 "Logo" : UnpackItems(adapter.get("logo")),
                                 "Criteria Met" : criteria_result,
                                 "SpiderName" : spider.name

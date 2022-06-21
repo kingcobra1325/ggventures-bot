@@ -62,6 +62,8 @@ except ModuleNotFoundError as e:
 #     from sib_api_v3_sdk.rest import ApiException
 from pprint import pprint
 
+from lib.baselogger import initialize_logger
+
 from patterns import STARTUP_EVENT_KEYWORDS, STARTUP_NAMES
 
 ################ LOAD ENV VARIABLES ####################
@@ -88,10 +90,12 @@ if environ.get('DEPLOYED'):
     GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_MAIN']
     BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_MAIN'])
     SPREADSHEET_ID = environ['SPREADSHEET_ID_MAIN']
+    ERRORS_SPREADSHEET_ID = environ['ERRORS_SPREADSHEET_ID_MAIN']
 else:
     GOOGLE_SHEETS_API = environ['GOOGLE_SHEETS_API_DEV']
     BOT_KEYS = ast.literal_eval(environ['BOT_KEYS_DEV'])
     SPREADSHEET_ID = environ['SPREADSHEET_ID_DEV']
+    ERRORS_SPREADSHEET_ID = environ['ERRORS_SPREADSHEET_ID_DEV']
 
 # DROPBOX VARS
 
@@ -145,6 +149,7 @@ class APPSettings():
         self.DEV_LOGS = True
         self.NO_MATCH_REGEX_LOGS = True
         self.MULTI_DRIVER = False
+        self.RECORD_ERROR_COUNTER = True
         if environ.get('DEPLOYED'):
             self.LOAD_DROPBOX_LIST = True
             self.SAVE_DROPBOX_LIST = True
@@ -172,16 +177,7 @@ GGV_SETTINGS = APPSettings()
 
 
 ## -------------------- LOGGER SETUP ----------------------- ##
-cwd = os.path.dirname(os.path.realpath(__file__))
-FORMAT = "%(levelname)s: Func-%(funcName)s : Line-%(lineno)d : %(message)s"
-log_file_name = f"GGVENTURES_BOT_LOG.log"
-log_file_path = os.path.join(cwd, log_file_name)
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-file_handler = logging.FileHandler(filename=log_file_path, mode="w", encoding="UTF-8")
-file_handler.setFormatter(logging.Formatter(FORMAT))
-logger.addHandler(file_handler)
-logger.addHandler(logging.StreamHandler())
+logger = initialize_logger()
 
 def print_log(msg="",method='info',condition=True):
     if condition:

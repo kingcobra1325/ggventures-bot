@@ -1,6 +1,7 @@
 # CREATED BY JOHN EARL COBAR
 
 # ---------------- IMPORTS ----------------------------- #
+from mimetypes import init
 import time, os, sys, json, re
 start_time = round(time.time())
 
@@ -33,7 +34,10 @@ except ModuleNotFoundError as e:
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
-from binaries import GGV_SETTINGS, logger, DropBox_INIT, DropBox_Upload
+from binaries import GGV_SETTINGS, DropBox_INIT, DropBox_Upload
+from lib.baselogger import initialize_logger
+
+logger = initialize_logger()
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 

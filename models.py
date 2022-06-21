@@ -1,8 +1,10 @@
+from mimetypes import init
 import scrapy, time, re
 
 from datetime import datetime
 
-from binaries import print_log, GGV_SETTINGS, DropBox_Keywords, DropBox_EventNames, Load_Driver, logger, WebScroller, EventBrite_API
+from binaries import GGV_SETTINGS, DropBox_Keywords, DropBox_EventNames, Load_Driver, WebScroller, EventBrite_API
+from lib.baselogger import initialize_logger
 
 from scrapy.loader import ItemLoader
 
@@ -14,6 +16,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 import patterns
+
+logger = initialize_logger()
 
 class RegExGGV:
 
@@ -323,7 +327,7 @@ class RegExGGV:
         clean_phone_numbers = list(set(self.perform_regex(phone_number_criteria,data)))
         clean_emails = list(set(self.perform_regex(email_criteria,data)))
 
-        print_log(f"\nClean Phone Number(s) List: |{clean_phone_numbers}|\n","debug",GGV_SETTINGS.REGEX_LOGS)
+        logger.debug(f"\nClean Phone Number(s) List: |{clean_phone_numbers}|\n")
 
         logger.info(f"Phone Number(s) --> {len(clean_phone_numbers)}")
         logger.info(f"Email(s) --> {len(clean_emails)}")

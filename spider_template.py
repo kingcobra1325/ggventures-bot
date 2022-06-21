@@ -6,7 +6,8 @@ from datetime import datetime
 
 from bot_email import missing_info_email, error_email, unique_event, website_changed
 
-from binaries import Load_Driver, logger, WebScroller, EventBrite_API, GGV_SETTINGS, print_log
+from binaries import Load_Driver, WebScroller, EventBrite_API, GGV_SETTINGS, print_log
+from lib.baselogger import initialize_logger
 
 from scrapy.loader import ItemLoader
 from scrapy.http import HtmlResponse
@@ -23,6 +24,8 @@ from googletrans import Translator
 
 import re
 from lib.decorators import decorate
+
+logger = initialize_logger()
 
 class GGVenturesSpider(scrapy.Spider):
 
@@ -138,7 +141,7 @@ class GGVenturesSpider(scrapy.Spider):
                 result = self.Func.translator.translate(data)
                 return result
             except Exception as e:
-                self.Func.print_log(f"Translate API Error: {e}. Retrying...",'error')
+                self.logger.error(f"Translate API Error: {e}. Retrying...")
 
     def select_dropdown(self,xpath,value,wait_after_loading=False):
 
@@ -163,8 +166,8 @@ class GGVenturesSpider(scrapy.Spider):
         if isinstance(raw_text,dict):
             text_translated_dict = {}
 
-            self.Func.print_log(f"\nRAW TEXT: {raw_text}",'debug',GGV_SETTINGS.DEBUG_LOGS)
-            self.Func.print_log(f"TYPE: {type(raw_text)}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.logger.debug(f"\nRAW TEXT: {raw_text}")
+            self.logger.debug(f"TYPE: {type(raw_text)}")
             for k,v in raw_text.items():
 
                 if k not in self.TL_ITEM_EXCLUDE:
@@ -174,38 +177,38 @@ class GGVenturesSpider(scrapy.Spider):
                     self.SRC_LANG = result.src
                     self.TL_LANG = result.dest
 
-                    self.Func.print_log(f"\nKEY |{k}|",'debug')
-                    self.Func.print_log(f"RAW LANG: {result.src}",'debug',GGV_SETTINGS.DEBUG_LOGS)
-                    self.Func.print_log(f"RAW TEXT: {result.origin}",'debug',GGV_SETTINGS.DEBUG_LOGS)
-                    self.Func.print_log(f"TRANSLATED LANG: {result.dest}",'debug',GGV_SETTINGS.DEBUG_LOGS)
-                    self.Func.print_log(f"TRANSLATED TEXT: {result.text}\n",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                    self.logger.debug(f"\nKEY |{k}|")
+                    self.logger.debug(f"RAW LANG: {result.src}")
+                    self.logger.debug(f"RAW TEXT: {result.origin}")
+                    self.logger.debug(f"TRANSLATED LANG: {result.dest}")
+                    self.logger.debug(f"TRANSLATED TEXT: {result.text}\n")
 
                 else:
-                    self.Func.print_log(f"'{k}' included as Excluded from Translation. Loading Raw Data...",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                    self.logger.debug(f"'{k}' included as Excluded from Translation. Loading Raw Data...")
                     text_translated_dict.update({k : v})
 
-            self.Func.print_log(f"TRANSLATED TEXT DICT: {text_translated_dict}\n",'info')
+            self.logger.info(f"TRANSLATED TEXT DICT: {text_translated_dict}\n")
 
             return text_translated_dict
 
         elif isinstance(raw_text,str):
 
-            self.Func.print_log(f"\nRAW TEXT: {raw_text}",'debug',GGV_SETTINGS.DEBUG_LOGS)
-            self.Func.print_log(f"TYPE: {type(raw_text)}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.logger.debug(f"\nRAW TEXT: {raw_text}")
+            self.logger.debug(f"TYPE: {type(raw_text)}")
 
             result = self.translate_API_call(raw_text)
             self.SRC_LANG = result.src
             self.TL_LANG = result.dest
 
-            self.Func.print_log(f"RAW LANG: {result.src}",'debug',GGV_SETTINGS.DEBUG_LOGS)
-            self.Func.print_log(f"RAW TEXT: {result.origin}",'debug',GGV_SETTINGS.DEBUG_LOGS)
-            self.Func.print_log(f"TRANSLATED LANG: {result.dest}",'debug',GGV_SETTINGS.DEBUG_LOGS)
-            self.Func.print_log(f"TRANSLATED TEXT: {result.text}\n",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.logger.debug(f"RAW LANG: {result.src}")
+            self.logger.debug(f"RAW TEXT: {result.origin}")
+            self.logger.debug(f"TRANSLATED LANG: {result.dest}")
+            self.logger.debug(f"TRANSLATED TEXT: {result.text}\n")
 
             return result
 
         else:
-            self.Func.print_log(f"|raw_text| not a valid format --> {type(raw_text)}. Need to be a string or dict. Proceed...","error")
+            self.logger.error(f"|raw_text| not a valid format --> {type(raw_text)}. Need to be a string or dict. Proceed...")
 
 
     def get_datetime_attributes(self,datetime_xpath,datetime_attribute='datetime',multi=True):
@@ -283,7 +286,7 @@ class GGVenturesSpider(scrapy.Spider):
                 get_all_links = get_all_links[0:self.LIMIT_LINK_FETCHER]
                 self.logger.debug(f"Number of Links After Filtering: {len(get_all_links)}")
 
-            self.Func.print_log(f"GET_ALL_LINKS:\n{get_all_links}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.logger.debug(f"GET_ALL_LINKS:\n{get_all_links}")
             for link in get_all_links:
                 if not link:
                     continue
@@ -307,15 +310,15 @@ class GGVenturesSpider(scrapy.Spider):
         elif driver_name.lower() == 'getter':
             email_driver = self.getter
         else:
-            self.Func.print_log(f"Invalid Driver Name |{driver_name}|. Returning None...",'error')
+            self.logger.error(f"Invalid Driver Name |{driver_name}|. Returning None...")
             return None
         try:
             for tag in tag_list:
                 get_all_emails = [x.get_attribute(attribute_name) for x in email_driver.find_elements(By.TAG_NAME,tag)]
                 get_all_emails = list(set(get_all_emails))
-                self.Func.print_log(f"TAG |{tag}| ATTRIBUTE |{attribute_name}| - Emails:\n{get_all_emails}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                self.logger.debug(f"TAG |{tag}| ATTRIBUTE |{attribute_name}| - Emails:\n{get_all_emails}")
                 all_emails.extend(get_all_emails)
-                self.Func.print_log(f"FINAL ALL EMAILS TYPE {type(final_all_emails)} | ALL EMAILS TYPE {type(all_emails)}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+                self.logger.debug(f"FINAL ALL EMAILS TYPE {type(final_all_emails)} | ALL EMAILS TYPE {type(all_emails)}")
             all_emails = [str(x) for x in all_emails]
 
              # FILTER LINK COUNT
@@ -326,9 +329,9 @@ class GGVenturesSpider(scrapy.Spider):
                 self.logger.debug(f"Number of Emails After Filtering: {len(all_emails)}")
 
             final_all_emails = "\n".join(all_emails)
-            self.Func.print_log(f"ALL EMAILS FROM SOURCE:\n{final_all_emails}",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.logger.debug(f"ALL EMAILS FROM SOURCE:\n{final_all_emails}")
         except StaleElementReferenceException as e:
-            self.Func.print_log(f"ERROR: {e}. Skip fetching emails...",'debug',GGV_SETTINGS.DEBUG_LOGS)
+            self.logger.debug(f"ERROR: {e}. Skip fetching emails...")
 
         return final_all_emails
 
@@ -486,9 +489,9 @@ class GGVenturesSpider(scrapy.Spider):
                 alert.accept()
             else:
                 alert.dismiss()
-            self.Func.print_log(f"Alert found and accepted... Proceeding to scrape spider {self.name}")
+            self.logger.debug(f"Alert found and accepted... Proceeding to scrape spider {self.name}")
         except self.Exc.TimeoutException as e:
-            self.Func.print_log(f"No Alert found with text \"{alert_text}\" on spider {self.name}... Proceeding to scrape spider")
+            self.logger.debug(f"No Alert found with text \"{alert_text}\" on spider {self.name}... Proceeding to scrape spider")
 
 
     def check_website_changed(self,upcoming_events_xpath='',empty_text=False,checking_if_none=False):
@@ -566,15 +569,15 @@ class GGVenturesSpider(scrapy.Spider):
             final_result = f"{result}\n{image_desc}"
             return final_result.strip()
         except self.Exc.TimeoutException as e:
-            self.Func.print_log(f"XPATH: {joined_xpath} cannot be scraped..",'debug')
+            self.logger.debug(f"XPATH: {joined_xpath} cannot be scraped..")
             errors_dict.update({joined_xpath:f"|{type(e).__name__}\n{e}|"})
         if error_when_none:
-            self.Func.print_log(f"No valid XPATH scraped...",'error')
+            self.logger.error(f"No valid XPATH scraped...")
             xpath_errors = "\n".join([f"{k}{v}" for k,v in errors_dict.items()])
             error_message = f"No valid scrapable XPATH.\n{xpath_errors}"
             raise NoSuchElementException(error_message)
         else:
-            self.Func.print_log(f"No valid XPATH scraped. Skipping...",'error')
+            self.logger.error(f"No valid XPATH scraped. Skipping...")
             return ""
     
     def switch_iframe(self,iframe_xpath="",error_when_none=True,iframe_driver=''):
@@ -584,12 +587,12 @@ class GGVenturesSpider(scrapy.Spider):
             self.Mth.WebDriverWait(iframe_driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,iframe_xpath)))
             self.Func.sleep(4)
         except self.Exc.TimeoutException as e:
-            self.Func.print_log(f"Iframe XPATH: {iframe_xpath} cannot be scraped..",'debug')
+            self.logger.debug(f"Iframe XPATH: {iframe_xpath} cannot be scraped..")
         if error_when_none:
-            self.Func.print_log(f"No valid Iframe to switch...",'error')
+            self.logger.error(f"No valid Iframe to switch...")
             raise NoSuchElementException()
         else:
-            self.Func.print_log(f"No valid Iframe. Skipping...",'error')
+            self.logger.error(f"No valid Iframe. Skipping...")
             return ""
         
 

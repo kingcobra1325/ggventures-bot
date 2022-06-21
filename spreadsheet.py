@@ -28,43 +28,45 @@ except:
     os.system(f"{sys.executable} -m pip install gspread_formatting")
     from gspread_formatting import set_column_width
 
-from binaries import logger, print_log, Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
-
+from binaries import Google_Sheets, gs_APIError, gs_NoWS, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
+from lib.baselogger import initialize_logger
 
 SPREADSHEET_MAIN = Google_Sheets()
 
+logger = initialize_logger()
+
 def check_outdated_events(date_list):
     bool_array = []
-    print_log(f"\nEvent Date: |{date_list}|{type(date_list)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+    logger.debug(f"\nEvent Date: |{date_list}|{type(date_list)}|\n")
     current_date = datetime.now(pytz.timezone('Pacific/Honolulu')).replace(hour=0, minute=0, second=0, microsecond=0)
     for event_date in list(date_list):
         event_bool = True
         for raw in event_date:
             try:
-                print_log(f"\nRaw Date: |{raw}|{type(raw)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
-                print_log(f"Using MM/DD/YYYY Strptime Pattern...","debug",GGV_SETTINGS.DEV_LOGS)
+                logger.debug(f"\nRaw Date: |{raw}|{type(raw)}|\n")
+                logger.debug(f"Using MM/DD/YYYY Strptime Pattern...")
                 date = datetime.strptime(raw,'%m/%d/%Y').replace(tzinfo=pytz.utc)
-                print_log(f"\nStripped Date: |{date.strftime('%m-%d-%Y')}|{type(raw)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+                logger.debug(f"\nStripped Date: |{date.strftime('%m-%d-%Y')}|{type(raw)}|\n")
             except ValueError as e:
                 try:
-                    print_log(f"MM/DD/YYYY not valid. Using MM/DD Strptime Pattern...","debug",GGV_SETTINGS.DEV_LOGS)
+                    logger.debug(f"MM/DD/YYYY not valid. Using MM/DD Strptime Pattern...")
                     date = datetime.strptime(raw,'%m/%d').replace(year=datetime.now().year,tzinfo=pytz.utc)
-                    print_log(f"\nStripped Date: |{date.strftime('%m-%d-%Y')}|{type(raw)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
+                    logger.debug(f"\nStripped Date: |{date.strftime('%m-%d-%Y')}|{type(raw)}|\n")
                 except ValueError as e:
-                    print_log(f"No valid data to strip time {e}. Skipping...","debug",GGV_SETTINGS.DEV_LOGS)
+                    logger.debug(f"No valid data to strip time {e}. Skipping...")
                     continue
             if current_date <= date:
-                print_log(f"Event Date |{date.strftime('%m-%d-%Y')}| is equal/later than Current Date |{current_date.strftime('%m-%d-%Y')}|...","debug",GGV_SETTINGS.DEV_LOGS)
+                logger.debug(f"Event Date |{date.strftime('%m-%d-%Y')}| is equal/later than Current Date |{current_date.strftime('%m-%d-%Y')}|...")
                 event_bool = False
-                print_log(f"{event_date} -> FALSE\n","debug",GGV_SETTINGS.DEV_LOGS)
+                logger.debug(f"{event_date} -> FALSE\n")
             else:
-                print_log(f"Event Date |{date.strftime('%m-%d-%Y')}| is no longer a valid date...","debug",GGV_SETTINGS.DEV_LOGS)
+                logger.debug(f"Event Date |{date.strftime('%m-%d-%Y')}| is no longer a valid date...")
         bool_array.append(event_bool)
         if event_bool:
-            print_log(f"{event_date} -> TRUE\n","debug",GGV_SETTINGS.DEV_LOGS)
-    print_log(f"\nFinal Bool Array: |{bool_array}|\n","debug",GGV_SETTINGS.DEV_LOGS)
-    print_log(f"\nDate List Count -> |{len(date_list)}| Bool Array Count -> |{len(bool_array)}|\n","debug",GGV_SETTINGS.DEV_LOGS)
-    print_log(f"\nNumber of Deleted Rows: |{bool_array.count(True)}|\n","info")
+            logger.debug(f"{event_date} -> TRUE\n")
+    logger.debug(f"\nFinal Bool Array: |{bool_array}|\n")
+    logger.debug(f"\nDate List Count -> |{len(date_list)}| Bool Array Count -> |{len(bool_array)}|\n")
+    logger.info(f"\nNumber of Deleted Rows: |{bool_array.count(True)}|\n")
     return bool_array
 
 def ReOrder_Sheets():
