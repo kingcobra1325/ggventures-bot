@@ -102,12 +102,17 @@ def exception_handler(errmsg="", e=""):
 # SCRAPING
 def start_spiders():
 
-    if environ.get('DEPLOYED'):
-        logger.info("|PRODUCTION| Loading Spider_List....")
-        get_spider_list = Load_Spiders()
+    if GGV_SETTINGS.GET_SPIDERLIST_FROM_DASHBOARD:
+        logger.info("Loading Spiders from Dashboard....")
+        get_spider_list = error_dashboard.get_spiders_on_status()
     else:
-        logger.info("|DEVELOPMENT| Loading Spider_List_Test....")
-        get_spider_list = Load_Spiders_Test()
+        logger.debug("Fetching Spiders from local file...")
+        if environ.get('DEPLOYED'):
+            logger.info("|PRODUCTION| Loading Spider_List....")
+            get_spider_list = Load_Spiders()
+        else:
+            logger.info("|DEVELOPMENT| Loading Spider_List_Test....")
+            get_spider_list = Load_Spiders_Test()
 
     logger.info(f"Spider_List: {get_spider_list}")
 

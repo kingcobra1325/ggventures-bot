@@ -149,6 +149,7 @@ class APPSettings():
         self.DEV_LOGS = True
         self.NO_MATCH_REGEX_LOGS = True
         self.MULTI_DRIVER = False
+        # self.GET_SPIDERLIST_FROM_DASHBOARD = True
         self.GET_SPIDERLIST_FROM_DASHBOARD = False
         self.RECORD_ERROR_COUNTER = True
         if environ.get('DEPLOYED'):

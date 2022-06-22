@@ -1,39 +1,17 @@
 from cProfile import run
 from collections import Counter
-import os, json, gc
+import os, gc
 
 from datetime import datetime
 
 try:
-    import dropbox
-    from dropbox.exceptions import ApiError as DBApiError
-except ModuleNotFoundError as e:
-    os.system(f"pip install dropbox")
-    import dropbox
-    from dropbox.exceptions import ApiError as DBApiError
-try:
-    from gspread_dataframe import get_as_dataframe, set_with_dataframe
-except ModuleNotFoundError as e:
-    os.system(f"pip install gspread_dataframe")
-    from gspread_dataframe import get_as_dataframe, set_with_dataframe
-
-try:
-    import pandas as pd
-except ModuleNotFoundError as e:
-    os.system(f"pip install pandas")
-    import pandas as pd
-try:
     import gspread
-    from gspread.exceptions import APIError as gs_APIError
-    from gspread.exceptions import WorksheetNotFound as gs_NoWS
 except ModuleNotFoundError as e:
     os.system(f"pip install gspread")
     import gspread
-    from gspread.exceptions import APIError as gs_APIError
-    from gspread.exceptions import WorksheetNotFound as gs_NoWS
 
 from lib.baselogger import LoggerMixin
-from binaries import GGV_SETTINGS,ERRORS_SPREADSHEET_ID, BOT_KEYS, DROPBOX_TOKEN
+from binaries import GGV_SETTINGS,ERRORS_SPREADSHEET_ID, BOT_KEYS
 from spreadsheet import Read_DataFrame_From_Sheet, Write_DataFrame_To_Sheet
 
 class ErrorDashboard(LoggerMixin):
