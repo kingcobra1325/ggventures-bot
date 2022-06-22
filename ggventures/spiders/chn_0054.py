@@ -7,7 +7,7 @@ class Chn0054Spider(GGVenturesSpider):
     country = 'China'
     # eventbrite_id = 6221361805
 
-    # handle_httpstatus_list = [301,302,403,404]
+    handle_httpstatus_list = [301,302,403,404,412]
 
     static_name = "Zhongshan University / Sun Yat-San University"
     
