@@ -11,7 +11,7 @@ from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, DEVEL
 
 from spreadsheet import Read_DataFrame_From_Sheet
 
-from lib.error_dashboard import error_dashboard
+from app import error_dashboard
 
 from models import pipeline_re
 

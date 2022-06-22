@@ -1,5 +1,13 @@
 # CREATED BY JOHN EARL COBAR
 
+## --------------- INITIALIZE BASE CLASSES --------------- ##
+
+from lib.baselogger import initialize_logger
+from lib.error_dashboard import ErrorDashboard
+
+logger = initialize_logger(__name__)
+error_dashboard = ErrorDashboard()
+
 # ---------------- IMPORTS ----------------------------- #
 from mimetypes import init
 import time, os, sys, json, re
@@ -35,9 +43,6 @@ except ModuleNotFoundError as e:
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
 from binaries import GGV_SETTINGS, DropBox_INIT, DropBox_Upload
-from lib.baselogger import initialize_logger
-
-logger = initialize_logger(__name__)
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 

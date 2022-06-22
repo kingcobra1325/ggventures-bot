@@ -23,6 +23,8 @@ from selenium.common.exceptions import ElementClickInterceptedException, NoSuchE
 from googletrans import Translator
 
 import re
+
+from app import error_dashboard
 from lib.decorators import decorate
 
 logger = initialize_logger()
@@ -109,6 +111,7 @@ class GGVenturesSpider(scrapy.Spider):
                         'startups_name' : ''
                         }
 
+    PARSE_STATUS = 'success'
 
     def __init__(self):
         self.driver = Load_Driver()
@@ -133,6 +136,7 @@ class GGVenturesSpider(scrapy.Spider):
         tb_log = traceback.format_exc()
         self.logger.exception(f"Experienced error on Spider: {self.name} --> {type(e).__name__}\n{e}. Sending Error Email Notification")
         err_message = f"{type(e).__name__}\nDRIVER URL: {self.driver.current_url}\nGETTER URL: {self.getter.current_url}\n{tb_log}"
+        self.PARSE_STATUS = 'error'
         error_email(self.name,err_message)
 
     def translate_API_call(self,data):
@@ -754,6 +758,7 @@ class GGVenturesSpider(scrapy.Spider):
 
     def closed(self, reason):
         try:
+            error_dashboard.process_spider_status(self.name,self.PARSE_STATUS)
             self.driver.quit()
             if self.USE_MULTI_DRIVER:
                 self.getter.quit()
