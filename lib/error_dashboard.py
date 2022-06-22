@@ -1,5 +1,8 @@
 from cProfile import run
+from collections import Counter
 import os, json, gc
+
+from datetime import datetime
 
 try:
     import dropbox
@@ -79,7 +82,17 @@ class ErrorDashboard(LoggerMixin):
         self.logger.debug(f"Fetched Spiders Count: {len(spiders)}")
         return spiders
         
-
+    def log_error_counter(self,spider_name):
+        spider = self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name]
+        fail_counter = f"{spider['Consecutive Fail Count'].values[0]}X"
+        self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name,'Consecutive Fail Count'] = fail_counter.replace("nan","")
+        current_time = datetime.utcnow()
+        self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name,'Last Updated'] = current_time
+        self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name,'Last Error Time'] = current_time
+        self.update_dashboard()
+        self.logger.debug(self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name])
+        self.logger.info(f"Spider [{spider_name}] fail counter: {Counter(fail_counter)['X']}")
+        
 
     # def DropBox_Keywords(self):
     #     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
@@ -115,4 +128,3 @@ class ErrorDashboard(LoggerMixin):
     #         self.logger.info(json_data)
     #         return json_data
 
-error_dashboard = ErrorDashboard()

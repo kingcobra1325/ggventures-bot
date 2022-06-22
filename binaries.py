@@ -162,6 +162,7 @@ class APPSettings():
             self.SAVE_DROPBOX_LIST = False
             self.DEBUG_LOGS = True
         self.DB_SAVE_SPIDER_COUNTER = 5
+        self.FAIL_COUNTER = 15
         self.PRINT_ENV_VARS = False
 
     def __repr__(self):

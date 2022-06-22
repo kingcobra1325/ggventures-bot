@@ -45,10 +45,10 @@ class Can0006Spider(GGVenturesSpider):
 
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@id='page-title']"],method='attr')
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='channels-body-images']/following-sibling::div","//div[@class='lw_calendar_event_description']"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='custom-multi-date']","//div[@class='custom-multi-date']"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//hr/following-sibling::h5","//div[@class='custom-multi-date']"],method='attr')
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//xh1[@id='page-title']"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//xdiv[@class='channels-body-images']/following-sibling::div","//div[@class='lw_calendar_event_description']"])
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//xdiv[@class='custom-multi-date']","//div[@class='custom-multi-date']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//xhr/following-sibling::h5","//div[@class='custom-multi-date']"],method='attr')
 
 
                     item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h4[text()='Contact']/following-sibling::p/a"],method='attr',error_when_none=False,wait_time=5)
