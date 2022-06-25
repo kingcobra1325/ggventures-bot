@@ -7,6 +7,12 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv('.env')
+
 BOT_NAME = 'ggventures'
 
 SPIDER_MODULES = ['ggventures.spiders']
@@ -88,3 +94,9 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# LOG_FILE = 'scraping_LOG.log'
+LOG_LEVEL = os.environ.get('LOGGER_LEVEL')
+LOG_FORMAT = "|%(asctime)s|{%(module)s}-(%(funcName)s) %(lineno)d-[%(levelname)s] %(message)s"
+# LOG_LEVEL='INFO'
+# LOG_STDOUT = True

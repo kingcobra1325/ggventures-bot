@@ -264,7 +264,7 @@ def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
             sleep(90)
 
     # Getting DataFrame from Sheet
-    prev_df = get_dataframe(Name,spreadsheet)
+    prev_df = get_dataframe(Name,worksheet)
 
     df = prev_df.copy()
     # REMOVE EMPTY ROWS

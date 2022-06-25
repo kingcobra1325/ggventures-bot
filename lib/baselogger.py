@@ -27,12 +27,12 @@ def logger_level():
 def initialize_logger(name=''):
     if name == '__main__':
         CWD = os.path.dirname(os.path.realpath(__main__.__file__))
-        string_format = "|%(asctime)s|{%(module)s}-(%(funcName)s)  (%(lineno)d) [%(levelname)s] %(message)s"
+        string_format = "|%(asctime)s|{%(module)s}-(%(funcName)s) %(lineno)d-[%(levelname)s] %(message)s"
         FORMAT = logging.Formatter(string_format)
         log_file_path = os.path.join(CWD, f"GGVentures_LOG.log")
         logger = logging.getLogger('__main__')
         logger.setLevel(logger_level())
-        # Add Log File/
+        # Add Log File
         file_handler = logging.FileHandler(filename=log_file_path, mode="w", encoding="UTF-8")
         file_handler.setFormatter(FORMAT)
         logger.addHandler(file_handler)

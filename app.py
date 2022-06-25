@@ -12,10 +12,10 @@ from lib.email_spreadsheet import EmailCopySheet
 
 # ---------------- IMPORTS ----------------------------- #
 from mimetypes import init
-import time, os, sys, json, re
+import time, os, sys, threading
 start_time = round(time.time())
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
 from spider_list import Load_Spiders
 from spider_list_test import Load_Spiders_Test
 from os import environ
@@ -195,4 +195,16 @@ def ggventures_bot_worker():
 
 ########## MAIN START ############
 if __name__ == '__main__':
-    ggventures_bot_worker()
+    if environ.get('DEPLOYED'):
+        # THREADS INIT
+        scraping_t = threading.Thread(target=ggventures_bot_worker)
+        email_copy_t = threading.Thread(target=email_spreadsheet_worker)
+        # THREADS START
+        scraping_t.start()
+        email_copy_t.start()
+
+        # THREADS JOIN
+        scraping_t.join()
+        email_copy_t.join()
+    else:
+        ggventures_bot_worker()
