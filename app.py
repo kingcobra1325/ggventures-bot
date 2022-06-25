@@ -104,7 +104,7 @@ def exception_handler(errmsg="", e=""):
 # SCRAPING
 def start_spiders():
 
-    if GGV_SETTINGS.GET_SPIDERLIST_FROM_DASHBOARD:
+    if environ.get("GET_SPIDERLIST_FROM_DASHBOARD",GGV_SETTINGS.GET_SPIDERLIST_FROM_DASHBOARD):
         logger.info("Loading Spiders from Dashboard....")
         get_spider_list = error_dashboard.get_spiders_on_status()
     else:
