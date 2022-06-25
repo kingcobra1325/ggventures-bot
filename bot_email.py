@@ -1,22 +1,28 @@
 # from __future__ import print_function
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 from datetime import datetime
 import smtplib
 
 from datetime import datetime, timezone
-import time, os, sys
+import time, os, sys, csv, gc
 
-from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, DEVELOPER_EMAILS, GGV_SETTINGS
+import pandas as pd
 
-from spreadsheet import Read_DataFrame_From_Sheet
+from binaries import Google_Sheets, logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, DEVELOPER_EMAILS, GGV_SETTINGS, EMAIL_OFFLINE_COPY
+
+from spreadsheet import Read_DataFrame_From_Sheet, Add_Event, get_dataframe
 
 from app import error_dashboard
 
 from models import pipeline_re
 
+from lib.baselogger import LoggerMixin
+
 client_recipients = []
 dev_recipients = DEVELOPER_EMAILS
+email_copy_recipients = EMAIL_OFFLINE_COPY
 
 next_line = '\n'
 
@@ -188,7 +194,6 @@ def missing_info_email(spider="Default Spider", university_name="Default Univers
                 <h1 style="text-align:center;color:white">Missing Information - {university_name}</h1>
                 <h4 style="color:white">The Spider: {spider} failed to scrape multiple information from {university_name}
                 <p>Missing Information: </p>
-                {unpack}
                 <br>
                 <p>Please check if all the information scraped are correct</p>
                 <p>Link: {web_link}</p>
@@ -256,7 +261,6 @@ def error_email(spider="Default Spider",error="Default Error"):
 
     except Exception as e:
         logger.error("Exception when calling Email Bot->: %s\n" % e)
-
 
 # if __name__ == '__main__':
 #     unique_event()

@@ -8,6 +8,8 @@ from lib.error_dashboard import ErrorDashboard
 logger = initialize_logger(__name__)
 error_dashboard = ErrorDashboard()
 
+from lib.email_spreadsheet import EmailCopySheet
+
 # ---------------- IMPORTS ----------------------------- #
 from mimetypes import init
 import time, os, sys, json, re
@@ -154,8 +156,23 @@ def start_spiders():
     logger.debug("Saving empty list to Dropbox...")
     DropBox_Upload(save_spider_list)
 
-########## MAIN START ############
-if __name__ == '__main__':
+def send_email():
+    logger.info("Sending spreadsheet copies via Email...")
+    email_offline = EmailCopySheet()
+    email_offline.send_copy_via_email()
+    del email_offline
+
+
+schedule.every().monday.at("18:00").do(send_email)
+
+# WORKERS
+
+def email_spreadsheet_worker():
+    logger.info("Initializing sending email copies every 'Monday'")
+    while True:
+        schedule.run_pending()
+
+def ggventures_bot_worker():
     try:
         logger.info('Start Golden Goose Ventures Scraping Bot\n')
         logger.info(f"\n{GGV_SETTINGS}\n")
@@ -174,3 +191,8 @@ if __name__ == '__main__':
         logger.debug(f"Golden Goose Ventures BOT Finished successfully. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")
     except Exception as e:
         exception_handler("ERROR: ", e)
+
+
+########## MAIN START ############
+if __name__ == '__main__':
+    ggventures_bot_worker()

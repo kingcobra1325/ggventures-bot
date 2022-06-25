@@ -230,6 +230,17 @@ def Write_DataFrame_To_Sheet(worksheet,df):
             sleep(90)
 
 
+def get_dataframe(Name,worksheet):
+    while True:
+        try:
+            prev_df = get_as_dataframe(worksheet)
+            logger.info(f"Getting DataFrame from {Name}...")
+            return prev_df
+        except gs_APIError as e:
+            logger.error(f"Error processing GSpread API Request --> {e}.")
+            logger.debug(f"Waiting for 90 seconds before retrying request")
+            sleep(90)
+
 def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
 
     # spreadsheet = Google_Sheets()
@@ -253,15 +264,7 @@ def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
             sleep(90)
 
     # Getting DataFrame from Sheet
-    while True:
-        try:
-            prev_df = get_as_dataframe(worksheet)
-            logger.info(f"Getting DataFrame from {Name}...")
-            break
-        except gs_APIError as e:
-            logger.error(f"Error processing GSpread API Request --> {e}.")
-            logger.debug(f"Waiting for 90 seconds before retrying request")
-            sleep(90)
+    prev_df = get_dataframe(Name,spreadsheet)
 
     df = prev_df.copy()
     # REMOVE EMPTY ROWS

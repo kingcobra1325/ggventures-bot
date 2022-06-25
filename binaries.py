@@ -113,6 +113,8 @@ else:
 
 DEVELOPER_EMAILS = ast.literal_eval(environ['DEVELOPER_EMAILS'])
 
+EMAIL_OFFLINE_COPY = ast.literal_eval(environ['EMAIL_OFFLINE_COPY'])
+
 # CHROME VARS
 
 if environ.get('DEPLOYED'):
