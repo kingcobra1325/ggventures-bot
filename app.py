@@ -4,6 +4,7 @@
 
 from lib.baselogger import initialize_logger
 from lib.error_dashboard import ErrorDashboard
+from lib.funcs import list_to_gen
 
 logger = initialize_logger(__name__)
 
@@ -138,6 +139,8 @@ def start_spiders():
     progress_counter = 0
     save_counter = 0
     save_spider_list = spider_list
+
+    spider_list = list_to_gen(spider_list)
 
     for spider in spider_list:
         # spider = 'usa-0001
