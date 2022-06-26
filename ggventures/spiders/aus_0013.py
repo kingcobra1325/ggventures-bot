@@ -5,7 +5,7 @@ class Aus0013Spider(GGVenturesSpider):
     name = 'aus_0013'
     start_urls = ["https://www.monash.edu/about/contact-us"]
     country = "Australia"
-    # eventbrite_id = 6221361805
+    eventbrite_id = 29272175865
 
     # handle_httpstatus_list = [301,302,403,404]
 

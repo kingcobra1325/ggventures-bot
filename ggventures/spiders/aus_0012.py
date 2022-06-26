@@ -1,101 +1,57 @@
-import scrapy
-import scrapy, time
-# from scrapy import Selector
+from spider_template import GGVenturesSpider
 
-from bot_email import missing_info_email, error_email,website_changed
 
-from binaries import Load_Driver, logger, WebScroller
-
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-class Aus0012Spider(scrapy.Spider):
+class Aus0012Spider(GGVenturesSpider):
     name = 'aus_0012'
     country = 'Australia'
-    # allowed_domains = ['https://bond.edu.au/intl/about-bond/academia/bond-business-school']
-    start_urls = ["https://app.secure.griffith.edu.au/events/category/Griffith%20Business%20School"]
+    start_urls = ["https://www.mq.edu.au/about/about-the-university/our-faculties/business/contact-us"]
 
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.getter = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
+    eventbrite_id = 27447427417
+    handle_httpstatus_list = [301,302,403,404,410]
 
-    def parse(self, response):
+    static_name = "Macquarie University,Macquarie Graduate School of Management"
+    
+    static_logo = "https://logos-download.com/wp-content/uploads/2021/01/Macquarie_Graduate_School_of_Management_Logo.png"
+
+    parse_code_link = "https://app.secure.griffith.edu.au/events/category/Griffith%20Business%20School"
+
+    university_contact_info_xpath = "//div[starts-with(@class,'col-4')]"
+    # contact_info_text = True
+    contact_info_textContent = True
+
+    def parse_code(self,response):
         try:
-            self.driver.get("https://www.mq.edu.au/about/about-the-university/our-faculties/business/study-with-us/mgsm")
-
-            logo = "https://logos-download.com/wp-content/uploads/2021/01/Macquarie_Graduate_School_of_Management_Logo.png"
-            # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
-
-            university_name = "Macquarie University,Macquarie Graduate School of Management"
+        ####################
+            self.driver.get(response.url)
             
-            self.driver.get("https://www.mq.edu.au/about/about-the-university/our-faculties/business/contact-us")
-            
-            # self.driver.find_element(By.XPATH,"//*[contains(text(),'General contacts')]").click()
-            
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//div[starts-with(@class,'col-4')]")))).get_attribute('textContent')
+            # self.ClickMore(click_xpath="//strong[text()='Events']",run_script=True)
 
-            self.driver.get(response.url)     
-        
-            counter = 0
-            EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//h3/a")))
-            for i in EventLinks:
-                self.getter.get(i.get_attribute('href'))
+            for link in self.events_list(event_links_xpath="//h3/a"):
+                # for link in self.multi_event_pages(event_links_xpath="//a[@class='slide-image']",next_page_xpath="//a[contains(@class,'next_page')]",get_next_month=True):
 
-                RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1[starts-with(@class,'event-title')]")))).text
+                self.getter.get(link)
 
-                try:
-                    RawEventDesc = self.getter.find_element(By.XPATH,"//div[@class='row']/div").text
-                except:
-                    RawEventDesc = None
+                if self.unique_event_checker(url_substring=["griffith.edu.au/events"]):
 
-                try:
-                    RawEventDate = self.getter.find_element(By.XPATH,"//span[text()='date']/..").text
-                except:
-                    RawEventDate = None
-                    
-                try:
-                    # RawEventTime = None                    
-                    RawEventTime = self.getter.find_element(By.XPATH,"//span[text()='Time']/..").text 
-                    # RawEventTime = RawEventDate
-                except:
-                    RawEventTime = None
-                    
-                try:
-                    RawStartContactInfo = self.getter.find_element(By.XPATH,"//h6[text()='Event contact details']/following-sibling::ul").text
-                except:
-                    RawStartContactInfo = None
+                    self.logger.info(f"Currently scraping --> {self.getter.current_url}")
 
-                data = ItemLoader(item = GgventuresItem(), selector = counter)
-                data.add_value('university_name',university_name)
-                data.add_value('university_contact_info',university_contact_info)
-                data.add_value('logo',logo)
-                data.add_value('event_name', RawEventName)
-                data.add_value('event_desc', RawEventDesc)
-                data.add_value('event_date', RawEventDate)
-                data.add_value('event_time', RawEventTime)
-                data.add_value('event_link', i.get_attribute('href'))
-                data.add_value('startups_contact_info', RawStartContactInfo)
-                counter+=1
+                    item_data = self.item_data_empty.copy()
 
-                yield data.load_item()
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[starts-with(@class,'event-title')]"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='row']/div"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[text()='date']/.."],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[text()='Time']/.."],method='attr')
 
+                    # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
+                    # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')
+
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[text()='Event contact details']/following-sibling::ul"],method='attr',error_when_none=False)
+                    # item_data['startups_link'] = ''
+                    # item_data['startups_name'] = ''
+                    item_data['event_link'] = link
+
+                    yield self.load_item(item_data=item_data,item_selector=link)
+
+        ####################
         except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
-    def closed(self, reason):
-        try:
-            self.driver.quit()
-            self.getter.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-        except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            self.exception_handler(e)

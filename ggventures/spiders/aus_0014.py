@@ -11,46 +11,45 @@ class Aus0014Spider(GGVenturesSpider):
 
     static_name = "Murdoch University,Murdoch Business School"
     
-    static_logo = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-16'%3F%3E%3Csvg width='286' height='61' viewBox='0 0 286 61' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M138.216 30.1439H130.66V43.4254C130.66 45.9177 130.66 49.0249 127.087 49.0249C123.412 49.0249 123.412 45.9177 123.412 43.4254V30.1439H115.855V45.0984C115.855 51.8585 119.565 55.1018 127.053 55.1018C134.541 55.1018 138.216 51.8585 138.216 45.0984V30.1439ZM140.552 54.5217H147.353V45.1667C147.353 42.333 148.899 41.7525 150.066 41.7525C152.059 41.7525 152.299 43.1867 152.299 45.235V54.5217H159.1V42.367C159.1 38.3043 156.181 36.3579 152.986 36.3579C150.273 36.3579 148.452 37.2798 147.181 39.055H147.112V36.8019H140.552V54.5217ZM161.573 54.5217H168.374V36.8018H161.573V54.5217ZM161.573 34.8897H168.374V30.1439H161.573V34.8897ZM189.155 36.8018H182.217L179.4 47.5907H179.332L176.549 36.8018H169.37L175.209 54.5217H183.247L189.155 36.8018ZM195.064 43.6646C195.373 41.7525 196.541 40.694 198.567 40.694C200.319 40.694 201.556 42.0256 201.556 43.6646H195.064ZM208.082 47.181C208.082 40.2843 205.025 36.3579 197.949 36.3579C192.316 36.3579 188.537 40.5574 188.537 45.7129C188.537 51.6194 192.831 54.9653 198.533 54.9653C202.586 54.9653 206.33 53.1897 207.704 49.3663H201.35C200.8 50.2199 199.598 50.6296 198.499 50.6296C196.369 50.6296 195.201 49.1954 195.029 47.181H208.082ZM209.559 54.5217H216.36V47.5224C216.36 43.7325 217.803 42.1621 220.481 42.1621C221.856 42.1621 222.474 42.367 223.161 42.6061V36.631C222.509 36.4605 221.856 36.3579 221.169 36.3579C218.696 36.3579 217.253 37.5185 216.154 39.6355H216.085V36.8019H209.559V54.5217ZM241.297 41.9573C241.125 37.4163 236.488 36.3579 232.641 36.3579C229.068 36.3579 224.226 37.5185 224.226 41.9917C224.226 45.0301 226.321 46.6692 231.508 47.5568C234.668 48.103 235.251 48.4104 235.251 49.4346C235.251 50.4587 233.843 50.8001 232.95 50.8001C232.126 50.8001 231.473 50.5952 231.13 50.2882C230.614 49.8438 230.339 49.3319 230.305 48.7174H223.813C223.916 53.2923 228.519 54.9653 232.709 54.9653C237.038 54.9653 241.778 53.6341 241.778 48.7174C241.778 45.8151 239.786 44.4835 237.519 43.7668C235.251 43.0154 232.675 42.8792 231.542 42.4009C231.164 42.2304 230.752 41.9917 230.752 41.4794C230.752 40.3183 231.851 40.1139 232.813 40.1139C233.362 40.1139 233.912 40.2843 234.324 40.6257C234.771 40.9328 235.08 41.3768 235.114 41.9573H241.297ZM243.289 54.5217H250.09V36.8018H243.289V54.5217ZM243.288 34.8897H250.09V30.1439H243.288V34.8897ZM261.459 31.4072H254.658V36.8018H251.635V40.9671H254.658V49.4345C254.658 54.2825 257.853 54.7265 260.738 54.7265C262.18 54.7265 263.726 54.5217 265.1 54.5217V49.4002C264.585 49.4684 264.07 49.5024 263.555 49.5024C261.837 49.5024 261.459 48.7857 261.459 47.1471V40.9671H265.1V36.8018H261.459V31.4072ZM285.71 36.8018H278.669L275.783 46.9762H275.714L272.864 36.8018H265.581L268.604 44.9618C268.982 45.986 271.592 52.5074 271.592 53.3606C271.592 54.146 271.352 54.4874 270.94 54.6922C270.459 54.9314 269.566 54.8631 268.879 54.8631H267.299V60.2573H270.39C273.035 60.2573 275.783 60.2916 277.569 58.0725C278.634 56.7409 279.252 54.7265 279.802 53.1558L285.71 36.8018Z' fill='%23E12744' /%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M115.924 25.2916H123.068V9.65433H123.137L127.396 25.2916H133.029L137.289 9.65433H137.358V25.2916H144.502V0.91378H133.751L130.247 15.2534H130.179L126.675 0.91378H115.924V25.2916ZM165.455 7.57171H158.654V16.9263C158.654 19.7604 157.108 20.3405 155.94 20.3405C153.948 20.3405 153.707 18.9067 153.707 16.8581V7.57171H146.906V19.7265C146.906 23.7891 149.826 25.7352 153.021 25.7352C155.734 25.7352 157.554 24.8132 158.825 23.0381H158.894V25.2916H165.455V7.57171ZM167.79 25.2916H174.592V18.2923C174.592 14.5028 176.034 12.932 178.714 12.932C180.087 12.932 180.706 13.1368 181.393 13.3756V7.40084C180.74 7.23036 180.087 7.12774 179.401 7.12774C176.928 7.12774 175.485 8.28843 174.385 10.405H174.317V7.57174H167.79V25.2916ZM200.978 0.91378H194.176V9.51778H194.108C193.077 8.0153 191.257 7.12771 189.23 7.12771C183.253 7.12771 181.639 12.1805 181.639 16.3462C181.639 20.7845 184.077 25.7352 189.127 25.7352C192.459 25.7352 193.49 24.4723 194.348 23.3455H194.417V25.2916H200.978V0.91378ZM194.417 16.4145C194.417 18.531 193.867 20.8185 191.429 20.8185C188.99 20.8185 188.44 18.531 188.44 16.4145C188.44 14.3319 188.99 12.044 191.429 12.044C193.867 12.044 194.417 14.3319 194.417 16.4145ZM221.312 16.4145C221.312 11.4978 218.29 7.12774 211.592 7.12774C204.893 7.12774 201.871 11.4978 201.871 16.4145C201.871 21.3312 204.893 25.7352 211.592 25.7352C218.29 25.7352 221.312 21.3312 221.312 16.4145ZM214.511 16.4145C214.511 18.2923 214.168 20.8185 211.592 20.8185C209.015 20.8185 208.672 18.2923 208.672 16.4145C208.672 14.5367 209.015 12.044 211.592 12.044C214.168 12.044 214.511 14.5367 214.511 16.4145ZM241.544 14.2975C241.132 9.41518 237.147 7.12774 232.475 7.12774C227.117 7.12774 222.823 10.8494 222.823 16.4484C222.823 22.0479 227.117 25.7352 232.475 25.7352C237.285 25.7352 241.097 23.0381 241.75 18.224H235.258C235.121 19.6239 234.09 20.8185 232.613 20.8185C230.002 20.8185 229.625 18.5993 229.625 16.4484C229.625 14.2975 230.002 12.044 232.613 12.044C233.334 12.044 233.918 12.2488 234.33 12.625C234.777 13.0003 235.018 13.5804 235.086 14.2975H241.544ZM243.192 25.2916H249.994V15.9365C249.994 13.1025 251.539 12.5223 252.707 12.5223C254.699 12.5223 254.94 13.9561 254.94 16.0048V25.2916H261.741V13.1368C261.741 9.07378 258.821 7.12771 255.627 7.12771C252.742 7.12771 251.23 8.11792 250.062 9.48344H249.994V0.91378H243.192V25.2916Z' fill='%23E12744' /%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M103.486 30.9416V1.11911H88.2521V31.4025C88.2521 38.9348 84.3085 42.4703 78.2767 42.4703C72.2448 42.4703 68.3016 38.7817 68.3016 31.0185V1.11911H58.69L58.7079 1.09221H41.9243L28.9348 22.0442L15.9453 1.09221H6.10352e-05V54.8894H14.4245V23.2318L15.0111 24.1322L28.9348 45.3155H28.9914L41.2415 27.0958L43.0916 24.2857V24.3445L53.0679 9.49014V31.326C53.0679 48.1583 62.7336 55.9214 78.1222 55.9214C93.5104 55.9214 103.486 48.3126 103.486 30.9416Z' fill='%23E12744' /%3E%3C/svg%3E"
+    static_logo = "https://upload.wikimedia.org/wikipedia/commons/e/e8/Murdoch_University_extended_logo.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://www.monash.edu/business/events"
+    parse_code_link = "https://www.murdoch.edu.au/events/all-events/"
 
-    university_contact_info_xpath = "(//div[@class='container-xl'])[2]"
+    university_contact_info_xpath = "//div[@data-placeholder-label='Body']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
     # TRANSLATE = True
 
     def parse_code(self,response):
-        pass
-        # try:
-        # ####################
-        #     self.driver.get(response.url)
+        try:
+        ####################
+            self.driver.get(response.url)
     
-        #     # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
+            # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
             
-        #     # self.ClickMore(click_xpath="//a[text()='View more events...']",run_script=True)
+            # self.ClickMore(click_xpath="//a[text()='View more events...']",run_script=True)
               
-        #     # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//p[@class='calendar-eventTitle']/a",next_page_xpath="//i[text()='chevron_right']/parent::a",get_next_month=True,click_next_month=False,wait_after_loading=True,run_script=False):
-        #     for link in self.events_list(event_links_xpath="//ol[@class='box-listing-element__events-list']//a"):
-        #         self.getter.get(link)
-        #         if self.unique_event_checker(url_substring=["https://www.monash.edu/business/"]):
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//p[@class='calendar-eventTitle']/a",next_page_xpath="//i[text()='chevron_right']/parent::a",get_next_month=True,click_next_month=False,wait_after_loading=True,run_script=False):
+            for link in self.events_list(event_links_xpath="//a[@class='grid-link']"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["murdoch.edu.au/events"]):
                     
-        #             self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-        #             item_data = self.item_data_empty.copy()
+                    item_data = self.item_data_empty.copy()
                     
-        #             item_data['event_link'] = link
+                    item_data['event_link'] = link
 
-        #             item_data['event_name'] = self.scrape_xpath(xpath_list=["//div/h1"])
-        #             item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='event-details__description ']"],enable_desc_image=True)
-        #             item_data['event_date'] = self.scrape_xpath(xpath_list=["//dt[text()='Date:']/following-sibling::dd"],method='attr',error_when_none=False)
-        #             item_data['event_time'] = self.scrape_xpath(xpath_list=["//dt[text()='Date:']/following-sibling::dd"],method='attr',error_when_none=False)
-        #             item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h3[text()='Event Contact']/following-sibling::dl"],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//article/div[@data-enforce-paragraphs]"],enable_desc_image=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event-instance']"],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event-instance']"],method='attr',error_when_none=False)
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h3[text()='Event Contact']/following-sibling::dl"],method='attr',error_when_none=False,wait_time=5)
 
-        #             yield self.load_item(item_data=item_data,item_selector=link)
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
-        # ####################
-        # except Exception as e:
-        #     self.exception_handler(e)
+        ####################
+        except Exception as e:
+            self.exception_handler(e)

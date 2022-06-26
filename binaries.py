@@ -154,6 +154,7 @@ class APPSettings():
         self.MULTI_DRIVER = False
         # self.GET_SPIDERLIST_FROM_DASHBOARD = True
         self.GET_SPIDERLIST_FROM_DASHBOARD = False
+        self.SEND_EMAIL_OFFLINE_COPY = False
         self.RECORD_ERROR_COUNTER = True
         if environ.get('DEPLOYED'):
             self.LOAD_DROPBOX_LIST = True

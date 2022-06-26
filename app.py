@@ -194,7 +194,7 @@ def ggventures_bot_worker():
 
         # process.start()
         end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
-        if not environ.get('SCHEDULE_EMAIL_COPY'):
+        if not environ.get('SCHEDULE_EMAIL_COPY') and environ.get('SEND_EMAIL_OFFLINE_COPY'):
             send_email()
         logger.debug(f"Golden Goose Ventures BOT Finished successfully. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")
     except Exception as e:
