@@ -460,7 +460,7 @@ def restart_heroku_dynos():
             "Authorization": f"Bearer {HEROKU_API_TOKEN}" 
             }
             response = requests.delete("https://api.heroku.com/apps/ggventures/dynos",headers=headersList)
-            logger.debug(f"Heroku Response: {response}...")
+            logger.critical(f"Heroku Response: {response}...")
             break
         except requests.exceptions as e:
             logger.error(f"Error: {e}. Retrying...")
