@@ -305,11 +305,15 @@ class GGVenturesSpider(scrapy.Spider):
         except StaleElementReferenceException as e:
             self.logger.debug(f"ERROR: {e}. Skip fetching links...")  if GGV_SETTINGS.DEBUG_LOGS else None
 
+        del link_base_list
+        del get_all_links
+        gc.collect()
+
         return final_string
 
     def get_emails_from_source(self,tag_list=['a'],attribute_name='href',driver_name='driver'):
         all_emails = []
-        final_all_emails = []
+        final_all_emails = ''
         if driver_name.lower() == 'driver':
             email_driver = self.driver
         elif driver_name.lower() == 'getter':
@@ -337,6 +341,10 @@ class GGVenturesSpider(scrapy.Spider):
             self.logger.debug(f"ALL EMAILS FROM SOURCE:\n{final_all_emails}")
         except StaleElementReferenceException as e:
             self.logger.debug(f"ERROR: {e}. Skip fetching emails...")
+
+        del all_emails
+        del get_all_emails
+        gc.collect()
 
         return final_all_emails
 
@@ -450,7 +458,7 @@ class GGVenturesSpider(scrapy.Spider):
             elif self.contact_info_multispan:
                 self.university_contact_info = '\n'.join([x.get_attribute('textContent') for x in WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH, self.university_contact_info_xpath)))])
 
-            # self.university_contact_info = f"{self.university_contact_info}\n{self.get_emails_from_source()}"
+            self.university_contact_info = f"{self.university_contact_info}\n{self.get_emails_from_source()}"
 
 
 
