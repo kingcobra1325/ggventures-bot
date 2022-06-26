@@ -8,17 +8,13 @@ import smtplib
 from datetime import datetime, timezone
 import time, os, sys, csv, gc
 
-import pandas as pd
+from binaries import logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, DEVELOPER_EMAILS, GGV_SETTINGS, EMAIL_OFFLINE_COPY
 
-from binaries import Google_Sheets, logger, SMTP_SERVER, SMTP_PORT, SMTP_EMAIL, SMTP_KEY, DEVELOPER_EMAILS, GGV_SETTINGS, EMAIL_OFFLINE_COPY
-
-from spreadsheet import Read_DataFrame_From_Sheet, Add_Event, get_dataframe
-
-from app import error_dashboard
+from spreadsheet import Read_DataFrame_From_Sheet, Add_Event
 
 from models import pipeline_re
 
-from lib.baselogger import LoggerMixin
+from lib.error_dashboard import ErrorDashboard
 
 client_recipients = []
 dev_recipients = DEVELOPER_EMAILS
@@ -30,13 +26,15 @@ next_line = '\n'
 def website_changed(spider="Default Spider", university_name="Default University"):
     try:
         # ------- LOG WEBSITE CHANGED TO ERRORS SHEETS -------#
+        error_dashboard = ErrorDashboard()
         error_dashboard.log_error({
                                 "Time" : datetime.utcnow(),
                                 "Error" : f"Website EVENT Changed - {university_name}",
                                 "SpiderName" : spider,
                                 "Status" : ''
                 })
-
+        del error_dashboard
+        gc.collect()
 
         # EMAIL INIT
         for recipient in dev_recipients:
@@ -164,6 +162,7 @@ def unique_event(spider="No-Spider-Name", university_name="No-University-Name", 
 def missing_info_email(spider="Default Spider", university_name="Default University", missing_info=['missing','info'], web_link="www.google.com"):
     try:
         # ------- LOG ERRORS TO ERRORS SHEETS -------#
+        error_dashboard = ErrorDashboard()
         error_dashboard.log_error({
                                 "Time" : datetime.utcnow(),
                                 "Error" : f"Missing Information - {university_name}:\n{next_line.join(missing_info)}\n{web_link}",
@@ -214,12 +213,15 @@ def missing_info_email(spider="Default Spider", university_name="Default Univers
 def error_email(spider="Default Spider",error="Default Error"):
     try:
         # ------- LOG ERRORS TO ERRORS SHEETS -------#
+        error_dashboard = ErrorDashboard()
         error_dashboard.log_error({
                                 "Time" : datetime.utcnow(),
                                 "Error" : f"ERROR:\n{error}",
                                 "SpiderName" : spider,
                                 "Status" : ''
                 })
+        del error_dashboard
+        gc.collect()
 
         # EMAIL INIT
         for recipient in dev_recipients:
