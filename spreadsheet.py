@@ -70,6 +70,10 @@ def check_outdated_events(date_list):
     logger.debug(f"\nFinal Bool Array: |{bool_array}|\n")
     logger.debug(f"\nDate List Count -> |{len(date_list)}| Bool Array Count -> |{len(bool_array)}|\n")
     logger.info(f"\nNumber of Deleted Rows: |{bool_array.count(True)}|\n")
+
+    del date_list
+    gc.collect()
+
     return bool_array
 
 def ReOrder_Sheets():
@@ -214,6 +218,10 @@ def Create_Default_Sheet(spreadsheet,name):
             sleep(90)
 
     ReOrder_Sheets()
+
+    del [df]
+    gc.collect()
+    
     return worksheet
 
 
@@ -276,6 +284,9 @@ def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
     # REMOVE EMPTY ROWS
     df.dropna(how='all',inplace=True)
 
+    del [prev_df]
+    gc.collect()
+
     return df, worksheet
 
 def Add_Event(data,country_df,country_worksheet,country):
@@ -299,12 +310,14 @@ def Add_Event(data,country_df,country_worksheet,country):
         logger.debug(f"Dataframe after dropping past events\n{country_df.to_markdown()}")
         logger.debug(f"Size: {country_df.shape}")
         del [col_dates_list]
+        gc.collect()
 
 
     # COUNTRY
     Write_DataFrame_To_Sheet(country_worksheet, country_df)
     logger.info(f"Added DataFrame to {country} Sheet")
-    del [country_df]
+    del [country_df,country_worksheet]
+    gc.collect()
 
 
     # ------ ALL -------- #
@@ -333,14 +346,14 @@ def Add_Event(data,country_df,country_worksheet,country):
             logger.debug(f"Dataframe after dropping past events\n{all_df.to_markdown()}")
             logger.debug(f"Size: {all_df.shape}")
             del [col_dates_list]
+            gc.collect()
 
         # WRITE ALL DF TO SHEET
 
         Write_DataFrame_To_Sheet(all_worksheet, all_df)
         logger.info("Added DataFrame to ALL Sheet")
-        del [all_df]
-
-    gc.collect()
+        del [all_df,all_data,all_worksheet,data]
+        gc.collect()
 
 
 def Add_Startups_Event(data,startups_df,startups_worksheet,country):
@@ -362,11 +375,12 @@ def Add_Startups_Event(data,startups_df,startups_worksheet,country):
         logger.debug(f"Dataframe after dropping past events\n{startups_df.to_markdown()}")
         logger.debug(f"Size: {startups_df.shape}")
         del [col_dates_list]
+        gc.collect()
 
 
     # STARTUPS
     Write_DataFrame_To_Sheet(startups_worksheet, startups_df)
     logger.info(f"Added DataFrame to STARTUPS Sheet")
 
-    del [startups_df]
+    del [startups_df,startups_worksheet,data]
     gc.collect()
