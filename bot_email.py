@@ -224,42 +224,43 @@ def error_email(spider="Default Spider",error="Default Error"):
         gc.collect()
 
         # EMAIL INIT
-        for recipient in dev_recipients:
-            with smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT)) as mail:
-                mail.ehlo()
-                mail.starttls()
-                mail.login(SMTP_EMAIL,SMTP_KEY)
+        if GGV_SETTINGS.SEND_EMAILS_PER_ERROR:
+            for recipient in dev_recipients:
+                with smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT)) as mail:
+                    mail.ehlo()
+                    mail.starttls()
+                    mail.login(SMTP_EMAIL,SMTP_KEY)
 
-                msg = MIMEMultipart('alternative')
-                msg['Subject'] = f'GGV BOT ERROR - {spider}'
-                msg['To'] = recipient
-                msg['From'] = 'goldengooseventures.developer@gmail.com'
+                    msg = MIMEMultipart('alternative')
+                    msg['Subject'] = f'GGV BOT ERROR - {spider}'
+                    msg['To'] = recipient
+                    msg['From'] = 'goldengooseventures.developer@gmail.com'
 
-                # EMAIL CONTENT
-                html = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                <html xmlns="http://www.w3.org/1999/xhtml">
-                 <head>
-                  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                  <title>GGV BOT ERROR - {spider}</title>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-                </head>
-                <body style="background-color:black;color:white">
-                <h1 style="text-align:center;color:white">Spider experienced an Error!</h1>
-                <h4 style="color:white">The Spider: {spider} experienced an error while running
-                <p>Error Details: </p>
-                {error}
-                <br>
-                <p>Please check the code as soon as possible to address the issue as soon as possible!</p>
-                <br>
-                </h4>
-                <h5 style="text-align:center">Error Timestamp: {datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p')}</h5>
-                </body>
-                </html>"""
+                    # EMAIL CONTENT
+                    html = f"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                    <html xmlns="http://www.w3.org/1999/xhtml">
+                        <head>
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                        <title>GGV BOT ERROR - {spider}</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                    </head>
+                    <body style="background-color:black;color:white">
+                    <h1 style="text-align:center;color:white">Spider experienced an Error!</h1>
+                    <h4 style="color:white">The Spider: {spider} experienced an error while running
+                    <p>Error Details: </p>
+                    {error}
+                    <br>
+                    <p>Please check the code as soon as possible to address the issue as soon as possible!</p>
+                    <br>
+                    </h4>
+                    <h5 style="text-align:center">Error Timestamp: {datetime.utcnow().strftime('%m-%d-%Y %I:%M:%S %p')}</h5>
+                    </body>
+                    </html>"""
 
-                msg.attach(MIMEText(html,'html'))
+                    msg.attach(MIMEText(html,'html'))
 
-                mail.sendmail(msg['From'], msg['To'], msg.as_string())
-                logger.error(f'Error Email from {spider} successfully sent to {msg["To"]}')
+                    mail.sendmail(msg['From'], msg['To'], msg.as_string())
+                    logger.error(f'Error Email from {spider} successfully sent to {msg["To"]}')
 
     except Exception as e:
         logger.error("Exception when calling Email Bot->: %s\n" % e)

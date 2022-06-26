@@ -164,6 +164,7 @@ class APPSettings():
         # self.GET_SPIDERLIST_FROM_DASHBOARD = True
         self.GET_SPIDERLIST_FROM_DASHBOARD = False
         self.SEND_EMAIL_OFFLINE_COPY = False
+        self.SEND_EMAILS_PER_ERROR = environ['SEND_EMAILS_PER_ERROR']
         self.RECORD_ERROR_COUNTER = True
         self.RESTART_HEROKU_EVERY_SAVESTATE = True
         if environ.get('DEPLOYED'):

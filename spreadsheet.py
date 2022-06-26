@@ -224,7 +224,10 @@ def Write_DataFrame_To_Sheet(worksheet,df):
             #     pass
             # except gs_NoSS as e:
             #     logger.debug(f"Error: {e} ---> Worksheet ")
-            set_with_dataframe(worksheet, df,resize=True)
+            if df.shape[0]:
+                set_with_dataframe(worksheet, df,resize=True)
+            else:
+                set_with_dataframe(worksheet, df)
             logger.info(f"Added DataFrame into Sheet")
             break
         except gs_APIError as e:
