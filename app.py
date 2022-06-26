@@ -155,7 +155,7 @@ def start_spiders():
             logger.debug("Saving progress to Dropbox...")
             DropBox_Upload(save_spider_list)
             save_counter = 0
-        logger.info(f"\n\nCURRENT SCRAPING PROGRESS: {progress_counter}/{len(spider_list)}\n\n")
+        logger.info(f"\n\nCURRENT SCRAPING PROGRESS: {progress_counter}\n\n")
 
     logger.info("Finished pending Spider List...")
     logger.debug("Saving empty list to Dropbox...")
@@ -203,17 +203,16 @@ def ggventures_bot_worker():
 
 ########## MAIN START ############
 if __name__ == '__main__':
-    ggventures_bot_worker()
-    # if environ.get('SCHEDULE_EMAIL_COPY'):
-    #     # THREADS INIT
-    #     scraping_t = threading.Thread(target=ggventures_bot_worker)
-    #     email_copy_t = threading.Thread(target=email_spreadsheet_worker)
-    #     # THREADS START
-    #     scraping_t.start()
-    #     email_copy_t.start()
+    if environ.get('SCHEDULE_EMAIL_COPY'):
+        # THREADS INIT
+        scraping_t = threading.Thread(target=ggventures_bot_worker)
+        email_copy_t = threading.Thread(target=email_spreadsheet_worker)
+        # THREADS START
+        scraping_t.start()
+        email_copy_t.start()
 
-    #     # THREADS JOIN
-    #     scraping_t.join()
-    #     email_copy_t.join()
-    # else:
-    #     ggventures_bot_worker()
+        # THREADS JOIN
+        scraping_t.join()
+        email_copy_t.join()
+    else:
+        ggventures_bot_worker()
