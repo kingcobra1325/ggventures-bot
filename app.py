@@ -153,6 +153,7 @@ def start_spiders():
         save_spider_list.remove(spider)
         if (save_counter >= GGV_SETTINGS.DB_SAVE_SPIDER_COUNTER) and GGV_SETTINGS.SAVE_DROPBOX_LIST:
             logger.debug("Saving progress to Dropbox...")
+            logger.debug(save_spider_list)
             DropBox_Upload(save_spider_list)
             save_counter = 0
             if environ.get('DEPLOYED') and GGV_SETTINGS.RESTART_HEROKU_EVERY_SAVESTATE:
