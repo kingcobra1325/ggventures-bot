@@ -30,10 +30,12 @@ except:
 
 from binaries import Google_Sheets, gs_APIError, gs_NoWS, default_dashboard_df, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
 from lib.baselogger import initialize_logger
+from lib.funcs import list_to_gen
 
 SPREADSHEET_MAIN = Google_Sheets()
 
 logger = initialize_logger()
+
 
 def check_outdated_events(date_list):
     bool_array = []
@@ -75,6 +77,26 @@ def check_outdated_events(date_list):
     gc.collect()
 
     return bool_array
+
+def delete_past_events():
+
+    logger.info("Initializing Past Events deletion...")
+    list_of_worksheets = list_to_gen(SPREADSHEET_MAIN.worksheets())
+    for worksheet in list_of_worksheets:
+        if worksheet.title != '||':
+            logger.debug(f"Worksheet |{worksheet.title}|")
+            df, ws = Read_DataFrame_From_Sheet('ALL')    
+            col_dates_list = df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
+            df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+            df.reset_index(drop=True, inplace=True)
+            logger.debug(f"Dataframe after dropping past events\n{df.to_markdown()}")
+            logger.debug(f"Size: {df.shape}")
+            del [col_dates_list]
+            Write_DataFrame_To_Sheet(ws, df)
+            del [worksheet,ws,df]
+            gc.collect()
+
+            
 
 def ReOrder_Sheets():
     while True:
@@ -303,14 +325,14 @@ def Add_Event(data,country_df,country_worksheet,country):
     country_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
     # DELETE PAST EVENTS
-    if GGV_SETTINGS.DELETE_PAST_EVENTS:
-        col_dates_list = country_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
-        country_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
-        country_df.reset_index(drop=True, inplace=True)
-        logger.debug(f"Dataframe after dropping past events\n{country_df.to_markdown()}")
-        logger.debug(f"Size: {country_df.shape}")
-        del [col_dates_list]
-        gc.collect()
+    # if GGV_SETTINGS.DELETE_PAST_EVENTS:
+    #     col_dates_list = country_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
+    #     country_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+    #     country_df.reset_index(drop=True, inplace=True)
+    #     logger.debug(f"Dataframe after dropping past events\n{country_df.to_markdown()}")
+    #     logger.debug(f"Size: {country_df.shape}")
+    #     del [col_dates_list]
+    #     gc.collect()
 
 
     # COUNTRY
@@ -339,14 +361,14 @@ def Add_Event(data,country_df,country_worksheet,country):
         all_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
         # DELETE PAST EVENTS
-        if GGV_SETTINGS.DELETE_PAST_EVENTS:
-            col_dates_list = all_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
-            all_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
-            all_df.reset_index(drop=True, inplace=True)
-            logger.debug(f"Dataframe after dropping past events\n{all_df.to_markdown()}")
-            logger.debug(f"Size: {all_df.shape}")
-            del [col_dates_list]
-            gc.collect()
+        # if GGV_SETTINGS.DELETE_PAST_EVENTS:
+        #     col_dates_list = all_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
+        #     all_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+        #     all_df.reset_index(drop=True, inplace=True)
+        #     logger.debug(f"Dataframe after dropping past events\n{all_df.to_markdown()}")
+        #     logger.debug(f"Size: {all_df.shape}")
+        #     del [col_dates_list]
+        #     gc.collect()
 
         # WRITE ALL DF TO SHEET
 
@@ -368,14 +390,14 @@ def Add_Startups_Event(data,startups_df,startups_worksheet,country):
     startups_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
     # DELETE PAST EVENTS
-    if GGV_SETTINGS.DELETE_PAST_EVENTS:
-        col_dates_list = startups_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
-        startups_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
-        startups_df.reset_index(drop=True, inplace=True)
-        logger.debug(f"Dataframe after dropping past events\n{startups_df.to_markdown()}")
-        logger.debug(f"Size: {startups_df.shape}")
-        del [col_dates_list]
-        gc.collect()
+    # if GGV_SETTINGS.DELETE_PAST_EVENTS:
+    #     col_dates_list = startups_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
+    #     startups_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+    #     startups_df.reset_index(drop=True, inplace=True)
+    #     logger.debug(f"Dataframe after dropping past events\n{startups_df.to_markdown()}")
+    #     logger.debug(f"Size: {startups_df.shape}")
+    #     del [col_dates_list]
+    #     gc.collect()
 
 
     # STARTUPS

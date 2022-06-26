@@ -45,6 +45,7 @@ except ModuleNotFoundError as e:
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
 from binaries import GGV_SETTINGS, DropBox_INIT, DropBox_Upload, restart_heroku_dynos
+from spreadsheet import delete_past_events
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 
@@ -156,6 +157,8 @@ def start_spiders():
             logger.debug(save_spider_list)
             DropBox_Upload(save_spider_list)
             save_counter = 0
+            if GGV_SETTINGS.DELETE_PAST_EVENTS:
+                delete_past_events()
             if environ.get('DEPLOYED') and GGV_SETTINGS.RESTART_HEROKU_EVERY_SAVESTATE:
                 restart_heroku_dynos()
         logger.info(f"\n\nCURRENT SCRAPING PROGRESS: {progress_counter}\n\n")
@@ -190,6 +193,8 @@ def ggventures_bot_worker():
             logger.info("|PRODUCTION| Running program indefinitely....")
             while True:
                 start_spiders()
+                if not environ.get('SCHEDULE_EMAIL_COPY') and environ.get('SEND_EMAIL_OFFLINE_COPY'):
+                    send_email()
                 logger.info("Completed current progress. Restarting Spider list...")
         else:
             logger.info("|DEVELOPMENT| Running program one-off....")
@@ -197,8 +202,6 @@ def ggventures_bot_worker():
 
         # process.start()
         end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
-        if not environ.get('SCHEDULE_EMAIL_COPY') and environ.get('SEND_EMAIL_OFFLINE_COPY'):
-            send_email()
         logger.debug(f"Golden Goose Ventures BOT Finished successfully. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")
     except Exception as e:
         exception_handler("ERROR: ", e)
