@@ -106,23 +106,23 @@ def start_spiders():
     if environ.get("GET_SPIDERLIST_FROM_DASHBOARD",GGV_SETTINGS.GET_SPIDERLIST_FROM_DASHBOARD):
         logger.info("Loading Spiders from Dashboard....")
         error_dashboard = ErrorDashboard()
-        get_spider_list = tuple(error_dashboard.get_spiders_on_status())
+        get_spider_list = error_dashboard.get_spiders_on_status()
         del error_dashboard
         gc.collect()
     else:
         logger.debug("Fetching Spiders from local file...")
         if environ.get('DEPLOYED'):
             logger.info("|PRODUCTION| Loading Spider_List....")
-            get_spider_list = tuple(Load_Spiders())
+            get_spider_list = Load_Spiders()
         else:
             logger.info("|DEVELOPMENT| Loading Spider_List_Test....")
-            get_spider_list = tuple(Load_Spiders_Test())
+            get_spider_list = Load_Spiders_Test()
 
     logger.info(f"Spider_List: {get_spider_list}")
 
     if GGV_SETTINGS.LOAD_DROPBOX_LIST:
         logger.debug(f'Fetching current progress on Dropbox BOT_JSON file...\n')
-        load_spiders = tuple(DropBox_INIT())
+        load_spiders = DropBox_INIT()
         logger.info(load_spiders)
         if len(load_spiders["PENDING_SPIDERS"]) >= 1:
             logger.info("Pending Spiders to scrape detected. Resuming....")

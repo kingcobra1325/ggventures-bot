@@ -606,23 +606,23 @@ class GGVenturesSpider(scrapy.Spider):
             web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
             self.logger.debug(f"Number of Event Links: {len(web_elements_list)}")
             if return_elements:
-                return tuple(web_elements_list)
+                return web_elements_list
             else:
                 event_links = [x.get_attribute(link_attribute) for x in web_elements_list]
                 # REMOVE EMPTY ELEMENTS
                 cleaned_event_links = list(filter(None, event_links))
                 # LIMIT EVENTS TO SCRAPE
                 if not maximum_events:
-                    return tuple(cleaned_event_links)
+                    return cleaned_event_links
                 else:
                     self.logger.debug(f"Maximum Events to scrape: {maximum_events}")
                     if len(cleaned_event_links) >= maximum_events:
-                        return tuple(cleaned_event_links[0:maximum_events])
+                        return cleaned_event_links[0:maximum_events]
                     else:
-                        return tuple(cleaned_event_links)
+                        return cleaned_event_links
         except self.Exc.TimeoutException as e:
             self.logger.debug(f'No Events Found --> {e}. Skipping.....')
-            return ()
+            return []
         
     def events_click_reveal(self,click_area_xpath=''):
         try:
@@ -728,13 +728,13 @@ class GGVenturesSpider(scrapy.Spider):
         
         #LIMIT EVENTS TO SCRAPE
         if not maximum_events:
-            return tuple(event_links)
+            return event_links
         else:
             self.logger.debug(f"Maximum Events to scrape: {maximum_events}")
             if len(event_links) >= maximum_events:
-                return tuple(event_links[0:maximum_events])
+                return event_links[0:maximum_events]
             else:
-                return tuple(event_links)
+                return event_links
             
         
     
