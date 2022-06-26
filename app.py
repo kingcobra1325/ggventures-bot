@@ -44,7 +44,7 @@ except ModuleNotFoundError as e:
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
 
-from binaries import GGV_SETTINGS, DropBox_INIT, DropBox_Upload
+from binaries import GGV_SETTINGS, DropBox_INIT, DropBox_Upload, restart_heroku_dynos
 
 ## ------------------- SCRAPY IMPORTS ------------------------ ##
 
@@ -157,8 +157,7 @@ def start_spiders():
             DropBox_Upload(save_spider_list)
             save_counter = 0
             if environ.get('DEPLOYED') and GGV_SETTINGS.RESTART_HEROKU_EVERY_SAVESTATE:
-                logger.critical("\nRestarting Heroku...\n")
-                os.system('heroku ps:restart')
+                restart_heroku_dynos()
         logger.info(f"\n\nCURRENT SCRAPING PROGRESS: {progress_counter}\n\n")
 
     logger.info("Finished pending Spider List...")

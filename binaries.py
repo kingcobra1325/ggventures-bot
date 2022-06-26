@@ -53,6 +53,11 @@ except ModuleNotFoundError as e:
     os.system(f"{sys.executable} -m pip install gspread_dataframe")
     from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
+try:
+    import requests
+except ModuleNotFoundError as e:
+    os.system(f"pip install requests")
+    import requests
 # try:
 #     import sib_api_v3_sdk
 #     from sib_api_v3_sdk.rest import ApiException
@@ -125,6 +130,10 @@ else:
     # DEVELOPER VARS
     GOOGLE_CHROME_BIN = environ['DEFAULT_GOOGLE_CHROME_BIN']
     CHROMEDRIVER_PATH = environ['DEFAULT_CHROMEDRIVER_PATH']
+
+# HEROKU API TOKEN
+
+HEROKU_API_TOKEN = environ['HEROKU_API_TOKEN']
 
 ############## SETTINGS ################
 
@@ -440,6 +449,22 @@ def DropBox_EventNames():
 
 
 ####################################### FUNCTIONS #########################################
+
+def restart_heroku_dynos():
+    while True:
+        try:
+            logger.critical("\nRestarting Heroku Dynos...\n")
+            headersList = {
+            "Content-Type": "application/json",
+            "Accept": "application/vnd.heroku+json; version=3",
+            "Authorization": f"Bearer {HEROKU_API_TOKEN}" 
+            }
+            response = requests.delete("https://api.heroku.com/apps/ggventures/dynos",headers=headersList)
+            logger.debug(f"Heroku Response: {response}...")
+            break
+        except requests.exceptions as e:
+            logger.error(f"Error: {e}. Retrying...")
+            time.sleep(5)
 
 def WebScroller(driver,height=10):
     for i in range(0,height,int(height/10)):
