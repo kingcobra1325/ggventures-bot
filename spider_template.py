@@ -319,12 +319,12 @@ class GGVenturesSpider(scrapy.Spider):
             return None
         try:
             for tag in tag_list:
-                get_all_emails = [x.get_attribute(attribute_name) for x in email_driver.find_elements(By.TAG_NAME,tag)]
+                get_all_emails = [x.get_attribute(attribute_name) for x in email_driver.find_elements(By.TAG_NAME,tag)][:GGV_SETTINGS.LIMIT_SCRAPED_EMAILS]
                 get_all_emails = list(set(get_all_emails))
                 self.logger.debug(f"TAG |{tag}| ATTRIBUTE |{attribute_name}| - Emails:\n{get_all_emails}")
                 all_emails.extend(get_all_emails)
                 self.logger.debug(f"FINAL ALL EMAILS TYPE {type(final_all_emails)} | ALL EMAILS TYPE {type(all_emails)}")
-            all_emails = [str(x) for x in all_emails]
+            all_emails = [str(x) for x in all_emails][:GGV_SETTINGS.LIMIT_SCRAPED_EMAILS]
 
              # FILTER LINK COUNT
             if self.LIMIT_LINK_FETCHER:
