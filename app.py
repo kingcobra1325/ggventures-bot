@@ -188,6 +188,8 @@ def ggventures_bot_worker():
 
         # process.start()
         end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
+        if not environ.get('SCHEDULE_EMAIL_COPY'):
+            send_email()
         logger.debug(f"Golden Goose Ventures BOT Finished successfully. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")
     except Exception as e:
         exception_handler("ERROR: ", e)
@@ -195,7 +197,7 @@ def ggventures_bot_worker():
 
 ########## MAIN START ############
 if __name__ == '__main__':
-    if environ.get('DEPLOYED'):
+    if environ.get('SCHEDULE_EMAIL_COPY'):
         # THREADS INIT
         scraping_t = threading.Thread(target=ggventures_bot_worker)
         email_copy_t = threading.Thread(target=email_spreadsheet_worker)

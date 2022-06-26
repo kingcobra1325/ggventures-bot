@@ -41,6 +41,9 @@ def check_outdated_events(date_list):
     current_date = datetime.now(pytz.timezone('Pacific/Honolulu')).replace(hour=0, minute=0, second=0, microsecond=0)
     for event_date in list(date_list):
         event_bool = True
+        if 'UNIQUE EVENT' in event_date[0] and GGV_SETTINGS.KEEP_UNIQUE_EVENTS:
+            bool_array.append(False)
+            continue
         for raw in event_date:
             try:
                 logger.debug(f"\nRaw Date: |{raw}|{type(raw)}|\n")
@@ -221,7 +224,7 @@ def Write_DataFrame_To_Sheet(worksheet,df):
             #     pass
             # except gs_NoSS as e:
             #     logger.debug(f"Error: {e} ---> Worksheet ")
-            set_with_dataframe(worksheet, df)
+            set_with_dataframe(worksheet, df,resize=True)
             logger.info(f"Added DataFrame into Sheet")
             break
         except gs_APIError as e:
@@ -289,6 +292,9 @@ def Add_Event(data,country_df,country_worksheet,country):
     if GGV_SETTINGS.DELETE_PAST_EVENTS:
         col_dates_list = country_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
         country_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+        country_df.reset_index(drop=True, inplace=True)
+        logger.debug(f"Dataframe after dropping past events\n{country_df.to_markdown()}")
+        logger.debug(f"Size: {country_df.shape}")
         del [col_dates_list]
 
 
@@ -320,6 +326,9 @@ def Add_Event(data,country_df,country_worksheet,country):
         if GGV_SETTINGS.DELETE_PAST_EVENTS:
             col_dates_list = all_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
             all_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+            all_df.reset_index(drop=True, inplace=True)
+            logger.debug(f"Dataframe after dropping past events\n{all_df.to_markdown()}")
+            logger.debug(f"Size: {all_df.shape}")
             del [col_dates_list]
 
         # WRITE ALL DF TO SHEET
@@ -346,6 +355,9 @@ def Add_Startups_Event(data,startups_df,startups_worksheet,country):
     if GGV_SETTINGS.DELETE_PAST_EVENTS:
         col_dates_list = startups_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
         startups_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+        startups_df.reset_index(drop=True, inplace=True)
+        logger.debug(f"Dataframe after dropping past events\n{startups_df.to_markdown()}")
+        logger.debug(f"Size: {startups_df.shape}")
         del [col_dates_list]
 
 
