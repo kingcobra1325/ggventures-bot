@@ -156,6 +156,7 @@ class APPSettings():
         self.GET_SPIDERLIST_FROM_DASHBOARD = False
         self.SEND_EMAIL_OFFLINE_COPY = False
         self.RECORD_ERROR_COUNTER = True
+        self.RESTART_HEROKU_EVERY_SAVESTATE = True
         if environ.get('DEPLOYED'):
             self.LOAD_DROPBOX_LIST = True
             self.SAVE_DROPBOX_LIST = True
@@ -167,7 +168,7 @@ class APPSettings():
             self.LOAD_DROPBOX_LIST = False
             self.SAVE_DROPBOX_LIST = False
             self.DEBUG_LOGS = True
-        self.DB_SAVE_SPIDER_COUNTER = 5
+        self.DB_SAVE_SPIDER_COUNTER = 3
         self.FAIL_COUNTER = 15
         self.PRINT_ENV_VARS = False
 
