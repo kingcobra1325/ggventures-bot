@@ -203,16 +203,17 @@ def ggventures_bot_worker():
 
 ########## MAIN START ############
 if __name__ == '__main__':
-    if environ.get('SCHEDULE_EMAIL_COPY'):
-        # THREADS INIT
-        scraping_t = threading.Thread(target=ggventures_bot_worker)
-        email_copy_t = threading.Thread(target=email_spreadsheet_worker)
-        # THREADS START
-        scraping_t.start()
-        email_copy_t.start()
+    ggventures_bot_worker()
+    # if environ.get('SCHEDULE_EMAIL_COPY'):
+    #     # THREADS INIT
+    #     scraping_t = threading.Thread(target=ggventures_bot_worker)
+    #     email_copy_t = threading.Thread(target=email_spreadsheet_worker)
+    #     # THREADS START
+    #     scraping_t.start()
+    #     email_copy_t.start()
 
-        # THREADS JOIN
-        scraping_t.join()
-        email_copy_t.join()
-    else:
-        ggventures_bot_worker()
+    #     # THREADS JOIN
+    #     scraping_t.join()
+    #     email_copy_t.join()
+    # else:
+    #     ggventures_bot_worker()
