@@ -157,7 +157,7 @@ def start_spiders():
             DropBox_Upload(save_spider_list)
             save_counter = 0
             if environ.get('DEPLOYED') and GGV_SETTINGS.RESTART_HEROKU_EVERY_SAVESTATE:
-                logger.info("\nRestarting Heroku...\n")
+                logger.critical("\nRestarting Heroku...\n")
                 os.system('heroku ps:restart')
         logger.info(f"\n\nCURRENT SCRAPING PROGRESS: {progress_counter}\n\n")
 
