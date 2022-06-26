@@ -450,7 +450,7 @@ class GGVenturesSpider(scrapy.Spider):
             elif self.contact_info_multispan:
                 self.university_contact_info = '\n'.join([x.get_attribute('textContent') for x in WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH, self.university_contact_info_xpath)))])
 
-            self.university_contact_info = f"{self.university_contact_info}\n{self.get_emails_from_source()}"
+            # self.university_contact_info = f"{self.university_contact_info}\n{self.get_emails_from_source()}"
 
 
 
