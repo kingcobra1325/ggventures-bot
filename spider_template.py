@@ -1,6 +1,6 @@
 from distutils.log import error
 from numpy import maximum
-import scrapy, time, traceback, os, sys, json
+import scrapy, time, traceback, gc
 # from scrapy import Selector
 from datetime import datetime
 
@@ -24,7 +24,7 @@ from googletrans import Translator
 
 import re
 
-from app import error_dashboard
+from lib.error_dashboard import ErrorDashboard
 from lib.decorators import decorate
 
 logger = initialize_logger()
@@ -606,23 +606,23 @@ class GGVenturesSpider(scrapy.Spider):
             web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
             self.logger.debug(f"Number of Event Links: {len(web_elements_list)}")
             if return_elements:
-                return web_elements_list
+                return tuple(web_elements_list)
             else:
                 event_links = [x.get_attribute(link_attribute) for x in web_elements_list]
                 # REMOVE EMPTY ELEMENTS
                 cleaned_event_links = list(filter(None, event_links))
                 # LIMIT EVENTS TO SCRAPE
                 if not maximum_events:
-                    return cleaned_event_links
+                    return tuple(cleaned_event_links)
                 else:
                     self.logger.debug(f"Maximum Events to scrape: {maximum_events}")
                     if len(cleaned_event_links) >= maximum_events:
-                        return cleaned_event_links[0:maximum_events]
+                        return tuple(cleaned_event_links[0:maximum_events])
                     else:
-                        return cleaned_event_links
+                        return tuple(cleaned_event_links)
         except self.Exc.TimeoutException as e:
             self.logger.debug(f'No Events Found --> {e}. Skipping.....')
-            return []
+            return ()
         
     def events_click_reveal(self,click_area_xpath=''):
         try:
@@ -728,13 +728,13 @@ class GGVenturesSpider(scrapy.Spider):
         
         #LIMIT EVENTS TO SCRAPE
         if not maximum_events:
-            return event_links
+            return tuple(event_links)
         else:
             self.logger.debug(f"Maximum Events to scrape: {maximum_events}")
             if len(event_links) >= maximum_events:
-                return event_links[0:maximum_events]
+                return tuple(event_links[0:maximum_events])
             else:
-                return event_links
+                return tuple(event_links)
             
         
     
@@ -758,11 +758,14 @@ class GGVenturesSpider(scrapy.Spider):
 
     def closed(self, reason):
         try:
+            error_dashboard = ErrorDashboard()
             error_dashboard.process_spider_status(self.name,self.PARSE_STATUS)
+            del error_dashboard
             self.driver.quit()
             if self.USE_MULTI_DRIVER:
                 self.getter.quit()
             self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
+            gc.collect()
             self.logger.debug(f"Spider: {self.name} scraping closed due to --> {reason}")
             self.logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
         except Exception as e:

@@ -6,13 +6,12 @@ from lib.baselogger import initialize_logger
 from lib.error_dashboard import ErrorDashboard
 
 logger = initialize_logger(__name__)
-error_dashboard = ErrorDashboard()
 
 from lib.email_spreadsheet import EmailCopySheet
 
 # ---------------- IMPORTS ----------------------------- #
 from mimetypes import init
-import time, os, sys, threading
+import time, os, sys, threading,gc
 start_time = round(time.time())
 
 from datetime import datetime
@@ -106,31 +105,34 @@ def start_spiders():
 
     if environ.get("GET_SPIDERLIST_FROM_DASHBOARD",GGV_SETTINGS.GET_SPIDERLIST_FROM_DASHBOARD):
         logger.info("Loading Spiders from Dashboard....")
-        get_spider_list = error_dashboard.get_spiders_on_status()
+        error_dashboard = ErrorDashboard()
+        get_spider_list = tuple(error_dashboard.get_spiders_on_status())
+        del error_dashboard
+        gc.collect()
     else:
         logger.debug("Fetching Spiders from local file...")
         if environ.get('DEPLOYED'):
             logger.info("|PRODUCTION| Loading Spider_List....")
-            get_spider_list = Load_Spiders()
+            get_spider_list = tuple(Load_Spiders())
         else:
             logger.info("|DEVELOPMENT| Loading Spider_List_Test....")
-            get_spider_list = Load_Spiders_Test()
+            get_spider_list = tuple(Load_Spiders_Test())
 
     logger.info(f"Spider_List: {get_spider_list}")
 
     if GGV_SETTINGS.LOAD_DROPBOX_LIST:
         logger.debug(f'Fetching current progress on Dropbox BOT_JSON file...\n')
-        load_spiders = DropBox_INIT()
+        load_spiders = tuple(DropBox_INIT())
         logger.info(load_spiders)
         if len(load_spiders["PENDING_SPIDERS"]) >= 1:
             logger.info("Pending Spiders to scrape detected. Resuming....")
             spider_list = load_spiders["PENDING_SPIDERS"]
         else:
-            spider_list = get_spider_list.copy()
+            spider_list = get_spider_list
             logger.info("No Pending Spiders to resume. Scraping New Spider List....")
     else:
         logger.info("Resume Progress DISABLED. Scraping New Spider List....")
-        spider_list = get_spider_list.copy()
+        spider_list = get_spider_list
     logger.info(f"Number of Pending Spiders: {len(spider_list)}")
 
     progress_counter = 0
@@ -161,6 +163,7 @@ def send_email():
     email_offline = EmailCopySheet()
     email_offline.send_copy_via_email()
     del email_offline
+    gc.collect()
 
 
 schedule.every().monday.at("18:00").do(send_email)
