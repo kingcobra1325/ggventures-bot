@@ -154,7 +154,7 @@ class APPSettings():
         self.CLEAN_EVENT_TIME = True
         self.CLEAN_CONTACT_INFO = True
         self.SORT_STARTUPS = True
-        self.DELETE_PAST_EVENTS = True
+        self.DELETE_PAST_EVENTS = False
         self.KEEP_UNIQUE_EVENTS = True
         self.LIMIT_SCRAPED_EMAILS=10
         self.LIMIT_SCRAPED_PHONENUMBERS=10
