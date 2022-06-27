@@ -41,7 +41,7 @@ class Ind0009Spider(GGVenturesSpider):
                 item_data['event_name'] = self.Mth.WebDriverWait(self.driver,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//strong"))).get_attribute('textContent')
                 
                 try:
-                    item_data['event_desc'] = self.driver.find_elements(self.Mth.By.XPATH,"//div[@class='evnt-contnt']/p")
+                    item_data['event_desc'] = self.driver.find_element(self.Mth.By.XPATH,"//div[@class='evnt-contnt']/p").get_attribute('textContent')
                 except self.Exc.NoSuchElementException as e:
                     self.Func.print_log(f'XPATH not found: {e}: Skipping.....')
 
