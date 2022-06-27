@@ -350,6 +350,7 @@ class GGVenturesSpider(scrapy.Spider):
 
     def load_item(self,item_data,item_selector):
 
+        self.logger.debug(f"Translate |{self.TRANSLATE}|")
         if self.TRANSLATE:
             # Translate before Loading Items....
             item_data = self.translate_text(item_data)

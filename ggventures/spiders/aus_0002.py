@@ -15,6 +15,8 @@ class Aus0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = 'https://bond.edu.au/intl/events'
 
+    TRANSLATE = False
+
     university_contact_info_xpath = "//h2[text()='Contact us']/.."
     # contact_info_text = True
     contact_info_textContent = True

@@ -20,7 +20,7 @@ class Aus0024Spider(GGVenturesSpider):
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
-    # TRANSLATE = True
+    TRANSLATE = False
 
     def parse_code(self,response):
         try:
