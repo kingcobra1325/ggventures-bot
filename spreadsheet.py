@@ -89,7 +89,7 @@ def delete_past_events():
             col_dates_list = df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
             df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
             df.reset_index(drop=True, inplace=True)
-            logger.debug(f"Dataframe after dropping past events\n{df.to_markdown()}")
+            # logger.debug(f"Dataframe after dropping past events\n{df.to_markdown()}")
             logger.debug(f"Size: {df.shape}")
             del [col_dates_list]
             Write_DataFrame_To_Sheet(ws, df)

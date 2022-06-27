@@ -5,7 +5,7 @@ class Aus0018Spider(GGVenturesSpider):
     name = 'aus_0018'
     start_urls = ["https://www.westernsydney.edu.au/future/study/courses/sydney-graduate-school-of-management"]
     country = "Australia"
-    # eventbrite_id = 12790629019
+    eventbrite_id = 27569945079
 
     # handle_httpstatus_list = [301,302,403,404]
 
