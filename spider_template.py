@@ -302,11 +302,11 @@ class GGVenturesSpider(scrapy.Spider):
                 else:
                     self.logger.debug("Link doesn't meet the criteria. Skipping...") if GGV_SETTINGS.DEBUG_LOGS else None
             self.logger.debug(f"FINAL STRING: {final_string}")  if GGV_SETTINGS.DEBUG_LOGS else None
+            del get_all_links
         except StaleElementReferenceException as e:
             self.logger.debug(f"ERROR: {e}. Skip fetching links...")  if GGV_SETTINGS.DEBUG_LOGS else None
 
         del link_base_list
-        del get_all_links
         gc.collect()
 
         return final_string

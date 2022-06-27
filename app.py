@@ -199,7 +199,8 @@ def ggventures_bot_worker():
         else:
             logger.info("|DEVELOPMENT| Running program one-off....")
             start_spiders()
-
+            if GGV_SETTINGS.DELETE_PAST_EVENTS:
+                delete_past_events()
         # process.start()
         end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
         logger.debug(f"Golden Goose Ventures BOT Finished successfully. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")
