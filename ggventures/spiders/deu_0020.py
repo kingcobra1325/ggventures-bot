@@ -47,7 +47,7 @@ class Deu0020Spider(GGVenturesSpider):
                 item_data['event_link'] = response.url
 
                 item_data['event_name'] = WebDriverWait(self.driver,20).until(EC.presence_of_element_located((By.XPATH,f"//div[starts-with(@class,'h2')][{link}]/following-sibling::h2"))).text
-                item_data['event_desc'] = self.driver.find_element(By.XPATH,f"//div[starts-with(@class,'h2')][{link}]/following-sibling::div").get_attribute('textContent')
+                item_data['event_desc'] = self.driver.find_element(By.XPATH,f"//div[starts-with(@id,'beschreibung')][{link}]").get_attribute('textContent')
 
                 # item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'box-event-doc-header-date')]").text
                 # item_data['event_time'] = self.getter.find_element(By.XPATH,"//dl[contains(@class,'contact-list')]").text

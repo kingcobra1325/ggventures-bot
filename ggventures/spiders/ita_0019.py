@@ -17,8 +17,8 @@ class Ita0019Spider(GGVenturesSpider):
     parse_code_link = "https://almaorienta.unibo.it/en/events-calendar"
 
     university_contact_info_xpath = "//div[@class='box-content']"
-    contact_info_text = True
-    # contact_info_textContent = True
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):

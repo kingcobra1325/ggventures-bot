@@ -1,4 +1,3 @@
-
 from spider_template import GGVenturesSpider
 
 
@@ -17,7 +16,7 @@ class Bol0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.umss.edu.bo/categoria/tiempo-universitario/eventos/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@id='main-content']//div[starts-with(@class,'et_pb_row et_pb_row_1')]"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

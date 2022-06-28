@@ -41,9 +41,9 @@ class Aut0007Spider(GGVenturesSpider):
                     # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='header__headline']"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='content']"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event--lead__row']","//div[@class='header__subheadline']/span"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event--lead__row']","//div[@class='header__subheadline']/span"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='content']"],method='text')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event--lead__row']"],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event--lead__row']"],method='attr',error_when_none=False)
 
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[@class='wpGeneralWidgetBodyRte']"])
                     # item_data['startups_link'] = ''

@@ -41,9 +41,9 @@ class Col0007Spider(GGVenturesSpider):
                     # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//h1/following-sibling::div"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//h1/following-sibling::div"])
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//h1/following-sibling::div"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='col']"])
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='col']"])
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='col']"])
 
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[@class='field-titulo-informacion-contacto']"],method='attr',error_when_none=True)
                     # item_data['startups_link'] = ''

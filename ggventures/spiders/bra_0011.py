@@ -2,10 +2,10 @@ from spider_template import GGVenturesSpider
 
 
 class Bra0011Spider(GGVenturesSpider):
-    name = 'bra_0011'
+    name = "bra_0011"
     start_urls = ["https://iag.puc-rio.br/en/contact/"]
-    country = 'Brazil'
-    # eventbrite_id = 6221361805
+    country = "Brazil"
+    # eventbrite_id = 12790629019
 
     # handle_httpstatus_list = [301,302,403,404]
 
@@ -27,11 +27,13 @@ class Bra0011Spider(GGVenturesSpider):
         ####################
             self.driver.get(response.url)
     
-            # self.check_website_changed(upcoming_events_xpath="//div[contains(@class,'c-events')]",empty_text=True)
+            # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
             
-            # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
-            
-            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//article[starts-with(@class,'col-md-12')]/h2/a",next_page_xpath="//tr[@class='calendar-box-header']/th[3]/a",get_next_month=True,click_next_month=False,wait_after_loading=False,run_script=False):
+            # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
+              
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h2[@class='entry-title']/a",next_page_xpath="//a[starts-with(@class,'next')]",get_next_month=True,click_next_month=False,wait_after_loading=True,run_script=False):
+            raw_event_names = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//h2/a")))
+            event_names = [x.text for x in raw_event_names]
             for link in self.events_list(event_links_xpath="//h2/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://iag.puc-rio.br/"]):
@@ -42,30 +44,12 @@ class Bra0011Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    # item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//div[@class='field-items']//h2"))).get_attribute('textContent')
-                    
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='post-content']")
-
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//p[contains(text(),'Data')] | //h4[contains(text(),'Data')]").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//p[contains(text(),'Data')] | //h4[contains(text(),'Data')]").get_attribute('textContent')
-                    
-                    # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='fusion-text']//h4/strong").get_attribute('textContent')
-
-                    try:
-                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//p[contains(text(),'Data')] | //h4[contains(text(),'Data')]").get_attribute('textContent')
-                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//p[contains(text(),'Data')] | //h4[contains(text(),'Data')]").get_attribute('textContent')
-                    except self.Exc.NoSuchElementException as e:
-                        self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                        # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-                        # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-
-                    try:
-                        item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='fusion-text']//h4/strong").get_attribute('textContent')
-                    except self.Exc.NoSuchElementException as e:
-                        self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                    
-                    # self.get_emails_from_source(driver_name='getter',attribute_name='href',tag_list=['a'])
-
+                    item_data['event_name'] = event_names.pop(0)
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='post-content']","//div[@class='entry-content']"],enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//p[contains(text(),'Data')] | //h4[contains(text(),'Data')]"],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[contains(text(),'Data')] | //h4[contains(text(),'Data')]"],method='attr',error_when_none=False)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["(//div[@class='fusion-text']//h4//strong)[last()]"],method='attr',error_when_none=False,wait_time=5)
+# 
                     yield self.load_item(item_data=item_data,item_selector=link)
 
         ####################

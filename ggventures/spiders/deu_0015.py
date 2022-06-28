@@ -54,7 +54,7 @@ class Deu0015Spider(GGVenturesSpider):
 
                     try:
                         item_data['event_date'] = self.getter.find_element(By.XPATH,"//p[@class='stage__event-box-content-column-paragraph']").text
-                        # item_data['event_time'] = self.getter.find_element(By.XPATH,"//strong[contains(text(),'When')]/ancestor::div[starts-with(@class,'blockWysiwyg')]").text
+                        item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[@class='stage__event-box-content']").text
                     except NoSuchElementException as e:
                         logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
                         # logger.debug(f"XPATH not found {e}: Skipping.....")

@@ -16,7 +16,7 @@ class Ind0031Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = 'https://www.mdi.ac.in/news-and-events.html'
 
-    university_contact_info_xpath = "//div[@class='Itestright']"
+    university_contact_info_xpath = "//section[@class='bg-blue']"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

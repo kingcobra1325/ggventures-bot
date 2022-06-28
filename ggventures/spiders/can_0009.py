@@ -46,7 +46,7 @@ class Can0009Spider(GGVenturesSpider):
                 item_data['event_name'] = WebDriverWait(link,20).until(EC.presence_of_element_located((By.XPATH,"./td[2]"))).get_attribute('textContent')
                 # item_data['event_link'] = link
                 try:
-                    item_data['event_desc'] = link.find_element(By.XPATH,"./td[4]").text
+                    item_data['event_desc'] = link.find_element(By.XPATH,"./td[4]").get_attribute('textContent')
                 except NoSuchElementException as e:
                     logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
                     # item_data['event_desc'] = link.find_element(By.XPATH,"").text

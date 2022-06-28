@@ -10,7 +10,8 @@ class Fra0034Spider(GGVenturesSpider):
     name = 'fra_0034'
     start_urls = ["https://www.iscparis.com/en/"]
     country = 'France'
-    # eventbrite_id = 1412983127
+    
+    handle_httpstatus_list = [301,302,403,404]
 
     # USE_HANDLE_HTTPSTATUS_LIST = False
 
@@ -20,7 +21,7 @@ class Fra0034Spider(GGVenturesSpider):
 
     parse_code_link = "https://www.iscparis.com/en/event/"
 
-    university_contact_info_xpath = "//span[@class='name']/.."
+    university_contact_info_xpath = "//div[@class='footer-block footer-block__contact footer-accordeon']"
     contact_info_text = True
     # contact_info_textContent = False
 

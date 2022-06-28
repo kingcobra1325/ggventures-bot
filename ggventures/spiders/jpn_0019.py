@@ -17,8 +17,8 @@ class Jpn0019Spider(GGVenturesSpider):
     parse_code_link = "https://www.mbaib.gsbs.tsukuba.ac.jp/eventlist/"
 
     university_contact_info_xpath = "//div[@id='main_cont']"
-    contact_info_text = True
-    # contact_info_textContent = True
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
     TRANSLATE = True
 

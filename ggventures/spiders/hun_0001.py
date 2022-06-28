@@ -29,7 +29,7 @@ class Hun0001Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=4,event_links_xpath="//div[contains(@class,'blog-post_title')]/a",next_page_xpath="//a[contains(@class,'next page-numbers')]",get_next_month=True,click_next_month=False,wait_after_loading=False):
             for link in self.events_list(event_links_xpath="//td[contains(@class,'views-field-title')]/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['http://www.bme.hu/node']):
+                if self.unique_event_checker(url_substring=['https://www.bme.hu/node/']):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 

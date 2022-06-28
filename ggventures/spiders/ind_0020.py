@@ -30,7 +30,7 @@ class Ind0020Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
             
-            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[contains(@class,'tabpanel--active')]//div[contains(@class,'slick-active')]//h3/a",next_page_xpath="//span[@class='pagi-cta']/a[2]",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
+            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[contains(@class,'slick-active')]//a[@class='CoveoResultLink']",next_page_xpath="//span[@class='pagi-cta']/a[2]",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
             # for link in self.events_list(event_links_xpath="//div[contains(@class,'tabpanel--active')]//div[contains(@class,'slick-active')]//h3/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://www.isb.edu/en/news-events/events-grid/"]):
@@ -41,16 +41,16 @@ class Ind0020Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//div[@class='section']//h3"))).get_attribute('textContent')
+                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//div[@class='content']/h1"))).get_attribute('textContent')
                     
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='acc-text']")
+                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='description']")
 
                     # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
                     # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
 
                     try:
-                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//span[@class='span01']").get_attribute('textContent')
-                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//span[@class='span03']").get_attribute('textContent')
+                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[starts-with(@class,'left-content')]").get_attribute('textContent')
+                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='time-block']").get_attribute('textContent')
                     except self.Exc.NoSuchElementException as e:
                         self.Func.print_log(f"XPATH not found {e}: Skipping.....")
                         # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')

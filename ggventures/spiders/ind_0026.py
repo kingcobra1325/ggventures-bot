@@ -43,7 +43,7 @@ class Ind0026Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//div[@class='col-sm-6']/h2"))).get_attribute('textContent')
                     
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='container-basic']")
+                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='block-intro']")
 
                     # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
                     # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')

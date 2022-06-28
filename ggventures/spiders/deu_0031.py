@@ -20,6 +20,8 @@ class Deu0031Spider(GGVenturesSpider):
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
+    
+    TRANSLATE = True
 
     def parse_code(self,response):
         try:
@@ -46,11 +48,11 @@ class Deu0031Spider(GGVenturesSpider):
 
                     try:
                         item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'dates')]").get_attribute('textContent')
-                        # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
+                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'dates')]").get_attribute('textContent')
                     except self.Exc.NoSuchElementException as e:
                         self.Func.print_log(f"XPATH not found {e}: Skipping.....")
                         # logger.debug(f"XPATH not found {e}: Skipping.....")
-                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
+                        # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
                         # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
 
                     # try:

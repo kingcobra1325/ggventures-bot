@@ -2,18 +2,18 @@ from spider_template import GGVenturesSpider
 
 class Ken0003Spider(GGVenturesSpider):
     name = 'ken_0003'
-    start_urls = ['https://www.usiu.ac.ke/']
+    start_urls = ['https://www.usiu.ac.ke/contacts/']
     country = "Kenya"
     # eventbrite_id = 6552000185
     # TRANSLATE = True
 
     # handle_httpstatus_list = [301,302,403,404]
 
-    static_name = "Strathmore Business School"
-    static_logo = "https://sbs.strathmore.edu/wp-content/uploads/2020/10/sbs_logo.png"
+    static_name = "United States International University"
+    static_logo = "https://urbanlive.co.ke/wp-content/uploads/2019/05/USIU-Logo.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://sbs.strathmore.edu/events/"
+    parse_code_link = "https://www.usiu.ac.ke/events-activities/"
 
     university_contact_info_xpath = "//div[contains(@class,'fusion-text-1')]"
     contact_info_text = True
@@ -26,10 +26,10 @@ class Ken0003Spider(GGVenturesSpider):
             self.driver.get(response.url)
             # self.check_website_changed(upcoming_events_xpath="//div[contains(text(),'no item that match')]")
             # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
-            # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//tr[@class='single-day']//td//a",next_page_xpath="//a[@rel='next']",get_next_month=True,click_next_month=False):
-            for link in self.events_list(event_links_xpath="//h3/a"):
+            for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//li[@class='event']/a",next_page_xpath="//span[text()='next']",get_next_month=False,click_next_month=True,run_script=True):
+            # for link in self.events_list(event_links_xpath="//h3/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['strathmore.edu/event']):
+                if self.unique_event_checker(url_substring=['https://www.usiu.ac.ke/']):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 

@@ -7,7 +7,7 @@ class Fin0005Spider(GGVenturesSpider):
     country = "Finland"
     # eventbrite_id = 6221361805
 
-    # handle_httpstatus_list = [301,302,403,404,429]
+    handle_httpstatus_list = [301,302,403,404,429]
 
     static_name = "University of Vaasa,Levón Institute"
     static_logo = "https://www.uwasa.fi/themes/custom/univaasa/logo.svg"

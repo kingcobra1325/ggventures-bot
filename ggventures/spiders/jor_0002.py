@@ -13,7 +13,7 @@ class Jor0002Spider(GGVenturesSpider):
     static_logo = "http://business.ju.edu.jo/SchoolTemp/Blue/images/ujlogo2016.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "http://www.ju.edu.jo/UpcomingEvents/AllItems.aspx"
+    parse_code_link = "http://www.ju.edu.jo/Lists/UpcomingEvents/All_Events.aspx"
 
     university_contact_info_xpath = "//strong/div"
     contact_info_text = True
@@ -27,23 +27,23 @@ class Jor0002Spider(GGVenturesSpider):
             # self.check_website_changed(upcoming_events_xpath="//p[contains(text(),'don’t have any upcoming events at')]")
             # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
             # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//tr[@class='single-day']//td//a",next_page_xpath="//a[@rel='next']",get_next_month=True,click_next_month=False):
-            for link in self.events_list(event_links_xpath="//div[@field='LinkTitle']/a"):
+            for link in self.events_list(event_links_xpath="//h3[@class='item-title']/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['ju.edu.jo/UpcomingEvents']):
+                if self.unique_event_checker(url_substring=['http://www.ju.edu.jo/Lists/UpcomingEvents/']):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h3[text()='Title']/parent::td/following::td"))).text
-                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//h3[text()='brief']/parent::td/following::td").text
+                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h2[starts-with(@class,'title-default-left')]"))).text
+                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='course-details-inner']/div").text
                     # try:
                     #     item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'text-with-summary')]").text
                     # except self.Exc.NoSuchElementException as e:
                     #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
 
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//h3[text()='StartDate']/parent::td/following::td").text
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//h3[text()='StartDate']/parent::td/following::td").text
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='sidebar-box-inner']").text
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='sidebar-box-inner']").text
 
                     # item_data['event_date'] = self.get_datetime_attributes("//span[@class='date-display-range']/span",'content')
                     # item_data['event_time'] = self.get_datetime_attributes("//span[@class='date-display-range']/span",'content')

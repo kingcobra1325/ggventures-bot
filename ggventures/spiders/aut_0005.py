@@ -17,7 +17,7 @@ class Aut0005Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.tuwien.at/en/tu-wien/news/events"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "(//div[@class='wpGeneralContent'])[4]"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -45,7 +45,7 @@ class Aut0005Spider(GGVenturesSpider):
                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//p[@class='wpDate']"])
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[@class='wpDate']"])
 
-                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[@class='wpGeneralWidgetBodyRte']"])
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[@class='wpGeneralWidgetBodyRte']"],error_when_none=False,wait_time=5)
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
                     item_data['event_link'] = link

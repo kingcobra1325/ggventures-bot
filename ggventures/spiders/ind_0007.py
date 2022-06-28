@@ -43,7 +43,7 @@ class Ind0007Spider(GGVenturesSpider):
                 item_data['event_name'] = self.driver.find_element(self.Mth.By.XPATH,"//div[@class='evnt-contnt']/h4").text
                 
                 try:
-                    item_data['event_desc'] = [x.text for x in self.driver.find_elements(self.Mth.By.XPATH,"//div[@class='evnt-contnt']/p")]
+                    item_data['event_desc'] = "".join([x.text for x in self.driver.find_elements(self.Mth.By.XPATH,"//div[@class='evnt-contnt']/p")])
                 except self.Exc.NoSuchElementException as e:
                     self.Func.print_log(f'XPATH not found: {e}: Skipping.....')
 
