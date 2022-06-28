@@ -12,7 +12,7 @@ class Can0020Spider(GGVenturesSpider):
     name = 'can_0020'
     start_urls = ["https://telfer.uottawa.ca/en/contact/"]
     country = 'Canada'
-    # eventbrite_id = 1412983127
+    eventbrite_id = 1483760122
 
     # USE_HANDLE_HTTPSTATUS_LIST = False
 

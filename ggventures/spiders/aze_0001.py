@@ -36,7 +36,7 @@ class Aze0001Spider(GGVenturesSpider):
 
                 self.getter.get(link)
 
-                if self.unique_event_checker(url_substring=['http://khazar.org/en/announce']):
+                if self.unique_event_checker(url_substring=['http://khazar.org/en/announce','khazar.org/en']):
 
                     logger.info(f"Currently scraping --> {self.getter.current_url}")
 

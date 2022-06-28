@@ -139,10 +139,9 @@ def start_spiders():
 
     progress_counter = 0
     save_counter = 0
-    save_spider_list = spider_list
-
+    save_spider_list = spider_list.copy()
     spider_list = list_to_gen(spider_list)
-
+    
     for spider in spider_list:
         # spider = 'usa-0001
         logger.info(f"IN PROGRESS: Crawling with {spider}....")

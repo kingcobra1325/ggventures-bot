@@ -3,6 +3,7 @@ from spider_template import GGVenturesSpider
 
 class Bra0006Spider(GGVenturesSpider):
     name = 'bra_0006'
+    allowed_domains = ['www.fea.usp.br']
     start_urls = ["https://www.fea.usp.br/contato/fale-conosco"]
     country = 'Brazil'
     # eventbrite_id = 6221361805

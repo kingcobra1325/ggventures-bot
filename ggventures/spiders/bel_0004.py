@@ -39,13 +39,6 @@ class Bel0004Spider(GGVenturesSpider):
                     logger.info(f"Currently scraping --> {self.getter.current_url}")
 
                     item_data = self.item_data_empty.copy()
-
-                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).text
-                    item_data['event_desc'] = self.getter.find_element(By.XPATH,"//p[contains(@class,'fz-large')]/parent::div").text
-
-                    item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-infos')]").text
-                    item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-infos')]").text
-
                     # try:
                     #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text
                     #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text
@@ -55,14 +48,20 @@ class Bel0004Spider(GGVenturesSpider):
                     #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
                     #     item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
 
+
+                    item_data['event_link'] = link
+
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//p[contains(@class,'fz-large')]/parent::div"],method='attr',error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'event-infos')]"],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'event-infos')]"],method='attr',error_when_none=False)
+                    
                     try:
                         # item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'row agenda-infos')]//label[text()='Contact']/following-sibling::div").text
                         item_data['startups_contact_info'] = '\n'.join([x.text for x in self.getter.find_elements(By.XPATH,"//strong[contains(text(),'estions')]/parent::span/parent::p/following-sibling::p")])
                     except NoSuchElementException as e:
                         logger.debug(f"XPATH not found {e}: Skipping.....")
-                    # item_data['startups_link'] = ''
-                    # item_data['startups_name'] = ''
-                    item_data['event_link'] = link
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'row agenda-infos')]//label[text()='Contact']/following-sibling::div"],method='attr',error_when_none=False,wait_time=5)
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

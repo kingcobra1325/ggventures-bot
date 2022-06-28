@@ -12,7 +12,7 @@ class Can0016Spider(GGVenturesSpider):
     name = 'can_0016'
     start_urls = ["https://www.sauder.ubc.ca/contact-ubc-sauder"]
     country = 'Canada'
-    # eventbrite_id = 1412983127
+    eventbrite_id = 17946977554
 
     # USE_HANDLE_HTTPSTATUS_LIST = False
 

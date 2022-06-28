@@ -33,7 +33,7 @@ class Bra0002Spider(GGVenturesSpider):
 
                 if self.unique_event_checker(url_substring="https://ils-assas-university.com/"):
 
-                    logger.info(f"Currently scraping --> {self.getter.current_url}")
+                    self.logger.info(f"Currently scraping --> {self.getter.current_url}")
 
                     item_data = self.item_data_empty.copy()
 
