@@ -154,19 +154,19 @@ class APPSettings():
         self.CLEAN_EVENT_TIME = True
         self.CLEAN_CONTACT_INFO = True
         self.SORT_STARTUPS = True
-        self.DELETE_PAST_EVENTS = False
         self.KEEP_UNIQUE_EVENTS = True
         self.LIMIT_SCRAPED_EMAILS=10
         self.LIMIT_SCRAPED_PHONENUMBERS=10
+        self.DELETE_PAST_EVENTS = True
         # self.DELETE_PAST_EVENTS = False
         self.REGEX_LOGS = True
         self.DEV_LOGS = True
         self.NO_MATCH_REGEX_LOGS = True
         self.MULTI_DRIVER = False
-        # self.GET_SPIDERLIST_FROM_DASHBOARD = True
-        self.GET_SPIDERLIST_FROM_DASHBOARD = False
-        # self.SEND_EMAIL_OFFLINE_COPY = True
-        self.SEND_EMAIL_OFFLINE_COPY = False
+        self.GET_SPIDERLIST_FROM_DASHBOARD = True
+        # self.GET_SPIDERLIST_FROM_DASHBOARD = False
+        self.SEND_EMAIL_OFFLINE_COPY = True
+        # self.SEND_EMAIL_OFFLINE_COPY = False
         self.SEND_EMAILS_PER_ERROR = environ['SEND_EMAILS_PER_ERROR']
         self.RECORD_ERROR_COUNTER = True
         self.RESTART_HEROKU_EVERY_SAVESTATE = True
@@ -181,7 +181,7 @@ class APPSettings():
             self.LOAD_DROPBOX_LIST = False
             self.SAVE_DROPBOX_LIST = False
             self.DEBUG_LOGS = True
-        self.DB_SAVE_SPIDER_COUNTER = 15
+        self.DB_SAVE_SPIDER_COUNTER = 10
         self.FAIL_COUNTER = 15
         self.PRINT_ENV_VARS = False
 

@@ -37,7 +37,7 @@ class Can0022Spider(GGVenturesSpider):
 
                     # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1","//h2"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'wp-block-column--content')]"],method='attr')
                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'wp-block-ob-blocks-post-metadata')]"],method='attr')
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'wp-block-ob-blocks-post-metadata')]"],method='attr')

@@ -141,7 +141,7 @@ def start_spiders():
     save_counter = 0
     save_spider_list = spider_list.copy()
     spider_list = list_to_gen(spider_list)
-    
+
     for spider in spider_list:
         # spider = 'usa-0001
         logger.info(f"IN PROGRESS: Crawling with {spider}....")
@@ -151,6 +151,8 @@ def start_spiders():
         logger.debug(f"Save Progress Counter {save_counter}/{GGV_SETTINGS.DB_SAVE_SPIDER_COUNTER}")
         logger.info(f"Removing {spider} from Pending Spider List...")
         save_spider_list.remove(spider)
+        if environ.get('DEPLOYED') and not environ.get('SCHEDULE_EMAIL_COPY') and environ.get('SEND_EMAIL_OFFLINE_COPY') and not len(save_spider_list):
+            delete_past_events()
         if (save_counter >= GGV_SETTINGS.DB_SAVE_SPIDER_COUNTER) and GGV_SETTINGS.SAVE_DROPBOX_LIST:
             logger.debug("Saving progress to Dropbox...")
             logger.debug(save_spider_list)
@@ -192,8 +194,6 @@ def ggventures_bot_worker():
             logger.info("|PRODUCTION| Running program indefinitely....")
             while True:
                 start_spiders()
-                if not environ.get('SCHEDULE_EMAIL_COPY') and environ.get('SEND_EMAIL_OFFLINE_COPY'):
-                    send_email()
                 logger.info("Completed current progress. Restarting Spider list...")
         else:
             logger.info("|DEVELOPMENT| Running program one-off....")
