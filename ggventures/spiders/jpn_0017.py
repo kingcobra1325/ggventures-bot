@@ -47,8 +47,8 @@ class Jpn0017Spider(GGVenturesSpider):
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='contents']")
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//h2").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='contents']").get_attribute('textContent')
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='contents']").get_attribute('textContent')
 
                     # try:
                     #     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//span[@class='field-content']").get_attribute('textContent')

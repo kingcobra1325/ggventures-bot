@@ -12,7 +12,7 @@ class Fra0032Spider(GGVenturesSpider):
     country = 'France'
     # eventbrite_id = 1412983127
 
-    # USE_HANDLE_HTTPSTATUS_LIST = False
+    handle_httpstatus_list = [301,302,403,404]
 
     static_name = "INT Management"
     

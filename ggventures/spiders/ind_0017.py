@@ -2,11 +2,11 @@ from spider_template import GGVenturesSpider
 
 
 class Ind0017Spider(GGVenturesSpider):
-    name = 'ind_0017'
+    name = "ind_0017"
     start_urls = ["https://www.iiml.ac.in/contact-us/contact-directory"]
-    country = 'India'
-    # eventbrite_id = 6221361805
-
+    country = "India"
+    # eventbrite_id = 14858065474
+# 
     # handle_httpstatus_list = [301,302,403,404]
 
     static_name = "Indian Institute of Management Lucknow (IIM-L)"
@@ -16,21 +16,22 @@ class Ind0017Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.iiml.ac.in/events"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='node__content']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
+    # TRANSLATE = True
 
     def parse_code(self,response):
         try:
         ####################
             self.driver.get(response.url)
     
-            # self.check_website_changed(upcoming_events_xpath="//div[contains(@class,'c-events')]",empty_text=True)
+            # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
             
             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
-            
-            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h4/a",next_page_xpath="//span[text()='Weiter']/..",get_next_month=True,click_next_month=False,wait_after_loading=False):
+              
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='location']/a",next_page_xpath="//a[text()='Next Page']",get_next_month=True,click_next_month=False,wait_after_loading=True,run_script=False):
             for link in self.events_list(event_links_xpath="//div[@class='media-body']/a[1]"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://www.iiml.ac.in/"]):
@@ -41,31 +42,14 @@ class Ind0017Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h2[@class='text-center']"))).get_attribute('textContent')
-                    
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='node__content']")
-
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='node__content']").get_attribute('textContent')
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='node__content']").get_attribute('textContent')
-
-                    # try:
-                    #     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[starts-with(@class,'tribe-events-schedule')]").get_attribute('textContent')
-                    #     # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='elementObjectEventMultiTime']").get_attribute('textContent')
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                        # logger.debug(f"XPATH not found {e}: Skipping.....")
-                        # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-                        # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-
-                    try:
-                        item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//h1[text()='Contact Details']/following::ul").get_attribute('textContent')
-                    except self.Exc.NoSuchElementException as e:
-                        self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                    # item_data['startups_link'] = ''
-                    # item_data['startups_name'] = ''
-
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h2[@class='text-center']"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='node__content']",],enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='node__content']"],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='node__content']"],method='attr',error_when_none=False,wait_time=5)
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//p[@class='contact-item']/.."],method='attr',error_when_none=False,wait_time=5)
+# 
                     yield self.load_item(item_data=item_data,item_selector=link)
 
-        ####################
+        ###################
         except Exception as e:
             self.exception_handler(e)

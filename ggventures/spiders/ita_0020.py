@@ -3,7 +3,7 @@ from spider_template import GGVenturesSpider
 
 class Ita0020Spider(GGVenturesSpider):
     name = 'ita_0020'
-    start_urls = ["https://businessschool.luiss.it/en/why-luiss-bs/contacts/"]
+    start_urls = ["https://web.uniroma1.it/dip_diap/en/dipdiap/department/where-we-are"]
     country = 'Italy'
     # eventbrite_id = 6221361805
 
@@ -16,9 +16,9 @@ class Ita0020Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://web.uniroma1.it/dip_diap/en/eventi"
 
-    university_contact_info_xpath = "//div[@Class='row']"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//div[@class='field-items']"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
     TRANSLATE = True
 

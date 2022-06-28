@@ -34,7 +34,9 @@ class Deu0029Spider(GGVenturesSpider):
             # self.ClickMore(upcoming_events_xpath="//button[@class='filterable-list__load-more']")
 
             # for link in self.multi_event_pages(event_links_xpath="//div[@class='location']/a",next_page_xpath="//a[text()='Next Page']",get_next_month=True,click_next_month=False,wait_after_loading=False):
-            for link in self.events_list(event_links_xpath="//div[starts-with(@class,'col_4')]//a"):
+            raw_event_times = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//h3/following-sibling::p[1]")))
+            event_times = [x.text for x in raw_event_times]
+            for link in self.events_list(event_links_xpath="//div[starts-with(@class,'col_4')]//p/a"):
 
                 self.getter.get(link)
 
@@ -49,7 +51,7 @@ class Deu0029Spider(GGVenturesSpider):
                     item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//div[@class='eb2']/h2"))).text
                     item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@class='eb2']").text
 
-                    # item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'box-event-doc-header-date')]").text
+                    item_data['event_date'] = event_times.pop(0)
                     # item_data['event_time'] = self.getter.find_element(By.XPATH,"//dl[contains(@class,'contact-list')]").text
 
                     # try:

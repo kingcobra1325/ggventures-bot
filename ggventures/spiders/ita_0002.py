@@ -18,7 +18,7 @@ class Ita0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.escp.eu/events?campus=25"
 
-    university_contact_info_xpath = "//p[contains(@class,'text-people-circle')]"
+    university_contact_info_xpath = "//div[@class='content-people-circle']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

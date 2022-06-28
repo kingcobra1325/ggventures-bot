@@ -20,7 +20,7 @@ class Fra0027Spider(GGVenturesSpider):
 
     parse_code_link = "https://www.hec.edu/en/events"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='blocks-list']"
     # contact_info_text = True
     contact_info_textContent = True
 

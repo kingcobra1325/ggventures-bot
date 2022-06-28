@@ -31,7 +31,7 @@ class Ind0013Spider(GGVenturesSpider):
             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
             
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h4/a",next_page_xpath="//span[text()='Weiter']/..",get_next_month=True,click_next_month=False,wait_after_loading=False):
-            for link in self.events_list(event_links_xpath="//div[@class='js-view-dom-id-e864d7b7a11ad291cd31d0d24c6825b9c73dda6428ed42f3f6ef7d52092d96c4']//span/a"):
+            for link in self.events_list(event_links_xpath="//section[@id='block-views-block-conference-block-1']//div[@class='iimb-conference-main-title-link']/span/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://www.iimb.ac.in"]):
                     

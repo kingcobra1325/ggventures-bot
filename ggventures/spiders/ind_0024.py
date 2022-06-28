@@ -31,7 +31,7 @@ class Ind0024Spider(GGVenturesSpider):
             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
             
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3[starts-with(@class,'tribe-events-calendar-list__event-title')]",next_page_xpath="//span[@class='pagi-cta']/a[2]",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
-            for link in self.events_list(event_links_xpath="//div[starts-with(@class,'et_pb_column et_pb_column_1_3 et_pb_column_3 ')]//a"):
+            for link in self.events_list(event_links_xpath="//div[contains(@class,'et_pb_column_7 ')]//a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://bfsi.economictimes.indiatimes.com/news/","https://www.educationtimes.com/article/","https://www.businessbecause.com/news/"]):
                     

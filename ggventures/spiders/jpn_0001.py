@@ -19,7 +19,7 @@ class Jpn0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.aoyama.ac.jp/en/information/"
 
-    university_contact_info_xpath = "//section"
+    university_contact_info_xpath = ""
     # contact_info_text = True
     # contact_info_textContent = True
     contact_info_multispan = True

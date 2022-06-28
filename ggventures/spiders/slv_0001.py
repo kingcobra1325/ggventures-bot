@@ -17,7 +17,7 @@ class Slv0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "http://www.fce.ues.edu.sv/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//section[@id='portfolio']"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True
@@ -40,15 +40,13 @@ class Slv0001Spider(GGVenturesSpider):
 
                     # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h2"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'content')]"],enable_desc_image=True)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='text-muted']"],error_when_none=False)
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='text-muted']"],error_when_none=False)
-
-                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=[''])
-                    # item_data['startups_link'] = ''
-                    # item_data['startups_name'] = ''
                     item_data['event_link'] = link
+                    
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h2"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'content')]"],enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='text-muted']"],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='text-muted']"],method='attr',error_when_none=False,wait_time=5)
+
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

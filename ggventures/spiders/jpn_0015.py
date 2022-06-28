@@ -1,8 +1,8 @@
 from spider_template import GGVenturesSpider
 
 
-class Jpn00d15Spider(GGVenturesSpider):
-    name = 'jpn_00d15'
+class Jpn0015Spider(GGVenturesSpider):
+    name = 'jpn_0015'
     start_urls = ["https://en.apu.ac.jp/home/contents/contact.html/"]
     country = 'Japan'
     # eventbrite_id = 6221361805

@@ -33,7 +33,7 @@ class Ind0044Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3[starts-with(@class,'tribe-events-calendar-list__event-title')]",next_page_xpath="//span[@class='pagi-cta']/a[2]",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
             for link in self.events_list(event_links_xpath="//div[@id='staff-upcoming-events']//li/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=["https://tiss.edu/view/5/homepage-data/"]):
+                if self.unique_event_checker(url_substring=["https://tiss.edu/view/5/"]):
                     
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 

@@ -21,7 +21,7 @@ class Fra0036Spider(GGVenturesSpider):
 
     parse_code_link = "https://www.sciencespo.fr/evenements/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[starts-with(@class,'internal-page-module')]"
     # contact_info_text = True
     contact_info_textContent = True
 
@@ -32,8 +32,8 @@ class Fra0036Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//strong[text()='Events']",run_script=True)
 
-            # for link in self.events_list(event_links_xpath="//div[@class='extrait']/a"):
-            for link in self.multi_event_pages(event_links_xpath="//div[@id='tab-future-events']//div[@class='col-12']/a",next_page_xpath="//li[@class='next']/a",click_next_month=True,run_script=True):
+            for link in self.events_list(event_links_xpath="//a[starts-with(@class,'push-event-module')]"):
+            # for link in self.multi_event_pages(event_links_xpath="//div[@id='tab-future-events']//div[@class='col-12']/a",next_page_xpath="//li[@class='next']/a",click_next_month=True,run_script=True):
 
                 self.getter.get(link)
 

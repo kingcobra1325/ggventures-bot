@@ -35,16 +35,16 @@ class Idn0004Spider(GGVenturesSpider):
 
                     item_data = self.item_data_empty.copy()
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//header[@class='entry-header']"))).text
-                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'entry-content')]").text
+                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1[@class='page-title']"))).text
+                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//section[@class='main-content']").text
                     # try:
                     #     item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'event__body')]").text
                     # except self.Exc.NoSuchElementException as e:
                     #     # self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
                     #     item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='event__description']").text
 
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'entry-content')]").text
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'entry-content')]").text
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//section[@class='main-content']").text
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//section[@class='main-content']").text
 
                     # item_data['event_date'] = self.get_datetime_attributes("//span[@class='date-display-range']/span",'content')
                     # item_data['event_time'] = self.get_datetime_attributes("//span[@class='date-display-range']/span",'content')
