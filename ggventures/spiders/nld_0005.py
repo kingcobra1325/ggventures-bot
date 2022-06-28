@@ -52,8 +52,8 @@ class Nld0005Spider(GGVenturesSpider):
                     # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
 
                     try:
-                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//td[text()='Date']/following-sibling::td").get_attribute('textContent')
-                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//td[text()='Time']/following-sibling::td").get_attribute('textContent')
+                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='row']/div[starts-with(@class,'column')]").get_attribute('textContent')
+                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='row']/div[starts-with(@class,'column')]").get_attribute('textContent')
                     except self.Exc.NoSuchElementException as e:
                         self.Func.print_log(f"XPATH not found {e}: Skipping.....")
                         # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')

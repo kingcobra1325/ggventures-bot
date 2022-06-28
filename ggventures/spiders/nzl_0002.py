@@ -10,7 +10,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 class Nzl0002Spider(GGVenturesSpider):
     name = 'nzl_0002'
-    start_urls = ["https://www.aut.ac.nz/about/faculties-and-schools/faculty-of-business,-economics-and-law/contact-the-faculty-business,-economics-and-law"]
+    start_urls = ["https://www.lincoln.ac.nz/contact-us/"]
     country = 'New Zealand'
     # eventbrite_id = 1412983127
 
@@ -22,7 +22,7 @@ class Nzl0002Spider(GGVenturesSpider):
 
     parse_code_link = "https://www.lincoln.ac.nz/news-and-events/?sortBy=date_published&term3=4"
 
-    university_contact_info_xpath = "//div[@id='mainContent']"
+    university_contact_info_xpath = "//main//form"
     contact_info_text = True
     # contact_info_textContent = False
 

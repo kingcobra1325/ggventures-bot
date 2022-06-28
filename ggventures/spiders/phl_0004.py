@@ -16,7 +16,7 @@ class Phl0004Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.usc.edu.ph/events-and-updates"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='contact_info']"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True
@@ -46,8 +46,8 @@ class Phl0004Spider(GGVenturesSpider):
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//main/div")
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//p[@class='event_date']").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//p[@class='event_date']").get_attribute('textContent')
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='entry-content']").get_attribute('textContent')
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='entry-content']").get_attribute('textContent')
                     
                     # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
 

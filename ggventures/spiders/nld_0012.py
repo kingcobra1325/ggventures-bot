@@ -46,8 +46,8 @@ class Nld0012Spider(GGVenturesSpider):
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//main[@id='area-main']")
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//span[text()='Datum:']/..").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//span[text()='Tijd:']/..").get_attribute('textContent')
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//main[@id='area-main']").get_attribute('textContent')
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//main[@id='area-main']").get_attribute('textContent')
                     
                     # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
 

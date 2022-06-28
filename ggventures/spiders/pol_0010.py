@@ -31,6 +31,8 @@ class Pol0010Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
             
+            raw_event_times = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//h3[contains(text(),'Nadchodzące')]/following-sibling::ul//a/span")))
+            event_times = [x.text for x in raw_event_times]
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3[starts-with(@class,'tribe-events-calendar-list__event-title')]",next_page_xpath="//span[@class='pagi-cta']/a[2]",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
             for link in self.events_list(event_links_xpath="//h3[contains(text(),'Nadchodzące')]/following-sibling::ul//a"):
                 self.getter.get(link)
@@ -46,8 +48,9 @@ class Pol0010Spider(GGVenturesSpider):
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//section[@class='m_big']")
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//td[text()='When:' or text()='Wanneer:']/..").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//td[text()='When:' or text()='Wanneer:']/..").get_attribute('textContent')
+                    event_times_popped = event_times.pop(0)
+                    item_data['event_date'] = event_times_popped
+                    item_data['event_time'] = event_times_popped
                     
                     # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
 

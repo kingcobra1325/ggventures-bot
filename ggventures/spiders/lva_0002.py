@@ -27,8 +27,8 @@ class Lva0002Spider(GGVenturesSpider):
             self.driver.get(response.url)
             # self.check_website_changed(upcoming_events_xpath="//div[contains(text(),'no item that match')]")
             # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
-            # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//tr[@class='single-day']//td//a",next_page_xpath="//a[@rel='next']",get_next_month=True,click_next_month=False):
-            for link in self.events_list(event_links_xpath="//h3[@class='news_list']/a"):
+            for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//h3[@class='news_list']/a",next_page_xpath="//div[@class='date-next']/span",get_next_month=False,click_next_month=True,run_script=True):
+            # for link in self.events_list(event_links_xpath="//h3[@class='news_list']/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=['www.rbs.lv/events']):
 

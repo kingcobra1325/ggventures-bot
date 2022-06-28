@@ -12,6 +12,8 @@ class Nld0001Spider(GGVenturesSpider):
     country = "Netherlands"
     # eventbrite_id = 30819498834
     # USE_HANDLE_HTTPSTATUS_LIST = True
+    handle_httpstatus_list = [301,302,403,404]
+    
 
     static_name = "Eindhoven University of Technology,Faculty of Technology Management"
     static_logo = "https://upload.wikimedia.org/wikipedia/commons/7/78/Eindhoven_University_of_Technology_logo_new.png"

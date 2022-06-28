@@ -11,6 +11,7 @@ class Mex0002Spider(GGVenturesSpider):
     start_urls = ['https://www.itam.mx/']
     country = "Mexico"
     # eventbrite_id = 30819498834
+    TRANSLATE = True
 
     handle_httpstatus_list = [402,403,404]
 
@@ -20,7 +21,7 @@ class Mex0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://eventos.itam.mx/es/eventos"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//h2[text()='Contacto']/.."
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

@@ -11,6 +11,7 @@ class Mex0003Spider(GGVenturesSpider):
     start_urls = ['https://tec.mx/es/contactanos']
     country = "Mexico"
     # eventbrite_id = 30819498834
+    TRANSLATE = True
 
     # handle_httpstatus_list = [403,404]
 
@@ -20,7 +21,7 @@ class Mex0003Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://conecta.tec.mx/es/noticias/eventos"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='columnas_texto columnas_texto--  ']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

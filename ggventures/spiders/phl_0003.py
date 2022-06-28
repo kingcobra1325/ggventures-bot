@@ -16,7 +16,7 @@ class Phl0003Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.dlsu.edu.ph/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//span[text()='School of Economics (LS221)']/../.."
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

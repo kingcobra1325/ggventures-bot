@@ -21,8 +21,8 @@ class Mex0001Spider(GGVenturesSpider):
     parse_code_link = "https://www.ipadebusinessschool.com/category/events/"
 
     university_contact_info_xpath = "//div[contains(@class,'vc_row-fluid')][3]"
-    contact_info_text = True
-    # contact_info_textContent = True
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):

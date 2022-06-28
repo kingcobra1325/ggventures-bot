@@ -16,7 +16,7 @@ class Prt0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://ibs.iscte-iul.pt/eventos"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@id='details-large']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -30,7 +30,7 @@ class Prt0002Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=3,event_links_xpath="//a[contains(@class,'fc-day-grid-event')]",next_page_xpath="//button[@class='btn btn-primary next']",click_next_month=True,wait_after_loading=True,run_script=True):
             for link in self.events_list(event_links_xpath="//div[@class='ibs-item']/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['agenda.pucp.edu.pe/evento']):
+                if self.unique_event_checker(url_substring=['https://ibs.iscte-iul.pt/eventos/']):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
@@ -43,8 +43,8 @@ class Prt0002Spider(GGVenturesSpider):
                     # except self.Exc.NoSuchElementException as e:
                     #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
 
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'detailDateTime')]").text
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'detailDateTime')]").text
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='featuredInformation']").text
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='featuredInformation']").text
 
                     # item_data['event_date'] = self.get_datetime_attributes("//span[@class='date-display-single']",'content')
                     # item_data['event_time'] = self.get_datetime_attributes("//span[@class='date-display-single']",'content')

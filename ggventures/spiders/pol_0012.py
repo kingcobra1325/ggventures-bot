@@ -46,8 +46,8 @@ class Pol0012Spider(GGVenturesSpider):
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//section[@class='section-content']")
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//td[text()='When:' or text()='Wanneer:']/..").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//td[text()='When:' or text()='Wanneer:']/..").get_attribute('textContent')
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//section[@class='section-content']").get_attribute('textContent')
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//section[@class='section-content']").get_attribute('textContent')
                     
                     # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
 
