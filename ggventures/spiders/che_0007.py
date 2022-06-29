@@ -16,7 +16,7 @@ class Che0007Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.unisg.ch/en/wissen/veranstaltungen"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//main"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

@@ -14,9 +14,9 @@ class Rou0001Spider(GGVenturesSpider):
     static_logo = "https://www.asebuss.ro/wp-content/themes/asebuss2018/images/logo.svg"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://www.asebuss.ro/events/"
+    parse_code_link = "https://www.asebuss.ro/category/executive-mba-events/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='hp-footer-right']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

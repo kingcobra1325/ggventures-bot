@@ -14,9 +14,9 @@ class Che0001Spider(GGVenturesSpider):
     static_logo = "https://www.educatis.org/wp-content/uploads/2022/03/educatis_logo.svg"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://www.ust.edu.ph/category/upcoming-events/"
+    parse_code_link = "https://www.gu.se/en/school-business-economics-law/about-us/event"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//main"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

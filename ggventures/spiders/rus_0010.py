@@ -16,7 +16,7 @@ class Rus0010Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://unecon.ru/info/anonsy"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='node-content']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -44,8 +44,8 @@ class Rus0010Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h2[@class='title']"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='node-content']"],method='attr',enable_desc_image=True)
-                    # item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event-info']"],method='attr')
-                    # item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event-info']"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='node-content']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='node-content']"],method='attr')
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

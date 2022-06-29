@@ -16,9 +16,9 @@ class Tur0004Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.gau.edu.tr/en/services/events"
 
-    university_contact_info_xpath = "//body"
-    # contact_info_text = True
-    contact_info_textContent = True
+    university_contact_info_xpath = "//div[@class='kurul-baskani control-visibility']"
+    contact_info_text = True
+    # contact_info_textContent = True
     # contact_info_multispan = True
     TRANSLATE = True
 

@@ -17,7 +17,7 @@ class Tun0003Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://isg.rnu.tn/evenements"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//h4[contains(text(),'Contactez nous')]/.."
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

@@ -9,11 +9,6 @@ if __name__ == '__main__':
     from selenium.webdriver.common.action_chains import ActionChains
     
     import re
-        
-    event_name = list()
-    event_date = list()
-    event_time = list()
-    event_desc = list()
 
     options = webdriver.ChromeOptions()
     # user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
@@ -25,11 +20,19 @@ if __name__ == '__main__':
     # getter = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
     # getter2 = webdriver.Chrome(executable_path='C:\Chromium\chromedriver',options=options)
     
-    link = "https://www.rug.nl/about-ug/latest-news/events/calendar/"
-    
+    link = "https://www.santelmo.org/agenda"
+    myList = []
     driver.get(link)
+    base_site = "https://www.santelmo.org"
+    new_list = []
     try:
-        WebDriverWait(driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//a[@class='h4']")))
+        WebDriverWait(driver,60).until(EC.presence_of_all_elements_located((By.XPATH,"//div[@class='event-button']/button")))
+        myList.extend([x.get_attribute('onclick') for x in driver.find_elements(By.XPATH,"//div[@class='event-button']/button")])
+        for i in myList:
+            regexlink = re.search('href="\/\S+"',i).group()
+            regexnew= regexlink.replace('href=','').replace('\"','')
+            new_list.append(f'{base_site}{regexnew}')
+        # print(new_list)
     except Exception as e:
         print(e)
     # driver.maximize_window()

@@ -16,7 +16,7 @@ class Che0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.agenda.uzh.ch/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//article[@id='main']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

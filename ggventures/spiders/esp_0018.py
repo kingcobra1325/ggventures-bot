@@ -16,9 +16,9 @@ class Esp0018Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.salleurl.edu/en/events"
 
-    university_contact_info_xpath = "//*[starts-with(text(),'CONTACT')]/../.."
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//p[contains(text(),'CONTACT')]/../.."
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
     TRANSLATE = True
 

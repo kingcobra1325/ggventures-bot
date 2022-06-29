@@ -16,7 +16,7 @@ class Twn0005Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.cm.nsysu.edu.tw/p/403-1024-159-1.php?Lang=en"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='copyright']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -44,8 +44,8 @@ class Twn0005Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h2[@class='hdline']"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='module-inner']"],method='attr',enable_desc_image=True)
-                    # item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@id='body_text_bg']"],method='attr')
-                    # item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@id='body_text_bg']"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='module-inner']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='module-inner']"],method='attr')
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

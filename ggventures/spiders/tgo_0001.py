@@ -16,7 +16,7 @@ class Tgo0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://univ-lome.tg/index.php/taxonomy/term/1"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//span[text()='Contact']/../.."
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
