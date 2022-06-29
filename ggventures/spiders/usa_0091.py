@@ -43,7 +43,10 @@ class Usa0091Spider(GGVenturesSpider):
                 item_data['event_name'] = link.find_element(self.Mth.By.XPATH,"./h2").text
                 item_data['event_desc'] = link.find_element(self.Mth.By.XPATH,"./p").text
                 item_data['event_date'] = link.find_element(self.Mth.By.XPATH,"./h3").text
-                item_data['event_time'] = link.find_element(self.Mth.By.XPATH,".//strong[contains(text(),'Time')]").text
+                try:
+                    item_data['event_time'] = link.find_element(self.Mth.By.XPATH,".//strong[contains(text(),'Time')]").text
+                except self.Exc.NoSuchElementException as e:
+                    self.logger.debug(f"Error |{e}|. Skipping XPATH...")
 
                 yield self.load_item(item_data=item_data,item_selector=link)
 

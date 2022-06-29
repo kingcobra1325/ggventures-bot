@@ -1,3 +1,5 @@
+from requests import exceptions as request_exceptions
+
 class Decorators:
 
     @staticmethod
@@ -22,7 +24,7 @@ class Decorators:
         return decorator_func
 
     @staticmethod
-    def connection_retry(error=(ConnectionError,ConnectionResetError,ConnectionAbortedError,ConnectionResetError)):
+    def connection_retry(error=(ConnectionError,ConnectionResetError,ConnectionAbortedError,ConnectionResetError,request_exceptions)):
         def decorator_func(func):
             def wrapper(*args, **kwargs):
                 while True:

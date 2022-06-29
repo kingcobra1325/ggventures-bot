@@ -44,8 +44,8 @@ class Ven0001Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='page-html']"],method='attr',enable_desc_image=True)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//strong[text()='Fecha:']/.."],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//strong[text()='Horarios:']/../following-sibling::*"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//strong[text()='Fecha:']/..","//span[@class='date float-left']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//strong[text()='Horarios:']/../following-sibling::*","//p/parent::div[@class='page-html']"],method='attr')
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

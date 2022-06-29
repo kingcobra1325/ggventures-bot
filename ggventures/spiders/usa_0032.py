@@ -43,7 +43,7 @@ class Usa0032Spider(GGVenturesSpider):
                     item_data['event_link'] = link
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='the-form-div']"],enable_desc_image=True)
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='the-form-div']","//div[@class='clearfix lower']"],enable_desc_image=True)
                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'when')]"],method='attr')
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'when')]"],method='attr',error_when_none=False)
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[text()='Contact Info']/.."],method='attr',error_when_none=False)

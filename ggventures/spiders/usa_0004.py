@@ -31,7 +31,7 @@ class Usa0004Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//a[text()='Больше событий']",run_script=True)
             
-            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//a[contains(@class,'teal')]",next_page_xpath="//a[@title='Page ›']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//a[contains(@class,'teal')]",next_page_xpath="//a[@title='Page ›']",get_next_month=True,click_next_month=False,wait_after_loading=True,run_script=True):
             # for link in self.events_list(event_links_xpath="//a[@class='clearfix']"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://web.cvent.com/event/","https://babson-college.secure.force.com/EventRegistration/"]):

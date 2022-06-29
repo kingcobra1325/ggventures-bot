@@ -886,9 +886,9 @@ spider_gbr = [
                 # 'gbr_0041',
                 # 'gbr_0042',
                 # 'gbr_0043', 
-                'gbr_0044',
+                # 'gbr_0044',
                 # 'gbr_0045',
-                # 'gbr_0046',
+                'gbr_0046',
                 # 'gbr_0047',
                 # 'gbr_0048', 'gbr_0049', 
                 # 'gbr_0050'
@@ -900,43 +900,47 @@ spider_ury = [
 spider_usa = [
                     # 'usa_0001',
                     # 'usa_0002',
-                    # # 'usa_0003',
+                    # 'usa_0003',
                     # 'usa_0004',
                     # 'usa_0005',
-                    # 'usa_0006', 'usa_0007',
-                    # # 'usa_0008',
+                    # 'usa_0006', 
+                    # 'usa_0007',
+                    # 'usa_0008',
                     # 'usa_0009',
                     # 'usa_0010', 
                     # 'usa_0011',
                     # 'usa_0012',
                     # 'usa_0013',
-                    # # 'usa_0014',
-                    # # 'usa_0015',
-                    # # 'usa_0016',
-                    # 'usa_0017', 'usa_0018', 'usa_0019',
+                    # 'usa_0014',
+                    # 'usa_0015',
+                    # 'usa_0016',
+                    # 'usa_0017', 'usa_0018', 
+                    # 'usa_0019',
                     # 'usa_0020',
-                    # # 'usa_0021',
-                    # 'usa_0022', 'usa_0023', 'usa_0024',
-                    # # 'usa_0025',
+                    # 'usa_0021',
+                    # 'usa_0022', 
+                    # 'usa_0023', 
+                    # 'usa_0024',
+                    # 'usa_0025',
                     # 'usa_0026',
                     # # 'usa_0027',
                     # # 'usa_0028',
-                    # # 'usa_0029',
+                    # 'usa_0029',
                     # 'usa_0030',
                     # 'usa_0031',
-                    # # 'usa_0032',
+                    # 'usa_0032',
                     # 'usa_0033',
                     # 'usa_0034',
                     # 'usa_0035',
                     # 'usa_0036',
                     # 'usa_0037',
-                    # # 'usa_0038',
+                    # 'usa_0038',
                     # 'usa_0039',
                     # 'usa_0040',
-                    # # 'usa_0041',
-                    # #  'usa_0042',
+                    # 'usa_0041',
+                    # 'usa_0042',
                     # 'usa_0043',
-                    # # 'usa_0044',
+                    # 'usa_0044',
                     # 'usa_0045', 'usa_0046',
                     # # # 'usa_0047',
                     # 'usa_0049', 'usa_0050',
@@ -954,32 +958,33 @@ spider_usa = [
                     # 'usa_0063',
                     # # # 'usa_0064',
                     # 'usa_0065',
-                    # 'usa_0066', 'usa_0067',
+                    # 'usa_0066', 
+                    # 'usa_0067',
                     # # # 'usa_0068', 'usa_0069',
                     # 'usa_0070',
-                    # # 'usa_0071',
+                    # 'usa_0071',
                     # 'usa_0072',
                     # 'usa_0073',
                     # 'usa_0074',
                     # 'usa_0075', 
                     # 'usa_0076',
                     # 'usa_0077',
-                    # # 'usa_0078',
+                    # 'usa_0078',
                     # 'usa_0079',
                     # 'usa_0080',
                     # # # 'usa_0081',
                     # 'usa_0082',
                     # 'usa_0083',
-                    # # 'usa_0084',
+                    # 'usa_0084',
                     # # # 'usa_0085', 'usa_0086',
-                    # # 'usa_0087',
-                    # # 'usa_0088',
+                    # 'usa_0087',
+                    # 'usa_0088',
                     # # # 'usa_0089', 'usa_0090',
-                    # # 'usa_0091',
+                    # 'usa_0091',
                     # 'usa_0092',
                     # 'usa_0093',
                     # 'usa_0094',
-                    # # 'usa_0095',
+                    # 'usa_0095',
                     # 'usa_0096',
                     # # # 'usa_0097',
                     # 'usa_0098',
@@ -1004,7 +1009,7 @@ spider_usa = [
                     # 'usa_0120',
                     # 'usa_0121',
                     # # 'usa_0122',
-                    # # 'usa_0123',
+                    # 'usa_0123',
                     # 'usa_0124',
                     # # 'usa_0125',
                     # 'usa_0126',
@@ -1027,7 +1032,7 @@ spider_usa = [
                     # 'usa_0145',
                     # 'usa_0146',
                     # # 'usa_0147', 'usa_0148',
-                    # # 'usa_0149',
+                    # 'usa_0149',
                     # 'usa_0150',
                     # 'usa_0151', 'usa_0152',
                     # # 'usa_0153',
@@ -1039,8 +1044,14 @@ spider_uzb = [
                 # 'uzb_0003'
             ]
 # spider_vut = ['vut_0001']
-# spider_ven = ['ven_0001', 'ven_0002', 'ven_0003', 'ven_0004']
-# spider_vnm = ['vnm_0001', 'vnm_0002', 'vnm_0003']
+spider_ven = [
+                # 'ven_0001', 
+                # 'ven_0002', 'ven_0003', 'ven_0004'
+                ]
+spider_vnm = [
+                # 'vnm_0001', 'vnm_0002', 
+                # 'vnm_0003'
+                ]
 spider_vir = [
                 # 'vir_0001'
             ]
@@ -1207,8 +1218,8 @@ spider_list.extend(spider_ury)
 spider_list.extend(spider_usa)
 spider_list.extend(spider_uzb)
 # spider_list.extend(spider_vut)
-# spider_list.extend(spider_ven)
-# spider_list.extend(spider_vnm)
+spider_list.extend(spider_ven)
+spider_list.extend(spider_vnm)
 spider_list.extend(spider_vir)
 spider_list.extend(spider_yem)
 spider_list.extend(spider_zmb)

@@ -42,10 +42,10 @@ class Usa0150Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='page-title'] | //div[@class='event-name'] | //div[@class='cb-section_column slds-size_12-of-12 slds-max-medium-size_12-of-12']"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'html_content')] | //div[@id='description'] | //div[@class='slds-box']"],enable_desc_image=True,error_when_none=False)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event_date_time'] | //bt-start-end-date[@class='.bt-start-end-date'] |  //span[text()='COURSE DATES']/../.."],method='attr',error_when_none=False)
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event_date_time'] | //bt-start-end-date[@class='.bt-start-end-date'] |  //span[text()='COURSE DATES']/../.."],method='attr',error_when_none=False)
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='page-title'] | //div[@class='event-name']","//div[@class='cb-section_column slds-size_12-of-12 slds-max-medium-size_12-of-12']"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'html_content')] | //div[@id='description']","//div[@class='slds-box']"],enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='event_date_time'] | //bt-start-end-date[@class='.bt-start-end-date']","//span[text()='COURSE DATES']/../.."],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='event_date_time'] | //bt-start-end-date[@class='.bt-start-end-date']","//span[text()='COURSE DATES']/../.."],method='attr',error_when_none=False)
                     item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//dd[@class='custom-field-contact_email']/.."],method='attr',error_when_none=False,wait_time=5)
 
                     yield self.load_item(item_data=item_data,item_selector=link)

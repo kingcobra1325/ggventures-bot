@@ -3,18 +3,18 @@ from spider_template import GGVenturesSpider
 
 class Usa0072Spider(GGVenturesSpider):
     name = 'usa_0072'
-    start_urls = ["https://carey.jhu.edu/contact"]
+    start_urls = ["https://whitman.syr.edu/contact-us/index.aspx"]
     country = 'US'
     eventbrite_id = 8298615503
 
     # handle_httpstatus_list = [301,302,403,404]
 
-    static_name = "Johns Hopkins University,Carrey Business School"
+    static_name = "Syracuse University,Whitman School of Management"
     
-    static_logo = "https://brand.jhu.edu/assets/uploads/sites/5/2015/12/carey.logo_.small_.vertical.blue_.png"
+    static_logo = "https://fortune.com/education/static/7a2a6fd473f14594136cbe2fa16609fb/81032/SYR-Analytics_School-Logo_750x500.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://carey.jhu.edu/news-events/events"
+    parse_code_link = "https://calendar.whitman.syr.edu/handlers/query.ashx?tenant=&site=&get=eventdetails&route=prospective-student-information-session-452&view=detail.xslt&callback=jQuery191030046514340913766_1656465256330&_=1656465256331"
 
     university_contact_info_xpath = "//body"
     # contact_info_text = True

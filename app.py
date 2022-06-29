@@ -102,6 +102,13 @@ def exception_handler(errmsg="", e=""):
     #     pass
     sys.exit(1)
 
+def send_email():
+    logger.info("Sending spreadsheet copies via Email...")
+    email_offline = EmailCopySheet()
+    email_offline.send_copy_via_email()
+    del email_offline
+    gc.collect()
+
 # SCRAPING
 def start_spiders():
 
@@ -152,7 +159,7 @@ def start_spiders():
         logger.info(f"Removing {spider} from Pending Spider List...")
         save_spider_list.remove(spider)
         if environ.get('DEPLOYED') and not environ.get('SCHEDULE_EMAIL_COPY') and environ.get('SEND_EMAIL_OFFLINE_COPY') and not len(save_spider_list):
-            delete_past_events()
+            send_email()
         if (save_counter >= GGV_SETTINGS.DB_SAVE_SPIDER_COUNTER) and GGV_SETTINGS.SAVE_DROPBOX_LIST:
             logger.debug("Saving progress to Dropbox...")
             logger.debug(save_spider_list)
@@ -167,13 +174,6 @@ def start_spiders():
     logger.info("Finished pending Spider List...")
     logger.debug("Saving empty list to Dropbox...")
     DropBox_Upload(save_spider_list)
-
-def send_email():
-    logger.info("Sending spreadsheet copies via Email...")
-    email_offline = EmailCopySheet()
-    email_offline.send_copy_via_email()
-    del email_offline
-    gc.collect()
 
 
 schedule.every().monday.at("18:00").do(send_email)

@@ -68,6 +68,7 @@ except ModuleNotFoundError as e:
 from pprint import pprint
 
 from lib.baselogger import initialize_logger
+from lib.decorators import decorate
 
 from patterns import STARTUP_EVENT_KEYWORDS, STARTUP_NAMES
 
@@ -323,6 +324,7 @@ def Load_FF_Driver():
 ####################################### DROPBOX ###########################################
 
 # API Access for Modules
+@decorate.connection_retry()
 def DropBox_Upload(upload):
 
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
@@ -345,6 +347,7 @@ def DropBox_Upload(upload):
 
 
 # API Access for Main APP
+@decorate.connection_retry()
 def DropBox_INIT():
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
@@ -378,6 +381,7 @@ def DropBox_INIT():
             break
         return json_data
 
+@decorate.connection_retry()
 def DropBox_Keywords():
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
@@ -412,6 +416,7 @@ def DropBox_Keywords():
         logger.info(json_data)
         return json_data
 
+@decorate.connection_retry()
 def DropBox_EventNames():
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
@@ -454,21 +459,16 @@ def DropBox_EventNames():
 
 ####################################### FUNCTIONS #########################################
 
+@decorate.connection_retry()
 def restart_heroku_dynos():
-    while True:
-        try:
-            logger.critical("\nRestarting Heroku Dynos...\n")
-            headersList = {
-            "Content-Type": "application/json",
-            "Accept": "application/vnd.heroku+json; version=3",
-            "Authorization": f"Bearer {HEROKU_API_TOKEN}" 
-            }
-            response = requests.delete("https://api.heroku.com/apps/ggventures/dynos",headers=headersList)
-            logger.critical(f"Heroku Response: {response}...")
-            break
-        except requests.exceptions as e:
-            logger.error(f"Error: {e}. Retrying...")
-            time.sleep(5)
+        logger.critical("\nRestarting Heroku Dynos...\n")
+        headersList = {
+        "Content-Type": "application/json",
+        "Accept": "application/vnd.heroku+json; version=3",
+        "Authorization": f"Bearer {HEROKU_API_TOKEN}" 
+        }
+        response = requests.delete("https://api.heroku.com/apps/ggventures/dynos",headers=headersList)
+        logger.critical(f"Heroku Response: {response}...")
 
 def WebScroller(driver,height=10):
     for i in range(0,height,int(height/10)):

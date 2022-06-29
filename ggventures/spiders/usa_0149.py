@@ -27,7 +27,7 @@ class Usa0149Spider(GGVenturesSpider):
         ####################
             self.driver.get(response.url)
     
-            self.check_website_changed(upcoming_events_xpath="//li[text()='There were no results found.']",empty_text=False)
+            self.check_website_changed(upcoming_events_xpath="//li[text()='There were no results found.']")
             
             # self.ClickMore(click_xpath="//a[@rel='next']",run_script=True)
               
