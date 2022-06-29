@@ -31,8 +31,10 @@ class Zaf0018Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
             
+            raw_event_names = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//div[@class='calendar-text']/strong/a")))
+            event_names = [x.text for x in raw_event_names]
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3[starts-with(@class,'tribe-events-calendar-list__event-title')]",next_page_xpath="//span[@class='pagi-cta']/a[2]",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
-            for link in self.events_list(event_links_xpath="//div[@class='calendar-text']//a"):
+            for link in self.events_list(event_links_xpath="//div[@class='calendar-text']/strong/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://www.ufs.ac.za/templates/calendar-item/"]):
                     
@@ -42,7 +44,7 @@ class Zaf0018Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//div[starts-with(@class,'sfitemDetails')]"))).get_attribute('textContent')
+                    item_data['event_name'] = event_names.pop(0)
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//div[starts-with(@class,'sfitemDetails')]")
 

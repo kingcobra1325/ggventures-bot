@@ -16,7 +16,7 @@ class Swe0008Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.fek.uu.se/calendar/?languageId=1"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='articleText']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

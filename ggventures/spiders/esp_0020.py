@@ -3,7 +3,7 @@ from spider_template import GGVenturesSpider
 
 class Esp0020Spider(GGVenturesSpider):
     name = 'esp_0020'
-    start_urls = ["https://www.deusto.es/en/home/we-are-deusto/faculties/deusto-business-school"]
+    start_urls = ["https://www.deusto.es/en/home/contact"]
     country = 'Spain'
     # eventbrite_id = 6221361805
 
@@ -16,7 +16,7 @@ class Esp0020Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://agenda.deusto.es/en/?view=list&campus=a%3A4%3A%7Bi%3A0%3Bs%3A1%3A%221%22%3Bi%3A1%3Bs%3A1%3A%222%22%3Bi%3A2%3Bs%3A1%3A%223%22%3Bi%3A3%3Bs%3A1%3A%224%22%3B%7D&facultades=a%3A1%3A%7Bi%3A0%3Bs%3A1%3A%222%22%3B%7D&tematicas=a%3A3%3A%7Bi%3A0%3Bs%3A2%3A%2214%22%3Bi%3A1%3Bs%3A2%3A%2213%22%3Bi%3A2%3Bs%3A2%3A%2216%22%3B%7D"
 
-    university_contact_info_xpath = "//div[@class='cuerpoContacto']"
+    university_contact_info_xpath = "//section"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

@@ -16,7 +16,7 @@ class Esp0024Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://eventos.comillas.edu/search/basic_search.html"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//p[@class='info street']/.."
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

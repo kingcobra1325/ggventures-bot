@@ -16,7 +16,7 @@ class Che0004Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.imd.org/events/all-events/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='block']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

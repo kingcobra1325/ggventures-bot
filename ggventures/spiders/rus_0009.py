@@ -16,7 +16,7 @@ class Rus0009Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://eng.kpfu.ru/news-archive/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@id='center']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

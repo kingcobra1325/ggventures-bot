@@ -16,7 +16,7 @@ class Swe0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://ju.se/en/study-at-ju/meet-us.html"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//h2[text()='Jönköping University Foundation']/../../.."
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

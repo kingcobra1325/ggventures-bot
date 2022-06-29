@@ -16,7 +16,7 @@ class Sau0004Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://news.kfupm.edu.sa/en/events/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//h5[text()='Stay in touch']/.."
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

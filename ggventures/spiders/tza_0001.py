@@ -16,9 +16,9 @@ class Tza0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.udsm.ac.tz/web/index.php/events"
 
-    university_contact_info_xpath = "//body"
-    # contact_info_text = True
-    contact_info_textContent = True
+    university_contact_info_xpath = "(//div[@class='row'])[12]"
+    contact_info_text = True
+    # contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):

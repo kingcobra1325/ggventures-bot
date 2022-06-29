@@ -14,7 +14,7 @@ class Esp0023Spider(GGVenturesSpider):
     static_logo = "https://www.unav.edu/documents/29056/421887/070417_Marca+Facultad+Econ%C3%B3micas+y+Empresariales.png/"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://eventos.comillas.edu/search/basic_search.html"
+    parse_code_link = "https://www.unav.edu/web/facultad-de-ciencias-economicas-y-empresariales/actualidad/eventos"
 
     university_contact_info_xpath = "//footer"
     contact_info_text = True
