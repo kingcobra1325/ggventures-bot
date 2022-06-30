@@ -1,7 +1,8 @@
+from http.client import HTTPSConnection
 from mimetypes import init
 from urllib.error import HTTPError
 
-from urllib3 import HTTPConnectionPool
+from urllib3 import HTTPConnectionPool, HTTPSConnectionPool
 
 from lib.baselogger import initialize_logger
 from time import sleep
@@ -32,7 +33,7 @@ class Decorators:
         return decorator_func
 
     @staticmethod
-    def connection_retry(error=(ConnectionError,ConnectionResetError,ConnectionAbortedError,ConnectionResetError,HTTPConnectionPool,HTTPError)):
+    def connection_retry(error=(ConnectionError,ConnectionResetError,ConnectionAbortedError,ConnectionResetError,HTTPConnectionPool,HTTPError,HTTPSConnection,HTTPSConnectionPool)):
         def decorator_func(func):
             def wrapper(*args, **kwargs):
                 while True:

@@ -262,6 +262,7 @@ default_error_df = pd.DataFrame(columns=["Time", "Error", "SpiderName", "Status"
 
 ######################### GOOGLE API #############################################
 
+@decorate.connection_retry()
 def Google_Sheets():
     gc = gspread.service_account_from_dict(BOT_KEYS)
     return gc.open_by_key(SPREADSHEET_ID)
