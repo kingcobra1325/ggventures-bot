@@ -1,4 +1,10 @@
+from mimetypes import init
 from requests import exceptions as request_exceptions
+
+from lib.baselogger import initialize_logger
+from time import sleep
+
+logger = initialize_logger(__name__)
 
 class Decorators:
 
@@ -30,8 +36,9 @@ class Decorators:
                 while True:
                     try:
                         return func(*args, **kwargs)
-                    except error:
-                        print(end=".")
+                    except error as e:
+                        logger.error(f"Connection Error |{e}|.\nRetrying...")
+                        sleep(10)
             return wrapper
         return decorator_func
 
@@ -65,6 +72,7 @@ class Decorators:
                     return (yield from gen(*args, **kwargs))
                 except exc as e:
                     print(f"{e}")
+                    logger.error(f"Exception |{e}|")
                     args[0].handle_popup_alert()
                     return (yield from gen(*args, **kwargs))
             return wrapper
@@ -77,7 +85,7 @@ class Decorators:
                 try:
                     return func(*args, **kwargs)
                 except exc as e:
-                    print(f"{e}")
+                    logger.error(f"Exception |{e}|")
                     args[0].handle_popup_alert()
                     return func(*args, **kwargs)
             return wrapper
