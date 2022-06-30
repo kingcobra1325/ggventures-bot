@@ -1,6 +1,6 @@
 from mimetypes import init
 
-import requests
+from requests.exceptions import ReadTimeout
 
 from lib.baselogger import initialize_logger
 from time import sleep
@@ -32,7 +32,7 @@ class Decorators:
         return decorator_func
 
     @staticmethod
-    def connection_retry(error=(ConnectionError,ConnectionResetError,ConnectionAbortedError,ConnectionResetError,gs_APIError,requests.exceptions)):
+    def connection_retry(error=(ConnectionError,ConnectionResetError,ConnectionAbortedError,ConnectionResetError,gs_APIError,ReadTimeout)):
         def decorator_func(func):
             def wrapper(*args, **kwargs):
                 while True:
