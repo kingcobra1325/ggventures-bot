@@ -93,7 +93,7 @@ def exception_handler(errmsg="", e=""):
         logger.error("Program aborted by the user.")
     else:
         end_time = str(round(((time.time() - start_time) / float(60)), 2)) + ' minutes' if (time.time() - start_time > 60.0) else str(round(time.time() - start_time)) + ' seconds'
-        logger.error(f"{errmsg + str(e)}")
+        logger.exception(f"{errmsg + str(e)}")
         logger.debug(f"Golden Goose Ventures BOT Failed. | Time Taken = {end_time} {datetime.now().strftime('%m-%d-%Y %I:%M:%S %p')}")
     # logger.debug("\nExiting Program in 30 Seconds or You can close window ...")
     # try:
