@@ -39,8 +39,11 @@ class Gbr0023Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//header[@class='course-heading']"],method='attr')
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='rich-text']"],method='attr')
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='gs-fromTablet6']"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[@class='time']"],method='attr')
+                    # item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='gs-fromTablet6']","//div[@class='rich-text']//h2"],method='attr')
+                    # item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[@class='time']"],method='attr')
+
+                    item_data['event_date'] = self.get_datetime_attributes("//div[@class='calendar']//time",'datetime')
+                    item_data['event_time'] = self.get_datetime_attributes("//p[@class='time']/time",'datetime')
 
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//dt[text()='Contact']/.."],method='attr',error_when_none=False)
                     # item_data['startups_link'] = ''

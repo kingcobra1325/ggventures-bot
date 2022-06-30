@@ -1,6 +1,7 @@
 from mimetypes import init
 from lib.baselogger import initialize_logger
 from time import sleep
+from gspread.exceptions import APIError as gs_APIError
 
 logger = initialize_logger(__name__)
 
@@ -28,7 +29,7 @@ class Decorators:
         return decorator_func
 
     @staticmethod
-    def connection_retry(error=(ConnectionError,ConnectionResetError,ConnectionAbortedError,ConnectionResetError)):
+    def connection_retry(error=(ConnectionError,ConnectionResetError,ConnectionAbortedError,ConnectionResetError,gs_APIError)):
         def decorator_func(func):
             def wrapper(*args, **kwargs):
                 while True:
