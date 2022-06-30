@@ -30,6 +30,7 @@ except:
 
 from binaries import Google_Sheets, gs_APIError, gs_NoWS, default_dashboard_df, default_all_df, default_startups_df, default_country_df, default_error_df, DEVELOPER_BOT_EMAIL, GGV_SETTINGS
 from lib.baselogger import initialize_logger
+from lib.decorators import decorate
 from lib.funcs import list_to_gen
 
 SPREADSHEET_MAIN = Google_Sheets()
@@ -246,7 +247,7 @@ def Create_Default_Sheet(spreadsheet,name):
     
     return worksheet
 
-
+@decorate.connection_retry()
 def Write_DataFrame_To_Sheet(worksheet,df):
     while True:
         try:
@@ -277,6 +278,7 @@ def get_dataframe(Name,worksheet):
             logger.debug(f"Waiting for 90 seconds before retrying request")
             sleep(90)
 
+@decorate.connection_retry()
 def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
 
     # spreadsheet = Google_Sheets()

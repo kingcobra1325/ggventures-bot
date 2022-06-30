@@ -76,8 +76,8 @@ class Bra0008Spider(GGVenturesSpider):
 
                 item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@Class='fdc-box-titulo']"],method='attr')
                 item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='mdl-grid']//div[contains(@id,'PlaceHolderMain')]","//section//div[@class='mdl-grid']"],method='attr')
-                item_data['event_date'] = self.scrape_xpath(xpath_list=["//b[contains(text(),'Date')]/..","//div[@class='turma-info-container']"],method='attr')
-                item_data['event_time'] = self.scrape_xpath(xpath_list=["//b[contains(text(),'Time')]/..","//div[@class='turma-info-container']"],method='attr')
+                item_data['event_date'] = self.scrape_xpath(xpath_list=["//b[contains(text(),'Date')]/..","//div[@class='turma-info-container']"],method='attr',error_when_none=False)
+                item_data['event_time'] = self.scrape_xpath(xpath_list=["//b[contains(text(),'Time')]/..","//div[@class='turma-info-container']"],method='attr',error_when_none=False)
                 # item_data['startups_link'] = event['onlineJoinUrl']
                 # item_data['startups_name'] = ''
                 # item_data['startups_contact_info'] = ''

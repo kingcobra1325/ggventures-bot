@@ -38,10 +38,10 @@ class Gbr0039Spider(GGVenturesSpider):
 
                     # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='headerContent']/h1"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//section[@class='textArea'][2]"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//p[@class='intro']"])
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[@class='intro']"])
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='headerContent']/h1"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//section[@class='textArea'][2]","//div[contains(@class,'introText')]"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//p[@class='intro']","//div[@class='headerContent']/p"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//p[@class='intro']","//div[@class='headerContent']/p"],method='attr')
 
                     # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
                     # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')

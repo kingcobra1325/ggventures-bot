@@ -12,7 +12,7 @@ charset-normalizer==2.0.9
 click==8.0.4
 colorama==0.4.4
 constantly==15.1.0
-cryptography==36.0.0
+cryptography==36.0.2
 cssselect==1.1.0
 dropbox==11.25.0
 et-xmlfile==1.1.0

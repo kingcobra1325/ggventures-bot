@@ -172,3 +172,4 @@ lib\__pycache__
 GGVentures_LOG.log
 ggventures\GGVENTURES_BOT_LOG.log
 test.py
+requirements_old copy.txt
