@@ -840,13 +840,13 @@ spider_uga = [
 # spider_ukr = ['ukr_0001', 'ukr_0002', 'ukr_0003', 'ukr_0004', 'ukr_0005']
 spider_are = [
                 # 'are_0001', 
-                # 'are_0002', 
-                # 'are_0003', 
+                'are_0002', 
+                'are_0003', 
                 # 'are_0004'
             ]
 spider_gbr = [
                 # 'gbr_0001',
-                'gbr_0002',
+                # 'gbr_0002',
                 # 'gbr_0003',
                 # # # 'gbr_0004',
                 # 'gbr_0005',
