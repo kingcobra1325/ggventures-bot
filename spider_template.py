@@ -516,6 +516,7 @@ class GGVenturesSpider(scrapy.Spider):
                 if no_events:
                     logger.debug('Changes to Events on current Spider. Sending emails....')
                     website_changed(self.name,self.static_name)
+                    self.PARSE_STATUS = 'error'
                 else:
                     if empty_text:
                         logger.info("Empty Text check...")
@@ -530,6 +531,7 @@ class GGVenturesSpider(scrapy.Spider):
                         if no_events_text:
                             logger.debug('Text detected. Changes to Events on current Spider. Sending emails....')
                             website_changed(self.name,self.static_name)
+                            self.PARSE_STATUS = 'error'
                         else:
                             logger.debug('Empty Text. No changes to Events on current Spider. Skipping.....')
                     else:
@@ -540,6 +542,7 @@ class GGVenturesSpider(scrapy.Spider):
                 if not no_events:
                     logger.debug('Changes to Events on current Spider. Sending emails....')
                     website_changed(self.name,self.static_name)
+                    self.PARSE_STATUS = 'error'
                 else:
                     if empty_text:
                         logger.info("Empty Text check...")
@@ -554,6 +557,7 @@ class GGVenturesSpider(scrapy.Spider):
                         if no_events_text:
                             logger.debug('Text detected. Changes to Events on current Spider. Sending emails....')
                             website_changed(self.name,self.static_name)
+                            self.PARSE_STATUS = 'error'
                         else:
                             logger.debug('Empty Text. No changes to Events on current Spider. Skipping.....')
                     else:
@@ -565,6 +569,7 @@ class GGVenturesSpider(scrapy.Spider):
                 self.logger.debug(f"Upcoming Events XPATH cannot be located --> {e}")
                 self.logger.debug('Changes to Events on current Spider. Sending emails....')
                 website_changed(self.name,self.static_name)
+                self.PARSE_STATUS = 'error'
 
     def scrape_xpath(self,driver='',xpath_list=[],method='text',error_when_none=True,enable_desc_image=False,wait_time=15):
         image_desc = ""

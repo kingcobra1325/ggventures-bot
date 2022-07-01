@@ -1,100 +1,57 @@
-import scrapy
-import scrapy, time
-# from scrapy import Selector
+from spider_template import GGVenturesSpider
 
-from bot_email import missing_info_email, error_email
-
-from binaries import Load_Driver, logger, WebScroller
-
-from scrapy.loader import ItemLoader
-
-from ggventures.items import GgventuresItem
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-class Gbr0019Spider(scrapy.Spider):
+class Gbr0019Spider(GGVenturesSpider):
     name = 'gbr_0019'
     country = 'United Kingdom'
-    # start_urls = ["https://cba.k-state.edu/about/events/"]
-    start_urls = ["https://www.alliancembs.manchester.ac.uk/events/"]
+    start_urls = ["https://www.alliancembs.manchester.ac.uk/"]
+    # eventbrite_id = 47699605203
+    # TRANSLATE = True
 
-    def __init__(self):
-        self.driver = Load_Driver()
-        self.getter = Load_Driver()
-        self.start_time = round(time.time())
-        self.scrape_time = None
+    # handle_httpstatus_list = [301,302,403,404,429]
 
-    def parse(self, response):
+    static_name = "Manchester Business School,The University of Manchester"
+    static_logo = "https://www.alliancembs.manchester.ac.uk/media/ambs/content-assets/images/alliance-manchester-business-school-1-1.png"
+
+    # MAIN EVENTS LIST PAGE
+    parse_code_link = "https://www.alliancembs.manchester.ac.uk/events/"
+
+    university_contact_info_xpath = "//p[@class='footer__info__header']/.."
+    # contact_info_text = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
+
+    def parse_code(self,response):
         try:
-            self.driver.get("https://www.alliancembs.manchester.ac.uk/")
+        ####################
+            self.driver.get(response.url)
+            # self.check_website_changed(upcoming_events_xpath="//div[@id='content-bottom']//a",checking_if_none=True)
+            # self.ClickMore(click_xpath="//div[contains(@class,'cal_load-button')]/button",run_script=True)
+            # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='List Calendar View']")))
+            # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//h3/a",next_page_xpath="//a[text()='>>']",get_next_month=True):
+            for link in self.events_list(event_links_xpath='''//div[@class='eventtitle']//a[not(text()="Master's events") and not(text()='Meet our MBA team') and not(text()='Undergraduate events')]'''):
+                self.logger.debug(f"LINK: |{link}|")
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=['manchester.ac.uk']):
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-            logo = "https://www.alliancembs.manchester.ac.uk/media/ambs/content-assets/images/alliance-manchester-business-school-1-1.png"
-            # logo = re.findall(r'''\"(\S+)\"''',logo)[0]
+                    item_data = self.item_data_empty.copy()
+                    # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
-            university_name = "Manchester Business School,The University of Manchester"
-            
-            # self.driver.get("https://www.lse.ac.uk/lse-information/contact-us")
-            
-            university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH,"//p[@class='footer__info__header']/..")))).text
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='content__main']"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='eventdate']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//dd[@id='event-time']"],method='attr')
 
-            self.driver.get(response.url)     
-            
-            counter = 0
-            for o in range(2,4):
-                EventLinks = WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH,'''//div[@class='eventtitle']//a[not(text()="Master's events") and not(text()='Meet our MBA team') and not(text()='Undergraduate events')]''')))
-                for i in EventLinks:
-                    self.getter.get(i.get_attribute('href'))
+                    # item_data['event_date'] = self.get_datetime_attributes("//div[@class='calendar']//time",'datetime')
+                    # item_data['event_time'] = self.get_datetime_attributes("//p[@class='time']/time",'datetime')
 
-                    RawEventName = (WebDriverWait(self.getter,60).until(EC.presence_of_element_located((By.XPATH,"//h1")))).text
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//section[contains(@class,'contact')]"],method='attr',error_when_none=False)
+                    # item_data['startups_link'] = ''
+                    # item_data['startups_name'] = ''
+                    item_data['event_link'] = link
 
-                    try:
-                        RawEventDesc = self.getter.find_element(By.XPATH,"//div[@class='content__main']").text
-                    except:
-                        RawEventDesc = None
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
-                    try:
-                        RawEventDate = self.getter.find_element(By.XPATH,"//div[@class='eventdate']").text 
-                    except:
-                        RawEventDate = None
-                        
-                    try:
-                        RawEventTime = self.getter.find_element(By.XPATH,"//dd[@id='event-time']").text 
-                        # RawEventTime = RawEventDate
-                    except:
-                        RawEventTime = None
-                        
-                    # try:
-                    #     RawStartContactInfo = self.getter.find_element(By.XPATH,"//section[contains(@class,'contact')]").text
-                    # except:
-                    #     RawStartContactInfo = None
-
-                    data = ItemLoader(item = GgventuresItem(), selector = counter)
-                    data.add_value('university_name',university_name)
-                    data.add_value('university_contact_info',university_contact_info)
-                    data.add_value('logo',logo)
-                    data.add_value('event_name', RawEventName)
-                    data.add_value('event_desc', RawEventDesc)
-                    data.add_value('event_date', RawEventDate)
-                    data.add_value('event_time', RawEventTime)
-                    data.add_value('event_link', i.get_attribute('href'))
-                    # data.add_value('startups_contact_info', RawStartContactInfo)
-                    counter+=1
-
-                    yield data.load_item()
-                self.driver.get(self.driver.find_element(By.XPATH,f"//a[@title='Page {o}']").get_attribute('href'))
-
+        ####################
         except Exception as e:
-            logger.error(f"Experienced error on Spider: {self.name} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
-    def closed(self, reason):
-        try:
-            self.driver.quit()
-            self.getter.quit()
-            self.scrape_time = str(round(((time.time() - self.start_time) / float(60)), 2)) + ' minutes' if (time.time() - self.start_time > 60.0) else str(round(time.time() - self.start_time)) + ' seconds'
-            logger.debug(f"Spider: {self.name} scraping finished due to --> {reason}")
-            logger.debug(f"Elapsed Scraping Time: {self.scrape_time}")
-        except Exception as e:
-            logger.error(f"Experienced error while closing Spider: {self.name} with reason: {reason} --> {e}. Sending Error Email Notification")
-            error_email(self.name,e)
+            self.exception_handler(e)
