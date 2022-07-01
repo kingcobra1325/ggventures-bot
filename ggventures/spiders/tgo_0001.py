@@ -31,7 +31,7 @@ class Tgo0001Spider(GGVenturesSpider):
             for link in self.multi_event_pages(num_of_pages=5,event_links_xpath="//span[@class='field-content']/a",next_page_xpath="//a[@rel='next']",get_next_month=True):
                 # for link in self.events_list(event_links_xpath="//h2/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['univ-lome.tg/index.php/articles/Agenda']):
+                if self.unique_event_checker(url_substring=['univ-lome.tg']):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
@@ -47,7 +47,7 @@ class Tgo0001Spider(GGVenturesSpider):
                     #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
 
                     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='post-meta']").get_attribute('textContent')
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='post-meta']").get_attribute('textContent')
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'node__content')]").get_attribute('textContent')
 
                     # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
                     # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')

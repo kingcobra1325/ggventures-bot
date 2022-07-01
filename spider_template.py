@@ -313,6 +313,7 @@ class GGVenturesSpider(scrapy.Spider):
 
     def get_emails_from_source(self,tag_list=['a'],attribute_name='href',driver_name='driver'):
         all_emails = []
+        get_all_emails = []
         final_all_emails = ''
         if driver_name.lower() == 'driver':
             email_driver = self.driver

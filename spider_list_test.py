@@ -807,9 +807,11 @@ spider_swe = [
 # spider_che = ['che_0001', 'che_0002', 'che_0003', 'che_0004', 'che_0005', 'che_0006', 'che_0007', 'che_0008', 'che_0009', 'che_0010']
 # spider_syr = ['syr_0001']
 spider_twn = [
-                # 'twn_0001', 'twn_0002', 'twn_0003', 
+                # 'twn_0001', 
+                # 'twn_0002', 'twn_0003', 
                 # 'twn_0004', 
-                # 'twn_0005', 'twn_0006', 'twn_0007'
+                # 'twn_0005', 'twn_0006', 
+                # 'twn_0007'
             ]
 spider_tza = [
                 # 'tza_0001'
@@ -818,7 +820,11 @@ spider_tto = [
                 # 'tto_0001'
             ]
 spider_tha = [
-                # 'tha_0001', 'tha_0002', 'tha_0003', 'tha_0004', 'tha_0005', 'tha_0006', 
+                'tha_0001', 
+                'tha_0002', 
+                # 'tha_0003', 
+                # 'tha_0004', 'tha_0005', 
+                # 'tha_0006', 
                 # 'tha_0007'
             ]
 spider_tgo = [
@@ -831,17 +837,25 @@ spider_tun = [
                     # 'tun_0004'
             ]
 spider_tur = [
-                # 'tur_0001', 'tur_0002', 'tur_0003', 'tur_0004', 'tur_0005', 'tur_0006', 'tur_0007', 'tur_0008',
+                # 'tur_0001', 
+                # 'tur_0002', 
+                # 'tur_0003', 'tur_0004', 'tur_0005', 'tur_0006', 
+                # 'tur_0007', 
+                # 'tur_0008',
                 # 'tur_0009'
             ]
 spider_uga = [
                 # 'uga_0001'
             ]
-# spider_ukr = ['ukr_0001', 'ukr_0002', 'ukr_0003', 'ukr_0004', 'ukr_0005']
+spider_ukr = [
+            # 'ukr_0001', 
+            # 'ukr_0002', 
+            # 'ukr_0003', 'ukr_0004', 'ukr_0005'
+            ]
 spider_are = [
                 # 'are_0001', 
-                'are_0002', 
-                'are_0003', 
+                # 'are_0002', 
+                # 'are_0003', 
                 # 'are_0004'
             ]
 spider_gbr = [
@@ -1213,7 +1227,7 @@ spider_list.extend(spider_tgo)
 spider_list.extend(spider_tun)
 spider_list.extend(spider_tur)
 spider_list.extend(spider_uga)
-# spider_list.extend(spider_ukr)
+spider_list.extend(spider_ukr)
 spider_list.extend(spider_are)
 spider_list.extend(spider_gbr)
 spider_list.extend(spider_ury)
