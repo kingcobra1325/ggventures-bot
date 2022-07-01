@@ -160,9 +160,9 @@ class APPSettings():
         self.LIMIT_SCRAPED_PHONENUMBERS=10
         # self.DELETE_PAST_EVENTS = True
         self.DELETE_PAST_EVENTS = environ.get('DEPLOYED')
-        self.REGEX_LOGS = True
+        self.REGEX_LOGS = not environ.get('DEPLOYED')
         self.DEV_LOGS = True
-        self.NO_MATCH_REGEX_LOGS = True
+        self.NO_MATCH_REGEX_LOGS = not environ.get('DEPLOYED')
         self.MULTI_DRIVER = False
         # self.GET_SPIDERLIST_FROM_DASHBOARD = True
         self.GET_SPIDERLIST_FROM_DASHBOARD = environ.get('DEPLOYED')
