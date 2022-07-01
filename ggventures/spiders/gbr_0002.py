@@ -16,7 +16,7 @@ class Gbr0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.hult.edu/ashridge/events/"
 
-    university_contact_info_xpath = "//div[@class='section__copy']"
+    university_contact_info_xpath = "//h2[text()='Europe']/parent::div/following-sibling::div"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
