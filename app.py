@@ -2,6 +2,10 @@
 
 ## --------------- INITIALIZE BASE CLASSES --------------- ##
 
+"""
+    Initialize main logger object and custom objects
+"""
+
 from lib.baselogger import initialize_logger
 from lib.error_dashboard import ErrorDashboard
 from lib.funcs import list_to_gen
@@ -43,6 +47,10 @@ except ModuleNotFoundError as e:
     from googletrans import Translator
 
 ## ------------------ CUSTOM IMPORTS ------------------------ ##
+
+    """
+    Load binaries and env vars and settings
+    """
 
 from binaries import GGV_SETTINGS, DropBox_INIT, DropBox_Upload, restart_heroku_dynos
 from spreadsheet import delete_past_events
@@ -103,6 +111,11 @@ def exception_handler(errmsg="", e=""):
     sys.exit(1)
 
 def send_email():
+    """
+    Sends offline copy of spreadsheet via email
+    :params: None
+    :return: None
+    """
     logger.info("Sending spreadsheet copies via Email...")
     email_offline = EmailCopySheet()
     email_offline.send_copy_via_email()
@@ -111,7 +124,17 @@ def send_email():
 
 # SCRAPING
 def start_spiders():
+    """
+    Loads spiders from Dashboard if env 'GET_SPIDERLIST_FROM_DASHBOARD' is True
+    else it will check GET_SPIDERLIST_FROM_DASHBOARD setting if its True
 
+    If both are false, it will get the spiders from the spider_list.py if 'DEPLOYED'
+    spider_list_test.py if not 'DEPLOYED'
+
+    Pulls the spiders.json file on the Dropbox API and check if there are any 'PENDING_SPIDERS'
+    Gets the List of 'PENDING_SPIDERS' if there are any to resume scraping
+    else it will load a new list depending on which spider list is loaded from previously.
+    """
     if environ.get("GET_SPIDERLIST_FROM_DASHBOARD",GGV_SETTINGS.GET_SPIDERLIST_FROM_DASHBOARD):
         logger.info("Loading Spiders from Dashboard....")
         error_dashboard = ErrorDashboard()
@@ -144,6 +167,23 @@ def start_spiders():
         spider_list = get_spider_list
     logger.info(f"Number of Pending Spiders: {len(spider_list)}")
 
+    """
+    Duplicates the spider list and creates a generator to iterate through to scrape
+    Will run each iterated spider with the 'scrapy crawl' command line
+
+    If the bot is not multi-threading while env 'DEPLOYED' is True:
+    After all of the spiders are done being scraped. It will send an offline copy via email.
+
+    Every spiders scraped will add onto a counter in which once its equal or greater than the
+    settings 'DB_SAVE_SPIDER_COUNTER'. It will save the remaining spiders that has yet to be
+    scraped onto the bot.json file into the Dropbox API.
+    Also it do the following:
+    It will 'DELETE_PAST_EVENTS' if the settings is True
+    It restarts the Heroku Dynos if settings 'RESTART_HEROKU_EVERY_SAVESTATE' is True
+
+    Once its done it will save an empty bot.json file onto the Dropbox API
+    """
+
     progress_counter = 0
     save_counter = 0
     save_spider_list = spider_list.copy()
@@ -175,17 +215,32 @@ def start_spiders():
     logger.debug("Saving empty list to Dropbox...")
     DropBox_Upload(save_spider_list)
 
-
+"""
+Schedules email offline copy every 'Monday' at '2:00 PM' EST / '6:00 PM' UTC
+"""
 schedule.every().monday.at("18:00").do(send_email)
 
 # WORKERS
 
 def email_spreadsheet_worker():
+    """
+    Email Worker Thread
+    """
     logger.info("Initializing sending email copies every 'Monday'")
     while True:
         schedule.run_pending()
 
 def ggventures_bot_worker():
+    """
+    Scrapy Worker Thread:
+    If 'DEPLOYED' env is True: Runs the start_spiders function indefinitely
+    else it will only run it once and the program will stop
+
+    Also if its False with the Settings 'DELETE_PAST_EVENTS' enabled
+    It will delete the past events on the spreadsheet
+
+    Prints out the time once the program is finished
+    """
     try:
         logger.info('Start Golden Goose Ventures Scraping Bot\n')
         logger.info(f"\n{GGV_SETTINGS}\n")
@@ -209,6 +264,10 @@ def ggventures_bot_worker():
 
 ########## MAIN START ############
 if __name__ == '__main__':
+    """
+    Starts multi-threading if 'SCHEDULE_EMAIL_COPY' env is True.
+    Runs the ggventures_bot_worker only if False.
+    """
     if environ.get('SCHEDULE_EMAIL_COPY'):
         # THREADS INIT
         scraping_t = threading.Thread(target=ggventures_bot_worker)
