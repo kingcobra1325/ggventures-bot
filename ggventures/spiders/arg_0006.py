@@ -18,7 +18,7 @@ class Arg0006Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = f"https://uca.edu.ar/es/calendario/{datetime.now().month}/{datetime.now().year}"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//strong[text()='Natalia Ramil']/../.."
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True
@@ -41,7 +41,7 @@ class Arg0006Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[starts-with(@class,'texto-s')]"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='body']"],enable_desc_image=True)
                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='azul']/.."],method='attr',error_when_none=False)
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//h2[@class='fecha']"],method='attr',error_when_none=False)

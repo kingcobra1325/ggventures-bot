@@ -16,7 +16,7 @@ class Png0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.upng.ac.pg/index.php/sbpp-news-events/sbpp-events"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//h3[text()='Our Contact Details ']/.."
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True
@@ -25,7 +25,7 @@ class Png0002Spider(GGVenturesSpider):
         try:
         ####################
             self.driver.get(response.url)
-            self.check_website_changed(upcoming_events_xpath="//div[@id='jevents_body']//a",checking_if_none=True)
+            self.check_website_changed(upcoming_events_xpath="//h3[text()=' Upcoming Events ']/following-sibling::div[contains(text(),'Has no item to show!')]")
             # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
             # for link in self.multi_event_pages(num_of_pages=3,event_links_xpath="//a[contains(@class,'fc-day-grid-event')]",next_page_xpath="//button[@class='btn btn-primary next']",click_next_month=True,wait_after_loading=True,run_script=True):
             # for link in self.events_list(event_links_xpath="//div[@data-id='eventon']//div[@class='evo_event_schema']/a"):

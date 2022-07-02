@@ -7,7 +7,7 @@ class Irl0004Spider(GGVenturesSpider):
     # eventbrite_id = 6552000185
     # TRANSLATE = True
 
-    # handle_httpstatus_list = [301,302,403,404]
+    handle_httpstatus_list = [301,302,403,404]
 
     static_name = "University College Cork"
     static_logo = "https://www.ucc.ie/en/media/2017siteassets/images/Logo_easter.svg"

@@ -17,8 +17,8 @@ class Bra0007Spider(GGVenturesSpider):
     parse_code_link = "https://fia.com.br/eventos/"
 
     university_contact_info_xpath = "//h2[text()='Press Room']/.."
-    contact_info_text = True
-    # contact_info_textContent = True
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
     TRANSLATE = True
 

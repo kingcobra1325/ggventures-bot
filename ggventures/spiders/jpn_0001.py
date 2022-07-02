@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class Jpn0001Spider(GGVenturesSpider):
     name = 'jpn_0001'
-    start_urls = ['https://www.aoyama.ac.jp/en/outline/map_directions.html']
+    start_urls = ['https://www.aoyamabs.jp/eng/access.html#contact_info']
     country = "Japan"
     # eventbrite_id = 30819498834
     # USE_HANDLE_HTTPSTATUS_LIST = False
@@ -19,10 +19,10 @@ class Jpn0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.aoyama.ac.jp/en/information/"
 
-    university_contact_info_xpath = ""
+    university_contact_info_xpath = "//div[@id='left-area']"
     # contact_info_text = True
-    # contact_info_textContent = True
-    contact_info_multispan = True
+    contact_info_textContent = True
+    # contact_info_multispan = True
 
     def parse_code(self,response):
         try:

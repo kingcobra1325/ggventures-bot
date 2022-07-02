@@ -16,7 +16,7 @@ class Png0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.dwu.ac.pg/en/index.php/294-general-dwu/222-upcoming-events"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@id='bottom2']"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

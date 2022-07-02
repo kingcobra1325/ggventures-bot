@@ -16,7 +16,7 @@ class Tha0003pider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.sasin.edu/content/events/?page=1"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "(//section[starts-with(@class,'container')])[2]"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -47,7 +47,7 @@ class Tha0003pider(GGVenturesSpider):
                     item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='row _jtfct-ct']")
 
                     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//span[@class='_mgl-4px']").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[starts-with(@class,'eventItem')]").get_attribute('textContent')
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//span[@class='_mgl-4px']").get_attribute('textContent')
                     
                     # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
 

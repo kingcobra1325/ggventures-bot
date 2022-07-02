@@ -16,7 +16,7 @@ class Pak0003Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://szabist-isb.edu.pk/events-calendar/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//h3[text()='Phone']/../../../../../../.."
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

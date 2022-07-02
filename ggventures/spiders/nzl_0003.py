@@ -16,9 +16,9 @@ class Nzl0003Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.massey.ac.nz/massey/about-massey/events/events_home.cfm"
 
-    university_contact_info_xpath = "//div[@class='rich-text']"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//div[starts-with(@class,'office-contact')]"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
     # TRANSLATE = True
 

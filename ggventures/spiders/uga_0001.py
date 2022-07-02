@@ -17,7 +17,7 @@ class Uga0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://mubs.ac.ug/events/list/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='post-content']"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

@@ -32,9 +32,9 @@ class Zaf0002Spider(GGVenturesSpider):
             # self.check_website_changed(upcoming_events_xpath="//div[contains(text(),'Wyświetlanie 0 - 0 z 0')]")
 
             # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//li[contains(@class,'overview-normal')]/a",next_page_xpath="//a[contains(@class,'loadMoreButton')]",get_next_month=False,click_next_month=True,wait_after_loading=True):
-            for link in self.events_list(event_links_xpath="//a[contains(text(),'More Info')]"):
+            for link in self.events_list(event_links_xpath="//span[text()='More Info']/../../.."):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['henleyscout.com/event']):
+                if self.unique_event_checker(url_substring=["https://content.henleysa.ac.za/"]):
 
                     logger.info(f"Currently scraping --> {self.getter.current_url}")
 

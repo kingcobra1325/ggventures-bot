@@ -17,8 +17,8 @@ class Swe0006Spider(GGVenturesSpider):
     parse_code_link = "https://www.su.se/stockholm-business-school/calendar"
 
     university_contact_info_xpath = "//article"
-    # contact_info_text = True
-    contact_info_textContent = True
+    contact_info_text = True
+    # contact_info_textContent = True
     # contact_info_multispan = True
     # TRANSLATE = True
 

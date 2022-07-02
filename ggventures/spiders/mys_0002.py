@@ -43,8 +43,8 @@ class Mys0002Spider(GGVenturesSpider):
                     # except self.Exc.NoSuchElementException as e:
                     #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
 
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[text()='Date']/following-sibling::div").text
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[text()='Time']/following-sibling::div").text
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[text()='Event Summary']/following-sibling::div").text
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[text()='Event Summary']/following-sibling::div").text
 
                     # item_data['event_date'] = self.get_datetime_attributes("//span[@class='date-display-range']/span",'content')
                     # item_data['event_time'] = self.get_datetime_attributes("//span[@class='date-display-range']/span",'content')

@@ -40,7 +40,7 @@ class Lka0001Spider(GGVenturesSpider):
                     # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
                     item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1"))).text
-                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='event-content']").text
+                    item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='content-dropcap']").text
                     # try:
                     #     item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class'block-paragraph']/parent::div").text
                     # except self.Exc.NoSuchElementException as e:

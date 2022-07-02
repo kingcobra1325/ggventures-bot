@@ -16,7 +16,7 @@ class Pan0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://usma.ac.pa/event/"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//ul[@class='elementor-icon-list-items']"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

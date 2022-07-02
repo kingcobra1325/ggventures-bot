@@ -38,7 +38,7 @@ class Can0015Spider(GGVenturesSpider):
 
                 self.getter.get(link)
 
-                if self.unique_event_checker(url_substring="https://www.ualberta.ca/events/business/"):
+                if self.unique_event_checker(url_substring="https://www.ualberta.ca/events/"):
 
                     logger.info(f"Currently scraping --> {self.getter.current_url}")
 

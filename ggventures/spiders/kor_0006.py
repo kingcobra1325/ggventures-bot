@@ -16,7 +16,7 @@ class Kor0006Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.business.kaist.edu/_prog/seminar/index.php?site_dvs_cd=kgsm_en&menu_dvs_cd=060203&func_dvs_cd=event&yearall=all"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@id='txt']"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

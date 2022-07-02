@@ -16,7 +16,7 @@ class Svn0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.iedc.si/events"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='location_links']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -29,7 +29,7 @@ class Svn0002Spider(GGVenturesSpider):
             # self.ClickMore(click_xpath="//a[contains(@class,'moreListing')]",run_script=True)
             # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='List Calendar View']")))
             # for link in self.multi_event_pages(num_of_pages=5,event_links_xpath="//div[contains(@id,'post')]//a",next_page_xpath="//a[@class='next page-numbers']",get_next_month=True):
-            for link in self.events_list(event_links_xpath="//h3[contains(text(),'Upcoming Events')]/following-sibling::div//div[@class='programListItemSmall']/a[1]"):
+            for link in self.events_list(event_links_xpath="(//div[@class='prodList'])[1]/div/a[1]"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=['www.iedc.si/events']):
 

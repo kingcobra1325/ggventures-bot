@@ -16,8 +16,8 @@ class Hun0001Spider(GGVenturesSpider):
     parse_code_link = "http://www.bme.hu/esemenyek?language=en"
 
     university_contact_info_xpath = "//h4[contains(text(),'Contact')]/parent::div"
-    contact_info_text = True
-    # contact_info_textContent = True
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):
