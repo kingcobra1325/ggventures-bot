@@ -786,7 +786,7 @@ spider_esp = [
                     # 'esp_0007', 'esp_0008', 'esp_0009', 'esp_0010', 'esp_0011', 'esp_0012', 'esp_0013', 'esp_0014', 'esp_0015', 'esp_0016', 'esp_0017', 'esp_0018', 'esp_0019', 'esp_0020', 'esp_0021', 'esp_0022', 
                     # 'esp_0023', 
                     # 'esp_0024', 
-                    # 'esp_0025'
+                    'esp_0025'
             ]
 spider_lka = [
                 # 'lka_0001'
@@ -795,16 +795,25 @@ spider_sdn = [
                 # 'sdn_0001'
                 ]
 spider_sur = [
-                # 'sur_0001'
+                'sur_0001'
             ]
 spider_sz = [
                 # 'sz_0001'
             ]
 spider_swe = [
-                # 'swe_0001', 'swe_0002', 'swe_0003', 'swe_0004', 'swe_0005', 'swe_0006', 'swe_0007', 'swe_0008',
+                'swe_0001', 
+                # 'swe_0002', 'swe_0003', 'swe_0004', 'swe_0005', 'swe_0006', 'swe_0007', 'swe_0008',
                 # 'swe_0009'
             ]
-# spider_che = ['che_0001', 'che_0002', 'che_0003', 'che_0004', 'che_0005', 'che_0006', 'che_0007', 'che_0008', 'che_0009', 'che_0010']
+spider_che = [
+                # 'che_0001', 
+                # 'che_0002', 
+                # 'che_0003', 'che_0004', 
+                # 'che_0005', 
+                # 'che_0006', 
+                # 'che_0007', 
+                # 'che_0008', 'che_0009', 'che_0010'
+                ]
 # spider_syr = ['syr_0001']
 spider_twn = [
                 # 'twn_0001', 
@@ -820,8 +829,8 @@ spider_tto = [
                 # 'tto_0001'
             ]
 spider_tha = [
-                'tha_0001', 
-                'tha_0002', 
+                # 'tha_0001', 
+                # 'tha_0002', 
                 # 'tha_0003', 
                 # 'tha_0004', 'tha_0005', 
                 # 'tha_0006', 
@@ -1217,7 +1226,7 @@ spider_list.extend(spider_sdn)
 spider_list.extend(spider_sur)
 spider_list.extend(spider_sz)
 spider_list.extend(spider_swe)
-# spider_list.extend(spider_che)
+spider_list.extend(spider_che)
 # spider_list.extend(spider_syr)
 spider_list.extend(spider_twn)
 spider_list.extend(spider_tza)

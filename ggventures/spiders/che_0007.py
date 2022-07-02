@@ -46,29 +46,11 @@ class Che0007Spider(GGVenturesSpider):
                 
                 item_data['event_link'] = response.url
 
-                item_data['event_name'] = self.Mth.WebDriverWait(link,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,".//h3"))).get_attribute('textContent')
-                
-                # item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='entry-content']")
-
-                item_data['event_date'] = link.find_element(self.Mth.By.XPATH,".//div[@class='e-date-block']").get_attribute('textContent')
-                item_data['event_time'] = link.find_element(self.Mth.By.XPATH,".//h4").get_attribute('textContent')
-                    
-                    # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
-
-                    # try:
-                    #     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//span[text()='Datum:']/.. | //i[starts-with(@class,'fal')]/../following-sibling::span").get_attribute('textContent')
-                    #     item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//span[text()='Tijd:']/..").get_attribute('textContent')
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                        # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-                        # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-
-                    # try:
-                    #     item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                    
-                    # self.get_emails_from_source(driver_name='getter',attribute_name='href',tag_list=['a'])
+                item_data['event_name'] = self.scrape_xpath(xpath_list=[".//h3"],method='attr')
+                # item_data['event_desc'] = self.scrape_xpath(xpath_list=["//form[@method='post']"],enable_desc_image=True)
+                item_data['event_date'] = self.scrape_xpath(xpath_list=[".//div[@class='e-date-block']"],method='attr',error_when_none=False)
+                item_data['event_time'] = self.scrape_xpath(xpath_list=[".//div[@class='e-date-block']"],method='attr',error_when_none=False)
+                # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Contact')]/.."],method='attr',error_when_none=False)
 
                 yield self.load_item(item_data=item_data,item_selector=link)
 
