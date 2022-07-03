@@ -216,9 +216,9 @@ def start_spiders():
     DropBox_Upload(save_spider_list)
 
 """
-Schedules email offline copy every 'Monday' at '2:00 PM' EST / '6:00 PM' UTC
+Schedules email offline copy every 'Saturday' at '12:00 NN' EST / '4:00 PM' UTC
 """
-schedule.every().monday.at("18:00").do(send_email)
+schedule.every().saturday.at("16:00").do(send_email)
 
 # WORKERS
 

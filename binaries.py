@@ -74,6 +74,10 @@ from patterns import STARTUP_EVENT_KEYWORDS, STARTUP_NAMES
 
 ################ LOAD ENV VARIABLES ####################
 
+"""
+    Loads env variables from .env file
+"""
+
 load_dotenv('.env')
 
 # EMAIL VARS
@@ -141,6 +145,12 @@ HEROKU_API_TOKEN = environ['HEROKU_API_TOKEN']
 
 class APPSettings():
 
+    """
+    Settings object for the GGVentures scraping bot.
+    Contains multiple attributes accessible that changes the
+    behaviour of different functions on the bot
+    """
+
     def __init__(self):
 
         # DEFAULT SETTINGS
@@ -198,6 +208,10 @@ GGV_SETTINGS = APPSettings()
 ########################################
 
 ## -------------------- LOGGER SETUP ----------------------- ##
+
+"""
+    Initialize the logger 
+"""
 logger = initialize_logger()
 
 def print_log(msg="",method='info',condition=True):
@@ -242,9 +256,18 @@ if GGV_SETTINGS.PRINT_ENV_VARS:
 
 
 def EventBrite_API():
+    """
+    Calls the Eventbrite API using the Private Token to access the service
+    :return: Eventbrite object
+    """
     return Eventbrite(EB_PRIVATE_TOKEN)
 
 ################################# DATAFRAME ###################################################
+
+"""
+    Set the different dataframes to be used
+    in the GGVentures bot.
+"""
 
 default_all_df = pd.DataFrame(columns=["Last Updated", "Country", "Event Name", "Event Date", "Event Time", "Event Link", "Event Description", "Startup Name(s)",
                                 "Startup Link(s)", "Startup Contact Info(s)", "University Name", "University Contact Info", "Logo", "SpiderName"])
@@ -264,6 +287,12 @@ default_error_df = pd.DataFrame(columns=["Time", "Error", "SpiderName", "Status"
 
 @decorate.connection_retry()
 def Google_Sheets():
+    """
+    Create a gspread object with the 'Service Account' API 
+    key to access different Google API Services.
+    Access the Google Sheets identified by 'SPREADSHEET_ID'
+    :return: spreadsheet gspread object
+    """
     gc = gspread.service_account_from_dict(BOT_KEYS)
     return gc.open_by_key(SPREADSHEET_ID)
 
@@ -273,6 +302,12 @@ def Google_Sheets():
 
 # DRIVER VAR
 def Load_Driver():
+    """
+    Creates a Chrome WebDriver Object to be used
+    for loading JS websites. Loads parameters
+    to run the browser in headless mode.
+    :return: WebDriver object
+    """
     options = ChromeOptions()
     # ------------- DRIVER OPTIONS --------------- #
     options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
@@ -327,7 +362,11 @@ def Load_FF_Driver():
 # API Access for Modules
 @decorate.connection_retry()
 def DropBox_Upload(upload):
-
+    """
+    Saves the pending spiders list
+    to the DropBox API as bot.json 
+    :param upload: pending spiders list
+    """
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     while True:
         try:
@@ -350,6 +389,13 @@ def DropBox_Upload(upload):
 # API Access for Main APP
 @decorate.connection_retry()
 def DropBox_INIT():
+    """
+    Creates a Dropbox object with the Token to connect 
+    to the Dropbox API. Downloads the bot.json file
+    from the API. If not found, creates a bot.json file
+    with an empty pending spider list to upload to it.
+    :return: pending_spiders list
+    """
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
         # Download DROPBOX File
@@ -384,6 +430,12 @@ def DropBox_INIT():
 
 @decorate.connection_retry()
 def DropBox_Keywords():
+    """
+    Creates a DropBox API using the Token to pull the data
+    from the keywords.json file. If not found, creates a
+    keywords.json file with a templates from patterns.py.
+    :return: Keywords dict from keywords.json file
+    """
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
         logger.info("Loading Startup Keywords Criteria from DropBox...")
@@ -419,6 +471,11 @@ def DropBox_Keywords():
 
 @decorate.connection_retry()
 def DropBox_EventNames():
+    """
+    Creates DropBox API object to pull the startups.json file
+    If not found, creates a blank file to upload to DropBox.
+    :return: startups list from startups.json
+    """
     dbx = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
         # Download DROPBOX File
@@ -462,6 +519,11 @@ def DropBox_EventNames():
 
 @decorate.connection_retry()
 def restart_heroku_dynos():
+        """
+        Perform 'DELETE' API request to Heroku API
+        to restart all of the dynos tied to the
+        GGVentures Bot deployed
+        """
         logger.critical("\nRestarting Heroku Dynos...\n")
         headersList = {
         "Content-Type": "application/json",
@@ -477,6 +539,10 @@ def WebScroller(driver,height=10):
         time.sleep(0.1)
 
 def UnpackItems(item):
+    """
+    :param item: list/dict item
+    :return: index 0 from item
+    """
     if item:
         try:
             return "\n".join(item)
