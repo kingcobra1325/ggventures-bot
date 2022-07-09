@@ -29,7 +29,7 @@ class Deu0031Spider(GGVenturesSpider):
             self.driver.get(response.url)
             # self.check_website_changed(upcoming_events_xpath="//div[contains(@class,'c-events')]",empty_text=True)
             # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
-            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h2/a",next_page_xpath="//a[@title='Next page']",get_next_month=True,click_next_month=False,wait_after_loading=False):
+            for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h2/a",next_page_xpath="//a[@title='Nächste Seite']",get_next_month=True,click_next_month=False,wait_after_loading=False):
             # for link in self.events_list(event_links_xpath="//div[contains(@class,'product-item-cus-inner')]/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://www.uni-regensburg.de/kalender/"]):

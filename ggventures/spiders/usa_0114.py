@@ -60,12 +60,12 @@ class Usa0114Spider(GGVenturesSpider):
                     result.append({"href":events_href[idx],"event_response":event_htmlres})
                 # result.extend(links)
             else:
-                break
+                continue
             if num_of_months >= 6:
                 break
             else:
                 num_of_months+=1
-                current_date+=timedelta(days=31)
+                current_date+=timedelta(days=30)
         self.logger.debug(f"Events:\n{result}")
         self.logger.debug(f"Number of Events: {len(result)}")
         return result

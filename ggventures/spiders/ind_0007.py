@@ -51,8 +51,8 @@ class Ind0007Spider(GGVenturesSpider):
                 # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
 
                 try:
-                    item_data['event_date'] = self.driver.find_element(self.Mth.By.XPATH,"//div[@class='evnt-dte3']").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='elementObjectEventMultiTime']").get_attribute('textContent')
+                    item_data['event_date'] = self.driver.find_element(self.Mth.By.XPATH,"//div[@class='evnt-contnt']").get_attribute('textContent')
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='evnt-contnt']").get_attribute('textContent')
                 except self.Exc.NoSuchElementException as e:
                     self.Func.print_log(f"XPATH not found {e}: Skipping.....")
                     # logger.debug(f"XPATH not found {e}: Skipping.....")
