@@ -1,6 +1,6 @@
 # Define your item pipelines here
 #
-import os,sys,traceback,gc
+import os,sys,traceback
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 from datetime import datetime, timezone
@@ -101,6 +101,7 @@ class CleanDataPipeline:
                     else:
                         logger.debug("PIPELINE: 'university_contact_info' empty...")
 
+
             else:
                 logger.info("PIPELINE: SKIPPED CLEANING DATA...")
 
@@ -166,10 +167,6 @@ class WriteDataPipeline:
 
             # ADD ITEM TO DF
             Add_Event(data=data,country_df=df,country_worksheet=worksheet,country=spider.country)
-
-            del data,worksheet
-            del [df]
-            gc.collect()
 
             return item
         except Exception as e:
@@ -259,10 +256,6 @@ class StartupsPipeline:
 
                     # ADD ITEM TO DF
                     Add_Startups_Event(data=data,startups_df=df,startups_worksheet=worksheet,country=spider.country)
-
-                    del data,worksheet
-                    del [df]
-                    gc.collect()
 
                 else:
                     raise DropItem("PIPELINE: Event failed to meet Startup Keyword criteria...")

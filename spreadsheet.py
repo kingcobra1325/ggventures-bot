@@ -92,9 +92,9 @@ def delete_past_events():
             df.reset_index(drop=True, inplace=True)
             # logger.debug(f"Dataframe after dropping past events\n{df.to_markdown()}")
             logger.debug(f"Size: {df.shape}")
-            del col_dates_list
+            del [col_dates_list]
             Write_DataFrame_To_Sheet(ws, df)
-            del df,ws
+            del [df]
             gc.collect()
 
             
@@ -134,9 +134,6 @@ def ReOrder_Sheets():
             if order:
                 logger.debug(f"Processing Sheet Reorder....")
                 SPREADSHEET_MAIN.reorder_worksheets(order)
-
-            del list_of_worksheets,order
-            gc.collect()
             break
         except gs_APIError as e:
             logger.error(f"Error processing GSpread API Request --> {e}.")
@@ -245,7 +242,7 @@ def Create_Default_Sheet(spreadsheet,name):
 
     ReOrder_Sheets()
 
-    del df,worksheet
+    del [df]
     gc.collect()
     
     return worksheet
@@ -263,8 +260,6 @@ def Write_DataFrame_To_Sheet(worksheet,df):
             else:
                 set_with_dataframe(worksheet, df)
             logger.info(f"Added DataFrame into Sheet")
-            del df,worksheet
-            gc.collect()
             break
         except gs_APIError as e:
             logger.error(f"Error processing GSpread API Request --> {e}.")
@@ -313,7 +308,7 @@ def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
     # REMOVE EMPTY ROWS
     df.dropna(how='all',inplace=True)
 
-    del prev_df
+    del [prev_df]
     gc.collect()
 
     return df, worksheet
@@ -345,7 +340,7 @@ def Add_Event(data,country_df,country_worksheet,country):
     # COUNTRY
     Write_DataFrame_To_Sheet(country_worksheet, country_df)
     logger.info(f"Added DataFrame to {country} Sheet")
-    del country_df
+    del [country_df]
     gc.collect()
 
 
@@ -381,7 +376,7 @@ def Add_Event(data,country_df,country_worksheet,country):
 
         Write_DataFrame_To_Sheet(all_worksheet, all_df)
         logger.info("Added DataFrame to ALL Sheet")
-        del all_df,all_data,data
+        del [all_df,all_data,data]
         gc.collect()
 
 
@@ -411,5 +406,5 @@ def Add_Startups_Event(data,startups_df,startups_worksheet,country):
     Write_DataFrame_To_Sheet(startups_worksheet, startups_df)
     logger.info(f"Added DataFrame to STARTUPS Sheet")
 
-    del startups_df,data
+    del [startups_df,data]
     gc.collect()
