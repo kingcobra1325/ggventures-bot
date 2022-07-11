@@ -155,7 +155,7 @@ class APPSettings():
 
         # DEFAULT SETTINGS
         self.COUNTRY_EVENTS_SHEET = environ.get('COUNTRY_EVENTS_SHEET')
-        self.ALL_EVENTS_SHEET = environ.get('ALL_EVENTS_SHEET')
+        self.ALL_EVENTS_SHEET = False
         self.UNIQUE_EVENT_EMAILS = False
         self.GOOGLE_API_RATE_LIMIT_EMAIL = False
         self.CLEAN_DATA_PIPELINE = True
