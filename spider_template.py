@@ -194,6 +194,9 @@ class GGVenturesSpider(scrapy.Spider):
 
             self.logger.info(f"TRANSLATED TEXT DICT: {text_translated_dict}\n")
 
+            del raw_text
+            gc.collect()
+
             return text_translated_dict
 
         elif isinstance(raw_text,str):
@@ -209,6 +212,9 @@ class GGVenturesSpider(scrapy.Spider):
             self.logger.debug(f"RAW TEXT: {result.origin}")
             self.logger.debug(f"TRANSLATED LANG: {result.dest}")
             self.logger.debug(f"TRANSLATED TEXT: {result.text}\n")
+
+            del raw_text
+            gc.collect()
 
             return result
 
@@ -385,6 +391,9 @@ class GGVenturesSpider(scrapy.Spider):
         self.logger.info(f"|LOADING| 'startups_link' -> {item_data['startups_link']}")
         self.logger.info(f"|LOADING| 'startups_name' -> {item_data['startups_name']}")
         self.logger.info(f"|LOADING| 'startups_contact_info' -> {item_data['startups_contact_info']}")
+
+        del item_data
+        gc.collect()
 
         return data.load_item()
 
@@ -629,9 +638,13 @@ class GGVenturesSpider(scrapy.Spider):
                 cleaned_event_links = list(filter(None, event_links))
                 # LIMIT EVENTS TO SCRAPE
                 if not maximum_events:
+                    del web_elements_list, event_links
+                    gc.collect()
                     return cleaned_event_links
                 else:
                     self.logger.debug(f"Maximum Events to scrape: {maximum_events}")
+                    del web_elements_list, event_links
+                    gc.collect()
                     if len(cleaned_event_links) >= maximum_events:
                         return cleaned_event_links[0:maximum_events]
                     else:
