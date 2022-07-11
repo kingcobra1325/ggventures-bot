@@ -192,7 +192,7 @@ class APPSettings():
             self.LOAD_DROPBOX_LIST = False
             self.SAVE_DROPBOX_LIST = False
             self.DEBUG_LOGS = True
-        self.DB_SAVE_SPIDER_COUNTER = 3
+        self.DB_SAVE_SPIDER_COUNTER = 5
         self.FAIL_COUNTER = 10
         self.PRINT_ENV_VARS = False
 
