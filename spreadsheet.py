@@ -316,33 +316,32 @@ def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
 def Add_Event(data,country_df,country_worksheet,country):
 
     # ------ COUNTRY -------- #
+    if GGV_SETTINGS.COUNTRY_EVENTS_SHEET:
 
-    # Adding Scraped Event to DFs
+        # Adding Scraped Event to DFs
 
-    country_df.loc[country_df.shape[0]] = data
+        country_df.loc[country_df.shape[0]] = data
 
-    # SORT ITEMS BY DATE AND REMOVE DUPLICATES
-    country_df["Last Updated"] = country_df["Last Updated"].astype('datetime64[ns]')
-    country_df.sort_values(by='Last Updated', ascending = False, inplace=True)
-    country_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
+        # SORT ITEMS BY DATE AND REMOVE DUPLICATES
+        country_df["Last Updated"] = country_df["Last Updated"].astype('datetime64[ns]')
+        country_df.sort_values(by='Last Updated', ascending = False, inplace=True)
+        country_df.drop_duplicates(subset=['Event Name','Event Date'],keep='last',inplace=True)
 
-    # DELETE PAST EVENTS
-    # if GGV_SETTINGS.DELETE_PAST_EVENTS:
-    #     col_dates_list = country_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
-    #     country_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
-    #     country_df.reset_index(drop=True, inplace=True)
-    #     logger.debug(f"Dataframe after dropping past events\n{country_df.to_markdown()}")
-    #     logger.debug(f"Size: {country_df.shape}")
-    #     del [col_dates_list]
-    #     gc.collect()
+        # DELETE PAST EVENTS
+        # if GGV_SETTINGS.DELETE_PAST_EVENTS:
+        #     col_dates_list = country_df["Event Date"].astype('str').apply(lambda x: x.split(" - "))
+        #     country_df.drop(col_dates_list[check_outdated_events(col_dates_list)].index,inplace=True)
+        #     country_df.reset_index(drop=True, inplace=True)
+        #     logger.debug(f"Dataframe after dropping past events\n{country_df.to_markdown()}")
+        #     logger.debug(f"Size: {country_df.shape}")
+        #     del [col_dates_list]
+        #     gc.collect()
 
-
-    # COUNTRY
-    Write_DataFrame_To_Sheet(country_worksheet, country_df)
-    logger.info(f"Added DataFrame to {country} Sheet")
-    del country_df
-    gc.collect()
-
+        # COUNTRY
+        Write_DataFrame_To_Sheet(country_worksheet, country_df)
+        logger.info(f"Added DataFrame to {country} Sheet")
+        del country_df
+        gc.collect()
 
     # ------ ALL -------- #
     if GGV_SETTINGS.ALL_EVENTS_SHEET:
