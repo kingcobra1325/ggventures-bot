@@ -6,6 +6,8 @@ import os,sys,traceback, gc
 from datetime import datetime, timezone
 from time import sleep
 
+from openpyxl import Workbook
+
 try:
     from scrapy.exceptions import DropItem
 except ModuleNotFoundError as e:
@@ -168,7 +170,7 @@ class WriteDataPipeline:
             # ADD ITEM TO DF
             Add_Event(data=data,country_df=df,country_worksheet=worksheet,country=spider.country)
 
-            del df, data
+            del df, data, worksheet
             gc.collect()
 
             return item
@@ -260,7 +262,7 @@ class StartupsPipeline:
                     # ADD ITEM TO DF
                     Add_Startups_Event(data=data,startups_df=df,startups_worksheet=worksheet,country=spider.country)
 
-                    del df, data
+                    del df, data, worksheet
                     gc.collect()
 
                 else:
