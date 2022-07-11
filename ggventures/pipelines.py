@@ -101,8 +101,6 @@ class CleanDataPipeline:
                     else:
                         logger.debug("PIPELINE: 'university_contact_info' empty...")
 
-                del adapter
-                gc.collect()
             else:
                 logger.info("PIPELINE: SKIPPED CLEANING DATA...")
 
@@ -169,7 +167,8 @@ class WriteDataPipeline:
             # ADD ITEM TO DF
             Add_Event(data=data,country_df=df,country_worksheet=worksheet,country=spider.country)
 
-            del adapter,data,df
+            del data,worksheet
+            del [df]
             gc.collect()
 
             return item
@@ -261,13 +260,12 @@ class StartupsPipeline:
                     # ADD ITEM TO DF
                     Add_Startups_Event(data=data,startups_df=df,startups_worksheet=worksheet,country=spider.country)
 
-                    del data,df
+                    del data,worksheet
+                    del [df]
                     gc.collect()
 
                 else:
                     raise DropItem("PIPELINE: Event failed to meet Startup Keyword criteria...")
-                del adapter
-                gc.collect()
             else:
                 logger.info("PIPELINE: SKIPPING SORTING STARTUPS EVENTS...")
             return item
