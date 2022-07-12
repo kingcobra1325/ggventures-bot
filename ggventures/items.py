@@ -10,6 +10,10 @@ from w3lib.html import remove_tags
 
 
 class GgventuresItem(scrapy.Item):
+    """
+    Sets the fields required for the data to be scraped
+    for each event
+    """
     # university_name = scrapy.Field(input_processor = MapCompose(remove_tags), output_processor = TakeFirst())
     university_name = scrapy.Field()
     university_contact_info = scrapy.Field()

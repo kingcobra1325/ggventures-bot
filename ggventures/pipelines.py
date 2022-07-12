@@ -47,13 +47,26 @@ from itemadapter import ItemAdapter
 
 logger = initialize_logger()
 
+"""
+Scraped Data Pipeline Order:
+1. CleanDataPipeline
+2. WriteDataPipeline
+3. StartupsPipeline
+
+Can easily be enabled or disabled via GGV_SETTINGS or
+by ITEM_PIPELINES in settings.py
+"""
+
 class CleanDataPipeline:
 
-    def __init__(self):
-        pass
+    """
+    First Pipeline:
+    If CLEAN_EVENT_DATE is enabled,  it will clean the Event Date via regex.
+    If CLEAN_EVENT_TIME is enabled,  it will clean the Event Time via regex.
+    If CLEAN_CONTACT_INFO is enabled, it will filter the data for phone numbers and email addresses via regex        
 
-    def create_connection(self):
-        pass
+    Regex Patterns are found on patterns.py
+    """
 
     def process_item(self, item, spider):
         try:
@@ -117,12 +130,10 @@ class CleanDataPipeline:
 
 
 class WriteDataPipeline:
-
-    def __init__(self):
-        pass
-
-    def create_connection(self):
-        pass
+    """
+    This Pipeline will write the scraped data to the Google Sheets via the API.
+    Refer to speadsheets.py for more details    
+    """
 
     def process_item(self, item, spider):
         try:
@@ -148,21 +159,6 @@ class WriteDataPipeline:
                         "Logo" : UnpackItems(adapter.get("logo")),
                         "SpiderName" : spider.name
             }
-            # data = {
-            #             "Last Updated" : datetime.utcnow(),
-            #             "Event Name" : UnpackItems(item.get("event_name")),
-            #             "Event Date" : UnpackItems(item.get("event_date")),
-            #             "Event Time" : UnpackItems(item.get("event_time")),
-            #             "Event Link" : UnpackItems(item.get("event_link")),
-            #             "Event Description" : UnpackItems(item.get("event_desc")),
-            #             "Startup Name(s)" : UnpackItems(item.get("startups_name")),
-            #             "Startup Link(s)" : UnpackItems(item.get("startups_link")),
-            #             "Startup Contact Info(s)" : UnpackItems(item.get("startups_contact_info")),
-            #             "University Name" : UnpackItems(item.get("university_name")),
-            #             "University Contact Info" : item.get("university_contact_info"),
-            #             "Logo" : UnpackItems(item.get("logo")),
-            #             "SpiderName" : spider.name
-            # }
 
             # GET COUNTRY DF
             df, worksheet = Read_DataFrame_From_Sheet(spider.country)
@@ -181,11 +177,13 @@ class WriteDataPipeline:
             error_email(spider.name,err_message)
 
 class StartupsPipeline:
-    def __init__(self):
-        pass
-
-    def create_connection(self):
-        pass
+    """
+    When SORT_STARTUPS is enabled, it will check the Event's Title and Description
+    using regex to check if it qualifies as a startup using the keywords on the
+    keywords.json file on the DropBox API.
+    Qualifying Events will be added to the STARTUPS Sheet else it will be
+    dropped from the Pipeline    
+    """
 
     def process_item(self, item, spider):
         try:
