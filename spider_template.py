@@ -188,6 +188,9 @@ class GGVenturesSpider(scrapy.Spider):
                     self.logger.debug(f"TRANSLATED LANG: {result.dest}")
                     self.logger.debug(f"TRANSLATED TEXT: {result.text}\n")
 
+                    del result
+                    gc.collect()
+
                 else:
                     self.logger.debug(f"'{k}' included as Excluded from Translation. Loading Raw Data...")
                     text_translated_dict.update({k : v})
