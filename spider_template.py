@@ -367,10 +367,10 @@ class GGVenturesSpider(scrapy.Spider):
 
         data = ItemLoader(item = GgventuresItem(), selector = item_selector)
         data.add_value('university_name', self.static_name)
-        data.add_value('university_contact_info',self.university_contact_info[:10000])
+        data.add_value('university_contact_info',self.university_contact_info[:5000])
         data.add_value('logo',self.static_logo)
         data.add_value('event_name', item_data['event_name'])
-        data.add_value('event_desc', item_data['event_desc'][:10000])
+        data.add_value('event_desc', item_data['event_desc'][:5000])
         data.add_value('event_date', item_data['event_date'])
         data.add_value('event_link', item_data['event_link'])
         data.add_value('event_time', item_data['event_time'])
