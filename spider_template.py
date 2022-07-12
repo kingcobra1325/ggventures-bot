@@ -486,6 +486,7 @@ class GGVenturesSpider(scrapy.Spider):
         except Exception as e:
             self.exception_handler(e)
 
+    @decorate.conditional_function(GGV_SETTINGS.GET_IMAGES_DESCRIPTION)
     def desc_images(self,desc_xpath='',use_getter=True):
         try:
             if use_getter:
@@ -498,6 +499,7 @@ class GGVenturesSpider(scrapy.Spider):
             self.logger.debug(f"No image found on spider {self.name}... scraping text only...")
             return temp_event_desc.get_attribute('textContent')
     
+    @decorate.conditional_function(GGV_SETTINGS.GET_IMAGES_DESCRIPTION)
     def desc_images_2(self,driver,xpath):
         try:
             temp_event_desc = driver.find_element(By.XPATH,xpath)

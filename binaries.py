@@ -181,6 +181,7 @@ class APPSettings():
         self.SEND_EMAILS_PER_ERROR = environ['SEND_EMAILS_PER_ERROR']
         self.RECORD_ERROR_COUNTER = True
         self.RESTART_HEROKU_EVERY_SAVESTATE = True
+        self.GET_IMAGES_DESCRIPTION = False
         if environ.get('DEPLOYED'):
             self.LOAD_DROPBOX_LIST = True
             self.SAVE_DROPBOX_LIST = True
