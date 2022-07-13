@@ -327,9 +327,12 @@ def get_dataframe(Name,worksheet):
 @decorate.connection_retry()
 def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
     """
-    Fetches the DataFrame from a Worksheet and returns it
-    :params: Name -> Name of the Worksheet | worksheet -> Worksheet Object from GSpread API 
-    :return: prev_df -> Pandas DataFrame
+    Attempts to read a worksheet from the spreadsheet based on
+    the 'Name'. If the worksheet doesn't exist, the worksheet is 
+    going to be created. Gets the DataFrame from the Worksheet and
+    returns both objects
+    :params: Name -> Name of the Worksheet | spreadsheet -> Default: SPREADSHEET_MAIN 
+    :return: df -> Pandas DataFrame | worksheet -> Worksheet Object from GSpread API
     """
     # spreadsheet = Google_Sheets()
     if not spreadsheet:
@@ -364,6 +367,16 @@ def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
     return df, worksheet
 
 def Add_Event(data,country_df,country_worksheet,country):
+    """
+    Add the Event Data to the Spreadsheet.
+    If 'COUNTRY_EVENTS_SHEET' is enabled, it will add the
+    Event Data to the respective Event Worksheet for that Country.
+    If 'ALL_EVENTS_SHEET' is enabled, it will add the Event Data
+    with the Country name on it to the ALL Events Worksheet
+    :params: Data -> dict | country_df -> Pandas Dataframe |
+            country_worksheet -> Worksheet Object from Google API |
+            country -> Name of the origin Country of Event
+    """
 
     # ------ COUNTRY -------- #
     if GGV_SETTINGS.COUNTRY_EVENTS_SHEET:
@@ -430,9 +443,13 @@ def Add_Event(data,country_df,country_worksheet,country):
 
 
 def Add_Startups_Event(data,startups_df,startups_worksheet,country):
-
+    """
+    Add the Event Data to the Startups Worksheet.
+    :params: Data -> dict | startups_df -> Pandas Dataframe |
+            startups_worksheet -> Worksheet Object from Google API |
+            country -> Name of the origin Country of Event 
+    """
     # Adding Sorted Startup Events to DF
-
     startups_df.loc[startups_df.shape[0]] = data
 
     # SORT ITEMS BY DATE AND REMOVE DUPLICATES
