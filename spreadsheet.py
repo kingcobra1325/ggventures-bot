@@ -39,6 +39,16 @@ logger = initialize_logger()
 
 
 def check_outdated_events(date_list):
+    """
+    A function that checks the list of dates to check if they are already
+    past the current date (timezone Pacific/Honlulu). Returns a boolean
+    array based on the dates per event passed on the list.
+    If its equal or later than the current date, it will add a False value on
+    the boolean array. If its earlier/past the current date, it is going to be
+    added as a True value on the array.
+    :params: date_list -> (list)
+    :return: bool_array -> (boolean list)
+    """
     bool_array = []
     logger.debug(f"\nEvent Date: |{date_list}|{type(date_list)}|\n")
     current_date = datetime.now(pytz.timezone('Pacific/Honolulu')).replace(hour=0, minute=0, second=0, microsecond=0)
@@ -80,7 +90,14 @@ def check_outdated_events(date_list):
     return bool_array
 
 def delete_past_events():
-
+    """
+    Runs thru every worksheet tied to the SPREADSHEET ID and check
+    if the events on there are past the current due date, using the
+    'check_outdated_events()' function.
+    Drops each event that are identified to be earlier/past the
+    current date from the Worksheets and re-upload them to the
+    Google Sheets API
+    """
     logger.info("Initializing Past Events deletion...")
     list_of_worksheets = list_to_gen(SPREADSHEET_MAIN.worksheets())
     for worksheet in list_of_worksheets:
@@ -100,6 +117,18 @@ def delete_past_events():
             
 
 def ReOrder_Sheets():
+    """
+    Re-arranges the Worksheets on the SPREADSHEET ID
+    on the Google Sheets API.
+    It will always arrange the worksheets based on
+    the title in the following order:
+    1. STARTUPS
+    2. ALL
+    3. DASHBOARD
+    4. ERRORS
+    5. ||
+    6. Other Country Events
+    """
     while True:
         try:
             order = []
@@ -142,6 +171,14 @@ def ReOrder_Sheets():
 
 
 def Create_Default_Sheet(spreadsheet,name):
+
+    """
+    Takes the SPREADSHEET from the Google API and a Name of a Worksheet
+    and creates a Worksheet Object under that Name based on a DataFrame
+    template that meets the name criteria
+    :params: spreadsheet -> Spreadsheet Object from GSpread API | name -> Name of the Worksheet
+    :return: worksheet ->  Worksheet Object from GSpread API
+    """
 
     column_range = 'A:M'
     column_range_row = 'A1:M1'
@@ -249,6 +286,10 @@ def Create_Default_Sheet(spreadsheet,name):
 
 @decorate.connection_retry()
 def Write_DataFrame_To_Sheet(worksheet,df):
+    """
+    This function writes the Pandas DatFrame into the Worksheet Object.
+    :params: worksheet -> Worksheet Object from GSpread API | df -> Pandas DataFrame
+    """
     while True:
         try:
             # try:
@@ -268,6 +309,11 @@ def Write_DataFrame_To_Sheet(worksheet,df):
 
 
 def get_dataframe(Name,worksheet):
+    """
+    Fetches the DataFrame from a Worksheet and returns it
+    :params: Name -> Name of the Worksheet | worksheet -> Worksheet Object from GSpread API 
+    :return: prev_df -> Pandas DataFrame
+    """
     while True:
         try:
             prev_df = get_as_dataframe(worksheet)
@@ -280,7 +326,11 @@ def get_dataframe(Name,worksheet):
 
 @decorate.connection_retry()
 def Read_DataFrame_From_Sheet(Name,spreadsheet=False):
-
+    """
+    Fetches the DataFrame from a Worksheet and returns it
+    :params: Name -> Name of the Worksheet | worksheet -> Worksheet Object from GSpread API 
+    :return: prev_df -> Pandas DataFrame
+    """
     # spreadsheet = Google_Sheets()
     if not spreadsheet:
         spreadsheet = SPREADSHEET_MAIN
