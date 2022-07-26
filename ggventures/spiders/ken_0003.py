@@ -15,9 +15,9 @@ class Ken0003Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.usiu.ac.ke/events-activities/"
 
-    university_contact_info_xpath = "//div[contains(@class,'fusion-text-1')]"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//div[@id='articleContent']"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):

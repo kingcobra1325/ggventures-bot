@@ -39,9 +39,9 @@ class Sau0004Spider(GGVenturesSpider):
                     item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1"))).text
                     # item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class'block-paragraph']/pa/rent::div").text
                     try:
-                        item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class'block-paragraph']/parent::div").text
-                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class'block-paragraph']/parent::div").text
-                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class'block-paragraph']/parent::div").text
+                        item_data['event_desc'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='block-paragraph']").text
+                        item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='block-paragraph']/parent::div").text
+                        item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='block-paragraph']/parent::div").text
                     except self.Exc.NoSuchElementException as e:
                         self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
 

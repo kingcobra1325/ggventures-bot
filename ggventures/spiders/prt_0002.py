@@ -43,8 +43,8 @@ class Prt0002Spider(GGVenturesSpider):
                     # except self.Exc.NoSuchElementException as e:
                     #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
 
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='featuredInformation']").text
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='featuredInformation']").text
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='featuredInformation']//div[contains(@class,'detailDateTime')]").get_attribute('textContent').replace("\n","")
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='featuredInformation']//div[contains(@class,'detailDateTime')]").get_attribute('textContent').replace("\n","")
 
                     # item_data['event_date'] = self.get_datetime_attributes("//span[@class='date-display-single']",'content')
                     # item_data['event_time'] = self.get_datetime_attributes("//span[@class='date-display-single']",'content')

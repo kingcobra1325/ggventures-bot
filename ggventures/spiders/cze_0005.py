@@ -44,8 +44,8 @@ class Cze0005Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//table[contains(@class,'event-detail-basic-info')]/following-sibling::div"],enable_desc_image=True,error_when_none=False)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//th[text()='Start:']/.."],method='attr',error_when_none=False,wait_time=5)
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//table[contains(@class,'event-detail-basic-info')]"],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//th[text()='Start:']/.."],method='attr',error_when_none=False,wait_time=5).replace(".\xa0","")
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//table[contains(@class,'event-detail-basic-info')]"],method='attr',error_when_none=False,wait_time=5).replace(".\xa0","")
                     item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//th[text()='Contact person:']/.."],method='attr',error_when_none=False,wait_time=5)
 # 
                     yield self.load_item(item_data=item_data,item_selector=link)

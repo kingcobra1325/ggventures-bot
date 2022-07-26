@@ -44,7 +44,7 @@ class Mex0009Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1[@class='entry-title']"))).get_attribute('textContent')
                     
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@id='event-text']")
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='event-text']"],method='attr')
 
                     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//td[contains(text(),'Período') or contains(text(),'Fecha')]/..").get_attribute('textContent')
                     item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//td[contains(text(),'Período') or contains(text(),'Fecha')]/..").get_attribute('textContent')

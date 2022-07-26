@@ -24,7 +24,7 @@ class Usa0004Spider(GGVenturesSpider):
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
-    # TRANSLATE = True
+    TRANSLATE = False
     
     def get_api_events(self,url,max_events=30):
         result = []
@@ -54,9 +54,11 @@ class Usa0004Spider(GGVenturesSpider):
                         {
                             "Event Link" : event_link_parsed.xpath("//a[@class='find-out-more']/@href").get(),
                             "Event Name" : event_link_parsed.xpath("//p[@class='title']/text()").get(),
-                            "Event Description" : event_link_parsed.xpath("//div[@class='image']/text()").get(),
-                            "Event Date" : event_link_parsed.xpath("//div[@class='event-date-box']").get(),
-                            "Event Time" : event_link_parsed.xpath("//span[@class='fa fa-clock']/..").get()
+                            "Event Description" : "".join(event_link_parsed.xpath("//div[@class='image']//*/text()").getall()),
+                            # "Event Date" : event_link_parsed.xpath("//div[@class='event-date-box']/*/text()").get(),
+                            "Event Date" : "".join(event_link_parsed.xpath("//div[@class='event-date-box']//*/text()").getall()),
+                            # "Event Time" : event_link_parsed.xpath("//span[@class='fa fa-clock']/*/text()").get(),
+                            "Event Time" : "".join(event_link_parsed.xpath("//span[@class='fa fa-clock']//*/text()").getall()),
                             }
                         )
             
@@ -79,10 +81,11 @@ class Usa0004Spider(GGVenturesSpider):
             # for link in self.events_list(event_links_xpath="//a[@class='clearfix']"):
             for link in self.get_api_events("https://www.babson.edu/about/events/"):
             # for link in self.driver.find_elements(self.Mth.By.XPATH,"//li[starts-with(@class,'event-item')]"):
+                self.logger.info(link)
 
                 self.Func.print_log(f"Link contains {link}")
                 
-                # self.getter.get(link)
+                # self.getter.get(link)                                                                                                                                                                                                                                                                                                                                                                  
                 # if self.unique_event_checker(url_substring=["https://web.cvent.com/event/","https://babson-college.secure.force.com/EventRegistration/"]):
                     
                 #     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
@@ -95,9 +98,9 @@ class Usa0004Spider(GGVenturesSpider):
                 
                 item_data['event_desc'] = link["Event Description"]
                 
-                item_data['event_date'] = link["Event Date"]
+                item_data['event_date'] = "".join(link["Event Date"].replace("\n","").replace("\r","").replace("","").split(" "))
 
-                item_data['event_time'] = link["Event Time"]
+                item_data['event_time'] = "".join(link["Event Time"].replace("\n","").replace("\r","").replace("","").split(" "))
                 # item_data['event_link'] = self.Mth.WebDriverWait(self.driver,10).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,".//a[@class='find-out-more']"))).get_attribute('textContent')
 
                 # item_data['event_name'] = self.driver.find_element(self.Mth.By.XPATH,".//p[@class='title']").get_attribute('textContent')

@@ -23,7 +23,24 @@ email_copy_recipients = EMAIL_OFFLINE_COPY
 next_line = '\n'
 
 
+"""
+    Attempts to read a worksheet from the spreadsheet based on
+    the 'Name'. If the worksheet doesn't exist, the worksheet is 
+    going to be created. Gets the DataFrame from the Worksheet and
+    returns both objects
+    :params: Name -> Name of the Worksheet | spreadsheet -> Default: SPREADSHEET_MAIN 
+    :return: df -> Pandas DataFrame | worksheet -> Worksheet Object from GSpread API
+    """
+
 def website_changed(spider="Default Spider", university_name="Default University"):
+    """
+    Attempts to read a worksheet from the spreadsheet based on
+    the 'Name'. If the worksheet doesn't exist, the worksheet is 
+    going to be created. Gets the DataFrame from the Worksheet and
+    returns both objects
+    :params: Name -> Name of the Worksheet | spreadsheet -> Default: SPREADSHEET_MAIN 
+    :return: df -> Pandas DataFrame | worksheet -> Worksheet Object from GSpread API
+    """
     try:
         # ------- LOG WEBSITE CHANGED TO ERRORS SHEETS -------#
         error_dashboard = ErrorDashboard()

@@ -45,8 +45,8 @@ class Ind0044Spider(GGVenturesSpider):
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//div[starts-with(@class,'tiss-tab-contents')]")
 
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//*[text()='Date:']/..").get_attribute('textContent')
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[starts-with(@class,'tiss-tab-contents')]").get_attribute('textContent')
+                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//*[text()='Date:']/..").get_attribute('textContent').replace("Sept","Sep")
+                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[starts-with(@class,'tiss-tab-contents')]").get_attribute('textContent').replace("Sept","Sep")
 
                     # try:
                     #     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[starts-with(@class,'tiss-tab-contents')]/p").get_attribute('textContent')

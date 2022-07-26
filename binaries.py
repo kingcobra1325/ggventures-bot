@@ -80,6 +80,12 @@ from patterns import STARTUP_EVENT_KEYWORDS, STARTUP_NAMES
 
 load_dotenv('.env')
 
+"""
+    Loads all of the Environmental Vars from '.env' file
+    when running the code on a local system.
+    Set each env vars to a corresponding variable
+"""
+
 # EMAIL VARS
 
 SMTP_SERVER = environ['SMTP_SERVER']

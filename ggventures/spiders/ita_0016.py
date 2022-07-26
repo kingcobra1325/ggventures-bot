@@ -44,7 +44,7 @@ class Ita0016Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='page-content']//h1"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='readcontent']",],enable_desc_image=True,error_when_none=False)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@id='readcontent']/p"],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@id='readcontent']"],method='attr',error_when_none=False,wait_time=5)
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@id='readcontent']"],method='attr',error_when_none=False,wait_time=5)
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//p[@class='contact-item']/.."],method='attr',error_when_none=False,wait_time=5)
 # 

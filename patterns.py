@@ -68,6 +68,8 @@ DATE_PATTERNS_RE =                  [
                                         r"[0-9][0-9]\s(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER|January|February|March|April|May|June|July|August|September|October|November|December)\s[0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9][ ](?:January|February|March|April|May|June|July|August|September|October|November|December)[ ][0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9][ ](?:January|February|March|April|May|June|July|August|September|October|November|December)",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|sep|Sep.|sep.|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9][0-9][0-9][0-9][0-9][0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|sep|Sep.|sep.|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9][0-9][0-9][0-9][0-9]",
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|sep|Sep.|sep.|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9][0-9][-][0-9][0-9][0-9][0-9]",
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|sep|Sep.|sep.|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9][-][0-9][0-9][0-9][0-9]",
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)\s[0-9][0-9]",
@@ -83,12 +85,20 @@ DATE_PATTERNS_RE =                  [
                                         r"[0-9][0-9]/[0-9]/[0-9][0-9]",
                                         r"[0-9]/[0-9][0-9]/[0-9][0-9]",
                                         r"[0-9]/[0-9]/[0-9][0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[^\n][0-9][0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[^\n][0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)\s[0-9][0-9]",
+                                        r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)\s[0-9]",
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9][0-9]",
                                         r"(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9]",
                                         r"[0-9][0-9](?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9][0-9][0-9][0-9]",
                                         r"[0-9](?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)[0-9][0-9][0-9][0-9]",
                                         r"[0-9][0-9](?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
                                         r"[0-9](?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|OCT|NOV|DEC|JAN.|FEB.|MAR.|APR.|MAY.|JUN.|JUL.|AUG.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|OCT.|NOV.|DEC.|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec|Jan.|Feb.|Mar.|Apr.|May.|Jun.|Jul.|Aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|Oct.|Nov.|Dec.|jan.|feb.|mar.|apr.|may.|jun.|jul.|aug.|Sep|sep|Sep.|sep.|SEP|SEP.|Sept.|oct.|nov.|dec.|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|nov|dec)",
+                                        r"[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9]",
+                                        r"[0-9].[0-9][0-9].[0-9][0-9][0-9][0-9]",
+                                        r"[0-9][0-9].[0-9].[0-9][0-9][0-9][0-9]",
+                                        r"[0-9].[0-9].[0-9][0-9][0-9][0-9]",
                                         
                                     ]
 
@@ -107,6 +117,7 @@ DATE_PATTERNS =                     [
                                         ["%Y/%d/%m"         ,date_strf_pattern],
                                         ["%d/%m"         ,'%m/%d'],
                                         ["%m/%d"         ,'%m/%d'],
+                                        ["%m\n%d"         ,'%m/%d'],
                                         ["%m.%d.%Y"         ,date_strf_pattern],
                                         ["%d.%m.%Y"         ,date_strf_pattern],
                                         ["%d.%B.%Y"         ,date_strf_pattern],
@@ -115,6 +126,7 @@ DATE_PATTERNS =                     [
                                         ["%b.%d.%Y"         ,date_strf_pattern],
                                         ["%m.%d"         ,'%m/%d'],
                                         ["%B %d"            ,'%m/%d'],
+                                        ["%B%d"            ,'%m/%d'],
                                         ["%Y-%m-%d"         ,date_strf_pattern],
                                         ["%m-%d-%Y"         ,date_strf_pattern],
                                         ["%d-%m-%Y"         ,date_strf_pattern],
@@ -128,7 +140,9 @@ DATE_PATTERNS =                     [
                                         ["%d %b %Y"        ,date_strf_pattern],
                                         ["%b %d %Y"        ,date_strf_pattern],
                                         ["%d%b%Y"            ,date_strf_pattern],
+                                        ["%d%b %Y"            ,date_strf_pattern],
                                         ["%b%d%Y"            ,date_strf_pattern],
+                                        ["%b%d %Y"            ,date_strf_pattern],
                                         ["%b %d"            ,'%m/%d'],
                                         ["%d %b"            ,'%m/%d'],
                                         ["%d%b"            ,'%m/%d'],
@@ -167,6 +181,9 @@ DATE_PATTERNS =                     [
                                         ["%b%Y%d"         ,date_strf_pattern],
                                         ["%b0%y%d"         ,date_strf_pattern],
                                         ["%d %b %Y"         ,date_strf_pattern],
+                                        ["%d.%m.%Y"         ,date_strf_pattern],
+                                        ["%m.%d.%Y"         ,date_strf_pattern],
+                                        ["%b%d%Y"            ,date_strf_pattern],
                                         ["%b-%d"         ,'%m/%d'],
                                         ["%b. %d"         ,'%m/%d'],
                                         ["%b.%d"         ,'%m/%d'],                                        
@@ -221,6 +238,8 @@ TIME_PATTERNS_RE =                  [
                                         r"[0-9]:[0-9][0-9]",
                                         r"[0-9][0-9][ ](?:am|pm|AM|PM|Am|Pm|Nn|NN|nn|MN|Mn|mn|a.m.|p.m.|A.M.|P.M.|A.m.|P.m.|N.n.|N.N.|n.n.|M.N.|M.n.|m.n.)",
                                         r"[0-9][ ](?:am|pm|AM|PM|Am|Pm|Nn|NN|nn|MN|Mn|mn|a.m.|p.m.|A.M.|P.M.|A.m.|P.m.|N.n.|N.N.|n.n.|M.N.|M.n.|m.n.)",
+                                        r"[0-9][0-9].[0-9][0-9]",
+                                        r"[0-9].[0-9][0-9]",
                                     ]
 
 time_strf_pattern = '%I:%M:%S %p'
@@ -267,7 +286,9 @@ TIME_PATTERNS =                     [
                                         ["%H:%M:%S"   ,time_strf_pattern],
                                         ["%I:%M:%S"   ,time_strf_pattern],
                                         ["%H:%M"   ,time_strf_pattern],
-                                        ["%I:%M"        , "'%I:%M:%S"],
+                                        ["%I:%M"        , time_strf_pattern],
+                                        ["%I.%M"        , time_strf_pattern],
+                                        ["%H.%M"        , time_strf_pattern],
                                     ]
 
 TZ_PATTERNS =                       [

@@ -44,10 +44,10 @@ class Chn0053Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h3"))).get_attribute('textContent')
                     
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[starts-with(@id,'vsb_content')]")
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='v_news_content']"],method='attr')
 
-                    # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//strong[contains(text(),'Time')]").get_attribute('textContent')
-                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//strong[contains(text(),'Time')]").get_attribute('textContent')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='v_news_content']"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='v_news_content']"],method='attr')
                     
                     # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
 

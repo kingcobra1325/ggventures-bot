@@ -38,7 +38,8 @@ class Usa0114Spider(GGVenturesSpider):
                 "date": current_date.strftime("%Y%m%d")
             }
             response = requests.request("GET", url=url, params=params)
-            response_parsed = response.text.replace("$Trumba.ScriptXmlHttpRequest.requestComplete(","").replace(");","")
+            response_parsed = response.text.replace("$Trumba.ScriptXmlHttpRequest.requestComplete(","")[:-2]
+            self.logger.info(f"RESPONSE PARSED:\n|\n{response_parsed}\n|")
             response_json = ast.literal_eval(response_parsed)
             # self.logger.debug(f"RESPONSE:|||{response}|||")
             response_events = response_json["body"]

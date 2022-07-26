@@ -50,7 +50,7 @@ class Chn0043Spider(GGVenturesSpider):
                     
                     item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='w84'] | //div[starts-with(@class,'rich_media_content')]")
 
-                    item_data['event_date'] = datetime
+                    item_data['event_date'] = datetime.replace("\n","")
                     # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//strong[contains(text(),'Time')]").get_attribute('textContent')
                     
                     # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
