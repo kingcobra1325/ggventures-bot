@@ -2,11 +2,11 @@ from spider_template import GGVenturesSpider
 
 
 class Jpn0019Spider(GGVenturesSpider):
-    name = 'jpn_0019'
+    name = "jpn_0019"
     start_urls = ["https://www.mbaib.gsbs.tsukuba.ac.jp/contact-us/"]
-    country = 'Japan'
-    # eventbrite_id = 6221361805
-
+    country = "Japan"
+    # eventbrite_id = 8447939505
+# 
     # handle_httpstatus_list = [301,302,403,404]
 
     static_name = "University of Tsukuba,Graduate School of Business Sciences"
@@ -20,19 +20,18 @@ class Jpn0019Spider(GGVenturesSpider):
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
-    TRANSLATE = True
-
+    # TRANSLATE = True
 
     def parse_code(self,response):
         try:
         ####################
             self.driver.get(response.url)
     
-            # self.check_website_changed(upcoming_events_xpath="//li[text()='There were no results found.']",empty_text=False)
+            # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
             
-            # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
-            
-            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3[starts-with(@class,'tribe-events-calendar-list__event-title')]",next_page_xpath="//span[@class='pagi-cta']/a[2]",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
+            # self.ClickMore(click_xpath="//button[text()='View More']",run_script=True)
+              
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='post_meta']/h2/a",next_page_xpath="//th[@class='next']",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
             for link in self.events_list(event_links_xpath="//dd/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://www.mbaib.gsbs.tsukuba.ac.jp/"]):
@@ -67,6 +66,6 @@ class Jpn0019Spider(GGVenturesSpider):
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 
-        ####################
+        ###################
         except Exception as e:
             self.exception_handler(e)

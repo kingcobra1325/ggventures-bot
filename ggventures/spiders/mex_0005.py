@@ -16,7 +16,7 @@ class Mex0005Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://tec.mx/es/exatec/eventos"
 
-    university_contact_info_xpath = "//div[@class='columnas_texto  ']"
+    university_contact_info_xpath = "//div[starts-with(@class,'columnas_texto')]"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True
@@ -44,7 +44,7 @@ class Mex0005Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1"))).get_attribute('textContent')
                     
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[starts-with(@class,'column-12')]/div[@class='text-long']")
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//p[@role='article']/.."],enable_desc_image=True)
 
                     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//h5[contains(text(),'Inicia')]/../../..").get_attribute('textContent')
                     item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//h5[contains(text(),'Inicia')]/../../..").get_attribute('textContent')

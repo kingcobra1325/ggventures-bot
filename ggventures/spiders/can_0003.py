@@ -20,7 +20,7 @@ class Can0003Spider(GGVenturesSpider):
     
     static_logo = "https://icmrindia.org/just-in-case/Newsletter/image/logo6.jpg"
 
-    parse_code_link = "https://www.concordia.ca/jmsb/events.html"
+    parse_code_link = "https://www.concordia.ca/events.html"
 
     university_contact_info_xpath = "//div[@class='rte']"
     contact_info_text = True
@@ -33,7 +33,7 @@ class Can0003Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//span[text()='Load More']",final_counter=3)
 
-            for link in self.events_list(event_links_xpath="//div[@class='event']//a"):
+            for link in self.events_list(event_links_xpath="//a[text()='More info']"):
 
                 self.getter.get(link)
 
@@ -52,7 +52,7 @@ class Can0003Spider(GGVenturesSpider):
                     # item_data['event_date'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
                     # item_data['event_time'] = self.get_datetime_attributes("//div[@class='aalto-article__info-text']/time")
 
-                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[contains(text(),'CONTACT')]/following-sibling::p"],error_when_none=False)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[contains(text(),'CONTACT')]/following-sibling::p"],error_when_none=False,wait_time=5)
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
                     item_data['event_link'] = link

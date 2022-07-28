@@ -15,9 +15,9 @@ class Bel0007Spider(GGVenturesSpider):
     static_logo = r"https://upload.wikimedia.org/wikipedia/commons/b/be/Ghent_University_logo_%28English%29.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://www.ugent.be/en/agenda"
+    parse_code_link = "https://www.ugent.be/student/en/news-events/events"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//article[@id='content']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -30,7 +30,7 @@ class Bel0007Spider(GGVenturesSpider):
             # self.ClickMore(click_xpath="//a[@id='btnLoadMore']",run_script=True)
             # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='List Calendar View']")))
             # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//h3/a",next_page_xpath="//a[contains(@class,'button-next')]",get_next_month=True):
-            for link in self.events_list(event_links_xpath="//li[@class='event']/a"):
+            for link in self.events_list(event_links_xpath="//a[@title='Event']"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=['ugent.be/en/agenda']):
 
@@ -40,10 +40,10 @@ class Bel0007Spider(GGVenturesSpider):
 
                     # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//article//h1"])
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@id='parent-fieldname-text']"],error_when_none=False)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//dl[@class='row']"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//dl[@class='row']"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//dt[text()='When']/following-sibling::dd"],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//dt[text()='When']/following-sibling::dd"],method='attr')
 
                     item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//a[@class='url']"])
                     # item_data['startups_link'] = ''

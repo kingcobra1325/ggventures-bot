@@ -4,7 +4,7 @@ from spider_template import GGVenturesSpider
 
 class Aut0006Spider(GGVenturesSpider):
     name = 'aut_0006'
-    start_urls = ['https://www.univie.ac.at/en/about-us/further-information/contact-services-a-z/']
+    start_urls = ["https://event.univie.ac.at/en/"]
     country = "Austria"
     # eventbrite_id = 6552000185
     TRANSLATE = True
@@ -17,7 +17,7 @@ class Aut0006Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://kalender.univie.ac.at/?d=0"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@class='content-element-margin-zero']"
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True

@@ -15,7 +15,7 @@ class Aus0011Spider(GGVenturesSpider):
 
     parse_code_link = "https://www.mq.edu.au/about/about-the-university/events"
 
-    university_contact_info_xpath = "//body"
+    university_contact_info_xpath = "//div[@id='content_container_1210750']/.."
     # contact_info_text = True
     contact_info_textContent = True
 

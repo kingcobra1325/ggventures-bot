@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class Bel0005Spider(GGVenturesSpider):
     name = 'bel_0005'
-    start_urls = ['https://www.uantwerpen.be/nl/studeren/aanbod/alle-opleidingen/tew-bedrijfskunde/']
+    start_urls = ['https://www.uantwerpen.be/nl/personeel/']
     country = "Belgium"
     # eventbrite_id = 6221361805
 
@@ -18,9 +18,9 @@ class Bel0005Spider(GGVenturesSpider):
     static_logo = "https://www.solvay.edu/wp-content/themes/solvay/img/logo.png"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://www.solvay.edu/en/events/"
+    parse_code_link = "https://www.uantwerpen.be/nl/activiteiten/"
 
-    university_contact_info_xpath = "//div[contains(@id,'description')]"
+    university_contact_info_xpath = "//section"
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True
@@ -32,19 +32,23 @@ class Bel0005Spider(GGVenturesSpider):
             # self.check_website_changed(upcoming_events_xpath="//h4[contains(text(),'A PHP Error was encountered')]")
             # self.ClickMore(click_xpath="//a[contains(@class,'load-more')]",run_script=True)
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[contains(@id,'uclcalendar_list_ajax')]//div[contains(@class,'list-image')]/a",next_page_xpath="//a[text()='next']",get_next_month=True,click_next_month=False,wait_after_loading=False):
-            for link in self.events_list(event_links_xpath="//section[contains(@class,'events-wrapper')]//h2/a"):
+            raw_event_times = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//div[@class='meta']")))
+            event_times = [x.text for x in raw_event_times]
+            for link in self.events_list(event_links_xpath="//a[@class='wrap']"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['exed.solvay.edu']):
+                if self.unique_event_checker(url_substring=["https://www.uantwerpen.be/en/","https://www.uantwerpen.be/nl/"]):
 
                     logger.info(f"Currently scraping --> {self.getter.current_url}")
 
                     item_data = self.item_data_empty.copy()
+                    
 
-                    item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1"))).text
-                    item_data['event_desc'] = self.getter.find_element(By.XPATH,"//p[contains(@class,'fz-large')]/parent::div").text
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//section//h1 | //section//h2"])
 
-                    item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-infos')]").text
-                    item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-infos')]").text
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//article//div[@class='main']"],error_when_none=False)
+
+                    item_data['event_date'] = event_times.pop(0)
+                    # item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-infos')]").text
 
                     # try:
                     #     item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'modul-teaser__element')]").text

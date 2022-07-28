@@ -43,8 +43,8 @@ class Gbr0047Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"],method='attr')
                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//form[@method='post']"],enable_desc_image=True)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Date')]/following-sibling::text()"],method='attr')
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Time')]/following-sibling::text()"],method='attr')
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Date')]/.."],method='attr')
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Date')]/.."],method='attr')
                     item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Contact')]/.."],method='attr',error_when_none=False)
 
                     yield self.load_item(item_data=item_data,item_selector=link)
