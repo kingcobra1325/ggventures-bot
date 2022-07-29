@@ -17,9 +17,9 @@ class Cri0001Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.incae.edu/es/eventos.html"
 
-    university_contact_info_xpath = "//body"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//div[@class='main']"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
 
     def parse_code(self,response):
@@ -32,23 +32,19 @@ class Cri0001Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=6,event_links_xpath="//table//h3/a",next_page_xpath="//li[@class='tribe-events-nav-next']/a",get_next_month=True):
             for link in self.events_list(event_links_xpath="//h2/a"):
                 self.getter.get(f"{link}")
-                if self.unique_event_checker(url_substring=['go.incae.edu']):
+                if self.unique_event_checker(url_substring=["https://go.incae.edu/","https://www.incae.edu/es/evento/"]):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
                     item_data = self.item_data_empty.copy()
 
-                    # self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,"//iframe[@title='Event Detail']")))
-
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'mbr-section-text')]"])
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'mbr-section-text')]"])
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'mbr-section-text')]"])
-
-                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=[''])
-                    # item_data['startups_link'] = ''
-                    # item_data['startups_name'] = ''
                     item_data['event_link'] = link
+                    
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'mbr-section-text')]","//div[starts-with(@class,'group-contenido-evento')]"],enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//*[contains(text(),'GMT-6')]/ancestor::div[@class='container']","//span[@class='date-display-range']/../.."],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//*[contains(text(),'GMT-6')]/ancestor::div[@class='container']","//span[@class='date-display-range']/../.."],method='attr',error_when_none=False,wait_time=5)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//*[starts-with(text(),'Contacto')]/.."],method='attr',error_when_none=False,wait_time=5)
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

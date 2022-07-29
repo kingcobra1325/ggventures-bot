@@ -12,7 +12,7 @@ class Aut0004Spider(GGVenturesSpider):
     country = "Austria"
     # eventbrite_id = 30819498834
 
-    # handle_httpstatus_list = [301,302,403,404]
+    handle_httpstatus_list = [301,302,403,404]
 
     static_name = "Wirtschaftsuniversität Wien (WU),Vienna University of Economics & Business Administration"
     static_logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Logo_Wirtschaftsuniversit%C3%A4t_Wien.svg/800px-Logo_Wirtschaftsuniversit%C3%A4t_Wien.svg.png"
@@ -20,7 +20,7 @@ class Aut0004Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.wu.ac.at/en/the-university/news-and-events/events"
 
-    university_contact_info_xpath = "//div[contains(@class,'md-footerbar')]"
+    university_contact_info_xpath = ""
     contact_info_text = True
     # contact_info_textContent = True
     # contact_info_multispan = True

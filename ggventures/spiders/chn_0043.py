@@ -36,40 +36,25 @@ class Chn0043Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//section//ul/li/a",next_page_xpath="//a[text()='Next']",get_next_month=True,click_next_month=False,wait_after_loading=False,run_script=False):
             for link in self.events_list(event_links_xpath="//section//ul/li/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=["https://www.tsinghua.edu.cn/en/info/","https://mp.weixin.qq.com/s/"]):
+                if self.unique_event_checker(url_substring=["https://www.tsinghua.edu.cn/en/info/"]):
                     
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
                     item_data = self.item_data_empty.copy()
                     
                     datetime = event_times.pop(0)
-                    
-                    item_data['event_link'] = link
 
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h5[@class='tit'] | //h1"))).get_attribute('textContent')
+                    item_data['event_link'] = link
                     
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='w84'] | //div[starts-with(@class,'rich_media_content')]")
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h5[@class='tit']"])
+                    
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='w84'] | //div[starts-with(@class,'rich_media_content')]"],enable_desc_image=True,error_when_none=False)
 
                     item_data['event_date'] = datetime.replace("\n","")
                     # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//strong[contains(text(),'Time')]").get_attribute('textContent')
                     
-                    # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
-
-                    # try:
-                    #     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//span[text()='Datum:']/.. | //i[starts-with(@class,'fal')]/../following-sibling::span").get_attribute('textContent')
-                    #     item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//span[text()='Tijd:']/..").get_attribute('textContent')
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                        # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-                        # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-
-                    # try:
-                    #     item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....")
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'Contact')]"],method='attr',error_when_none=False,wait_time=5)
                     
-                    # self.get_emails_from_source(driver_name='getter',attribute_name='href',tag_list=['a'])
-
                     yield self.load_item(item_data=item_data,item_selector=link)
 
         ####################

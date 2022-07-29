@@ -14,7 +14,7 @@ class Can0011Spider(GGVenturesSpider):
     country = 'Canada'
     # eventbrite_id = 1412983127
 
-    # USE_HANDLE_HTTPSTATUS_LIST = False
+    handle_httpstatus_list = [301,302,403,404]
 
     static_name = "Simon Fraser University,Faculty of Business Administration"
     

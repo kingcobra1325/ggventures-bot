@@ -41,30 +41,12 @@ class Chn0036Spider(GGVenturesSpider):
                     item_data = self.item_data_empty.copy()
                     
                     item_data['event_link'] = link
-
-                    item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1"))).get_attribute('textContent')
                     
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//div[@class='wp_articlecontent']")
-
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='wp_articlecontent']").get_attribute('textContent')
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@class='wp_articlecontent']").get_attribute('textContent')
-                    
-                    # item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
-
-                    # try:
-                    #     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//span[text()='Datum:']/.. | //i[starts-with(@class,'fal')]/../following-sibling::span").get_attribute('textContent')
-                    #     item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//span[text()='Tijd:']/..").get_attribute('textContent')
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                        # item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-                        # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(@class,'inner-box information')]").get_attribute('textContent')
-
-                    # try:
-                    #     item_data['startups_contact_info'] = self.getter.find_element(self.Mth.By.XPATH,"//table[@class='event-table']").get_attribute('textContent')
-                    # except self.Exc.NoSuchElementException as e:
-                    #     self.Func.print_log(f"XPATH not found {e}: Skipping.....")
-                    
-                    # self.get_emails_from_source(driver_name='getter',attribute_name='href',tag_list=['a'])
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='wp_articlecontent']"],enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='wp_articlecontent']"],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='wp_articlecontent']"],method='attr',error_when_none=False,wait_time=5)
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//div[contains(@class,'Contact')]"],method='attr',error_when_none=False,wait_time=5)
 
                     yield self.load_item(item_data=item_data,item_selector=link)
 

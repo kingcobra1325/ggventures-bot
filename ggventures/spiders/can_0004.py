@@ -33,7 +33,7 @@ class Can0004Spider(GGVenturesSpider):
             
             # self.ClickMore(click_xpath="//span[text()='Load More']",final_counter=3)
 
-            for link in self.events_list(event_links_xpath="//div[@class='dal-feature-title']/a"):
+            for link in self.events_list(event_links_xpath="//div[@class='lw_events_title']/a"):
 
                 self.getter.get(link)
 

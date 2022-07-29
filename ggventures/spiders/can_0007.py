@@ -27,28 +27,28 @@ class Can0007Spider(GGVenturesSpider):
         ####################
             self.driver.get(response.url)
     
-            self.check_website_changed(upcoming_events_xpath="//p[text()='Sorry, no events found.']",empty_text=False)
+            # self.check_website_changed(upcoming_events_xpath="//p[text()='Sorry, no events found.']",empty_text=False)
             
             # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
               
 #             for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h2[@class='card-title']/a",next_page_xpath="//a[starts-with(@class,'next')]",get_next_month=True,click_next_month=False,wait_after_loading=True,run_script=False):
-#             # for link in self.events_list(event_links_xpath="//h2[@class='card-title']/a"):
-#                 self.getter.get(link)
-#                 if self.unique_event_checker(url_substring=["https://execed.degroote.mcmaster.ca/"]):
+            for link in self.events_list(event_links_xpath="//h2[@class='card-title']/a"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["https://execed.degroote.mcmaster.ca/","https://www.degroote.mcmaster.ca/"]):
                     
-#                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-#                     item_data = self.item_data_empty.copy()
+                    item_data = self.item_data_empty.copy()
                     
-#                     item_data['event_link'] = link
+                    item_data['event_link'] = link
 
-#                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
-#                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='left-col-wide']","//div[@class='lw_calendar_event_description']"],enable_desc_image=True,error_when_none=False)
-#                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='dsb-offering']"],method='attr',error_when_none=False,wait_time=5)
-#                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='dsb-offering']"],method='attr',error_when_none=False,wait_time=5)
-#                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Serviço')]/.."],method='attr',error_when_none=False,wait_time=5)
-# # 
-#                     yield self.load_item(item_data=item_data,item_selector=link)
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='left-col-wide']","//h2[text()='Description']/.."],enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='dsb-offering']","//h3[text()='Date & Time']/.."],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@class='dsb-offering']","//h3[text()='Date & Time']/.."],method='attr',error_when_none=False,wait_time=5)
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//strong[contains(text(),'Serviço')]/.."],method='attr',error_when_none=False,wait_time=5)
+# 
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
         ####################
         except Exception as e:

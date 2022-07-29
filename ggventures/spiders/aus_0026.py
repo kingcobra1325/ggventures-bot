@@ -43,7 +43,7 @@ class Aus0026Spider(GGVenturesSpider):
                     item_data['event_link'] = link
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='panel-pane__content']"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["(//div[@class='row']/div[starts-with(@class,'layout-region__main')])[2]"],enable_desc_image=True)
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='content']"],enable_desc_image=True)
                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='date--start']/.."],method='attr',error_when_none=False)
                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[@class='date--start']/.."],method='attr',error_when_none=False)
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h5[text()='Contact']/following-sibling::*"],method='attr',error_when_none=False,wait_time=5)

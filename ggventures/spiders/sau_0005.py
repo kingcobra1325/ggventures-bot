@@ -28,6 +28,8 @@ class Sau0005Spider(GGVenturesSpider):
             # self.check_website_changed(upcoming_events_xpath="//main",empty_text=True)
             # self.ClickMore(click_xpath="//a[contains(@class,'moreListing')]",run_script=True)
             # for link in self.multi_event_pages(num_of_pages=5,event_links_xpath="//h5/a",next_page_xpath="//a[@class='next page-numbers']",get_next_month=True):
+            raw_event_times = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//div[@class='stats']")))
+            event_times = [x.text for x in raw_event_times]
             for link in self.events_list(event_links_xpath="//div[@class='card card-blog']/a"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=['news.ksu.edu.sa/ar/node']):
@@ -43,8 +45,8 @@ class Sau0005Spider(GGVenturesSpider):
                     # except self.Exc.NoSuchElementException as e:
                     #     self.Func.print_log(f"XPATH not found {e}: Skipping.....",'debug')
 
-                    item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='block-system-main']").text
-                    item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='block-system-main']").text
+                    item_data['event_date'] = event_times.pop(0)
+                    # item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[@id='block-system-main']").text
 
                     # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
                     # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')

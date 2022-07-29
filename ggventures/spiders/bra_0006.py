@@ -45,7 +45,7 @@ class Bra0006Spider(GGVenturesSpider):
 
                     item_data['event_name'] = self.Mth.WebDriverWait(self.getter,20).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//h1[@class='title']"))).get_attribute('textContent')
                     
-                    item_data['event_desc'] = self.desc_images(desc_xpath="//article")
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//article"])
 
                     item_data['event_date'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(text(),'Data')]/..").get_attribute('textContent')
                     item_data['event_time'] = self.getter.find_element(self.Mth.By.XPATH,"//div[contains(text(),'Data')]/..").get_attribute('textContent')
