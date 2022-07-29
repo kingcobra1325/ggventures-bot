@@ -31,6 +31,11 @@ from lib.decorators import decorate
 logger = initialize_logger()
 
 class GGVenturesSpider(scrapy.Spider):
+    """
+    Class where all of the spiders inherit to get all
+    of the attributes and methods to be able to have a
+    unified scraping process
+    """
 
     name : str = 'DefaultName'
     start_urls : list = 'DefaultUrl'
@@ -115,6 +120,9 @@ class GGVenturesSpider(scrapy.Spider):
     PARSE_STATUS = 'success'
 
     def __init__(self):
+        """
+        Initialize the main/sub selenium drivers
+        """
         self.driver = Load_Driver()
         if self.USE_MULTI_DRIVER:
             self.getter = Load_Driver()
@@ -125,11 +133,18 @@ class GGVenturesSpider(scrapy.Spider):
         self.scrape_time = None
     
     def request_api_call(self,url="",params={},payload="",method="GET"):
+        """
+        Method to do a request API call based on parameters
+        """
         response = requests.request(method, url, params=params,data=payload).json()
         return response
             
         
     def convert_str_to_html(self,string):
+        """
+        Convert string into an html response that
+        can be parsed via xpath/css etc.
+        """
         response = HtmlResponse(url="converting string...", body=string, encoding='utf-8')
         return response
 
@@ -141,6 +156,9 @@ class GGVenturesSpider(scrapy.Spider):
         error_email(self.name,err_message)
 
     def translate_API_call(self,data):
+        """
+        Calls a translation api call to the data parameter
+        """
         while True:
             try:
                 result = self.Func.translator.translate(data)
@@ -149,7 +167,6 @@ class GGVenturesSpider(scrapy.Spider):
                 self.logger.error(f"Translate API Error: {e}. Retrying...")
 
     def select_dropdown(self,xpath,value,wait_after_loading=False):
-
         dropdown = self.Mth.Select(self.driver.find_element(self.Mth.By.XPATH,xpath))
         dropdown.select_by_value(value)
         self.Func.sleep() if wait_after_loading else None
@@ -167,6 +184,10 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def translate_text(self,raw_text=''):
+        """
+        Takes the parameter/parameters and run the API calls on
+        all of the data and returns a translated dict/string
+        """
 
         if isinstance(raw_text,dict):
             text_translated_dict = {}
@@ -226,6 +247,9 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def get_datetime_attributes(self,datetime_xpath,datetime_attribute='datetime',multi=True):
+        """
+        Get the datetime attribute of a web element
+        """
         if multi:
             datetime_list = [x.get_attribute(datetime_attribute) for x in self.getter.find_elements(self.Mth.By.XPATH,datetime_xpath)]
             return '\n'.join(datetime_list)
@@ -233,6 +257,10 @@ class GGVenturesSpider(scrapy.Spider):
             return self.getter.find_element(self.Mth.By.XPATH,datetime_xpath).get_attribute(datetime_attribute)
 
     def unique_event_checker(self,url_substring=''):
+        """
+        Check the url of the getter driver if the
+        parameter is a substring of the url
+        """
         # CHECK IF PAGE NOT FOUND
         if self.getter.title.lower() not in ['page not found','404']:
             # CHECK IF NOT EMPTY
@@ -286,6 +314,10 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def get_links_from_source(self,link_base_list=['zoom']):
+        """
+        Gets all of the <a> web elements and filters
+        for the links that meets the link base parameter
+        """
         final_string = ''
         try:
             for link_base in link_base_list:
@@ -321,6 +353,9 @@ class GGVenturesSpider(scrapy.Spider):
         return final_string
 
     def get_emails_from_source(self,tag_list=['a'],attribute_name='href',driver_name='driver'):
+        """
+        Gets all of the emails from <a> web elements from the driver
+        """
         all_emails = []
         get_all_emails = []
         final_all_emails = ''
@@ -359,7 +394,10 @@ class GGVenturesSpider(scrapy.Spider):
         return final_all_emails
 
     def load_item(self,item_data,item_selector):
-
+        """
+        Loads the dict parameter onto the ItemLoader class
+        and returns it
+        """
         self.logger.debug(f"Translate |{self.TRANSLATE}|")
         if self.TRANSLATE:
             # Translate before Loading Items....
@@ -401,6 +439,10 @@ class GGVenturesSpider(scrapy.Spider):
         return data.load_item()
 
     def eventbrite_API_call(self,response):
+        """
+        The method that fetches all of the events from
+        the Eventbrite API
+        """
         try:
             if self.eventbrite_id:
                 # EVENTBRITE API - ORGANIZATION REQUEST
@@ -446,6 +488,10 @@ class GGVenturesSpider(scrapy.Spider):
             self.exception_handler(e)
 
     def ClickMore(self,click_xpath='',counter=0,final_counter=10,run_script=False):
+        """
+        Takes the xpath parameter and peform a browser click
+        on it till the xpath cannot be located anymore
+        """
         while True:
             try:
                 LoadMore = WebDriverWait(self.driver,20).until(EC.element_to_be_clickable((By.XPATH, click_xpath)))
@@ -465,6 +511,10 @@ class GGVenturesSpider(scrapy.Spider):
 
     @decorate.selenium_popup_handler_fn(exc=UnexpectedAlertPresentException)
     def get_university_contact_info(self,response):
+        """
+        Fetches the university contact info from the
+        xpath attribute that will be called automatically
+        """
         self.driver.get(response.url)
 
         if self.university_contact_info_xpath:
@@ -480,9 +530,19 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def parse_code(self,response):
+        """
+        Template for spiders to write code into
+        """
         pass
 
     def parse(self, response):
+        """
+        First method to be called automatically
+        Runs the following methods by order:
+            - get_university_contact_info
+            - eventbrite_API_call
+            - parse_code
+        """
         try:
             self.get_university_contact_info(response)
             yield scrapy.Request(url=response.url,callback=self.eventbrite_API_call)
@@ -527,6 +587,11 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def check_website_changed(self,upcoming_events_xpath='',empty_text=False,checking_if_none=False):
+        """
+        Method that checks if the xpath/element is located/changed
+        from the website and sends an email notification if 
+        changes are detected
+        """
         try:
             no_events = WebDriverWait(self.driver,30).until(EC.presence_of_all_elements_located((By.XPATH,upcoming_events_xpath)))
 
@@ -590,6 +655,11 @@ class GGVenturesSpider(scrapy.Spider):
                 self.PARSE_STATUS = 'error'
 
     def scrape_xpath(self,driver='',xpath_list=[],method='text',error_when_none=True,enable_desc_image=False,wait_time=15):
+        """
+        Method to use to parse the data from a list of xpath
+        and returns the data scraped and raises an error
+        unless the parameter is disabled
+        """
         image_desc = ""
         if not driver:
             driver = self.getter
@@ -618,6 +688,11 @@ class GGVenturesSpider(scrapy.Spider):
             return ""
     
     def switch_iframe(self,iframe_xpath="",error_when_none=True,iframe_driver=''):
+        """
+        With sites with iframe, switches to the iframe
+        with the xpath continue scraping data within
+        the iframe
+        """
         if not iframe_driver:
             iframe_driver = self.getter
         try:
@@ -635,6 +710,10 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def events_list(self,event_links_xpath:str,return_elements=False,link_attribute='href',maximum_events=30):
+        """
+        Gets all of the event links from a list of elements based on the
+        xpath provided on the parameter
+        """
         try:
             web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,event_links_xpath)))
             self.logger.debug(f"Number of Event Links: {len(web_elements_list)}")
@@ -686,6 +765,11 @@ class GGVenturesSpider(scrapy.Spider):
 
     def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,click_month_list_xpath="",run_script=False\
         ,page_element='',current_page_class='',next_page_set_xpath='',href_button_xpath="",base_site="",elem_intercept_exc=False,maximum_events=30):
+        """
+        Gets all of the event links from a list of elements based on the
+        xpath provided on the parameter and it will continue fetching
+        the the links after switching to the next page via xpath
+        """
 
         event_links = []
         page_links = []
@@ -794,6 +878,10 @@ class GGVenturesSpider(scrapy.Spider):
 
 
     def closed(self, reason):
+        """
+        The method called after the spider is closed.
+        Closes all of the WebDrivers
+        """
         try:
             error_dashboard = ErrorDashboard()
             error_dashboard.process_spider_status(self.name,self.PARSE_STATUS)

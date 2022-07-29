@@ -1,6 +1,6 @@
 from spider_template import GGVenturesSpider
 from datetime import datetime, timedelta
-import ast
+import json
 import requests
 
 class Usa0114Spider(GGVenturesSpider):
@@ -16,7 +16,7 @@ class Usa0114Spider(GGVenturesSpider):
     static_logo = "https://www.uidaho.edu/-/media/UIdaho-Responsive/Images/brand-resource-center/toolkit/logo-suites/ui-main-vertical.jpg"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://www.trumba.com/s.aspx"
+    parse_code_link = "https://www.uidaho.edu/events"
 
     university_contact_info_xpath = "//div[starts-with(@class,'obj-sixtysix-thirtythree')]"
     # contact_info_text = True
@@ -24,74 +24,37 @@ class Usa0114Spider(GGVenturesSpider):
     # contact_info_multispan = True
     # TRANSLATE = True
 
-    def get_api_events(self,url):
-        result = []
-        url = url
-        num_of_months = 0
-        params = {}
-        payload = ""
-        current_date = datetime.utcnow()
-        while True:
-            parsed_events = []
-            params = {
-                "calendar":"university-of-idaho",
-                "date": current_date.strftime("%Y%m%d")
-            }
-            response = requests.request("GET", url=url, params=params)
-            response_parsed = response.text.replace("$Trumba.ScriptXmlHttpRequest.requestComplete(","")[:-2]
-            self.logger.info(f"RESPONSE PARSED:\n|\n{response_parsed}\n|")
-            response_json = ast.literal_eval(response_parsed)
-            # self.logger.debug(f"RESPONSE:|||{response}|||")
-            response_events = response_json["body"]
-            if response_events:
-                html_response = self.convert_str_to_html(response_events)
-                events_ids = html_response.xpath(f"//a[@url.eventid]/@url.eventid").getall()
-                events_href = html_response.xpath(f"//a[@url.eventid]/@href").getall()
-                for idx, event in enumerate(events_ids):
-                    event = event.replace("\\","")
-                    event_params = {
-                        "calendar":"university-of-idaho",
-                        "eventid":event,
-                        "view":"event",
-                    }
-                    event_response = requests.request("GET", url=url, params=event_params)
-                    event_response_parsed = event_response.text.replace("$Trumba.ScriptXmlHttpRequest.requestComplete(","").replace(");","")
-                    event_response_json = ast.literal_eval(event_response_parsed)
-                    event_htmlres = self.convert_str_to_html(event_response_json["body"])
-                    result.append({"href":events_href[idx],"event_response":event_htmlres})
-                # result.extend(links)
-            else:
-                continue
-            if num_of_months >= 6:
-                break
-            else:
-                num_of_months+=1
-                current_date+=timedelta(days=30)
-        self.logger.debug(f"Events:\n{result}")
-        self.logger.debug(f"Number of Events: {len(result)}")
-        return result
-
     def parse_code(self,response):
         try:
         ####################
-            for event in self.get_api_events(response.url):
-                js_href = event['href'][2:-2]
-                self.logger.debug(f"Javascript HREF:|{js_href}|")
-                self.getter.execute_script(js_href)
-                self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
+            self.driver.get(response.url)
+    
+            # self.check_website_changed(upcoming_events_xpath="//p[text()='No events are currently published.']",empty_text=False)
+            self.Func.sleep()
+            # self.ClickMore(click_xpath="//a[@rel='next']",run_script=True)
+            self.Mth.WebDriverWait(self.driver, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,'//iframe[contains(@title,"Classic Table Calendar View")]')))
+            # self.switch_iframe('//iframe[contains(@title,"Classic Table Calendar View")]',iframe_driver=self.driver)
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//article[@class='event-item-list']/a",next_page_xpath="//a[@class='page-link next']",get_next_month=False,click_next_month=True,wait_after_loading=True,run_script=True):
+            for link in self.events_list(event_links_xpath="//span[@class='twDescription']/a"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["www.uidaho.edu/events"]):
+                    self.Func.sleep()
+                    # self.switch_iframe('//iframe[contains(@title,"Event Detail")]')
+                    self.Mth.WebDriverWait(self.getter, 10).until(self.Mth.EC.frame_to_be_available_and_switch_to_it((self.Mth.By.XPATH,'//iframe[contains(@title,"Event Detail")]')))
 
-                item_data = self.item_data_empty.copy()
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-                item_data['event_name'] = event["event_response"].xpath("//div[contains(@role,'heading')]/text()").get()
-                item_data['event_desc'] = event["event_response"].xpath("//p[contains(@class,'firstp')]/parent::td/text()").get()
-                item_data['event_date'] = event["event_response"].xpath(r"//td[contains(@class,'twEventDetailData\')]/text()").get()
-                item_data['event_time'] = event["event_response"].xpath(r"//td[contains(@class,'twEventDetailData\')]/text()").get()
-                # item_data['startups_link'] = event['onlineJoinUrl']
-                # item_data['startups_name'] = ''
-                # item_data['startups_contact_info'] = ''
-                item_data['event_link'] = self.getter.current_url
+                    item_data = self.item_data_empty.copy()
+                    
+                    item_data['event_link'] = link
 
-                yield self.load_item(item_data=item_data,item_selector=self.getter.current_url)
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@id='headerDiv']"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//span[text()='Details']/parent::th/following-sibling::td"],method='attr',enable_desc_image=True,error_when_none=False)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[text()='When']/parent::th/following-sibling::td"],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[text()='When']/parent::th/following-sibling::td"],method='attr',error_when_none=False)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//p[contains(text(),'Contact:')]"],method='attr',error_when_none=False,wait_time=5)
+
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
         ####################
         except Exception as e:

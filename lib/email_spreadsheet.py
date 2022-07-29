@@ -18,6 +18,10 @@ email_copy_recipients = EMAIL_OFFLINE_COPY
 next_line = '\n'
 
 class EmailCopySheet(LoggerMixin):
+    """
+    Class that sends an Email offline copy of the
+    spreadsheet to recepients
+    """
 
     def __init__(self):
         self.logger.debug("Initializing sending Email copy of Spreadsheet...")

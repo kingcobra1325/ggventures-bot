@@ -93,6 +93,10 @@ def website_changed(spider="Default Spider", university_name="Default University
         logger.error("Exception when calling Email Bot->: %s\n" % e)
 
 def unique_event(spider="No-Spider-Name", university_name="No-University-Name", href='No-Link', contact_info = 'No-Contact-Info', logo='NO-LOGO'):
+    """
+    Registers the event based on the parameters into the Spreadsheet
+    and sends an email that a Unique Event is detected from the events
+    """
     try:
         # ------- LOG UNIQUE EVENTS TO MAIN SHEETS -------#
         # GET COUNTRY DF
@@ -228,6 +232,11 @@ def missing_info_email(spider="Default Spider", university_name="Default Univers
         logger.error("Exception when calling Email Bot->: %s\n" % e)
 
 def error_email(spider="Default Spider",error="Default Error"):
+    """
+    Sends an email when an Exception is called
+    It shows the spider name - error and the traceback
+    detail
+    """
     try:
         # ------- LOG ERRORS TO ERRORS SHEETS -------#
         error_dashboard = ErrorDashboard()

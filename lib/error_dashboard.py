@@ -15,6 +15,11 @@ from binaries import GGV_SETTINGS,ERRORS_SPREADSHEET_ID, BOT_KEYS
 from spreadsheet import Read_DataFrame_From_Sheet, Write_DataFrame_To_Sheet
 
 class ErrorDashboard(LoggerMixin):
+    """
+    Class that defines the Error Dashboard Spreadsheet
+    that will have the spider status and also the 
+    list of errors that has been encountered by the bot
+    """
 
     def __init__(self):
         self.logger.debug("Initializing Errors Dashboard GSheet...")
@@ -22,6 +27,9 @@ class ErrorDashboard(LoggerMixin):
         self.spreadsheet = self.gc.open_by_key(ERRORS_SPREADSHEET_ID)
 
     def process_spider_status(self,spider_name,result='success'):
+        """
+        Changes the spider status on the dashboard
+        """
         self.logger.info("Processing Spider status after scraping...")
         self.logger.debug(f"Result |{result}|")
         self.read_dashboard()
@@ -33,6 +41,10 @@ class ErrorDashboard(LoggerMixin):
         self.delete_dashboard_dataframe()
 
     def get_spiders_on_status(self,status='RUNNING'):
+        """
+        Get all of the spiders with the status
+        with the current default set to RUNNING
+        """
         self.read_dashboard()
         spiders = list(self.dashboard_df.loc[self.dashboard_df['Status']==status]['Spider'])
         self.delete_dashboard_dataframe()
@@ -43,6 +55,11 @@ class ErrorDashboard(LoggerMixin):
         return spiders
         
     def log_error_counter(self,spider_name,update_ws=True):
+        """
+        Add a counter to the spider and changes
+        the status of the spider once it reaches
+        the error threshold count
+        """
         spider = self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name]
         fail_counter = f"{spider['Consecutive Fail Count'].values[0]}X"
         fail_num = Counter(fail_counter)['X']
@@ -61,6 +78,9 @@ class ErrorDashboard(LoggerMixin):
             self.update_dashboard()
         
     def clear_error_counter(self,spider_name,to_running_status=False,update_ws=True):
+        """
+        Clear error counter on the spider
+        """
         self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name,'Consecutive Fail Count'] = ""
         current_time = datetime.utcnow()
         self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name,'Last Updated'] = current_time
@@ -75,6 +95,9 @@ class ErrorDashboard(LoggerMixin):
             self.update_dashboard()
 
     def switch_spider_status(self,spider_name,status="ERROR",update_ws=True):
+        """
+        Changes the spider status default to ERROR
+        """
         orig_status = self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name,'Status'].values[0]
         self.dashboard_df.loc[self.dashboard_df['Spider']==spider_name,'Status'] = status
         current_time = datetime.utcnow()
@@ -87,6 +110,9 @@ class ErrorDashboard(LoggerMixin):
             self.update_dashboard()
     
     def log_error(self,data):
+        """
+        Adds the errors data to the spreadsheet
+        """
         # Getting ERRORS Sheet / Datafram
         error_df, error_worksheet = Read_DataFrame_From_Sheet('ERRORS',self.spreadsheet)
         error_df.loc[error_df.shape[0]] = data

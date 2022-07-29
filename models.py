@@ -20,12 +20,14 @@ import patterns
 logger = initialize_logger()
 
 class RegExGGV:
+    """
+    The Class that contains all of the regex and datetime functions
+    """
 
     def __init__(self):
         self.re = re
         self.REGEX_LOGS = GGV_SETTINGS.REGEX_LOGS
         self.NO_MATCH_REGEX_LOGS = GGV_SETTINGS.NO_MATCH_REGEX_LOGS
-
         # PATTERNS VAR
         # self.STARTUP_EVENT_KEYWORDS = patterns.STARTUP_EVENT_KEYWORDS
         self.STARTUP_EVENT_KEYWORDS = DropBox_Keywords()
@@ -45,6 +47,12 @@ class RegExGGV:
         self.PM_PATTERNS = patterns.PM_PATTERNS
 
     def perform_regex(self,pattern,data,method='all'):
+        """
+        Method to perform a regex function on the data/string that
+        is processed with thee pattern str/list criteria
+        :params: pattern -> list/str | data -> str | method -> str
+        :return: regex results
+        """
         if method == 'all':
             return self.re.compile('|'.join(pattern)).findall(data)
         if method == 'single':
@@ -320,7 +328,13 @@ class RegExGGV:
         return self.perform_strptime(time_criteria,time_regex,data,'time')
 
     def contact_info(self,data):
-
+        """
+        Takes a string and pulls all the phone numbers
+        based on regex and format all of the numbers
+        in a clean format
+        :params: data -> str
+        :return: str
+        """
         phone_number_criteria = self.PHONE_NUMBER_PATTERNS
         email_criteria = self.EMAIL_PATTERNS
 
