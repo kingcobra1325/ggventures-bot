@@ -6,7 +6,7 @@ class Gbr0032Spider(GGVenturesSpider):
     country = 'United Kingdom'
     start_urls = ["https://www.jbs.cam.ac.uk/aboutus/contact/"]
     eventbrite_id = 155395205
-    # TRANSLATE = True
+    TRANSLATE = False
 
     # handle_httpstatus_list = [301,302,403,404,429]
 
