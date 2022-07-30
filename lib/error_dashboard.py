@@ -11,6 +11,7 @@ except ModuleNotFoundError as e:
     import gspread
 
 from lib.baselogger import LoggerMixin
+from lib.decorators import decorate
 from binaries import GGV_SETTINGS,ERRORS_SPREADSHEET_ID, BOT_KEYS
 from spreadsheet import Read_DataFrame_From_Sheet, Write_DataFrame_To_Sheet
 
@@ -21,6 +22,7 @@ class ErrorDashboard(LoggerMixin):
     list of errors that has been encountered by the bot
     """
 
+    @decorate.connection_retry()
     def __init__(self):
         self.logger.debug("Initializing Errors Dashboard GSheet...")
         self.gc = gspread.service_account_from_dict(BOT_KEYS)
