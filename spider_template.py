@@ -665,7 +665,13 @@ class GGVenturesSpider(scrapy.Spider):
             driver = self.getter
         errors_dict = {}
         joined_xpath = " | ".join(xpath_list)
-        method = 'attr' if '//span' or '/span' in joined_xpath else 'text'
+        if not method:
+            try:
+                parse_span = self.Mth.WebDriverWait(driver,5).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,"//span")))
+                method = 'attr'
+            except:
+                method = 'text'
+            
         try:
             if method.lower() == 'text':
                 result = self.Mth.WebDriverWait(driver,wait_time).until(self.Mth.EC.presence_of_element_located((self.Mth.By.XPATH,joined_xpath))).text
