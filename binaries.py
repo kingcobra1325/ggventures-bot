@@ -133,14 +133,14 @@ EMAIL_OFFLINE_COPY = ast.literal_eval(environ['EMAIL_OFFLINE_COPY'])
 
 # CHROME VARS
 
-if environ.get('DEPLOYED'):
+# if environ.get('DEPLOYED'):
     # DEPLOYED VARS
-    GOOGLE_CHROME_BIN = environ['GOOGLE_CHROME_BIN']
-    CHROMEDRIVER_PATH = environ['CHROMEDRIVER_PATH']
-else:
-    # DEVELOPER VARS
-    GOOGLE_CHROME_BIN = environ['DEFAULT_GOOGLE_CHROME_BIN']
-    CHROMEDRIVER_PATH = environ['DEFAULT_CHROMEDRIVER_PATH']
+    # GOOGLE_CHROME_BIN = environ['GOOGLE_CHROME_BIN']
+# CHROMEDRIVER_PATH = environ['CHROMEDRIVER_PATH']
+# else:
+#     # DEVELOPER VARS
+#     GOOGLE_CHROME_BIN = environ['DEFAULT_GOOGLE_CHROME_BIN']
+CHROMEDRIVER_PATH = environ['DEFAULT_CHROMEDRIVER_PATH']
 
 # HEROKU API TOKEN
 
@@ -258,7 +258,7 @@ if GGV_SETTINGS.PRINT_ENV_VARS:
     logger.debug(f"DROPBOX_TOKEN -> {DROPBOX_TOKEN}")
     logger.debug(f"DEVELOPER_BOT_EMAIL -> {DEVELOPER_BOT_EMAIL}")
     logger.debug(f"DEVELOPER_EMAILS -> {DEVELOPER_EMAILS}")
-    logger.debug(f"GOOGLE_CHROME_BIN -> {GOOGLE_CHROME_BIN}")
+    # logger.debug(f"GOOGLE_CHROME_BIN -> {GOOGLE_CHROME_BIN}")
     logger.debug(f"CHROMEDRIVER_PATH -> {CHROMEDRIVER_PATH}")
 
 
@@ -323,7 +323,7 @@ def Load_Driver():
     options.add_argument('--disable-dev-shm-usage')
     # options.add_argument("--log-level=3")
     options.add_argument("--lang=en-US")
-    options.binary_location = GOOGLE_CHROME_BIN
+    # options.binary_location = GOOGLE_CHROME_BIN
     options.add_argument('--no-sandbox')
     options.add_argument("--enable-features=NetworkServiceInProcess")
     prefs = {

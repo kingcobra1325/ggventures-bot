@@ -1,1 +1,10 @@
-{"PRIORITY": ["startup", "start-up", "demo-day"], "COMBINATION": [["elevator", "pitch"], ["venture", "pitch"], ["venture", "capital"], ["venture", "demo", "day"], ["tech", "accelerator"], ["pitch", "accelerator"], ["tech", "accelerator"], ["tech", "competition"]], "WHOLE": ["venture", "capital"]}
+{"PRIORITY": 
+    ["startup", "startups", "start-up", "start-ups", "demoday", "hackathon","techstars","incubator","innovation","entrepreneur", "entrepreneurs","entrepreneurship","entrepreneurial"], 
+    "COMBINATION": [
+        ["venture", "pitch"], 
+        ["venture", "capital"], 
+        ["venture", "demo", "day"], 
+        ["tech", "accelerator"], 
+        ["pitch", "accelerator"], 
+        ["tech", "accelerator"], 
+        ["tech", "competition"],["pitch","technology"],["pitch","innovation"],["hack","day"], ["demo","day","startup"],["digital","demo","day"],["founder","demo","day"],["virtual","demo","day"],["founder","bootcamp"],["startup","fundraise"],["funding","entrepreneur"],["showcase","technology"],["showcase","research"],["research","translation"],["research","impact"]], "WHOLE": ["venture", "capital","research","translation"]}
