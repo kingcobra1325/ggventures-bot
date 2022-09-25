@@ -14,7 +14,7 @@ class Gbr0025Spider(GGVenturesSpider):
     static_logo = "https://www.thepeoplespace.com/sites/default/files/styles/600x/public/brands/ou_business_school_logo_dark_blue.png?itok=Y18i6mmK"
 
     # MAIN EVENTS LIST PAGE
-    parse_code_link = "https://www.su.se/stockholm-business-school/calendar"
+    parse_code_link = "https://business-school.open.ac.uk/events"
 
     university_contact_info_xpath = "//table"
     # contact_info_text = True
@@ -24,33 +24,33 @@ class Gbr0025Spider(GGVenturesSpider):
 
     def parse_code(self,response):
         pass
-#         try:
-#         ####################
-#             self.driver.get(response.url)
+        try:
+        ####################
+            self.driver.get(response.url)
     
-#             # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
+            # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
             
-#             # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
+            # self.ClickMore(click_xpath="//div[contains(text(),'Load')]",run_script=True)
               
-#             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h1[@class='c-event-list__item__heading']/a",next_page_xpath="//a[@title='next']",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
-#             for link in self.events_list(event_links_xpath="//article//div[starts-with(@class,'card-body')]/h1/a"):
-#                 self.getter.get(link)
-#                 if self.unique_event_checker(url_substring=["https://www.su.se/stockholm-business-school/","https://www.su.se/english/"]):
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h1[@class='c-event-list__item__heading']/a",next_page_xpath="//a[@title='next']",get_next_month=False,click_next_month=True,wait_after_loading=False,run_script=True):
+            for link in self.events_list(event_links_xpath="//h3[@class='ou-events__event-title']/a"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["https://business-school.open.ac.uk/events/"]):
                     
-#                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-#                     item_data = self.item_data_empty.copy()
+                    item_data = self.item_data_empty.copy()
                     
-#                     item_data['event_link'] = link
+                    item_data['event_link'] = link
 
-#                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//main//h1"])
-#                     item_data['event_desc'] = self.scrape_xpath(xpath_list=["//article[starts-with(@class,'standard-article')]"],enable_desc_image=True,error_when_none=False)
-#                     item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[text()='Date:']/.."],method='attr',error_when_none=False,wait_time=5)
-#                     item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[text()='Time:']/.."],method='attr',error_when_none=False,wait_time=5)
-#                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//p[@class='contact-item']/.."],method='attr',error_when_none=False,wait_time=5)
-# # 
-#                     yield self.load_item(item_data=item_data,item_selector=link)
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='ou-content']/h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='ou-content']"],method='text',enable_desc_image=True,error_when_none=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//dl[@class='ou-box ou-box--info']"],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//dl[@class='ou-box ou-box--info']"],method='attr',error_when_none=False,wait_time=5)
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//p[@class='contact-item']/.."],method='attr',error_when_none=False,wait_time=5)
+# 
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
-#         ###################
-#         except Exception as e:
-#             self.exception_handler(e)
+        ###################
+        except Exception as e:
+            self.exception_handler(e)

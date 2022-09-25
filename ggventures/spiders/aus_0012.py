@@ -45,7 +45,7 @@ class Aus0012Spider(GGVenturesSpider):
                     # item_data['event_date'] = self.get_datetime_attributes("//time",'datetime')
                     # item_data['event_time'] = self.get_datetime_attributes("//time",'datetime')
 
-                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[text()='Event contact details']/following-sibling::ul"],method='attr',error_when_none=False)
+                    item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h6[text()='Event contact details']/following-sibling::ul"],method='attr',error_when_none=False,wait_time=5)
                     # item_data['startups_link'] = ''
                     # item_data['startups_name'] = ''
                     item_data['event_link'] = link

@@ -15,8 +15,10 @@ class Aus0026Spider(GGVenturesSpider):
 
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://business.uq.edu.au/events"
+    
+    USE_FF_DRIVER = True
 
-    university_contact_info_xpath = "//div[@class='field-items']"
+    university_contact_info_xpath = "//strong[text()='Opening Hours']/../.."
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
@@ -69,9 +71,9 @@ class Aus0026Spider(GGVenturesSpider):
                     item_data['event_link'] = link
 
                     item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='panel-pane__content']"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["(//div[@class='row']/div[starts-with(@class,'layout-region__main')])[2]"],enable_desc_image=True)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='date--start']/.."],method='attr',error_when_none=False)
-                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[@class='date--start']/.."],method='attr',error_when_none=False)
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["(//div[@class='row']/div[starts-with(@class,'layout-region__main')])[2]","//div[@class='layout-region__column-one columns medium-6']","//div[@class='layout-region__main large-8 columns']"],enable_desc_image=True,wait_time=30)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//span[@class='date--start']/..","//span[contains(@class,'icon-calendar')]/.."],method='attr',error_when_none=False)
+                    item_data['event_time'] = self.scrape_xpath(xpath_list=["//span[@class='date--start']/..","//div[@class='content']"],method='attr',error_when_none=False)
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//h5[text()='Contact']/following-sibling::*"],method='attr',error_when_none=False,wait_time=5)
 
                     yield self.load_item(item_data=item_data,item_selector=link)

@@ -1,9 +1,5 @@
-from binaries import logger
 from spider_template import GGVenturesSpider
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from scrapy import Request
 
 
 class Deu0025Spider(GGVenturesSpider):
@@ -11,9 +7,13 @@ class Deu0025Spider(GGVenturesSpider):
     start_urls = ["https://wiso.uni-hohenheim.de/en/contact"]
     country = 'Germany'
     # eventbrite_id = 30819498834
-
-    # USE_HANDLE_HTTPSTATUS_LIST = False
-
+    
+    handle_httpstatus_list = [307]
+    
+    custom_settings = {
+        'REDIRECT_ENABLED' : False
+    }
+    
     static_name = "Universität Hohenheim,Faculty of Business Economics & Social Sciences"
     
     static_logo = "https://www.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/Images/uni-logo-en.svg"
@@ -21,57 +21,46 @@ class Deu0025Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://wiso.uni-hohenheim.de/en/news"
 
-    university_contact_info_xpath = "//h1[text()='Contact']/ancestor::div[@class='col-sm-12']/following-sibling::div"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//section[@id='content']"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
+
 
     def parse_code(self,response):
         try:
         ####################
             self.driver.get(response.url)
+    
+            # self.check_website_changed(upcoming_events_xpath="//div[starts-with(@class,'events-container')]",empty_text=True)
             
-            self.check_website_changed(upcoming_events_xpath="//p[text()='no news in this list.']")
-
-            # self.ClickMore(upcoming_events_xpath="//button[@class='filterable-list__load-more']")
-
-            # for link in self.multi_event_pages(event_links_xpath="//div[@class='location']/a",next_page_xpath="//a[text()='Next Page']",get_next_month=True,click_next_month=False,wait_after_loading=False):
-            # for link in self.events_list(event_links_xpath="//div[starts-with(@class,'type-tribe_events')]/a"):
-
-            #     self.getter.get(link)
-
-            #     if self.unique_event_checker(url_substring=["https://www.wi.tum.de/event/"]):
-
-            #         logger.info(f"Currently scraping --> {self.getter.current_url}")
-
-            #         item_data = self.item_data_empty.copy()
+            # self.ClickMore(click_xpath="//a[@class='more-button__link']",run_script=True)
+            
+            
+            raw_event_times = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//div[@class='sub0col']//h3/span")))
+            event_times = [x.get_attribute('textContent') for x in raw_event_times]
+              
+            # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[@class='post_meta']/h2/a",next_page_xpath="//a[contains(@class,'next')]",get_next_month=True,click_next_month=False,wait_after_loading=False,run_script=True):
+            for link in self.events_list(event_links_xpath="//div[@class='sub0col']//h3/a"):
+                self.getter.get(link)
+                if self.unique_event_checker(url_substring=["https://wiso.uni-hohenheim.de/en/"]):
                     
-            #         item_data['event_link'] = link
+                    self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
-            #         item_data['event_name'] = WebDriverWait(self.getter,20).until(EC.presence_of_element_located((By.XPATH,"//h1[@Class='tribe-events-single-event-title']"))).text
-            #         item_data['event_desc'] = self.getter.find_element(By.XPATH,"//div[@id='tribe-events-header']/following-sibling::div").text
+                    item_data = self.item_data_empty.copy()
+                    
+                    item_data['event_link'] = link
+                    
+                    datetime = event_times.pop(0)
 
-            #         # item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'box-event-doc-header-date')]").text
-            #         # item_data['event_time'] = self.getter.find_element(By.XPATH,"//dl[contains(@class,'contact-list')]").text
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1"])
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='news-single-item']"],enable_desc_image=True,error_when_none=True)
+                    item_data['event_date'] = datetime
+                    # item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[text()='Date']/.."],method='attr',error_when_none=False,wait_time=5)
+                    # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//section[@id='block-views-contacts-block']"],method='attr',error_when_none=False,wait_time=5)
+# 
+                    yield self.load_item(item_data=item_data,item_selector=link)
 
-            #         try:
-            #             item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'tribe-events-single-section')]//dt[text()=' Date: ']/following-sibling::dd").text
-            #             item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[starts-with(@class,'tribe-events-single-section')]//dt[text()=' Time: ']/following-sibling::dd").text
-            #         except NoSuchElementException as e:
-            #             logger.debug(f"Error: {e}. Using an Alternate Scraping XPATH....")
-            #             # logger.debug(f"XPATH not found {e}: Skipping.....")
-            #             item_data['event_date'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-            #             item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'tile__content')]").text
-
-            #         try:
-            #             item_data['startups_contact_info'] = self.getter.find_element(By.XPATH,"//font[text()='Organizer']/ancestor::b/..").text
-            #         except NoSuchElementException as e:
-            #             logger.debug(f"XPATH not found {e}: Skipping.....")
-            #         # item_data['startups_link'] = ''
-            #         # item_data['startups_name'] = ''
-
-            #         yield self.load_item(item_data=item_data,item_selector=link)
-
-        ####################
+        ###################
         except Exception as e:
             self.exception_handler(e)

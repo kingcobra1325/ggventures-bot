@@ -3,7 +3,7 @@ from spider_template import GGVenturesSpider
 
 class Sgp0002Spider(GGVenturesSpider):
     name = "sgp_0002"
-    start_urls = ["https://bschool.nus.edu.sg/"]
+    start_urls = ["https://bschool.nus.edu.sg/about-us/contact-us/"]
     country = "Singapore"
     # eventbrite_id = 8447939505
 # 
@@ -16,9 +16,9 @@ class Sgp0002Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://bschool.nus.edu.sg/biz-events/"
 
-    university_contact_info_xpath = "//div[contains(@class,'nus-social-box')]"
-    contact_info_text = True
-    # contact_info_textContent = True
+    university_contact_info_xpath = "//section[starts-with(@class,'accordion')]"
+    # contact_info_text = True
+    contact_info_textContent = True
     # contact_info_multispan = True
     # TRANSLATE = True
 

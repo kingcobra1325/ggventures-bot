@@ -25,7 +25,7 @@ class Mys0003Spider(GGVenturesSpider):
         try:
         ####################
             self.driver.get(response.url)
-            self.check_website_changed(upcoming_events_xpath="//div[@class='uk-width-expand@m']",empty_text=True)
+            self.check_website_changed(upcoming_events_xpath="//div[@id='tm-main']",empty_text=True)
             # self.ClickMore(click_xpath="//a[contains(@class,'btn--load-more')]",run_script=True)
             # for link in self.multi_event_pages(num_of_pages=3,event_links_xpath="//h2[@class='entry-title']/a",next_page_xpath="//a[@class='next page-numbers']",get_next_month=True,click_next_month=False):
             # for link in self.events_list(event_links_xpath="//div[@class='aktiviti_info']/a"):

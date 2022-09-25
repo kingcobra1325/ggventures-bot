@@ -34,7 +34,7 @@ class Fra0030Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3/a",next_page_xpath="//a[contains(@rel,'next')]",get_next_month=True,click_next_month=False,wait_after_loading=True,run_script=False):
             for link in self.events_list(event_links_xpath="//div[starts-with(@class,'widgetbox')]/a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=["https://www.insead.edu/centres/","https://www.insead.edu/events/"]):
+                if self.unique_event_checker(url_substring=["https://www.insead.edu/centres/","https://www.insead.edu/events/","https://www.insead.edu/conversations/"]):
                     
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 
@@ -42,9 +42,9 @@ class Fra0030Spider(GGVenturesSpider):
                     
                     item_data['event_link'] = link
 
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='heading3']"])
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@role='tabpanel']","//div[@class='panel-separator']/following-sibling::div"],enable_desc_image=True,error_when_none=False)
-                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='events-details-info']"],method='attr',error_when_none=False,wait_time=5)
+                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//h1[@class='heading3']","//h2[@class='text-center']"],method='attr')
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@role='tabpanel']","//div[@class='panel-separator']/following-sibling::div"],enable_desc_image=True,error_when_none=True)
+                    item_data['event_date'] = self.scrape_xpath(xpath_list=["//div[@class='events-details-info']","//h3[@class='text-center']/.."],method='attr',error_when_none=False,wait_time=5)
                     # item_data['event_time'] = self.scrape_xpath(xpath_list=["//div[@role='tabpanel']","//div[@class='panel-separator']/following-sibling::div"],method='attr',error_when_none=False,wait_time=5)
                     # item_data['startups_contact_info'] = self.scrape_xpath(xpath_list=["//th[text()='Contact person:']/.."],method='attr',error_when_none=False,wait_time=5)
 # 

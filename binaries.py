@@ -141,6 +141,7 @@ EMAIL_OFFLINE_COPY = ast.literal_eval(environ['EMAIL_OFFLINE_COPY'])
 #     # DEVELOPER VARS
 #     GOOGLE_CHROME_BIN = environ['DEFAULT_GOOGLE_CHROME_BIN']
 CHROMEDRIVER_PATH = environ['DEFAULT_CHROMEDRIVER_PATH']
+GECKODRIVER_PATH = environ['DEFAULT_GECKODRIVER_PATH']
 
 # HEROKU API TOKEN
 
@@ -307,8 +308,7 @@ def Google_Sheets():
 
 ##### -------------------------- CHROMEDRIVER ------------------------------####
 
-# DRIVER VAR
-def Load_Driver():
+def Load_ChromeDriver():
     """
     Creates a Chrome WebDriver Object to be used
     for loading JS websites. Loads parameters
@@ -349,20 +349,26 @@ def Load_Driver():
 #
 def Load_FF_Driver():
 #     # ------------- DRIVER OPTIONS --------------- #
-#     options = FirefoxOptions()
+    options = FirefoxOptions()
 #     # ------------- DRIVER OPTIONS --------------- #
-#     options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
-#     # options.add_argument(f'user-agent=Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0')
-#     options.add_argument('--headless')
-#     options.add_argument('--disable-gpu')
-#     options.add_argument('--disable-dev-shm-usage')
-#     options.add_argument("--log-level=3")
-#     options.add_argument("--lang=en-US")
-#     options.binary_location = FIRE_FOX_BIN
-#     # options.add_argument('--no-sandbox')
+    options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
+    # options.add_argument(f'user-agent=Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--log-level=3")
+    options.add_argument("--lang=en-US")
+    # options.binary_location = FIRE_FOX_BIN
+    options.add_argument('--no-sandbox')
 #
-#     return webdriver.Chrome(executable_path=GECKODRIVER_PATH,options=options)
-    pass
+    return webdriver.Chrome(executable_path=GECKODRIVER_PATH,options=options)
+
+# DRIVER VAR
+def Load_Driver(USE_FF_DRIVER=False):
+    if USE_FF_DRIVER:
+        return Load_FF_Driver()
+    return Load_ChromeDriver()
+    
 
 ####################################### DROPBOX ###########################################
 

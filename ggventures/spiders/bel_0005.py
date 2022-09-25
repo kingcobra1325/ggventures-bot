@@ -32,8 +32,8 @@ class Bel0005Spider(GGVenturesSpider):
             # self.check_website_changed(upcoming_events_xpath="//h4[contains(text(),'A PHP Error was encountered')]")
             # self.ClickMore(click_xpath="//a[contains(@class,'load-more')]",run_script=True)
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//div[contains(@id,'uclcalendar_list_ajax')]//div[contains(@class,'list-image')]/a",next_page_xpath="//a[text()='next']",get_next_month=True,click_next_month=False,wait_after_loading=False):
-            raw_event_times = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//div[@class='meta']")))
-            event_times = [x.text for x in raw_event_times]
+            raw_event_times = self.Mth.WebDriverWait(self.driver,40).until(self.Mth.EC.presence_of_all_elements_located((self.Mth.By.XPATH,"//div[@class='meta']//div[@class='value']")))
+            event_times = [x.get_attribute('textContent') for x in raw_event_times]
             for link in self.events_list(event_links_xpath="//a[@class='wrap']"):
                 self.getter.get(link)
                 if self.unique_event_checker(url_substring=["https://www.uantwerpen.be/en/","https://www.uantwerpen.be/nl/"]):
@@ -42,10 +42,12 @@ class Bel0005Spider(GGVenturesSpider):
 
                     item_data = self.item_data_empty.copy()
                     
-
-                    item_data['event_name'] = self.scrape_xpath(xpath_list=["//section//h1 | //section//h2"])
-
-                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//article//div[@class='main']"],error_when_none=False)
+                    try:
+                        item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@class='main']//*[@class='heading']"],method='attr')
+                    except NoSuchElementException:
+                        item_data['event_name'] = self.scrape_xpath(xpath_list=["//div[@id='main']//header/*[@class='heading']"],method='attr')
+                        
+                    item_data['event_desc'] = self.scrape_xpath(xpath_list=["//div[@class='managedContent']"],method='attr',error_when_none=True)
 
                     item_data['event_date'] = event_times.pop(0)
                     # item_data['event_time'] = self.getter.find_element(By.XPATH,"//div[contains(@class,'event-infos')]").text

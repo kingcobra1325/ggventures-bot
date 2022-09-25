@@ -9,7 +9,7 @@ class Swe0005Spider(GGVenturesSpider):
 # 
     # handle_httpstatus_list = [301,302,403,404]
 
-    static_name = "University of Bucharest,Universitatea din BucureStockholm School of Economicsşti,Facultatea de Administratie si Afaceri"
+    static_name = "Stockholm School of Economics"
     
     static_logo = "https://upload.wikimedia.org/wikipedia/en/thumb/d/d0/Stockholm_School_Of_Economics_Logo.svg/1200px-Stockholm_School_Of_Economics_Logo.svg.png"
 

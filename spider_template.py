@@ -1,10 +1,12 @@
 from distutils.log import error
+from http.client import HTTPSConnection
+from ssl import SSLCertVerificationError, SSLError
 from numpy import maximum
 import scrapy, time, traceback, gc
 # from scrapy import Selector
 from datetime import datetime
 
-from bot_email import missing_info_email, error_email, unique_event, website_changed
+from bot_email import missing_info_email, error_email, unique_event, website_changed, file_event
 
 from binaries import Load_Driver, WebScroller, EventBrite_API, GGV_SETTINGS, print_log
 from lib.baselogger import initialize_logger
@@ -41,6 +43,8 @@ class GGVenturesSpider(scrapy.Spider):
     start_urls : list = 'DefaultUrl'
     country : str = 'DefaultCountry'
     eventbrite_id : int = 0
+    
+    USE_FF_DRIVER = False
 
     USE_HANDLE_HTTPSTATUS_LIST = False
 
@@ -123,9 +127,9 @@ class GGVenturesSpider(scrapy.Spider):
         """
         Initialize the main/sub selenium drivers
         """
-        self.driver = Load_Driver()
+        self.driver = Load_Driver(self.USE_FF_DRIVER)
         if self.USE_MULTI_DRIVER:
-            self.getter = Load_Driver()
+            self.getter = Load_Driver(self.USE_FF_DRIVER)
         else:
             self.getter = self.driver
         self.eventbrite_api = EventBrite_API()
@@ -255,19 +259,53 @@ class GGVenturesSpider(scrapy.Spider):
             return '\n'.join(datetime_list)
         else:
             return self.getter.find_element(self.Mth.By.XPATH,datetime_xpath).get_attribute(datetime_attribute)
+    
+    def web_content_checker(self,check_link=''):
+        ssl_verify_bool = True
+        content_checker = ''
+        
+        list_contents = ['text/html','application/xml']
 
-    def unique_event_checker(self,url_substring=''):
+        while True:
+            try:
+                self.logger.debug('Checking URL Content...')
+                if check_link:
+                    content_checker = requests.head(check_link,verify=ssl_verify_bool).headers['Content-Type']
+                    self.logger.debug(f'Currently checking : {check_link}')
+                else:
+                    content_checker = requests.head(self.getter.current_url,verify=ssl_verify_bool).headers['Content-Type']
+                    self.logger.debug(f'Currently checking : {self.getter.current_url}')
+                self.logger.debug(f'URL Content is {content_checker}')
+                for content in list_contents:
+                    self.logger.debug(F'Content Checker is [{content_checker}] while Content is [{content}]')
+                    if content in content_checker:
+                        return True
+                return False
+            except (requests.exceptions.SSLError):
+                self.logger.debug('Web Content Checker went into exception')
+                self.logger.debug('Switching SSL Verify to False')
+                ssl_verify_bool = False
+
+    def unique_event_checker(self,url_substring='',check_link=""):
         """
-        Check the url of the getter driver if the
+        Firstly checks if the url is a file or a html,
+        Then checks the url of the getter driver if the
         parameter is a substring of the url
         """
+        
+        content_checker = self.web_content_checker(check_link)
+        
         # CHECK IF PAGE NOT FOUND
         if self.getter.title.lower() not in ['page not found','404']:
             # CHECK IF NOT EMPTY
             if url_substring:
                 # String - url_substring
                 if isinstance(url_substring,str):
-                    if url_substring in self.getter.current_url:
+                    if not content_checker:
+                            self.logger.debug(f"Link: {self.getter.current_url} is an File Event Link. Logging Events to Sheets ")
+                            file_event(self,self.static_name,check_link,self.university_contact_info,self.static_logo)
+                            return False
+                    elif url_substring in self.getter.current_url:
                         return True
                     elif 'www.eventbrite.com' in self.getter.current_url:
                         if not self.eventbrite_id:
@@ -285,8 +323,11 @@ class GGVenturesSpider(scrapy.Spider):
                 # List - url_substring
                 if isinstance(url_substring,list):
                     for url in url_substring:
-
-                        if url in self.getter.current_url:
+                        if not content_checker:
+                            self.logger.debug(f"Link: {self.getter.current_url} is an File Event Link. Logging Events to Sheets ")
+                            file_event(self,self.static_name,check_link,self.university_contact_info,self.static_logo)
+                            return False
+                        elif url in self.getter.current_url:
                             return True
                         elif 'www.eventbrite.com' in self.getter.current_url:
                             if not self.eventbrite_id:
@@ -516,8 +557,9 @@ class GGVenturesSpider(scrapy.Spider):
         xpath attribute that will be called automatically
         """
         self.driver.get(response.url)
-
+        
         if self.university_contact_info_xpath:
+            self.logger.debug(f'Current URL for {self.country} is {self.getter.current_url}')
             if self.contact_info_text:
                 self.university_contact_info = (WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.XPATH, self.university_contact_info_xpath)))).text
             elif self.contact_info_textContent:
@@ -526,8 +568,7 @@ class GGVenturesSpider(scrapy.Spider):
                 self.university_contact_info = '\n'.join([x.get_attribute('textContent') for x in WebDriverWait(self.driver,60).until(EC.presence_of_all_elements_located((By.XPATH, self.university_contact_info_xpath)))])
 
             self.university_contact_info = f"{self.university_contact_info}\n{self.get_emails_from_source()}"
-
-
+            
 
     def parse_code(self,response):
         """
@@ -767,6 +808,19 @@ class GGVenturesSpider(scrapy.Spider):
             regexnew= regexlink.replace('href=','').replace('\"','')
             new_list.append(f'{base_site}{regexnew}')
         return new_list
+    
+    def multi_event_dates(self,num_of_pages=6,date_xpath=""):
+        date_list = []
+        
+        page_list = range(num_of_pages)
+        
+        for page in page_list:
+            try:
+                web_elements_list = WebDriverWait(self.driver,40).until(EC.presence_of_all_elements_located((By.XPATH,date_xpath)))
+                date_list.extend([x.get_attribute('textContent') for x in web_elements_list])
+            except TimeoutException as e:
+                self.logger.debug(f"No available events for this month : {e} ---> Skipping...........")
+        return date_list
 
 
     def multi_event_pages(self,num_of_pages=6,event_links_xpath='',next_page_xpath='',get_next_month=False,click_next_month=False,wait_after_loading=False,click_month_list_xpath="",run_script=False\

@@ -91,6 +91,47 @@ def website_changed(spider="Default Spider", university_name="Default University
 
     except Exception as e:
         logger.error("Exception when calling Email Bot->: %s\n" % e)
+        
+def file_event(spider="No-Spider-Name", university_name="No-University-Name", href='No-Link', contact_info = 'No-Contact-Info', logo='NO-LOGO'):
+    """
+    Registers the event based on the parameters into the Spreadsheet
+    and sends an email that a File Event is detected from the events
+    """
+    try:
+        # ------- LOG FILE EVENTS TO MAIN SHEETS -------#
+        # GET COUNTRY DF
+        df, worksheet = Read_DataFrame_From_Sheet(spider.country)
+
+        if GGV_SETTINGS.CLEAN_DATA_PIPELINE:
+            logger.info("CLEANING 'university_contact_info'")
+            logger.info(f"Processing --> {contact_info}")
+            contact_info = pipeline_re.contact_info(data=str(contact_info))
+            logger.info(f"Result --> {contact_info}")
+
+        data = {
+                    "Last Updated" : datetime.utcnow(),
+                    "Event Name" : f'<FILE EVENT - {href}>',
+                    "Event Date" : f'<FILE EVENT - {href}>',
+                    "Event Time" : f'<FILE EVENT - {href}>',
+                    "Event Link" : href,
+                    "Event Description" : f'<FILE EVENT - {href}>',
+                    "Startup Name(s)" : f'<FILE EVENT - {href}>',
+                    "Startup Link(s)" : f'<FILE EVENT - {href}>',
+                    "Startup Contact Info(s)" : f'<FILE EVENT - {href}>',
+                    "University Name" : university_name,
+                    "University Contact Info" : contact_info,
+                    "Logo" : logo,
+                    "SpiderName" : spider.name
+        }
+
+        # ADD ITEM TO DF
+        Add_Event(data=data,country_df=df,country_worksheet=worksheet,country=spider.country)
+
+        logger.info("Added FILE Event into Google Sheets....")
+
+    except Exception as e:
+        logger.error("Exception when calling Email Bot->: %s\n" % e)
+
 
 def unique_event(spider="No-Spider-Name", university_name="No-University-Name", href='No-Link', contact_info = 'No-Contact-Info', logo='NO-LOGO'):
     """

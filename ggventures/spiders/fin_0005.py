@@ -29,7 +29,7 @@ class Fin0005Spider(GGVenturesSpider):
             # for link in self.multi_event_pages(num_of_pages=8,event_links_xpath="//h3/a",next_page_xpath="//a[contains(@rel,'next')]",get_next_month=True,click_next_month=False,wait_after_loading=False):
             for link in self.events_list(event_links_xpath="//div[contains(@class,'view-content row')]//a"):
                 self.getter.get(link)
-                if self.unique_event_checker(url_substring=['www.uwasa.fi/en/event']):
+                if self.unique_event_checker(url_substring=['www.uwasa.fi/en']):
 
                     self.Func.print_log(f"Currently scraping --> {self.getter.current_url}","info")
 

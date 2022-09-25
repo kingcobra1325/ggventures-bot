@@ -3,7 +3,7 @@ from spider_template import GGVenturesSpider
 class Gbr0043Spider(GGVenturesSpider):
     name = 'gbr_0043'
     country = 'United Kingdom'
-    start_urls = ["https://www.southampton.ac.uk/business-school/index.page"]
+    start_urls = ["https://www.southampton.ac.uk/business-school/contact.page"]
     # eventbrite_id = 6221361805
 
     # handle_httpstatus_list = [301,302,403,404]
@@ -15,7 +15,7 @@ class Gbr0043Spider(GGVenturesSpider):
     # MAIN EVENTS LIST PAGE
     parse_code_link = "https://www.southampton.ac.uk/business-school/news/events/latest.page"
 
-    university_contact_info_xpath = "//dt[text()='Contact us']/.."
+    university_contact_info_xpath = "//strong[text()='General enquiries']/../../.."
     # contact_info_text = True
     contact_info_textContent = True
     # contact_info_multispan = True
